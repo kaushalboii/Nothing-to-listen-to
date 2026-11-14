@@ -56,7 +56,7 @@ precision highp float;
 #define DEFAULT_WEIGHTED_X_DIST_SCALE 1.0
 #define X_DIST_SCALING_EDGE_ASPECT_CORRECTION 1 // sometimes looks better without it due to extreme vertical elongation and small sizes
 
-#define MEDIA_ENABLED 0
+#define MEDIA_ENABLED 1
 #define MEDIA_HIDDEN 0
 #define MEDIA_GAMMA_CONVERSION_FACTOR 2
 #define MEDIA_GRAYSCALE 0

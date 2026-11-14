@@ -15,6 +15,9 @@ export interface UiSlice {
   aboutOpen: boolean
   setAboutOpen: (aboutOpen: boolean) => void
   toggleAboutOpen: () => void
+  searchOpen: boolean
+  setSearchOpen: (searchOpen: boolean) => void
+  toggleSearchOpen: () => void
   favoritesOpen: boolean
   setFavoritesOpen: (favoritesOpen: boolean) => void
   toggleFavoritesOpen: () => void
@@ -48,6 +51,13 @@ export const createUiSlice: StateCreator<UiSlice, [], [], UiSlice> = (
     },
     toggleAboutOpen: () => {
       set({ aboutOpen: !get().aboutOpen })
+    },
+    searchOpen: false,
+    setSearchOpen: (searchOpen: boolean) => {
+      set({ searchOpen })
+    },
+    toggleSearchOpen: () => {
+      set({ searchOpen: !get().searchOpen })
     },
     favoritesOpen: false,
     setFavoritesOpen: (favoritesOpen: boolean) => {

@@ -202,6 +202,7 @@ export const FilmView = ({
                       title: firstTrack,
                       artist: film.artist,
                       albumTitle: film.title,
+                      videoId: film.youtubeId,
                       query: `${film.artist} ${firstTrack}`,
                     })
                   }}
@@ -288,6 +289,7 @@ export const FilmView = ({
                           title: track.title,
                           artist: film.artist,
                           albumTitle: film.title,
+                          videoId: (track as any).videoId || film.youtubeId,
                           query: `${film.artist} ${track.title}`,
                         })
                       }}

@@ -2,27 +2,18 @@ const rawBase = import.meta.env.BASE_URL || '/'
 const normalizedBase = rawBase.endsWith('/') ? rawBase.slice(0, -1) : rawBase
 
 const mediaConfig = {
-  enabled: false,
+  enabled: true,
   baseUrl: import.meta.env.VITE_TEXTURES_BASE_URL ?? `${normalizedBase}/media`,
-  preload: false,
+  preload: 'first', // 'v0', 'first' or false
   compressionFormat: 'dds',
   versions: [
     {
-      cols: 512,
-      rows: 104,
-      width: 2048,
-      height: 624,
-      layers: 1,
-      layerSrcFormat: '/low/{EXT}/{INDEX}.{EXT}',
-      type: 'compressed-grid',
-    },
-    {
-      cols: 90,
-      rows: 60,
+      cols: 18,
+      rows: 12,
       width: 1980,
       height: 1980,
       layers: 1,
-      layerSrcFormat: '/mid/{EXT}/{INDEX}.{EXT}',
+      layerSrcFormat: '/low/{EXT}/0.{EXT}',
       type: 'compressed-grid',
     },
     {
@@ -31,7 +22,16 @@ const mediaConfig = {
       width: 1980,
       height: 1980,
       layers: 1,
-      layerSrcFormat: '/high/{EXT}/{INDEX}.{EXT}',
+      layerSrcFormat: '/mid/{EXT}/0.{EXT}',
+      type: 'compressed-grid',
+    },
+    {
+      cols: 18,
+      rows: 12,
+      width: 1980,
+      height: 1980,
+      layers: 1,
+      layerSrcFormat: '/high/{EXT}/0.{EXT}',
       type: 'compressed-grid',
     },
   ],
@@ -42,10 +42,10 @@ export default mediaConfig
 export const uncompressedSingleMediaVersionConfig = {
   cols: 1,
   rows: 1,
-  virtualCols: 9,
-  virtualRows: 6,
-  tileWidth: 220,
-  tileHeight: 330,
+  virtualCols: 18,
+  virtualRows: 12,
+  tileWidth: 110,
+  tileHeight: 165,
   width: 1980,
   height: 1980,
   layers: 216,

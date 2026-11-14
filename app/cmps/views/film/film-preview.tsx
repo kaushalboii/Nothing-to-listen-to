@@ -16,7 +16,7 @@ import { Badge } from '../../ui/badge'
 import { FilmPoster } from './shared/film-poster'
 import { FilmRatingGauge } from './shared/film-rating-gauge'
 
-export const FilmPreview = ({ poster = false }) => {
+export const FilmPreview = ({ poster = true }: { poster?: boolean }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const innerRef = useRef<HTMLDivElement>(null)
   const isSmallScreen = useMediaQuery(down('md'))

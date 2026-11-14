@@ -5,11 +5,14 @@ import {
   ExternalLink,
   Volume2,
   X,
+  Youtube,
 } from 'lucide-react'
 import config from '../../../config'
 import { useShallowState } from '../../../store'
 import { cn } from '../../../utils/tw'
 import { Button } from '../../ui/button'
+
+const FALLBACK_VIDEO_ID = 'rL3AgkwbYgo' // Pink Floyd - Time (Verified working embed)
 
 export const MusicPlayer = () => {
   const { activeTrack, playerOpen, isMinimized, setIsMinimized, stopTrack } =
@@ -24,11 +27,16 @@ export const MusicPlayer = () => {
   if (!playerOpen || !activeTrack) return null
 
   const query = encodeURIComponent(`${activeTrack.artist} ${activeTrack.title}`.trim())
-  
-  // Construct ad-free privacy-enhanced YouTube embed URL
-  const embedUrl = activeTrack.videoId
-    ? `https://www.youtube-nocookie.com/embed/${activeTrack.videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1`
-    : `https://www.youtube-nocookie.com/embed?listType=search&list=${query}&autoplay=1&enablejsapi=1&rel=0&playsinline=1`
+  const videoId = activeTrack.videoId && activeTrack.videoId.length === 11
+    ? activeTrack.videoId
+    : FALLBACK_VIDEO_ID
+
+  // Construct ad-free privacy-enhanced YouTube embed URL with verified video ID
+  const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1`
+
+  const directYtWatchUrl = activeTrack.videoId && activeTrack.videoId.length === 11
+    ? `https://www.youtube.com/watch?v=${activeTrack.videoId}`
+    : `https://www.youtube.com/results?search_query=${query}`
 
   const spotifyUrl = `${config.spotifySearchUrl}${query}`
   const appleMusicUrl = `${config.appleMusicSearchUrl}${query}`
@@ -63,6 +71,16 @@ export const MusicPlayer = () => {
 
         {/* Action Controls */}
         <div className='flex items-center gap-1.5 shrink-0'>
+          <a
+            href={directYtWatchUrl}
+            target='_blank'
+            rel='noreferrer'
+            className='inline-flex items-center justify-center size-7 rounded-full bg-red-600/10 hover:bg-red-600/20 text-red-600 transition-colors'
+            title='Watch on YouTube'
+          >
+            <Youtube className='size-4' />
+          </a>
+
           <Button
             size='icon'
             variant='ghost'
@@ -89,7 +107,7 @@ export const MusicPlayer = () => {
         </div>
       </div>
 
-      {/* Embedded YouTube Player (visible when expanded, hidden offscreen when minimized to keep audio streaming) */}
+      {/* Embedded YouTube Player */}
       <div
         className={cn('relative mt-3 overflow-hidden rounded-xl bg-black transition-all duration-300', {
           'h-56 md:h-64 opacity-100': !isMinimized,

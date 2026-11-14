@@ -170,6 +170,11 @@ def main():
         json.dump(final_records, f, indent=2)
     
     print(f"Successfully generated {len(final_records)} dynamic records in {JSON_OUTPUT}")
+    # Generate real media textures and download covers
+    media_script = os.path.join(SCRIPT_DIR, "generate-real-media.py")
+    if os.path.exists(media_script):
+        import subprocess
+        subprocess.run([sys.executable, media_script], check=True)
     print("=== Real Music Sync Complete! ===")
 
 if __name__ == "__main__":

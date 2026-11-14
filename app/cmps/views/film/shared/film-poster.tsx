@@ -9,26 +9,32 @@ export const FilmPoster = ({
   className = '',
 }: {
   film: {
+    tmdbId?: number
     title: Film['title']
     poster?: Film['poster']
   }
   onPointerOver?: PointerEventHandler<HTMLImageElement>
   className?: string
 }) => {
+  const [useLocalFallback, setUseLocalFallback] = useState(false)
   const [hasError, setHasError] = useState(false)
   const rawBase = import.meta.env.BASE_URL || '/'
   const normalizedBase = rawBase.endsWith('/') ? rawBase.slice(0, -1) : rawBase
 
-  const src =
-    film.poster?.startsWith('http')
-      ? film.poster
-      : film.poster?.startsWith('/')
-        ? `${normalizedBase}${film.poster}`
-        : film.poster
-          ? `${config.posterBaseUrl}${film.poster}`
-          : ''
+  let src = ''
+  if (useLocalFallback) {
+    src = `${normalizedBase}/media/single/${film.tmdbId ?? 0}.jpg`
+  } else if (film.poster?.startsWith('http')) {
+    src = film.poster
+  } else if (film.poster?.startsWith('/')) {
+    src = `${normalizedBase}${film.poster}`
+  } else if (film.poster) {
+    src = `${config.posterBaseUrl}${film.poster}`
+  } else {
+    src = `${normalizedBase}/media/single/${film.tmdbId ?? 0}.jpg`
+  }
 
-  if (!src || hasError) {
+  if (hasError || !src) {
     return (
       <div
         className={cn(
@@ -58,7 +64,11 @@ export const FilmPoster = ({
         className,
       )}
       onError={() => {
-        setHasError(true)
+        if (!useLocalFallback) {
+          setUseLocalFallback(true)
+        } else {
+          setHasError(true)
+        }
       }}
       onPointerOver={onPointerOver}
     />

@@ -55,6 +55,7 @@ export const selectTheme = (state: StoreState) => state.theme
 export const selectModalsOpen = (state: StoreState) => ({
   settings: state.settingsOpen,
   about: state.aboutOpen,
+  search: state.searchOpen,
   favorites: state.favoritesOpen,
   addCustomLinkType: state.addCustomLinkTypeOpen,
 })
@@ -62,6 +63,7 @@ export const selectModalsOpen = (state: StoreState) => ({
 export const selectAnyModalOpen = (state: StoreState) =>
   state.settingsOpen ||
   state.aboutOpen ||
+  state.searchOpen ||
   state.favoritesOpen ||
   !!state.addCustomLinkTypeOpen
 

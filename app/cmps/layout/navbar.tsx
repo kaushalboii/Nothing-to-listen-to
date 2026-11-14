@@ -1,4 +1,4 @@
-import { Disc3, GithubIcon, Heart, Info, Settings } from 'lucide-react'
+import { Disc3, GithubIcon, Heart, Info, Search, Settings } from 'lucide-react'
 
 import { useShallowState } from '@/store'
 import config from '../../config'
@@ -13,6 +13,8 @@ export const Navbar = () => {
     toggleSettingsOpen,
     aboutOpen,
     toggleAboutOpen,
+    searchOpen,
+    toggleSearchOpen,
     favoritesOpen,
     toggleFavoritesOpen,
     hasFavorites,
@@ -22,6 +24,8 @@ export const Navbar = () => {
     toggleSettingsOpen: state.toggleSettingsOpen,
     aboutOpen: state.aboutOpen,
     toggleAboutOpen: state.toggleAboutOpen,
+    searchOpen: state.searchOpen,
+    toggleSearchOpen: state.toggleSearchOpen,
     favoritesOpen: state.favoritesOpen,
     toggleFavoritesOpen: state.toggleFavoritesOpen,
     hasFavorites:
@@ -46,6 +50,17 @@ export const Navbar = () => {
         </span>
       </div>
       <div className='flex flex-row items-center gap-1.5'>
+      <Button
+        variant='ghost'
+        size='icon'
+        onClick={toggleSearchOpen}
+        title='Search songs (Cmd+K)'
+        className={cn(buttonClassnames, {
+          'border border-foreground bg-primary/20': searchOpen,
+        })}
+      >
+        <Search />
+      </Button>
       <Button
         variant='ghost'
         size='icon'

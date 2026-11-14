@@ -27,6 +27,8 @@ export class Film {
   spotifyId?: string
   appleMusicId?: string
   youtubeId?: string
+  language?: string
+  era?: string
 
   constructor(data: FilmData) {
     this.tmdbId = Number(data.id)
@@ -49,6 +51,8 @@ export class Film {
     this.spotifyId = data.spotify_id ? String(data.spotify_id) : undefined
     this.appleMusicId = data.apple_music_id ? String(data.apple_music_id) : undefined
     this.youtubeId = data.youtube_id ? String(data.youtube_id) : undefined
+    this.language = data.language ? String(data.language) : undefined
+    this.era = data.era ? String(data.era) : undefined
   }
 }
 

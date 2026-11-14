@@ -1,73 +1,124 @@
-# There's nothing to listen to...
+# Nothing to Listen to 🎵
 
-The golden age of vinyl, CDs, and legendary studio recordings is arguably behind us. Luckily, we have over sixty years of timeless music albums to fall back on.
+> An immersive, ad-free WebGL 3D musical universe. Discover and stream 216+ iconic, multi-lingual songs across Tamil, Hindi, Telugu, English, Punjabi, Malayalam, K-Pop, Latin, and Japanese with verified YouTube playback and multi-platform streaming.
 
-![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue.svg)
-![React](https://img.shields.io/badge/React-19.1-blue.svg)
-![WebGL](https://img.shields.io/badge/WebGL-enabled-green.svg)
-![Vite](https://img.shields.io/badge/Vite-7.0-purple.svg)
+[![Live Site](https://img.shields.io/badge/Live_Site-GitHub_Pages-brightgreen.svg)](https://kaushalboii.github.io/Nothing-to-listen-to/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue.svg)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19.1-blue.svg)](https://react.dev/)
+[![WebGL 2.0](https://img.shields.io/badge/WebGL-2.0_Enabled-green.svg)](https://www.khronos.org/webgl/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## 🎵 Overview
+---
 
-An experimental WebGL gallery that visualizes hundreds of the greatest and most iconic music albums of all time in an interactive force-directed Voronoi diagram.
+## 🌟 Overview
 
-### Key Features
+**Nothing to Listen to** reimagines music discovery as an interactive 3D force-directed Voronoi visual sphere. Instead of endless text lists, explore hundreds of songs mapped across time and genre as tactile interactive cells that pulsate, expand, and play directly in your browser without intrusive ads.
 
-- **Interactive 1:1 Square WebGL Visualization**: Custom Voroforce engine tailored for vinyl square album artwork.
-- **216+ Legendary Music Records**: Spanning Classic Rock, Pop, Hip-Hop, Electronic & IDM, Jazz & Blues, 90s Grunge, Alternative, Post-Punk, Soul & Funk, Metal, and Modern Indie.
-- **Audio Synthesizer & Equalizer**: Live melodic Web Audio synthesizer generating harmonic chord previews for each record, complete with animated equalizer bars.
-- **Spinning Vinyl Animation**: Interactive sleeve and spinning vinyl record visualization that slides out and rotates when playing.
-- **Tracklist & Album Trivia**: Track-by-track breakdown with durations, lore, critical acclaim scores, and review quotes.
-- **Direct Streaming Integration**: One-click shortcuts to open albums directly in Spotify, Apple Music, and YouTube Music.
-- **Interactive Force Modes**: Intro, selection, and preview modes with smooth 60fps force simulation.
-- **Responsive & Dark/Light Themes**: Optimized for desktop, tablet, and mobile browsers.
+Whether you are looking for classic rock legends, viral Bollywood melodies, explosive Kollywood mass anthems, high-energy Telugu blockbusters, soulful Malayalam indie gems, electrifying K-Pop choreography, or rhythmic Latin chart-toppers—**Nothing to Listen to** brings them all together into one seamless, ad-free experience.
+
+---
+
+## ✨ Features
+
+- **🌐 100% Multi-Lingual & Global Catalog (216 Masterpieces)**:
+  - **Tamil**: Anirudh Ravichander (*Leo*, *Jailer*, *Vikram*, *Master*), A. R. Rahman (*Ponniyin Selvan*, *Roja*, *Alaipayuthey*), Harris Jayaraj, Yuvan Shankar Raja, Ilaiyaraaja (*Thalapathi*, *Nayagan*), Santhosh Narayanan (*Kabali*).
+  - **Hindi / Bollywood**: Arijit Singh (*Kesariya*, *Apna Bana Le*, *Tum Hi Ho*), A. R. Rahman (*Chaiyya Chaiyya*, *Kun Faya Kun*), Pritam, Vishal-Shekhar, Shankar-Ehsaan-Loy.
+  - **Telugu / Tollywood**: *RRR* (*Naatu Naatu*), *Pushpa* (*Oo Antava*, *Srivalli*), *Ala Vaikunthapurramuloo* (*Butta Bomma*), *Devara* (*Fear Song*, *Chuttamalle*), *Guntur Kaaram*, *Hi Nanna*.
+  - **Punjabi & Malayalam**: Diljit Dosanjh (*Lover*, *G.O.A.T.*, *Hass Hass*), AP Dhillon (*Brown Munde*, *Excuses*), Sidhu Moose Wala (*295*), Sushin Shyam (*Aavesham - Illuminati*, *Manjummel Boys*).
+  - **English / International Pop & Rock**: The Weeknd, Taylor Swift, Ed Sheeran, Harry Styles, Coldplay, Imagine Dragons, Queen, Nirvana, Linkin Park, Adele, Bruno Mars.
+  - **K-Pop & Asian Hits**: BTS (*Dynamite*, *Butter*), BLACKPINK (*DDU-DU DDU-DU*, *How You Like That*), NewJeans (*Super Shy*, *OMG*, *Ditto*), Stray Kids, Jung Kook, YOASOBI (*Idol*), LiSA (*Gurenge*).
+  - **Spanish & Latin**: Luis Fonsi (*Despacito*), Bad Bunny (*Tití Me Preguntó*, *Dákiti*), Shakira (*Waka Waka*, *Hips Don't Lie*, *Bzrp 53*), Rosalía, J Balvin.
+
+- **🎥 Ad-Free In-App YouTube Streaming**:
+  - Embedded privacy-enhanced player (`youtube-nocookie.com`) with verified, active official music videos.
+  - No broken "Video unavailable" errors.
+  - Minimize, expand, and seek seamlessly while navigating the 3D globe.
+
+- **🎧 Universal Multi-Platform Listen Links**:
+  - Direct 1-click links for every song to stream on **Spotify**, **Apple Music**, **YouTube Music**, **JioSaavn**, **Amazon Music**, **Wynk Music**, **Gaana**, and **SoundCloud**.
+
+- **🔎 Instant Search & Dual Filter System**:
+  - Press `Cmd + K`, `Ctrl + K`, or `/` anywhere on the site to trigger the instant search modal.
+  - Filter by **Language** (*All, English, Tamil, Hindi, Telugu, Punjabi, Malayalam, K-Pop, Latin, Japanese*).
+  - Filter by **Era / Decade** (*All Eras, 2024-2025, 2020s, 2010s, 2000s, 1990s, Classics*).
+  - Filter by **Genre** (*Pop, Rock, Soundtrack, Hip-Hop, Folk, EDM*).
+
+- **💿 Real Album Artwork & WebGL DXT1 Atlas**:
+  - Real high-resolution official video thumbnails pulled dynamically from YouTube's CDN.
+  - Voroforce WebGL compressed DXT1 DDS texture atlas generated from real pixel data for 60fps rendering without lag.
+
+- **🎹 Live Melodic Synth Preview**:
+  - Real-time generative Web Audio synthesizer that creates dynamic chord progressions and animated equalizer waveforms for each song.
+
+---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-
-- **Node.js** 18+ and **npm** (or Bun / pnpm)
-- Modern browser with WebGL 2.0 support
+- [Node.js](https://nodejs.org/) (version 18 or newer)
+- Modern browser with WebGL 2.0 support (Chrome, Edge, Safari, Firefox)
 
 ### Installation
+```bash
+# Clone the repository
+git clone https://github.com/kaushalboii/Nothing-to-listen-to.git
+cd Nothing-to-listen-to
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/kaushalboii/Nothing-to-listen-to.git
-   cd Nothing-to-listen-to
-   ```
+# Install dependencies
+npm install
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+# Start development server
+npm run dev
+```
 
-3. **Start development server**
-   ```bash
-   npm run dev
-   ```
+Visit `http://localhost:3000` in your browser.
 
-4. **Open your browser**
-   Navigate to `http://localhost:3000`
+### Production Build
+```bash
+# Compile TypeScript and bundle with Vite
+npm run build
 
-## 🛠 Available Scripts
+# Preview the production build locally
+npm run preview
+```
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server on port 3000 |
-| `npm run build` | Build for production with TypeScript compilation |
-| `npm run preview` | Preview production build |
-| `npm run lint` | Lint code with Biome |
-| `npm run format` | Format code with Biome |
-| `npm run check` | Run comprehensive Biome checks |
+---
 
-## 🏗 Architecture
+## 🏗 Architecture & Tech Stack
 
-- **Frontend**: React 19, TypeScript, Vite, Tailwind CSS, Radix UI (Shadcn), Zustand state management.
-- **Engine (Voroforce)**: Lightweight WebGL2 rendering with OGL, custom GLSL shaders, multi-threaded force simulation, and 1:1 square media lattice.
-- **Audio**: Web Audio API melodic synthesizer.
-- **Data**: Curated album collection loaded from `public/json/0.json` with multi-tier texture support from `public/media/`.
+- **Frontend Core**: React 19, TypeScript 5.8, Vite 7
+- **Styling & UI**: Tailwind CSS, Radix UI primitives, Lucide Icons
+- **State Management**: Zustand
+- **3D Graphics & Physics**: Voroforce WebGL2 engine, OGL, custom GLSL shaders, multi-threaded force simulation
+- **Audio Engine**: Web Audio API melodic synthesizer and analyzer
+- **Deployment**: Automated GitHub Pages CI/CD workflow (`.github/workflows/deploy.yml`)
 
-## 📄 License
+---
 
-MIT
+## 🤝 Attribution & Open-Source Credits
+
+This project was inspired by and built upon the open-source architecture of [Nothing to Watch](https://github.com/gnovotny/nothing-to-watch), conceived and developed by [Gabriel Novotny](https://github.com/gnovotny).
+
+We express our gratitude to the original creators for open-sourcing their force-directed Voronoi visualization engine under the permissive **MIT License**.
+
+---
+
+## ⚖️ License & Legal Disclaimer
+
+### License
+This project is open source and available under the terms of the [MIT License](LICENSE).
+
+### Content & Streaming Disclaimer
+- **Nothing to Listen to** is a non-commercial, educational, and personal open-source project designed for musical discovery.
+- **No media files are hosted**: This web application does not store, host, or distribute any copyrighted MP3, AAC, MP4, or video files on its servers.
+- **Official Public Embeds**: Video and audio playback is rendered entirely through official, publicly available YouTube privacy-enhanced embed frames (`youtube-nocookie.com`) as authorized by YouTube's standard terms of service.
+- **External Links**: Streaming links point directly to public search endpoints on authorized third-party services (Spotify, Apple Music, YouTube Music, JioSaavn, Amazon Music, Wynk, Gaana, and SoundCloud).
+- All copyrights, trademarks, artwork, and song rights belong exclusively to their respective artists, composers, and record labels.
+
+---
+
+## 📬 Contact & Feedback
+
+For questions, feedback, or suggestions, please contact:
+📧 **Email**: [contact.nothingtolisten@gmail.com](mailto:contact.nothingtolisten@gmail.com)  
+🐙 **GitHub**: [@kaushalboii](https://github.com/kaushalboii)

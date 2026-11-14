@@ -179,8 +179,16 @@ export const FilmView = ({
                 )}
               </div>
 
-              {/* Genre Badges */}
+              {/* Genre & Language Badges */}
               <div className='flex flex-wrap gap-1.5 my-2'>
+                {film.language && (
+                  <Badge
+                    variant='default'
+                    className='text-xs py-0.5 px-2.5 font-bold bg-primary text-primary-foreground'
+                  >
+                    {film.language}
+                  </Badge>
+                )}
                 {film.genres?.map((genre) => (
                   <Badge
                     key={genre}

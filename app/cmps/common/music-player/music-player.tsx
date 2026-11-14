@@ -41,6 +41,10 @@ export const MusicPlayer = () => {
   const spotifyUrl = `${config.spotifySearchUrl}${query}`
   const appleMusicUrl = `${config.appleMusicSearchUrl}${query}`
   const ytMusicUrl = `${config.youtubeMusicSearchUrl}${query}`
+  const jiosaavnUrl = `${config.jiosaavnSearchUrl}${query}`
+  const amazonMusicUrl = `${config.amazonMusicSearchUrl}${query}`
+  const wynkUrl = `${config.wynkSearchUrl}${query}`
+  const soundcloudUrl = `${config.soundcloudSearchUrl}${query}`
 
   return (
     <div
@@ -155,6 +159,42 @@ export const MusicPlayer = () => {
             className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 font-semibold transition-colors'
           >
             YouTube
+            <ExternalLink className='size-2.5' />
+          </a>
+          <a
+            href={jiosaavnUrl}
+            target='_blank'
+            rel='noreferrer'
+            className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-teal-500/10 hover:bg-teal-500/20 text-teal-600 dark:text-teal-400 font-semibold transition-colors'
+          >
+            JioSaavn
+            <ExternalLink className='size-2.5' />
+          </a>
+          <a
+            href={amazonMusicUrl}
+            target='_blank'
+            rel='noreferrer'
+            className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 font-semibold transition-colors'
+          >
+            Amazon
+            <ExternalLink className='size-2.5' />
+          </a>
+          <a
+            href={wynkUrl}
+            target='_blank'
+            rel='noreferrer'
+            className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-semibold transition-colors'
+          >
+            Wynk
+            <ExternalLink className='size-2.5' />
+          </a>
+          <a
+            href={soundcloudUrl}
+            target='_blank'
+            rel='noreferrer'
+            className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-semibold transition-colors'
+          >
+            SoundCloud
             <ExternalLink className='size-2.5' />
           </a>
         </div>

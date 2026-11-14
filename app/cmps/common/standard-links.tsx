@@ -16,59 +16,68 @@ export const StdLinks = ({
 }) => {
   const query = encodeURIComponent(`${film.artist ?? ''} ${film.title}`.trim())
 
+  const platforms = [
+    {
+      name: 'Spotify',
+      url: `${config.spotifySearchUrl}${query}`,
+      color: 'hover:border-emerald-500 hover:text-emerald-500 text-emerald-500/90',
+    },
+    {
+      name: 'Apple Music',
+      url: `${config.appleMusicSearchUrl}${query}`,
+      color: 'hover:border-pink-500 hover:text-pink-500 text-pink-500/90',
+    },
+    {
+      name: 'YouTube Music',
+      url: `${config.youtubeMusicSearchUrl}${query}`,
+      color: 'hover:border-red-500 hover:text-red-500 text-red-500/90',
+    },
+    {
+      name: 'JioSaavn',
+      url: `${config.jiosaavnSearchUrl}${query}`,
+      color: 'hover:border-teal-400 hover:text-teal-400 text-teal-400/90',
+    },
+    {
+      name: 'Amazon Music',
+      url: `${config.amazonMusicSearchUrl}${query}`,
+      color: 'hover:border-sky-400 hover:text-sky-400 text-sky-400/90',
+    },
+    {
+      name: 'Wynk',
+      url: `${config.wynkSearchUrl}${query}`,
+      color: 'hover:border-orange-500 hover:text-orange-500 text-orange-500/90',
+    },
+    {
+      name: 'Gaana',
+      url: `${config.gaanaSearchUrl}${query}`,
+      color: 'hover:border-amber-500 hover:text-amber-500 text-amber-500/90',
+    },
+    {
+      name: 'SoundCloud',
+      url: `${config.soundcloudSearchUrl}${query}`,
+      color: 'hover:border-orange-400 hover:text-orange-400 text-orange-400/90',
+    },
+  ]
+
   return (
-    <div className='flex flex-row flex-wrap gap-2'>
-      <Button
-        asChild
-        variant='outline'
-        size='sm'
-        className={cn(
-          'rounded-lg border-foreground font-semibold hover:border-emerald-500 hover:text-emerald-500 md:backdrop-blur-lg',
-          buttonClassName,
-        )}
-      >
-        <a
-          href={`${config.spotifySearchUrl}${query}`}
-          target='_blank'
-          rel='noreferrer'
+    <div className='flex flex-row flex-wrap gap-1.5'>
+      {platforms.map((p) => (
+        <Button
+          key={p.name}
+          asChild
+          variant='outline'
+          size='sm'
+          className={cn(
+            'rounded-lg border-border/80 font-semibold text-xs transition-colors backdrop-blur-md',
+            p.color,
+            buttonClassName,
+          )}
         >
-          Spotify
-        </a>
-      </Button>
-      <Button
-        asChild
-        variant='outline'
-        size='sm'
-        className={cn(
-          'rounded-lg border-foreground font-semibold hover:border-pink-500 hover:text-pink-500 md:backdrop-blur-lg',
-          buttonClassName,
-        )}
-      >
-        <a
-          href={`${config.appleMusicSearchUrl}${query}`}
-          target='_blank'
-          rel='noreferrer'
-        >
-          Apple Music
-        </a>
-      </Button>
-      <Button
-        asChild
-        variant='outline'
-        size='sm'
-        className={cn(
-          'rounded-lg border-foreground font-semibold hover:border-red-500 hover:text-red-500 md:backdrop-blur-lg',
-          buttonClassName,
-        )}
-      >
-        <a
-          href={`${config.youtubeMusicSearchUrl}${query}`}
-          target='_blank'
-          rel='noreferrer'
-        >
-          YouTube
-        </a>
-      </Button>
+          <a href={p.url} target='_blank' rel='noreferrer'>
+            {p.name}
+          </a>
+        </Button>
+      ))}
     </div>
   )
 }

@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
+  Calendar,
+  Globe2,
   Music2,
   Play,
   Search,
+  Sparkles,
   X,
 } from 'lucide-react'
 import { useShallowState } from '../../../store'
@@ -11,16 +14,27 @@ import { Film, VOROFORCE_MODE } from '../../../vf'
 import { AlbumCover } from '../film/shared/film-poster'
 import { Button } from '../../ui/button'
 
-const GENRE_SHORTCUTS = [
+const LANGUAGE_FILTERS = [
   'All',
-  'Rock',
-  'Pop',
-  'Hip-Hop',
-  'R&B',
-  'Electronic',
-  'Holiday',
-  'New Age',
+  'Tamil',
+  'Hindi',
+  'Telugu',
+  'Punjabi',
+  'Malayalam',
+  'English',
   'K-Pop',
+  'Latin',
+  'Japanese',
+]
+
+const ERA_FILTERS = [
+  'All Eras',
+  '2024-2025',
+  '2020s',
+  '2010s',
+  '2000s',
+  '1990s',
+  'Classics',
 ]
 
 export const MusicSearchModal = () => {
@@ -35,7 +49,8 @@ export const MusicSearchModal = () => {
     }))
 
   const [query, setQuery] = useState('')
-  const [selectedGenre, setSelectedGenre] = useState('All')
+  const [selectedLang, setSelectedLang] = useState('All')
+  const [selectedEra, setSelectedEra] = useState('All Eras')
   const [localRecords, setLocalRecords] = useState<any[]>([])
 
   // Load raw records from filmBatches or /json/0.json
@@ -74,18 +89,30 @@ export const MusicSearchModal = () => {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [searchOpen, setSearchOpen])
 
-  // Filter records in real-time
+  // Filter records in real-time across query, language, and era
   const filtered = useMemo(() => {
     if (!localRecords || localRecords.length === 0) return []
     const q = query.trim().toLowerCase()
 
     return localRecords.filter((rec) => {
-      // Genre filter
-      if (selectedGenre !== 'All') {
+      // Language filter
+      if (selectedLang !== 'All') {
+        const lang = String(rec.language || '').toLowerCase()
         const genres = String(rec.genres || '').toLowerCase()
-        if (!genres.includes(selectedGenre.toLowerCase())) {
+        if (lang !== selectedLang.toLowerCase() && !genres.includes(selectedLang.toLowerCase())) {
           return false
         }
+      }
+
+      // Era filter
+      if (selectedEra !== 'All Eras') {
+        const year = Number(rec.release_year || 0)
+        if (selectedEra === '2024-2025' && year < 2024) return false
+        if (selectedEra === '2020s' && (year < 2020 || year > 2023)) return false
+        if (selectedEra === '2010s' && (year < 2010 || year > 2019)) return false
+        if (selectedEra === '2000s' && (year < 2000 || year > 2009)) return false
+        if (selectedEra === '1990s' && (year < 1990 || year > 1999)) return false
+        if (selectedEra === 'Classics' && year >= 1990) return false
       }
 
       if (!q) return true
@@ -93,6 +120,8 @@ export const MusicSearchModal = () => {
       const title = String(rec.title || '').toLowerCase()
       const artist = String(rec.artist || '').toLowerCase()
       const genres = String(rec.genres || '').toLowerCase()
+      const year = String(rec.release_year || '')
+      const lang = String(rec.language || '').toLowerCase()
       const tracks = Array.isArray(rec.tracks)
         ? rec.tracks.map((t: any) => String(t.title || '').toLowerCase()).join(' ')
         : ''
@@ -101,10 +130,12 @@ export const MusicSearchModal = () => {
         title.includes(q) ||
         artist.includes(q) ||
         genres.includes(q) ||
+        year.includes(q) ||
+        lang.includes(q) ||
         tracks.includes(q)
       )
     })
-  }, [localRecords, query, selectedGenre])
+  }, [localRecords, query, selectedLang, selectedEra])
 
   if (!searchOpen) return null
 
@@ -129,11 +160,11 @@ export const MusicSearchModal = () => {
 
   return (
     <div
-      className='fixed inset-0 z-90 flex items-start justify-center p-4 pt-16 md:pt-24 bg-black/75 backdrop-blur-md animate-in fade-in duration-200'
+      className='fixed inset-0 z-90 flex items-start justify-center p-4 pt-12 md:pt-20 bg-black/80 backdrop-blur-md animate-in fade-in duration-200'
       onClick={() => setSearchOpen(false)}
     >
       <div
-        className='relative w-full max-w-2xl overflow-hidden rounded-2xl border border-border bg-background shadow-2xl animate-in zoom-in-95 duration-200 flex flex-col max-h-[80vh]'
+        className='relative w-full max-w-2xl overflow-hidden rounded-2xl border border-border bg-background shadow-2xl animate-in zoom-in-95 duration-200 flex flex-col max-h-[85vh]'
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Input Bar */}
@@ -143,14 +174,14 @@ export const MusicSearchModal = () => {
             type='text'
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder='Search 200+ songs, artists, albums, or genres...'
+            placeholder='Search 216+ songs, artists, languages, eras, or genres...'
             autoFocus
             className='w-full bg-transparent text-base md:text-lg font-medium text-foreground placeholder:text-muted-foreground outline-none'
           />
           {query && (
             <button
               onClick={() => setQuery('')}
-              className='p-1 rounded-full text-muted-foreground hover:text-foreground transition-colors mr-2'
+              className='p-1 rounded-full text-muted-foreground hover:text-foreground transition-colors mr-2 cursor-pointer'
             >
               <X className='size-4' />
             </button>
@@ -160,20 +191,46 @@ export const MusicSearchModal = () => {
           </kbd>
         </div>
 
-        {/* Quick Genre Filter Pills */}
-        <div className='flex items-center gap-1.5 px-4 py-2.5 border-b border-border/40 overflow-x-auto scrollbar-none'>
-          {GENRE_SHORTCUTS.map((g) => (
+        {/* Language Filter Bar */}
+        <div className='flex items-center gap-1.5 px-4 py-2 border-b border-border/40 overflow-x-auto scrollbar-none bg-muted/20'>
+          <div className='flex items-center gap-1 text-[0.7rem] font-bold text-muted-foreground uppercase tracking-wider mr-1 shrink-0'>
+            <Globe2 className='size-3.5 text-primary' />
+            Lang:
+          </div>
+          {LANGUAGE_FILTERS.map((lang) => (
             <button
-              key={g}
-              onClick={() => setSelectedGenre(g)}
+              key={lang}
+              onClick={() => setSelectedLang(lang)}
               className={cn(
-                'px-2.5 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer',
-                selectedGenre === g
+                'px-2.5 py-0.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer',
+                selectedLang === lang
                   ? 'bg-primary text-primary-foreground shadow-sm'
+                  : 'bg-muted/70 text-muted-foreground hover:bg-muted hover:text-foreground',
+              )}
+            >
+              {lang}
+            </button>
+          ))}
+        </div>
+
+        {/* Era / Decade Filter Bar */}
+        <div className='flex items-center gap-1.5 px-4 py-2 border-b border-border/40 overflow-x-auto scrollbar-none bg-muted/10'>
+          <div className='flex items-center gap-1 text-[0.7rem] font-bold text-muted-foreground uppercase tracking-wider mr-1 shrink-0'>
+            <Calendar className='size-3.5 text-amber-500' />
+            Era:
+          </div>
+          {ERA_FILTERS.map((era) => (
+            <button
+              key={era}
+              onClick={() => setSelectedEra(era)}
+              className={cn(
+                'px-2.5 py-0.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer',
+                selectedEra === era
+                  ? 'bg-amber-500 text-black font-bold shadow-sm'
                   : 'bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground',
               )}
             >
-              {g}
+              {era}
             </button>
           ))}
         </div>
@@ -185,7 +242,7 @@ export const MusicSearchModal = () => {
               <Music2 className='size-10 text-muted-foreground/50 mb-3' />
               <p className='font-bold text-foreground text-sm'>No songs found</p>
               <p className='text-xs text-muted-foreground mt-1 max-w-xs'>
-                Try searching for popular artists like "Eminem", "Pink Floyd", "Michael Bublé", or genres like "Rock" or "Pop".
+                Try adjusting your search query, or resetting the language and era filters above.
               </p>
             </div>
           ) : (
@@ -200,48 +257,56 @@ export const MusicSearchModal = () => {
                 <div
                   key={record.id}
                   onClick={() => handleSelectRecord(record)}
-                  className='group flex items-center justify-between p-2.5 rounded-xl hover:bg-muted/80 cursor-pointer transition-all duration-150'
+                  className='group flex items-center justify-between p-2.5 rounded-xl hover:bg-muted/70 transition-all cursor-pointer gap-3'
                 >
-                  <div className='flex items-center gap-3.5 min-w-0 pr-2'>
-                    {/* Real Album Cover Thumbnail */}
-                    <div className='size-12 md:size-14 shrink-0 rounded-lg overflow-hidden border border-border/50 bg-neutral-900 shadow-sm relative group-hover:scale-105 transition-transform'>
-                      <AlbumCover
-                        film={filmMock as any}
-                        className='size-full object-cover'
-                      />
+                  <div className='flex items-center gap-3 min-w-0'>
+                    {/* Real Album Artwork Thumbnail */}
+                    <div className='relative size-12 shrink-0 rounded-lg overflow-hidden shadow-sm bg-neutral-900 border border-border/50'>
+                      <AlbumCover film={filmMock} />
                     </div>
 
                     <div className='min-w-0 flex flex-col'>
-                      <h4 className='truncate font-black text-sm md:text-base text-foreground group-hover:text-primary transition-colors'>
-                        {record.title}
-                      </h4>
-                      <p className='truncate text-xs font-semibold text-muted-foreground'>
-                        {record.artist}
-                        {record.release_year ? ` • ${record.release_year}` : ''}
-                      </p>
-                      <div className='flex items-center gap-1.5 mt-1'>
-                        <span className='text-[10px] px-1.5 py-0.2 rounded bg-muted text-muted-foreground font-mono'>
-                          {record.genres?.split(',')[0] ?? 'Music'}
+                      <div className='flex items-center gap-2'>
+                        <p className='truncate font-bold text-sm text-foreground group-hover:text-primary transition-colors'>
+                          {record.title}
+                        </p>
+                        <span className='shrink-0 px-1.5 py-0.2 rounded text-[10px] font-bold bg-primary/10 text-primary'>
+                          {record.release_year}
                         </span>
-                        {record.tracks?.length > 0 && (
-                          <span className='text-[10px] text-muted-foreground/70'>
-                            {record.tracks.length} tracks
+                        {record.language && (
+                          <span className='hidden sm:inline-block shrink-0 px-1.5 py-0.2 rounded text-[10px] font-semibold bg-muted text-muted-foreground'>
+                            {record.language}
                           </span>
                         )}
                       </div>
+                      <p className='truncate text-xs font-medium text-muted-foreground'>
+                        {record.artist}
+                      </p>
+                      <p className='truncate text-[11px] text-muted-foreground/70 hidden sm:block'>
+                        {record.genres}
+                      </p>
                     </div>
                   </div>
 
-                  {/* Quick Action Buttons */}
+                  {/* Actions: Stream or View */}
                   <div className='flex items-center gap-1.5 shrink-0'>
                     <Button
                       size='sm'
                       variant='ghost'
                       onClick={(e) => handlePlayDirect(e, record)}
-                      className='size-9 p-0 rounded-full hover:bg-red-600/10 hover:text-red-600 text-muted-foreground transition-colors'
-                      title='Play on YouTube Player'
+                      className='size-8 rounded-full p-0 bg-red-600/10 hover:bg-red-600 hover:text-white text-red-600 transition-colors cursor-pointer'
+                      title='Stream on YouTube'
                     >
-                      <Play className='size-4 fill-current' />
+                      <Play className='size-3.5 fill-current' />
+                    </Button>
+
+                    <Button
+                      size='sm'
+                      variant='outline'
+                      onClick={() => handleSelectRecord(record)}
+                      className='hidden sm:inline-flex text-xs h-8 px-2.5 rounded-lg cursor-pointer'
+                    >
+                      3D Focus
                     </Button>
                   </div>
                 </div>
@@ -250,14 +315,15 @@ export const MusicSearchModal = () => {
           )}
         </div>
 
-        {/* Footer info */}
-        <div className='px-4 py-2.5 bg-muted/30 border-t border-border/40 flex items-center justify-between text-[11px] text-muted-foreground'>
-          <span>
-            Found <strong className='text-foreground'>{filtered.length}</strong> songs
-          </span>
-          <span className='hidden sm:inline'>
-            Click any song to view details • Press <kbd className='font-mono'>ESC</kbd> to close
-          </span>
+        {/* Modal Footer */}
+        <div className='flex items-center justify-between px-4 py-2.5 border-t border-border/40 text-[11px] text-muted-foreground bg-muted/30'>
+          <div className='flex items-center gap-1.5'>
+            <Sparkles className='size-3.5 text-primary' />
+            <span>Showing {filtered.length} of {localRecords.length} songs</span>
+          </div>
+          <div className='flex items-center gap-2'>
+            <span>Click any song to focus 3D Voronoi sphere</span>
+          </div>
         </div>
       </div>
     </div>

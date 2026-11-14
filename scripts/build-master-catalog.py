@@ -534,3 +534,4 @@ for d in ["high", "mid", "low"]:
     print(f"Wrote {dds_path} ({len(dds_data)} bytes)")
 
 print("=== ALL 216 SONGS, REAL THUMBNAILS & DDS ATLAS SUCCESSFULLY GENERATED! ===")
+

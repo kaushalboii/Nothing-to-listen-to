@@ -12,7 +12,7 @@ import { useShallowState } from '../../../store'
 import { cn } from '../../../utils/tw'
 import { Button } from '../../ui/button'
 
-const FALLBACK_VIDEO_ID = 'rL3AgkwbYgo' // Pink Floyd - Time (Verified working embed)
+const FALLBACK_VIDEO_ID = 'ZdMZ40GSVmc' // Anirudh - Badass (Leo)
 
 export const MusicPlayer = () => {
   const { activeTrack, playerOpen, isMinimized, setIsMinimized, stopTrack } =
@@ -79,7 +79,7 @@ export const MusicPlayer = () => {
             href={directYtWatchUrl}
             target='_blank'
             rel='noreferrer'
-            className='inline-flex items-center justify-center size-7 rounded-full bg-red-600/10 hover:bg-red-600/20 text-red-600 transition-colors'
+            className='inline-flex items-center justify-center size-7 rounded-full bg-red-600/10 hover:bg-red-600/20 text-red-600 transition-colors cursor-pointer'
             title='Watch on YouTube'
           >
             <Youtube className='size-4' />
@@ -88,7 +88,7 @@ export const MusicPlayer = () => {
           <Button
             size='icon'
             variant='ghost'
-            className='size-7 rounded-full'
+            className='size-7 rounded-full cursor-pointer'
             onClick={() => setIsMinimized(!isMinimized)}
             title={isMinimized ? 'Expand Video' : 'Minimize Player'}
           >
@@ -102,7 +102,7 @@ export const MusicPlayer = () => {
           <Button
             size='icon'
             variant='ghost'
-            className='size-7 rounded-full hover:bg-destructive/10 hover:text-destructive'
+            className='size-7 rounded-full hover:bg-destructive/10 hover:text-destructive cursor-pointer'
             onClick={stopTrack}
             title='Stop Playback'
           >
@@ -128,12 +128,12 @@ export const MusicPlayer = () => {
       </div>
 
       {/* Cross-platform Listen Links */}
-      <div className='mt-2.5 pt-2 border-t border-border/40 flex items-center justify-between gap-2 text-xs'>
-        <span className='text-[0.7rem] font-medium text-muted-foreground flex items-center gap-1'>
+      <div className='mt-2.5 pt-2 border-t border-border/40 flex items-center justify-between gap-2 text-xs overflow-x-auto scrollbar-none'>
+        <span className='text-[0.7rem] font-medium text-muted-foreground flex items-center gap-1 shrink-0'>
           <Volume2 className='size-3 text-emerald-500 animate-pulse' />
           Listen on:
         </span>
-        <div className='flex items-center gap-1.5'>
+        <div className='flex items-center gap-1.5 shrink-0'>
           <a
             href={spotifyUrl}
             target='_blank'

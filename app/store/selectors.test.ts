@@ -65,6 +65,16 @@ const createMockState = (overrides: Partial<StoreState> = {}): StoreState => ({
   setFilm: () => {},
   filmBatches: new Map(),
 
+  // Player Slice defaults
+  activeTrack: null,
+  playerOpen: false,
+  isMinimized: false,
+  setActiveTrack: () => {},
+  setPlayerOpen: () => {},
+  setIsMinimized: () => {},
+  playTrack: () => {},
+  stopTrack: () => {},
+
   // Apply overrides
   ...overrides,
 })

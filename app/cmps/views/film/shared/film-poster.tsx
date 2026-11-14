@@ -16,11 +16,15 @@ export const FilmPoster = ({
   className?: string
 }) => {
   const [hidden, setHidden] = useState(false)
+  const rawBase = import.meta.env.BASE_URL || '/'
+  const normalizedBase = rawBase.endsWith('/') ? rawBase.slice(0, -1) : rawBase
 
   const src =
-    film.poster?.startsWith('http') || film.poster?.startsWith('/')
+    film.poster?.startsWith('http')
       ? film.poster
-      : `${config.posterBaseUrl}${film.poster ?? ''}`
+      : film.poster?.startsWith('/')
+        ? `${normalizedBase}${film.poster}`
+        : `${config.posterBaseUrl}${film.poster ?? ''}`
 
   return (
     <img

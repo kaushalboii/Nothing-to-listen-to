@@ -192,25 +192,42 @@ export const FilmView = ({
                 ))}
               </div>
 
-              {/* Audio Preview Controls */}
-              <div className='flex flex-wrap items-center gap-3 pt-2 border-t border-border/40'>
+              {/* Audio & Streaming Controls */}
+              <div className='flex flex-wrap items-center gap-2.5 pt-2 border-t border-border/40'>
                 <Button
                   size='sm'
+                  onClick={() => {
+                    const firstTrack = film.tracks?.[0]?.title ?? film.title
+                    store.getState().playTrack({
+                      title: firstTrack,
+                      artist: film.artist,
+                      albumTitle: film.title,
+                      query: `${film.artist} ${firstTrack}`,
+                    })
+                  }}
+                  className='cursor-pointer gap-2 font-bold transition-all shadow-md bg-red-600 hover:bg-red-700 text-white'
+                >
+                  <Play className='size-4 fill-white' /> Stream on YouTube
+                </Button>
+
+                <Button
+                  size='sm'
+                  variant='outline'
                   onClick={handleTogglePlay}
                   className={cn(
-                    'cursor-pointer gap-2 font-bold transition-all shadow-md',
+                    'cursor-pointer gap-2 font-bold transition-all',
                     isPlaying
-                      ? 'bg-amber-500 hover:bg-amber-600 text-black'
-                      : 'bg-primary hover:bg-primary/90 text-primary-foreground',
+                      ? 'border-amber-500 text-amber-500'
+                      : '',
                   )}
                 >
                   {isPlaying ? (
                     <>
-                      <Pause className='size-4' /> Pause Preview
+                      <Pause className='size-4' /> Synth Preview
                     </>
                   ) : (
                     <>
-                      <Play className='size-4' /> Play Preview
+                      <Play className='size-4' /> Synth Preview
                     </>
                   )}
                 </Button>
@@ -260,24 +277,61 @@ export const FilmView = ({
                 </span>
               </h4>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-2 text-xs md:text-sm font-medium'>
-                {film.tracks.map((track) => (
-                  <div
-                    key={track.number}
-                    className='flex items-center justify-between p-2 rounded-md hover:bg-muted/50 border border-transparent hover:border-border/40 transition-colors'
-                  >
-                    <div className='flex items-center gap-2.5 truncate mr-2'>
-                      <span className='font-mono text-xs text-muted-foreground w-4 text-right'>
-                        {track.number}
-                      </span>
-                      <span className='truncate text-foreground/90'>
-                        {track.title}
-                      </span>
+                {film.tracks.map((track) => {
+                  const trackQuery = encodeURIComponent(`${film.artist} ${track.title}`.trim())
+                  return (
+                    <div
+                      key={track.number}
+                      className='group/track flex items-center justify-between p-2 rounded-lg hover:bg-muted/70 border border-transparent hover:border-border/60 transition-all cursor-pointer'
+                      onClick={() => {
+                        store.getState().playTrack({
+                          title: track.title,
+                          artist: film.artist,
+                          albumTitle: film.title,
+                          query: `${film.artist} ${track.title}`,
+                        })
+                      }}
+                    >
+                      <div className='flex items-center gap-2.5 truncate mr-2'>
+                        <span className='font-mono text-xs text-muted-foreground w-4 text-right group-hover/track:hidden'>
+                          {track.number}
+                        </span>
+                        <Play className='size-3.5 text-primary shrink-0 hidden group-hover/track:inline-block fill-primary' />
+                        <span className='truncate text-foreground/90 font-medium group-hover/track:text-primary transition-colors'>
+                          {track.title}
+                        </span>
+                      </div>
+
+                      <div className='flex items-center gap-2 shrink-0'>
+                        <div className='opacity-0 group-hover/track:opacity-100 flex items-center gap-1.5 transition-opacity'>
+                          <a
+                            href={`${config.spotifySearchUrl}${trackQuery}`}
+                            target='_blank'
+                            rel='noreferrer'
+                            onClick={(e) => e.stopPropagation()}
+                            className='text-[0.65rem] px-1.5 py-0.5 rounded bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold'
+                            title='Listen on Spotify'
+                          >
+                            SP
+                          </a>
+                          <a
+                            href={`${config.appleMusicSearchUrl}${trackQuery}`}
+                            target='_blank'
+                            rel='noreferrer'
+                            onClick={(e) => e.stopPropagation()}
+                            className='text-[0.65rem] px-1.5 py-0.5 rounded bg-pink-500/10 hover:bg-pink-500/20 text-pink-600 dark:text-pink-400 font-bold'
+                            title='Listen on Apple Music'
+                          >
+                            AM
+                          </a>
+                        </div>
+                        <span className='font-mono text-xs text-muted-foreground'>
+                          {track.duration}
+                        </span>
+                      </div>
                     </div>
-                    <span className='font-mono text-xs text-muted-foreground shrink-0'>
-                      {track.duration}
-                    </span>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </div>
           )}

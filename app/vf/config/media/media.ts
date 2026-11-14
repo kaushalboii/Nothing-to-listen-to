@@ -1,6 +1,9 @@
+const rawBase = import.meta.env.BASE_URL || '/'
+const normalizedBase = rawBase.endsWith('/') ? rawBase.slice(0, -1) : rawBase
+
 const mediaConfig = {
   enabled: true,
-  baseUrl: import.meta.env.VITE_TEXTURES_BASE_URL ?? '/media',
+  baseUrl: import.meta.env.VITE_TEXTURES_BASE_URL ?? `${normalizedBase}/media`,
   preload: 'first', // 'v0', 'first' or false
   compressionFormat: 'dds', // or 'ktx'
   versions: [

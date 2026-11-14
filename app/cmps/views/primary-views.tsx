@@ -4,6 +4,7 @@ import { FilmPreview, FilmViewDrawer } from './film'
 import { HotkeysView } from './hotkeys'
 import { LowFpsAlert } from './low-fps-alert'
 import { Settings } from './settings'
+import { MusicPlayer } from '../common/music-player/music-player'
 
 const PrimaryViews = () => (
   <>
@@ -14,6 +15,7 @@ const PrimaryViews = () => (
     <FilmViewDrawer />
     <LowFpsAlert />
     <HotkeysView />
+    <MusicPlayer />
   </>
 )
 

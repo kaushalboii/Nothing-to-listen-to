@@ -49,7 +49,12 @@ const items = [
           <b>This is a non-commercial project</b>. The content is intended
           solely for educational, cultural, and music discovery purposes. All
           rights to artist artwork, album names, and intellectual property remain
-          with their respective creators and record labels.
+          with their respective creators and record labels. If you have concerns,
+          feedback, or requests, please contact us at{' '}
+          <Link href={`mailto:${config.contactEmail}`}>
+            {config.contactEmail}
+          </Link>
+          .
         </p>
       </>
     ),

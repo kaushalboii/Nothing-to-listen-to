@@ -12,7 +12,7 @@ export default {
   appleMusicSearchUrl: 'https://music.apple.com/search?term=',
   youtubeMusicSearchUrl: 'https://music.youtube.com/search?q=',
   lastfmSearchUrl: 'https://www.last.fm/search?q=',
-  contactEmail: 'contact@nothingtolisten.to',
+  contactEmail: 'contact.nothingtolisten@gmail.com',
   disableUI: false,
   telemetry: {
     enabled:

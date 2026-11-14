@@ -9,6 +9,7 @@ import glsl from 'vite-plugin-glsl'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
   return {
+    base: process.env.BASE_PATH || (mode === 'production' ? '/Nothing-to-listen-to/' : '/'),
     plugins: [
       react({}),
       tailwindcss(),

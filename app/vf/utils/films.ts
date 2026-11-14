@@ -58,10 +58,12 @@ export type AlbumBatch = FilmBatch
 export type AlbumBatches = FilmBatches
 
 const loadCellFilmBatch = async (batchIndex: number) => {
+  const rawBase = import.meta.env.BASE_URL || '/'
+  const normalizedBase = rawBase.endsWith('/') ? rawBase.slice(0, -1) : rawBase
   const baseUrl =
     import.meta.env.VITE_MUSIC_INFO_BASE_URL ??
     import.meta.env.VITE_FILM_INFO_BASE_URL ??
-    '/json'
+    `${normalizedBase}/json`
   const url = `${baseUrl}/${batchIndex}.json`
   try {
     const response = await fetch(url)

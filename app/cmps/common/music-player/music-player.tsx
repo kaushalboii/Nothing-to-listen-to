@@ -42,9 +42,6 @@ export const MusicPlayer = () => {
   const appleMusicUrl = `${config.appleMusicSearchUrl}${query}`
   const ytMusicUrl = `${config.youtubeMusicSearchUrl}${query}`
   const jiosaavnUrl = `${config.jiosaavnSearchUrl}${query}`
-  const amazonMusicUrl = `${config.amazonMusicSearchUrl}${query}`
-  const wynkUrl = `${config.wynkSearchUrl}${query}`
-  const soundcloudUrl = `${config.soundcloudSearchUrl}${query}`
 
   return (
     <div
@@ -127,8 +124,8 @@ export const MusicPlayer = () => {
         />
       </div>
 
-      {/* Cross-platform Listen Links */}
-      <div className='mt-2.5 pt-2 border-t border-border/40 flex items-center justify-between gap-2 text-xs overflow-x-auto scrollbar-none'>
+      {/* Cross-platform Listen Links (Essential clean buttons without overflow) */}
+      <div className='mt-2.5 pt-2 border-t border-border/40 flex items-center justify-between gap-2 text-xs'>
         <span className='text-[0.7rem] font-medium text-muted-foreground flex items-center gap-1 shrink-0'>
           <Volume2 className='size-3 text-emerald-500 animate-pulse' />
           Listen on:
@@ -138,7 +135,7 @@ export const MusicPlayer = () => {
             href={spotifyUrl}
             target='_blank'
             rel='noreferrer'
-            className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-semibold transition-colors'
+            className='inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-semibold transition-colors'
           >
             Spotify
             <ExternalLink className='size-2.5' />
@@ -147,7 +144,7 @@ export const MusicPlayer = () => {
             href={appleMusicUrl}
             target='_blank'
             rel='noreferrer'
-            className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-pink-500/10 hover:bg-pink-500/20 text-pink-600 dark:text-pink-400 font-semibold transition-colors'
+            className='inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-pink-500/10 hover:bg-pink-500/20 text-pink-600 dark:text-pink-400 font-semibold transition-colors'
           >
             Apple Music
             <ExternalLink className='size-2.5' />
@@ -156,7 +153,7 @@ export const MusicPlayer = () => {
             href={ytMusicUrl}
             target='_blank'
             rel='noreferrer'
-            className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 font-semibold transition-colors'
+            className='inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 font-semibold transition-colors'
           >
             YouTube
             <ExternalLink className='size-2.5' />
@@ -165,36 +162,9 @@ export const MusicPlayer = () => {
             href={jiosaavnUrl}
             target='_blank'
             rel='noreferrer'
-            className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-teal-500/10 hover:bg-teal-500/20 text-teal-600 dark:text-teal-400 font-semibold transition-colors'
+            className='inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-teal-500/10 hover:bg-teal-500/20 text-teal-600 dark:text-teal-400 font-semibold transition-colors'
           >
             JioSaavn
-            <ExternalLink className='size-2.5' />
-          </a>
-          <a
-            href={amazonMusicUrl}
-            target='_blank'
-            rel='noreferrer'
-            className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 font-semibold transition-colors'
-          >
-            Amazon
-            <ExternalLink className='size-2.5' />
-          </a>
-          <a
-            href={wynkUrl}
-            target='_blank'
-            rel='noreferrer'
-            className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-semibold transition-colors'
-          >
-            Wynk
-            <ExternalLink className='size-2.5' />
-          </a>
-          <a
-            href={soundcloudUrl}
-            target='_blank'
-            rel='noreferrer'
-            className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-semibold transition-colors'
-          >
-            SoundCloud
             <ExternalLink className='size-2.5' />
           </a>
         </div>

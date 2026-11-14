@@ -1,6 +1,1266 @@
 [
   {
     "id": 0,
+    "title": "APT.",
+    "artist": "ROSÉ, Bruno Mars",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/ekr2nIex040/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/ekr2nIex040/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/ekr2nIex040/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'APT.' by ROSÉ, Bruno Mars. Trending worldwide with official ad-free stream.",
+    "genres": "K-Pop, Pop, K-Pop, Billboard #1",
+    "language": "K-Pop",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "ekr2nIex040",
+    "spotify_id": "sp_0",
+    "apple_music_id": "am_0",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "APT.",
+        "duration": "3:30",
+        "videoId": "ekr2nIex040"
+      },
+      {
+        "number": 2,
+        "title": "APT. (Extended)",
+        "duration": "3:55",
+        "videoId": "ekr2nIex040"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 1,
+    "title": "Die With A Smile",
+    "artist": "Lady Gaga, Bruno Mars",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/kPa7bsKwL-c/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/kPa7bsKwL-c/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/kPa7bsKwL-c/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Die With A Smile' by Lady Gaga, Bruno Mars. Trending worldwide with official ad-free stream.",
+    "genres": "English, Pop, Ballad, Billboard #1",
+    "language": "English",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "kPa7bsKwL-c",
+    "spotify_id": "sp_1",
+    "apple_music_id": "am_1",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Die With A Smile",
+        "duration": "3:30",
+        "videoId": "kPa7bsKwL-c"
+      },
+      {
+        "number": 2,
+        "title": "Die With A Smile (Extended)",
+        "duration": "3:55",
+        "videoId": "kPa7bsKwL-c"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 2,
+    "title": "Manasilaayo (Vettaiyan)",
+    "artist": "Anirudh Ravichander, Malaysia Vasudevan",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/5WsUIeNAtbM/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/5WsUIeNAtbM/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/5WsUIeNAtbM/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Manasilaayo (Vettaiyan)' by Anirudh Ravichander, Malaysia Vasudevan. Trending worldwide with official ad-free stream.",
+    "genres": "Tamil, Kollywood, Mass, Viral Hit",
+    "language": "Tamil",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "5WsUIeNAtbM",
+    "spotify_id": "sp_2",
+    "apple_music_id": "am_2",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Manasilaayo (Vettaiyan)",
+        "duration": "3:30",
+        "videoId": "5WsUIeNAtbM"
+      },
+      {
+        "number": 2,
+        "title": "Manasilaayo (Vettaiyan) (Extended)",
+        "duration": "3:55",
+        "videoId": "5WsUIeNAtbM"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 3,
+    "title": "Hey Minnale (Amaran)",
+    "artist": "GV Prakash Kumar, Haricharan, Shweta Mohan",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/AY3Yea6hBbI/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/AY3Yea6hBbI/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/AY3Yea6hBbI/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Hey Minnale (Amaran)' by GV Prakash Kumar, Haricharan, Shweta Mohan. Trending worldwide with official ad-free stream.",
+    "genres": "Tamil, Kollywood, Romantic, Chartbuster",
+    "language": "Tamil",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "AY3Yea6hBbI",
+    "spotify_id": "sp_3",
+    "apple_music_id": "am_3",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Hey Minnale (Amaran)",
+        "duration": "3:30",
+        "videoId": "AY3Yea6hBbI"
+      },
+      {
+        "number": 2,
+        "title": "Hey Minnale (Amaran) (Extended)",
+        "duration": "3:55",
+        "videoId": "AY3Yea6hBbI"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 4,
+    "title": "Aaj Ki Raat (Stree 2)",
+    "artist": "Sachin-Jigar, Madhubanti Bagchi, Divya Kumar",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/o00gkntNm5w/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/o00gkntNm5w/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/o00gkntNm5w/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Aaj Ki Raat (Stree 2)' by Sachin-Jigar, Madhubanti Bagchi, Divya Kumar. Trending worldwide with official ad-free stream.",
+    "genres": "Hindi, Bollywood, Dance, #1 Viral",
+    "language": "Hindi",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "o00gkntNm5w",
+    "spotify_id": "sp_4",
+    "apple_music_id": "am_4",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Aaj Ki Raat (Stree 2)",
+        "duration": "3:30",
+        "videoId": "o00gkntNm5w"
+      },
+      {
+        "number": 2,
+        "title": "Aaj Ki Raat (Stree 2) (Extended)",
+        "duration": "3:55",
+        "videoId": "o00gkntNm5w"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 5,
+    "title": "Birds of a Feather",
+    "artist": "Billie Eilish",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/V9PVRfjEBTI/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/V9PVRfjEBTI/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/V9PVRfjEBTI/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Birds of a Feather' by Billie Eilish. Trending worldwide with official ad-free stream.",
+    "genres": "English, Alt-Pop, Global #1, Hit",
+    "language": "English",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "V9PVRfjEBTI",
+    "spotify_id": "sp_5",
+    "apple_music_id": "am_5",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Birds of a Feather",
+        "duration": "3:30",
+        "videoId": "V9PVRfjEBTI"
+      },
+      {
+        "number": 2,
+        "title": "Birds of a Feather (Extended)",
+        "duration": "3:55",
+        "videoId": "V9PVRfjEBTI"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 6,
+    "title": "Pushpa Pushpa (Pushpa 2)",
+    "artist": "Devi Sri Prasad, Nakash Aziz",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/D2F6ZK5ydJ0/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/D2F6ZK5ydJ0/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/D2F6ZK5ydJ0/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Pushpa Pushpa (Pushpa 2)' by Devi Sri Prasad, Nakash Aziz. Trending worldwide with official ad-free stream.",
+    "genres": "Telugu, Tollywood, Mass Anthem, Dance",
+    "language": "Telugu",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "D2F6ZK5ydJ0",
+    "spotify_id": "sp_6",
+    "apple_music_id": "am_6",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Pushpa Pushpa (Pushpa 2)",
+        "duration": "3:30",
+        "videoId": "D2F6ZK5ydJ0"
+      },
+      {
+        "number": 2,
+        "title": "Pushpa Pushpa (Pushpa 2) (Extended)",
+        "duration": "3:55",
+        "videoId": "D2F6ZK5ydJ0"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 7,
+    "title": "Kissik (Pushpa 2)",
+    "artist": "Devi Sri Prasad, Sublahshini",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/8cVkLeCqUHk/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/8cVkLeCqUHk/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/8cVkLeCqUHk/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Kissik (Pushpa 2)' by Devi Sri Prasad, Sublahshini. Trending worldwide with official ad-free stream.",
+    "genres": "Telugu, Tollywood, Dance, Viral",
+    "language": "Telugu",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "8cVkLeCqUHk",
+    "spotify_id": "sp_7",
+    "apple_music_id": "am_7",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Kissik (Pushpa 2)",
+        "duration": "3:30",
+        "videoId": "8cVkLeCqUHk"
+      },
+      {
+        "number": 2,
+        "title": "Kissik (Pushpa 2) (Extended)",
+        "duration": "3:55",
+        "videoId": "8cVkLeCqUHk"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 8,
+    "title": "Taste",
+    "artist": "Sabrina Carpenter",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/KEG7b851Ric/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/KEG7b851Ric/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/KEG7b851Ric/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Taste' by Sabrina Carpenter. Trending worldwide with official ad-free stream.",
+    "genres": "English, Pop, Summer Smash, Billboard #1",
+    "language": "English",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "KEG7b851Ric",
+    "spotify_id": "sp_8",
+    "apple_music_id": "am_8",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Taste",
+        "duration": "3:30",
+        "videoId": "KEG7b851Ric"
+      },
+      {
+        "number": 2,
+        "title": "Taste (Extended)",
+        "duration": "3:55",
+        "videoId": "KEG7b851Ric"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 9,
+    "title": "Espresso",
+    "artist": "Sabrina Carpenter",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/eVli-tstM5E/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/eVli-tstM5E/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/eVli-tstM5E/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Espresso' by Sabrina Carpenter. Trending worldwide with official ad-free stream.",
+    "genres": "English, Nu-Disco, Pop, Grammy Nominee",
+    "language": "English",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "eVli-tstM5E",
+    "spotify_id": "sp_9",
+    "apple_music_id": "am_9",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Espresso",
+        "duration": "3:30",
+        "videoId": "eVli-tstM5E"
+      },
+      {
+        "number": 2,
+        "title": "Espresso (Extended)",
+        "duration": "3:55",
+        "videoId": "eVli-tstM5E"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 10,
+    "title": "Mantra",
+    "artist": "JENNIE",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/bB3-CUMERIU/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/bB3-CUMERIU/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/bB3-CUMERIU/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Mantra' by JENNIE. Trending worldwide with official ad-free stream.",
+    "genres": "K-Pop, K-Pop, Dance-Pop, Viral",
+    "language": "K-Pop",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "bB3-CUMERIU",
+    "spotify_id": "sp_10",
+    "apple_music_id": "am_10",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Mantra",
+        "duration": "3:30",
+        "videoId": "bB3-CUMERIU"
+      },
+      {
+        "number": 2,
+        "title": "Mantra (Extended)",
+        "duration": "3:55",
+        "videoId": "bB3-CUMERIU"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 11,
+    "title": "Ami Je Tomar 3.0 (Bhool Bhulaiyaa 3)",
+    "artist": "Shreya Ghoshal, Arijit Singh, Pritam",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/FGNc3BibU3o/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/FGNc3BibU3o/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/FGNc3BibU3o/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Ami Je Tomar 3.0 (Bhool Bhulaiyaa 3)' by Shreya Ghoshal, Arijit Singh, Pritam. Trending worldwide with official ad-free stream.",
+    "genres": "Hindi, Bollywood, Classical, Epic",
+    "language": "Hindi",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "FGNc3BibU3o",
+    "spotify_id": "sp_11",
+    "apple_music_id": "am_11",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Ami Je Tomar 3.0 (Bhool Bhulaiyaa 3)",
+        "duration": "3:30",
+        "videoId": "FGNc3BibU3o"
+      },
+      {
+        "number": 2,
+        "title": "Ami Je Tomar 3.0 (Bhool Bhulaiyaa 3) (Extended)",
+        "duration": "3:55",
+        "videoId": "FGNc3BibU3o"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 12,
+    "title": "Tauba Tauba (Bad Newz)",
+    "artist": "Karan Aujla",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/uTuchIYZdbM/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/uTuchIYZdbM/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/uTuchIYZdbM/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Tauba Tauba (Bad Newz)' by Karan Aujla. Trending worldwide with official ad-free stream.",
+    "genres": "Hindi, Bollywood, Punjabi, Dance Hit",
+    "language": "Hindi",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "uTuchIYZdbM",
+    "spotify_id": "sp_12",
+    "apple_music_id": "am_12",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Tauba Tauba (Bad Newz)",
+        "duration": "3:30",
+        "videoId": "uTuchIYZdbM"
+      },
+      {
+        "number": 2,
+        "title": "Tauba Tauba (Bad Newz) (Extended)",
+        "duration": "3:55",
+        "videoId": "uTuchIYZdbM"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 13,
+    "title": "Not Like Us",
+    "artist": "Kendrick Lamar",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/H58vbez_m4E/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/H58vbez_m4E/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/H58vbez_m4E/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Not Like Us' by Kendrick Lamar. Trending worldwide with official ad-free stream.",
+    "genres": "English, West Coast Rap, Billboard #1, Anthem",
+    "language": "English",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "H58vbez_m4E",
+    "spotify_id": "sp_13",
+    "apple_music_id": "am_13",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Not Like Us",
+        "duration": "3:30",
+        "videoId": "H58vbez_m4E"
+      },
+      {
+        "number": 2,
+        "title": "Not Like Us (Extended)",
+        "duration": "3:55",
+        "videoId": "H58vbez_m4E"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 14,
+    "title": "Aayi Nai (Stree 2)",
+    "artist": "Pawan Singh, Simran Choudhary, Sachin-Jigar",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/0nrvPVnTWlc/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/0nrvPVnTWlc/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/0nrvPVnTWlc/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Aayi Nai (Stree 2)' by Pawan Singh, Simran Choudhary, Sachin-Jigar. Trending worldwide with official ad-free stream.",
+    "genres": "Hindi, Bollywood, Folk Dance, Viral",
+    "language": "Hindi",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "0nrvPVnTWlc",
+    "spotify_id": "sp_14",
+    "apple_music_id": "am_14",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Aayi Nai (Stree 2)",
+        "duration": "3:30",
+        "videoId": "0nrvPVnTWlc"
+      },
+      {
+        "number": 2,
+        "title": "Aayi Nai (Stree 2) (Extended)",
+        "duration": "3:55",
+        "videoId": "0nrvPVnTWlc"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 15,
+    "title": "Chuttamalle (Devara)",
+    "artist": "Shilpa Rao, Anirudh Ravichander",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/GWNrPJyRTcA/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/GWNrPJyRTcA/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/GWNrPJyRTcA/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Chuttamalle (Devara)' by Shilpa Rao, Anirudh Ravichander. Trending worldwide with official ad-free stream.",
+    "genres": "Telugu, Tollywood, Romantic, Melodic",
+    "language": "Telugu",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "GWNrPJyRTcA",
+    "spotify_id": "sp_15",
+    "apple_music_id": "am_15",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Chuttamalle (Devara)",
+        "duration": "3:30",
+        "videoId": "GWNrPJyRTcA"
+      },
+      {
+        "number": 2,
+        "title": "Chuttamalle (Devara) (Extended)",
+        "duration": "3:55",
+        "videoId": "GWNrPJyRTcA"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 16,
+    "title": "Fear Song (Devara)",
+    "artist": "Anirudh Ravichander",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/g44VQxMcFH4/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/g44VQxMcFH4/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/g44VQxMcFH4/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Fear Song (Devara)' by Anirudh Ravichander. Trending worldwide with official ad-free stream.",
+    "genres": "Telugu, Tollywood, Action, Mass",
+    "language": "Telugu",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "g44VQxMcFH4",
+    "spotify_id": "sp_16",
+    "apple_music_id": "am_16",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Fear Song (Devara)",
+        "duration": "3:30",
+        "videoId": "g44VQxMcFH4"
+      },
+      {
+        "number": 2,
+        "title": "Fear Song (Devara) (Extended)",
+        "duration": "3:55",
+        "videoId": "g44VQxMcFH4"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 17,
+    "title": "Daavudi (Devara)",
+    "artist": "Nakash Aziz, Akasa Singh, Anirudh",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/hmSQSgXO-qc/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/hmSQSgXO-qc/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/hmSQSgXO-qc/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Daavudi (Devara)' by Nakash Aziz, Akasa Singh, Anirudh. Trending worldwide with official ad-free stream.",
+    "genres": "Telugu, Tollywood, Dance, Mass",
+    "language": "Telugu",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "hmSQSgXO-qc",
+    "spotify_id": "sp_17",
+    "apple_music_id": "am_17",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Daavudi (Devara)",
+        "duration": "3:30",
+        "videoId": "hmSQSgXO-qc"
+      },
+      {
+        "number": 2,
+        "title": "Daavudi (Devara) (Extended)",
+        "duration": "3:55",
+        "videoId": "hmSQSgXO-qc"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 18,
+    "title": "Hunter Vantaar (Vettaiyan)",
+    "artist": "Anirudh Ravichander, Siddharth Basrur",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/5WsUIeNAtbM/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/5WsUIeNAtbM/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/5WsUIeNAtbM/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Hunter Vantaar (Vettaiyan)' by Anirudh Ravichander, Siddharth Basrur. Trending worldwide with official ad-free stream.",
+    "genres": "Tamil, Kollywood, Mass Anthem",
+    "language": "Tamil",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "5WsUIeNAtbM",
+    "spotify_id": "sp_18",
+    "apple_music_id": "am_18",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Hunter Vantaar (Vettaiyan)",
+        "duration": "3:30",
+        "videoId": "5WsUIeNAtbM"
+      },
+      {
+        "number": 2,
+        "title": "Hunter Vantaar (Vettaiyan) (Extended)",
+        "duration": "3:55",
+        "videoId": "5WsUIeNAtbM"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 19,
+    "title": "Matta (GOAT)",
+    "artist": "Yuvan Shankar Raja, Shenbagaraj",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/IZHGcU0U_W0/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/IZHGcU0U_W0/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/IZHGcU0U_W0/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Matta (GOAT)' by Yuvan Shankar Raja, Shenbagaraj. Trending worldwide with official ad-free stream.",
+    "genres": "Tamil, Kollywood, Dance, Mass",
+    "language": "Tamil",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "IZHGcU0U_W0",
+    "spotify_id": "sp_19",
+    "apple_music_id": "am_19",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Matta (GOAT)",
+        "duration": "3:30",
+        "videoId": "IZHGcU0U_W0"
+      },
+      {
+        "number": 2,
+        "title": "Matta (GOAT) (Extended)",
+        "duration": "3:55",
+        "videoId": "IZHGcU0U_W0"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 20,
+    "title": "Spark (GOAT)",
+    "artist": "Yuvan Shankar Raja, Vrusha Balu",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/IZHGcU0U_W0/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/IZHGcU0U_W0/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/IZHGcU0U_W0/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Spark (GOAT)' by Yuvan Shankar Raja, Vrusha Balu. Trending worldwide with official ad-free stream.",
+    "genres": "Tamil, Kollywood, Party, Pop",
+    "language": "Tamil",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "IZHGcU0U_W0",
+    "spotify_id": "sp_20",
+    "apple_music_id": "am_20",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Spark (GOAT)",
+        "duration": "3:30",
+        "videoId": "IZHGcU0U_W0"
+      },
+      {
+        "number": 2,
+        "title": "Spark (GOAT) (Extended)",
+        "duration": "3:55",
+        "videoId": "IZHGcU0U_W0"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 21,
+    "title": "A Bar Song (Tipsy)",
+    "artist": "Shaboozey",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/t7bQwwqW-Hc/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/t7bQwwqW-Hc/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/t7bQwwqW-Hc/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'A Bar Song (Tipsy)' by Shaboozey. Trending worldwide with official ad-free stream.",
+    "genres": "English, Country Pop, Billboard #1",
+    "language": "English",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "t7bQwwqW-Hc",
+    "spotify_id": "sp_21",
+    "apple_music_id": "am_21",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "A Bar Song (Tipsy)",
+        "duration": "3:30",
+        "videoId": "t7bQwwqW-Hc"
+      },
+      {
+        "number": 2,
+        "title": "A Bar Song (Tipsy) (Extended)",
+        "duration": "3:55",
+        "videoId": "t7bQwwqW-Hc"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 22,
+    "title": "Good Luck, Babe!",
+    "artist": "Chappell Roan",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/1RKqOmSkGgM/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/1RKqOmSkGgM/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/1RKqOmSkGgM/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Good Luck, Babe!' by Chappell Roan. Trending worldwide with official ad-free stream.",
+    "genres": "English, Synthpop, Breakthrough Hit",
+    "language": "English",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "1RKqOmSkGgM",
+    "spotify_id": "sp_22",
+    "apple_music_id": "am_22",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Good Luck, Babe!",
+        "duration": "3:30",
+        "videoId": "1RKqOmSkGgM"
+      },
+      {
+        "number": 2,
+        "title": "Good Luck, Babe! (Extended)",
+        "duration": "3:55",
+        "videoId": "1RKqOmSkGgM"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 23,
+    "title": "Magnetic",
+    "artist": "ILLIT",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/Vk5-c_v4gMU/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/Vk5-c_v4gMU/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/Vk5-c_v4gMU/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Magnetic' by ILLIT. Trending worldwide with official ad-free stream.",
+    "genres": "K-Pop, K-Pop, Pluggnb, Viral TikTok",
+    "language": "K-Pop",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "Vk5-c_v4gMU",
+    "spotify_id": "sp_23",
+    "apple_music_id": "am_23",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Magnetic",
+        "duration": "3:30",
+        "videoId": "Vk5-c_v4gMU"
+      },
+      {
+        "number": 2,
+        "title": "Magnetic (Extended)",
+        "duration": "3:55",
+        "videoId": "Vk5-c_v4gMU"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 24,
+    "title": "Supernova",
+    "artist": "aespa",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/phuiiNCxRMg/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/phuiiNCxRMg/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/phuiiNCxRMg/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Supernova' by aespa. Trending worldwide with official ad-free stream.",
+    "genres": "K-Pop, Hyperpop, Dance-Pop, Hit",
+    "language": "K-Pop",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "phuiiNCxRMg",
+    "spotify_id": "sp_24",
+    "apple_music_id": "am_24",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Supernova",
+        "duration": "3:30",
+        "videoId": "phuiiNCxRMg"
+      },
+      {
+        "number": 2,
+        "title": "Supernova (Extended)",
+        "duration": "3:55",
+        "videoId": "phuiiNCxRMg"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 25,
+    "title": "Chk Chk Boom",
+    "artist": "Stray Kids",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/0P0aQreFs8w/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/0P0aQreFs8w/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/0P0aQreFs8w/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Chk Chk Boom' by Stray Kids. Trending worldwide with official ad-free stream.",
+    "genres": "K-Pop, K-Pop, Latin Trap, Hit",
+    "language": "K-Pop",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "0P0aQreFs8w",
+    "spotify_id": "sp_25",
+    "apple_music_id": "am_25",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Chk Chk Boom",
+        "duration": "3:30",
+        "videoId": "0P0aQreFs8w"
+      },
+      {
+        "number": 2,
+        "title": "Chk Chk Boom (Extended)",
+        "duration": "3:55",
+        "videoId": "0P0aQreFs8w"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 26,
+    "title": "Illuminati (Aavesham)",
+    "artist": "Sushin Shyam, Dabzee",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/tOM-nWPcR4U/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/tOM-nWPcR4U/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/tOM-nWPcR4U/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Illuminati (Aavesham)' by Sushin Shyam, Dabzee. Trending worldwide with official ad-free stream.",
+    "genres": "Malayalam, Mollywood, Hip-Hop, Viral Anthem",
+    "language": "Malayalam",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "tOM-nWPcR4U",
+    "spotify_id": "sp_26",
+    "apple_music_id": "am_26",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Illuminati (Aavesham)",
+        "duration": "3:30",
+        "videoId": "tOM-nWPcR4U"
+      },
+      {
+        "number": 2,
+        "title": "Illuminati (Aavesham) (Extended)",
+        "duration": "3:55",
+        "videoId": "tOM-nWPcR4U"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 27,
+    "title": "Kuthanthram (Manjummel Boys)",
+    "artist": "Sushin Shyam, Vedan",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/W6-O00alJUo/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/W6-O00alJUo/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/W6-O00alJUo/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Kuthanthram (Manjummel Boys)' by Sushin Shyam, Vedan. Trending worldwide with official ad-free stream.",
+    "genres": "Malayalam, Mollywood, Rap, Underground",
+    "language": "Malayalam",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "W6-O00alJUo",
+    "spotify_id": "sp_27",
+    "apple_music_id": "am_27",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Kuthanthram (Manjummel Boys)",
+        "duration": "3:30",
+        "videoId": "W6-O00alJUo"
+      },
+      {
+        "number": 2,
+        "title": "Kuthanthram (Manjummel Boys) (Extended)",
+        "duration": "3:55",
+        "videoId": "W6-O00alJUo"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 28,
+    "title": "Jaada (Aavesham)",
+    "artist": "Sushin Shyam, Sreenath Bhasi",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/HUAAYwtusLI/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/HUAAYwtusLI/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/HUAAYwtusLI/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Jaada (Aavesham)' by Sushin Shyam, Sreenath Bhasi. Trending worldwide with official ad-free stream.",
+    "genres": "Malayalam, Mollywood, Swag, Soundtrack",
+    "language": "Malayalam",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "HUAAYwtusLI",
+    "spotify_id": "sp_28",
+    "apple_music_id": "am_28",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Jaada (Aavesham)",
+        "duration": "3:30",
+        "videoId": "HUAAYwtusLI"
+      },
+      {
+        "number": 2,
+        "title": "Jaada (Aavesham) (Extended)",
+        "duration": "3:55",
+        "videoId": "HUAAYwtusLI"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 29,
+    "title": "Kurchi Madathapetti (Guntur Kaaram)",
+    "artist": "Sahithi Chaganti, Sri Krishna, Thaman S",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/gh3FyLT7WVg/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/gh3FyLT7WVg/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/gh3FyLT7WVg/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Kurchi Madathapetti (Guntur Kaaram)' by Sahithi Chaganti, Sri Krishna, Thaman S. Trending worldwide with official ad-free stream.",
+    "genres": "Telugu, Tollywood, Mass, Dance",
+    "language": "Telugu",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "gh3FyLT7WVg",
+    "spotify_id": "sp_29",
+    "apple_music_id": "am_29",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Kurchi Madathapetti (Guntur Kaaram)",
+        "duration": "3:30",
+        "videoId": "gh3FyLT7WVg"
+      },
+      {
+        "number": 2,
+        "title": "Kurchi Madathapetti (Guntur Kaaram) (Extended)",
+        "duration": "3:55",
+        "videoId": "gh3FyLT7WVg"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 30,
+    "title": "Dum Masala (Guntur Kaaram)",
+    "artist": "Sanjith Hegde, Thaman S",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/9w20rGRhek0/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/9w20rGRhek0/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/9w20rGRhek0/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Dum Masala (Guntur Kaaram)' by Sanjith Hegde, Thaman S. Trending worldwide with official ad-free stream.",
+    "genres": "Telugu, Tollywood, Mass Anthem",
+    "language": "Telugu",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "9w20rGRhek0",
+    "spotify_id": "sp_30",
+    "apple_music_id": "am_30",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Dum Masala (Guntur Kaaram)",
+        "duration": "3:30",
+        "videoId": "9w20rGRhek0"
+      },
+      {
+        "number": 2,
+        "title": "Dum Masala (Guntur Kaaram) (Extended)",
+        "duration": "3:55",
+        "videoId": "9w20rGRhek0"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 31,
+    "title": "Ammadi (Hi Nanna)",
+    "artist": "Kaala Bhairava, Shakthisree Gopalan, Hesham",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/lWV6jM-2DvE/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/lWV6jM-2DvE/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/lWV6jM-2DvE/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Ammadi (Hi Nanna)' by Kaala Bhairava, Shakthisree Gopalan, Hesham. Trending worldwide with official ad-free stream.",
+    "genres": "Telugu, Tollywood, Melodic, Romantic",
+    "language": "Telugu",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "lWV6jM-2DvE",
+    "spotify_id": "sp_31",
+    "apple_music_id": "am_31",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Ammadi (Hi Nanna)",
+        "duration": "3:30",
+        "videoId": "lWV6jM-2DvE"
+      },
+      {
+        "number": 2,
+        "title": "Ammadi (Hi Nanna) (Extended)",
+        "duration": "3:55",
+        "videoId": "lWV6jM-2DvE"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 32,
+    "title": "Beautiful Things",
+    "artist": "Benson Boone",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/Oa_RSwwpPaA/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/Oa_RSwwpPaA/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/Oa_RSwwpPaA/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Beautiful Things' by Benson Boone. Trending worldwide with official ad-free stream.",
+    "genres": "English, Pop Rock, Powerful Ballad",
+    "language": "English",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "Oa_RSwwpPaA",
+    "spotify_id": "sp_32",
+    "apple_music_id": "am_32",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Beautiful Things",
+        "duration": "3:30",
+        "videoId": "Oa_RSwwpPaA"
+      },
+      {
+        "number": 2,
+        "title": "Beautiful Things (Extended)",
+        "duration": "3:55",
+        "videoId": "Oa_RSwwpPaA"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 33,
+    "title": "Too Sweet",
+    "artist": "Hozier",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/NTpbbQUBbuo/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/NTpbbQUBbuo/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/NTpbbQUBbuo/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Too Sweet' by Hozier. Trending worldwide with official ad-free stream.",
+    "genres": "English, Indie Rock, Billboard #1",
+    "language": "English",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "NTpbbQUBbuo",
+    "spotify_id": "sp_33",
+    "apple_music_id": "am_33",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Too Sweet",
+        "duration": "3:30",
+        "videoId": "NTpbbQUBbuo"
+      },
+      {
+        "number": 2,
+        "title": "Too Sweet (Extended)",
+        "duration": "3:55",
+        "videoId": "NTpbbQUBbuo"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 34,
+    "title": "Please Please Please",
+    "artist": "Sabrina Carpenter",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/cF1Na4AIecM/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/cF1Na4AIecM/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/cF1Na4AIecM/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Please Please Please' by Sabrina Carpenter. Trending worldwide with official ad-free stream.",
+    "genres": "English, Yacht Rock, Disco-Pop",
+    "language": "English",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "cF1Na4AIecM",
+    "spotify_id": "sp_34",
+    "apple_music_id": "am_34",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Please Please Please",
+        "duration": "3:30",
+        "videoId": "cF1Na4AIecM"
+      },
+      {
+        "number": 2,
+        "title": "Please Please Please (Extended)",
+        "duration": "3:55",
+        "videoId": "cF1Na4AIecM"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 35,
+    "title": "Sajni (Laapataa Ladies)",
+    "artist": "Arijit Singh, Ram Sampath",
+    "vote_average": 9.5,
+    "vote_count": 28000,
+    "backdrop_path": "https://img.youtube.com/vi/KUpwupYj_tY/hqdefault.jpg",
+    "poster_path": "https://img.youtube.com/vi/KUpwupYj_tY/hqdefault.jpg",
+    "artwork": "https://img.youtube.com/vi/KUpwupYj_tY/hqdefault.jpg",
+    "tagline": "🔥 Hot Release (2024)",
+    "overview": "Latest release 'Sajni (Laapataa Ladies)' by Arijit Singh, Ram Sampath. Trending worldwide with official ad-free stream.",
+    "genres": "Hindi, Bollywood, Soul, Romantic",
+    "language": "Hindi",
+    "release_year": 2024,
+    "era": "New & Trending (2024-2025)",
+    "trending": true,
+    "youtube_id": "KUpwupYj_tY",
+    "spotify_id": "sp_35",
+    "apple_music_id": "am_35",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Sajni (Laapataa Ladies)",
+        "duration": "3:30",
+        "videoId": "KUpwupYj_tY"
+      },
+      {
+        "number": 2,
+        "title": "Sajni (Laapataa Ladies) (Extended)",
+        "duration": "3:55",
+        "videoId": "KUpwupYj_tY"
+      }
+    ],
+    "popularity": 99.0
+  },
+  {
+    "id": 36,
     "title": "Badass (Leo)",
     "artist": "Anirudh Ravichander",
     "vote_average": 8.8,
@@ -34,7 +1294,7 @@
     "popularity": 90.0
   },
   {
-    "id": 1,
+    "id": 37,
     "title": "Naa Ready (Leo)",
     "artist": "Thalapathy Vijay, Anirudh Ravichander",
     "vote_average": 9.5,
@@ -68,7 +1328,7 @@
     "popularity": 91.3
   },
   {
-    "id": 2,
+    "id": 38,
     "title": "Hukum - Thalaivar Alappara (Jailer)",
     "artist": "Anirudh Ravichander",
     "vote_average": 9.1,
@@ -102,7 +1362,7 @@
     "popularity": 92.6
   },
   {
-    "id": 3,
+    "id": 39,
     "title": "Kaavaalaa (Jailer)",
     "artist": "Anirudh Ravichander, Shilpa Rao",
     "vote_average": 9.8,
@@ -136,7 +1396,7 @@
     "popularity": 93.9
   },
   {
-    "id": 4,
+    "id": 40,
     "title": "Vikram Title Track",
     "artist": "Anirudh Ravichander",
     "vote_average": 9.4,
@@ -170,7 +1430,7 @@
     "popularity": 95.2
   },
   {
-    "id": 5,
+    "id": 41,
     "title": "Porkanda Singam (Vikram)",
     "artist": "Anirudh Ravichander, Ravi G",
     "vote_average": 9.0,
@@ -204,7 +1464,7 @@
     "popularity": 96.5
   },
   {
-    "id": 6,
+    "id": 42,
     "title": "Vaathi Coming (Master)",
     "artist": "Anirudh Ravichander, Gana Balachandar",
     "vote_average": 9.7,
@@ -238,7 +1498,7 @@
     "popularity": 97.8
   },
   {
-    "id": 7,
+    "id": 43,
     "title": "Arabic Kuthu (Beast)",
     "artist": "Anirudh Ravichander, Jonita Gandhi",
     "vote_average": 9.3,
@@ -272,7 +1532,7 @@
     "popularity": 99.1
   },
   {
-    "id": 8,
+    "id": 44,
     "title": "Why This Kolaveri Di (3)",
     "artist": "Dhanush, Anirudh Ravichander",
     "vote_average": 8.9,
@@ -306,7 +1566,7 @@
     "popularity": 90.4
   },
   {
-    "id": 9,
+    "id": 45,
     "title": "Ponni Nadhi (Ponniyin Selvan 1)",
     "artist": "A. R. Rahman",
     "vote_average": 9.6,
@@ -340,7 +1600,7 @@
     "popularity": 91.7
   },
   {
-    "id": 10,
+    "id": 46,
     "title": "Aga Naga (Ponniyin Selvan 2)",
     "artist": "A. R. Rahman, Shakthisree Gopalan",
     "vote_average": 9.2,
@@ -374,7 +1634,7 @@
     "popularity": 93.0
   },
   {
-    "id": 11,
+    "id": 47,
     "title": "Adiye (Kadal)",
     "artist": "A. R. Rahman, Sid Sriram",
     "vote_average": 8.8,
@@ -408,7 +1668,7 @@
     "popularity": 94.3
   },
   {
-    "id": 12,
+    "id": 48,
     "title": "Hosanna (Vinnaithaandi Varuvaayaa)",
     "artist": "A. R. Rahman, Vijay Prakash, Suzanne",
     "vote_average": 9.5,
@@ -442,7 +1702,7 @@
     "popularity": 95.6
   },
   {
-    "id": 13,
+    "id": 49,
     "title": "Pachai Nirame (Alaipayuthey)",
     "artist": "A. R. Rahman, Hariharan, Clinton Cerejo",
     "vote_average": 9.1,
@@ -476,7 +1736,7 @@
     "popularity": 96.9
   },
   {
-    "id": 14,
+    "id": 50,
     "title": "Chinna Chinna Aasai (Roja)",
     "artist": "A. R. Rahman, Minmini",
     "vote_average": 9.8,
@@ -510,7 +1770,7 @@
     "popularity": 98.2
   },
   {
-    "id": 15,
+    "id": 51,
     "title": "Rakkamma Kaiya Thattu (Thalapathi)",
     "artist": "Ilaiyaraaja, S. P. Balasubrahmanyam, Swarnalatha",
     "vote_average": 9.4,
@@ -544,7 +1804,7 @@
     "popularity": 99.5
   },
   {
-    "id": 16,
+    "id": 52,
     "title": "Thenpandi Cheemayile (Nayagan)",
     "artist": "Ilaiyaraaja, Kamal Haasan",
     "vote_average": 9.0,
@@ -578,7 +1838,7 @@
     "popularity": 90.8
   },
   {
-    "id": 17,
+    "id": 53,
     "title": "Mundhinam Paartheney (Vaaranam Aayiram)",
     "artist": "Harris Jayaraj, Naresh Iyer, Prashanthini",
     "vote_average": 9.7,
@@ -612,7 +1872,7 @@
     "popularity": 92.1
   },
   {
-    "id": 18,
+    "id": 54,
     "title": "Vaseegara (Minnale)",
     "artist": "Harris Jayaraj, Bombay Jayashri",
     "vote_average": 9.3,
@@ -646,7 +1906,7 @@
     "popularity": 93.4
   },
   {
-    "id": 19,
+    "id": 55,
     "title": "Ballelakka (Sivaji)",
     "artist": "A. R. Rahman, S. P. Balasubrahmanyam",
     "vote_average": 8.9,
@@ -680,7 +1940,7 @@
     "popularity": 94.7
   },
   {
-    "id": 20,
+    "id": 56,
     "title": "Arima Arima (Enthiran)",
     "artist": "A. R. Rahman, Hariharan, Sadhana Sargam",
     "vote_average": 9.6,
@@ -714,7 +1974,7 @@
     "popularity": 96.0
   },
   {
-    "id": 21,
+    "id": 57,
     "title": "Vilambara Idaiveli (Imaikkaa Nodigal)",
     "artist": "Hiphop Tamizha",
     "vote_average": 9.2,
@@ -748,7 +2008,7 @@
     "popularity": 97.3
   },
   {
-    "id": 22,
+    "id": 58,
     "title": "Rowdy Baby (Maari 2)",
     "artist": "Dhanush, Dhee, Yuvan Shankar Raja",
     "vote_average": 8.8,
@@ -782,7 +2042,7 @@
     "popularity": 98.6
   },
   {
-    "id": 23,
+    "id": 59,
     "title": "Enjoy Enjaami",
     "artist": "Dhee, Arivu, Santhosh Narayanan",
     "vote_average": 9.5,
@@ -816,7 +2076,7 @@
     "popularity": 99.9
   },
   {
-    "id": 24,
+    "id": 60,
     "title": "Neruppu Da (Kabali)",
     "artist": "Santhosh Narayanan, Arunraja Kamaraj",
     "vote_average": 9.1,
@@ -850,7 +2110,7 @@
     "popularity": 91.2
   },
   {
-    "id": 25,
+    "id": 61,
     "title": "Mankatha Theme",
     "artist": "Yuvan Shankar Raja",
     "vote_average": 9.8,
@@ -884,7 +2144,7 @@
     "popularity": 92.5
   },
   {
-    "id": 26,
+    "id": 62,
     "title": "Oru Naalil (Pudhupettai)",
     "artist": "Yuvan Shankar Raja",
     "vote_average": 9.4,
@@ -918,7 +2178,7 @@
     "popularity": 93.8
   },
   {
-    "id": 27,
+    "id": 63,
     "title": "Marakkuma Nenjam (VTK)",
     "artist": "A. R. Rahman",
     "vote_average": 9.0,
@@ -952,7 +2212,7 @@
     "popularity": 95.1
   },
   {
-    "id": 28,
+    "id": 64,
     "title": "Kadhaippoma (Oh My Kadavule)",
     "artist": "Leon James, Sid Sriram",
     "vote_average": 9.7,
@@ -986,7 +2246,7 @@
     "popularity": 96.4
   },
   {
-    "id": 29,
+    "id": 65,
     "title": "Megham Karukatha (Thiruchitrambalam)",
     "artist": "Anirudh Ravichander, Dhanush",
     "vote_average": 9.3,
@@ -1020,7 +2280,7 @@
     "popularity": 97.7
   },
   {
-    "id": 30,
+    "id": 66,
     "title": "Chellamma (Doctor)",
     "artist": "Anirudh Ravichander, Jonita Gandhi",
     "vote_average": 8.9,
@@ -1054,7 +2314,7 @@
     "popularity": 99.0
   },
   {
-    "id": 31,
+    "id": 67,
     "title": "Chilla Chilla (Thunivu)",
     "artist": "Anirudh Ravichander, Ghibran",
     "vote_average": 9.6,
@@ -1088,7 +2348,7 @@
     "popularity": 90.3
   },
   {
-    "id": 32,
+    "id": 68,
     "title": "Aalaporaan Thamizhan (Mersal)",
     "artist": "A. R. Rahman, Kailash Kher, D. Sathyaprakash",
     "vote_average": 9.2,
@@ -1122,7 +2382,7 @@
     "popularity": 91.6
   },
   {
-    "id": 33,
+    "id": 69,
     "title": "Appadi Podu (Ghilli)",
     "artist": "Vidyasagar, KK, Anuradha Sriram",
     "vote_average": 8.8,
@@ -1156,7 +2416,7 @@
     "popularity": 92.9
   },
   {
-    "id": 34,
+    "id": 70,
     "title": "Kannazhaga (3)",
     "artist": "Anirudh Ravichander, Dhanush, Shruti Haasan",
     "vote_average": 9.5,
@@ -1190,7 +2450,7 @@
     "popularity": 94.2
   },
   {
-    "id": 35,
+    "id": 71,
     "title": "Uyire Uyire (Bombay)",
     "artist": "A. R. Rahman, Hariharan, K. S. Chithra",
     "vote_average": 9.1,
@@ -1224,7 +2484,7 @@
     "popularity": 95.5
   },
   {
-    "id": 36,
+    "id": 72,
     "title": "Kesariya (Brahmāstra)",
     "artist": "Arijit Singh, Pritam",
     "vote_average": 9.8,
@@ -1258,7 +2518,7 @@
     "popularity": 96.8
   },
   {
-    "id": 37,
+    "id": 73,
     "title": "Tum Hi Ho (Aashiqui 2)",
     "artist": "Arijit Singh, Mithoon",
     "vote_average": 9.4,
@@ -1292,7 +2552,7 @@
     "popularity": 98.1
   },
   {
-    "id": 38,
+    "id": 74,
     "title": "Apna Bana Le (Bhediya)",
     "artist": "Arijit Singh, Sachin-Jigar",
     "vote_average": 9.0,
@@ -1326,7 +2586,7 @@
     "popularity": 99.4
   },
   {
-    "id": 39,
+    "id": 75,
     "title": "Chaiyya Chaiyya (Dil Se)",
     "artist": "A. R. Rahman, Sukhwinder Singh, Sapna Awasthi",
     "vote_average": 9.7,
@@ -1360,7 +2620,7 @@
     "popularity": 90.7
   },
   {
-    "id": 40,
+    "id": 76,
     "title": "Kal Ho Naa Ho (Title Track)",
     "artist": "Sonu Nigam, Shankar-Ehsaan-Loy",
     "vote_average": 9.3,
@@ -1394,7 +2654,7 @@
     "popularity": 92.0
   },
   {
-    "id": 41,
+    "id": 77,
     "title": "Tere Hawaale (Laal Singh Chaddha)",
     "artist": "Arijit Singh, Shilpa Rao, Pritam",
     "vote_average": 8.9,
@@ -1428,7 +2688,7 @@
     "popularity": 93.3
   },
   {
-    "id": 42,
+    "id": 78,
     "title": "Channa Mereya (Ae Dil Hai Mushkil)",
     "artist": "Arijit Singh, Pritam",
     "vote_average": 9.6,
@@ -1462,7 +2722,7 @@
     "popularity": 94.6
   },
   {
-    "id": 43,
+    "id": 79,
     "title": "Agar Tum Saath Ho (Tamasha)",
     "artist": "Alka Yagnik, Arijit Singh, A. R. Rahman",
     "vote_average": 9.2,
@@ -1496,7 +2756,7 @@
     "popularity": 95.9
   },
   {
-    "id": 44,
+    "id": 80,
     "title": "Raataan Lambiyan (Shershaah)",
     "artist": "Jubin Nautiyal, Asees Kaur, Tanishk Bagchi",
     "vote_average": 8.8,
@@ -1530,7 +2790,7 @@
     "popularity": 97.2
   },
   {
-    "id": 45,
+    "id": 81,
     "title": "Tujh Mein Rab Dikhta Hai",
     "artist": "Roop Kumar Rathod, Salim-Sulaiman",
     "vote_average": 9.5,
@@ -1564,7 +2824,7 @@
     "popularity": 98.5
   },
   {
-    "id": 46,
+    "id": 82,
     "title": "Gerua (Dilwale)",
     "artist": "Arijit Singh, Antara Mitra, Pritam",
     "vote_average": 9.1,
@@ -1598,7 +2858,7 @@
     "popularity": 99.8
   },
   {
-    "id": 47,
+    "id": 83,
     "title": "Shayad (Love Aaj Kal)",
     "artist": "Arijit Singh, Pritam",
     "vote_average": 9.8,
@@ -1632,7 +2892,7 @@
     "popularity": 91.1
   },
   {
-    "id": 48,
+    "id": 84,
     "title": "Pehle Bhi Main (Animal)",
     "artist": "Vishal Mishra, Harshavardhan Rameshwar",
     "vote_average": 9.4,
@@ -1666,7 +2926,7 @@
     "popularity": 92.4
   },
   {
-    "id": 49,
+    "id": 85,
     "title": "Satranga (Animal)",
     "artist": "Arijit Singh, Shreyas Puranik",
     "vote_average": 9.0,
@@ -1700,7 +2960,7 @@
     "popularity": 93.7
   },
   {
-    "id": 50,
+    "id": 86,
     "title": "Jhoome Jo Pathaan",
     "artist": "Arijit Singh, Sukriti Kakar, Vishal-Shekhar",
     "vote_average": 9.7,
@@ -1734,7 +2994,7 @@
     "popularity": 95.0
   },
   {
-    "id": 51,
+    "id": 87,
     "title": "Chaleya (Jawan)",
     "artist": "Arijit Singh, Shilpa Rao, Anirudh Ravichander",
     "vote_average": 9.3,
@@ -1768,41 +3028,7 @@
     "popularity": 96.3
   },
   {
-    "id": 52,
-    "title": "Tauba Tauba (Bad Newz)",
-    "artist": "Karan Aujla",
-    "vote_average": 8.9,
-    "vote_count": 28276,
-    "backdrop_path": "https://img.youtube.com/vi/uTuchIYZdbM/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/uTuchIYZdbM/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/uTuchIYZdbM/hqdefault.jpg",
-    "tagline": "Iconic Hindi Masterpiece (2024)",
-    "overview": "'Tauba Tauba (Bad Newz)' by Karan Aujla. Released in 2024. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Hindi, Bollywood, Dance, Hip-Hop",
-    "language": "Hindi",
-    "release_year": 2024,
-    "era": "2024-2025",
-    "youtube_id": "uTuchIYZdbM",
-    "spotify_id": "sp_52",
-    "apple_music_id": "am_52",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Tauba Tauba (Bad Newz)",
-        "duration": "3:45",
-        "videoId": "uTuchIYZdbM"
-      },
-      {
-        "number": 2,
-        "title": "Tauba Tauba (Bad Newz) (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "uTuchIYZdbM"
-      }
-    ],
-    "popularity": 97.6
-  },
-  {
-    "id": 53,
+    "id": 88,
     "title": "O Maahi (Dunki)",
     "artist": "Arijit Singh, Pritam",
     "vote_average": 9.6,
@@ -1836,7 +3062,7 @@
     "popularity": 98.9
   },
   {
-    "id": 54,
+    "id": 89,
     "title": "Kun Faya Kun (Rockstar)",
     "artist": "A. R. Rahman, Javed Ali, Mohit Chauhan",
     "vote_average": 9.2,
@@ -1870,7 +3096,7 @@
     "popularity": 90.2
   },
   {
-    "id": 55,
+    "id": 90,
     "title": "Hawayein (Jab Harry Met Sejal)",
     "artist": "Arijit Singh, Pritam",
     "vote_average": 8.8,
@@ -1904,7 +3130,7 @@
     "popularity": 91.5
   },
   {
-    "id": 56,
+    "id": 91,
     "title": "Bekhayali (Kabir Singh)",
     "artist": "Sachet Tandon, Sachet-Parampara",
     "vote_average": 9.5,
@@ -1938,7 +3164,7 @@
     "popularity": 92.8
   },
   {
-    "id": 57,
+    "id": 92,
     "title": "Kabira (Yeh Jawaani Hai Deewani)",
     "artist": "Tochi Raina, Rekha Bhardwaj, Pritam",
     "vote_average": 9.1,
@@ -1972,7 +3198,7 @@
     "popularity": 94.1
   },
   {
-    "id": 58,
+    "id": 93,
     "title": "Ghungroo (War)",
     "artist": "Arijit Singh, Shilpa Rao, Vishal-Shekhar",
     "vote_average": 9.8,
@@ -2006,7 +3232,7 @@
     "popularity": 95.4
   },
   {
-    "id": 59,
+    "id": 94,
     "title": "Dil Diyan Gallan (Tiger Zinda Hai)",
     "artist": "Atif Aslam, Vishal-Shekhar",
     "vote_average": 9.4,
@@ -2040,7 +3266,7 @@
     "popularity": 96.7
   },
   {
-    "id": 60,
+    "id": 95,
     "title": "Galliyan (Ek Villain)",
     "artist": "Ankit Tiwari",
     "vote_average": 9.0,
@@ -2074,7 +3300,7 @@
     "popularity": 98.0
   },
   {
-    "id": 61,
+    "id": 96,
     "title": "Tum Se Hi (Jab We Met)",
     "artist": "Mohit Chauhan, Pritam",
     "vote_average": 9.7,
@@ -2108,7 +3334,7 @@
     "popularity": 99.3
   },
   {
-    "id": 62,
+    "id": 97,
     "title": "Pee Loon (Once Upon A Time In Mumbaai)",
     "artist": "Mohit Chauhan, Pritam",
     "vote_average": 9.3,
@@ -2142,7 +3368,7 @@
     "popularity": 90.6
   },
   {
-    "id": 63,
+    "id": 98,
     "title": "Mitwa (Kabhi Alvida Naa Kehna)",
     "artist": "Shafqat Amanat Ali, Shankar-Ehsaan-Loy",
     "vote_average": 8.9,
@@ -2176,7 +3402,7 @@
     "popularity": 91.9
   },
   {
-    "id": 64,
+    "id": 99,
     "title": "Ilahi (Yeh Jawaani Hai Deewani)",
     "artist": "Arijit Singh, Pritam",
     "vote_average": 9.6,
@@ -2210,7 +3436,7 @@
     "popularity": 93.2
   },
   {
-    "id": 65,
+    "id": 100,
     "title": "Jeena Jeena (Badlapur)",
     "artist": "Atif Aslam, Sachin-Jigar",
     "vote_average": 9.2,
@@ -2244,7 +3470,7 @@
     "popularity": 94.5
   },
   {
-    "id": 66,
+    "id": 101,
     "title": "Sun Saathiya (ABCD 2)",
     "artist": "Priya Saraiya, Divya Kumar, Sachin-Jigar",
     "vote_average": 8.8,
@@ -2278,7 +3504,7 @@
     "popularity": 95.8
   },
   {
-    "id": 67,
+    "id": 102,
     "title": "Lungi Dance (Chennai Express)",
     "artist": "Yo Yo Honey Singh",
     "vote_average": 9.5,
@@ -2312,7 +3538,7 @@
     "popularity": 97.1
   },
   {
-    "id": 68,
+    "id": 103,
     "title": "Kajra Re (Bunty Aur Babli)",
     "artist": "Alisha Chinai, Shankar Mahadevan, Javed Ali",
     "vote_average": 9.1,
@@ -2346,7 +3572,7 @@
     "popularity": 98.4
   },
   {
-    "id": 69,
+    "id": 104,
     "title": "Zara Sa (Jannat)",
     "artist": "KK, Pritam",
     "vote_average": 9.8,
@@ -2380,7 +3606,7 @@
     "popularity": 99.7
   },
   {
-    "id": 70,
+    "id": 105,
     "title": "Maan Meri Jaan",
     "artist": "King",
     "vote_average": 9.4,
@@ -2414,41 +3640,7 @@
     "popularity": 91.0
   },
   {
-    "id": 71,
-    "title": "Aayi Nai (Stree 2)",
-    "artist": "Pawan Singh, Simran Choudhary, Sachin-Jigar",
-    "vote_average": 9.0,
-    "vote_count": 34223,
-    "backdrop_path": "https://img.youtube.com/vi/0nrvPVnTWlc/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/0nrvPVnTWlc/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/0nrvPVnTWlc/hqdefault.jpg",
-    "tagline": "Iconic Hindi Masterpiece (2024)",
-    "overview": "'Aayi Nai (Stree 2)' by Pawan Singh, Simran Choudhary, Sachin-Jigar. Released in 2024. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Hindi, Bollywood, Dance, Folk",
-    "language": "Hindi",
-    "release_year": 2024,
-    "era": "2024-2025",
-    "youtube_id": "0nrvPVnTWlc",
-    "spotify_id": "sp_71",
-    "apple_music_id": "am_71",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Aayi Nai (Stree 2)",
-        "duration": "3:45",
-        "videoId": "0nrvPVnTWlc"
-      },
-      {
-        "number": 2,
-        "title": "Aayi Nai (Stree 2) (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "0nrvPVnTWlc"
-      }
-    ],
-    "popularity": 92.3
-  },
-  {
-    "id": 72,
+    "id": 106,
     "title": "Naatu Naatu (RRR)",
     "artist": "Rahul Sipligunj, Kaala Bhairava, M. M. Keeravaani",
     "vote_average": 9.7,
@@ -2482,7 +3674,7 @@
     "popularity": 93.6
   },
   {
-    "id": 73,
+    "id": 107,
     "title": "Oo Antava (Pushpa: The Rise)",
     "artist": "Indravathi Chauhan, Devi Sri Prasad",
     "vote_average": 9.3,
@@ -2516,7 +3708,7 @@
     "popularity": 94.9
   },
   {
-    "id": 74,
+    "id": 108,
     "title": "Srivalli (Pushpa: The Rise)",
     "artist": "Sid Sriram, Devi Sri Prasad",
     "vote_average": 8.9,
@@ -2550,7 +3742,7 @@
     "popularity": 96.2
   },
   {
-    "id": 75,
+    "id": 109,
     "title": "Saami Saami (Pushpa: The Rise)",
     "artist": "Mounika Yadav, Devi Sri Prasad",
     "vote_average": 9.6,
@@ -2584,7 +3776,7 @@
     "popularity": 97.5
   },
   {
-    "id": 76,
+    "id": 110,
     "title": "Butta Bomma (Ala Vaikunthapurramuloo)",
     "artist": "Armaan Malik, Thaman S",
     "vote_average": 9.2,
@@ -2618,7 +3810,7 @@
     "popularity": 98.8
   },
   {
-    "id": 77,
+    "id": 111,
     "title": "Ramuloo Ramulaa (AVPL)",
     "artist": "Anurag Kulkarni, Mangli, Thaman S",
     "vote_average": 8.8,
@@ -2652,7 +3844,7 @@
     "popularity": 90.1
   },
   {
-    "id": 78,
+    "id": 112,
     "title": "Samajavaragamana (AVPL)",
     "artist": "Sid Sriram, Thaman S",
     "vote_average": 9.5,
@@ -2686,7 +3878,7 @@
     "popularity": 91.4
   },
   {
-    "id": 79,
+    "id": 113,
     "title": "Inkem Inkem Kaavaale (Geetha Govindam)",
     "artist": "Sid Sriram, Gopi Sundar",
     "vote_average": 9.1,
@@ -2720,7 +3912,7 @@
     "popularity": 92.7
   },
   {
-    "id": 80,
+    "id": 114,
     "title": "Saranga Dariya (Love Story)",
     "artist": "Mangli, Pawan Ch",
     "vote_average": 9.8,
@@ -2754,7 +3946,7 @@
     "popularity": 94.0
   },
   {
-    "id": 81,
+    "id": 115,
     "title": "Kalavathi (SVP)",
     "artist": "Sid Sriram, Thaman S",
     "vote_average": 9.4,
@@ -2788,211 +3980,7 @@
     "popularity": 95.3
   },
   {
-    "id": 82,
-    "title": "Fear Song (Devara)",
-    "artist": "Anirudh Ravichander",
-    "vote_average": 9.0,
-    "vote_count": 37666,
-    "backdrop_path": "https://img.youtube.com/vi/g44VQxMcFH4/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/g44VQxMcFH4/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/g44VQxMcFH4/hqdefault.jpg",
-    "tagline": "Iconic Telugu Masterpiece (2024)",
-    "overview": "'Fear Song (Devara)' by Anirudh Ravichander. Released in 2024. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Telugu, Tollywood, Action, Mass",
-    "language": "Telugu",
-    "release_year": 2024,
-    "era": "2024-2025",
-    "youtube_id": "g44VQxMcFH4",
-    "spotify_id": "sp_82",
-    "apple_music_id": "am_82",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Fear Song (Devara)",
-        "duration": "3:45",
-        "videoId": "g44VQxMcFH4"
-      },
-      {
-        "number": 2,
-        "title": "Fear Song (Devara) (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "g44VQxMcFH4"
-      }
-    ],
-    "popularity": 96.6
-  },
-  {
-    "id": 83,
-    "title": "Chuttamalle (Devara)",
-    "artist": "Shilpa Rao, Anirudh Ravichander",
-    "vote_average": 9.7,
-    "vote_count": 37979,
-    "backdrop_path": "https://img.youtube.com/vi/GWNrPJyRTcA/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/GWNrPJyRTcA/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/GWNrPJyRTcA/hqdefault.jpg",
-    "tagline": "Iconic Telugu Masterpiece (2024)",
-    "overview": "'Chuttamalle (Devara)' by Shilpa Rao, Anirudh Ravichander. Released in 2024. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Telugu, Tollywood, Romantic, Dance",
-    "language": "Telugu",
-    "release_year": 2024,
-    "era": "2024-2025",
-    "youtube_id": "GWNrPJyRTcA",
-    "spotify_id": "sp_83",
-    "apple_music_id": "am_83",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Chuttamalle (Devara)",
-        "duration": "3:45",
-        "videoId": "GWNrPJyRTcA"
-      },
-      {
-        "number": 2,
-        "title": "Chuttamalle (Devara) (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "GWNrPJyRTcA"
-      }
-    ],
-    "popularity": 97.9
-  },
-  {
-    "id": 84,
-    "title": "Daavudi (Devara)",
-    "artist": "Nakash Aziz, Akasa Singh, Anirudh",
-    "vote_average": 9.3,
-    "vote_count": 38292,
-    "backdrop_path": "https://img.youtube.com/vi/hmSQSgXO-qc/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/hmSQSgXO-qc/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/hmSQSgXO-qc/hqdefault.jpg",
-    "tagline": "Iconic Telugu Masterpiece (2024)",
-    "overview": "'Daavudi (Devara)' by Nakash Aziz, Akasa Singh, Anirudh. Released in 2024. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Telugu, Tollywood, Dance, Mass",
-    "language": "Telugu",
-    "release_year": 2024,
-    "era": "2024-2025",
-    "youtube_id": "hmSQSgXO-qc",
-    "spotify_id": "sp_84",
-    "apple_music_id": "am_84",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Daavudi (Devara)",
-        "duration": "3:45",
-        "videoId": "hmSQSgXO-qc"
-      },
-      {
-        "number": 2,
-        "title": "Daavudi (Devara) (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "hmSQSgXO-qc"
-      }
-    ],
-    "popularity": 99.2
-  },
-  {
-    "id": 85,
-    "title": "Kurchi Madathapetti (Guntur Kaaram)",
-    "artist": "Sahithi Chaganti, Sri Krishna, Thaman S",
-    "vote_average": 8.9,
-    "vote_count": 38605,
-    "backdrop_path": "https://img.youtube.com/vi/gh3FyLT7WVg/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/gh3FyLT7WVg/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/gh3FyLT7WVg/hqdefault.jpg",
-    "tagline": "Iconic Telugu Masterpiece (2024)",
-    "overview": "'Kurchi Madathapetti (Guntur Kaaram)' by Sahithi Chaganti, Sri Krishna, Thaman S. Released in 2024. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Telugu, Tollywood, Mass, Party",
-    "language": "Telugu",
-    "release_year": 2024,
-    "era": "2024-2025",
-    "youtube_id": "gh3FyLT7WVg",
-    "spotify_id": "sp_85",
-    "apple_music_id": "am_85",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Kurchi Madathapetti (Guntur Kaaram)",
-        "duration": "3:45",
-        "videoId": "gh3FyLT7WVg"
-      },
-      {
-        "number": 2,
-        "title": "Kurchi Madathapetti (Guntur Kaaram) (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "gh3FyLT7WVg"
-      }
-    ],
-    "popularity": 90.5
-  },
-  {
-    "id": 86,
-    "title": "Dum Masala (Guntur Kaaram)",
-    "artist": "Sanjith Hegde, Thaman S",
-    "vote_average": 9.6,
-    "vote_count": 38918,
-    "backdrop_path": "https://img.youtube.com/vi/9w20rGRhek0/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/9w20rGRhek0/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/9w20rGRhek0/hqdefault.jpg",
-    "tagline": "Iconic Telugu Masterpiece (2024)",
-    "overview": "'Dum Masala (Guntur Kaaram)' by Sanjith Hegde, Thaman S. Released in 2024. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Telugu, Tollywood, Mass, Anthem",
-    "language": "Telugu",
-    "release_year": 2024,
-    "era": "2024-2025",
-    "youtube_id": "9w20rGRhek0",
-    "spotify_id": "sp_86",
-    "apple_music_id": "am_86",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Dum Masala (Guntur Kaaram)",
-        "duration": "3:45",
-        "videoId": "9w20rGRhek0"
-      },
-      {
-        "number": 2,
-        "title": "Dum Masala (Guntur Kaaram) (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "9w20rGRhek0"
-      }
-    ],
-    "popularity": 91.8
-  },
-  {
-    "id": 87,
-    "title": "Ammadi (Hi Nanna)",
-    "artist": "Kaala Bhairava, Shakthisree Gopalan, Hesham Abdul Wahab",
-    "vote_average": 9.2,
-    "vote_count": 39231,
-    "backdrop_path": "https://img.youtube.com/vi/lWV6jM-2DvE/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/lWV6jM-2DvE/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/lWV6jM-2DvE/hqdefault.jpg",
-    "tagline": "Iconic Telugu Masterpiece (2023)",
-    "overview": "'Ammadi (Hi Nanna)' by Kaala Bhairava, Shakthisree Gopalan, Hesham Abdul Wahab. Released in 2023. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Telugu, Tollywood, Melodic, Romantic",
-    "language": "Telugu",
-    "release_year": 2023,
-    "era": "2020s",
-    "youtube_id": "lWV6jM-2DvE",
-    "spotify_id": "sp_87",
-    "apple_music_id": "am_87",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Ammadi (Hi Nanna)",
-        "duration": "3:45",
-        "videoId": "lWV6jM-2DvE"
-      },
-      {
-        "number": 2,
-        "title": "Ammadi (Hi Nanna) (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "lWV6jM-2DvE"
-      }
-    ],
-    "popularity": 93.1
-  },
-  {
-    "id": 88,
+    "id": 116,
     "title": "Samayama (Hi Nanna)",
     "artist": "Anurag Kulkarni, Sithara Krishnakumar, Hesham",
     "vote_average": 8.8,
@@ -3026,7 +4014,7 @@
     "popularity": 94.4
   },
   {
-    "id": 89,
+    "id": 117,
     "title": "Odiyamma (Hi Nanna)",
     "artist": "Dhruv Vikram, Shruti Haasan, Chinmayi, Hesham",
     "vote_average": 9.5,
@@ -3060,7 +4048,7 @@
     "popularity": 95.7
   },
   {
-    "id": 90,
+    "id": 118,
     "title": "Pillaa Raa (RX 100)",
     "artist": "Anurag Kulkarni, Chaitan Bharadwaj",
     "vote_average": 9.1,
@@ -3094,7 +4082,7 @@
     "popularity": 97.0
   },
   {
-    "id": 91,
+    "id": 119,
     "title": "Dosti (RRR)",
     "artist": "Hemachandra, M. M. Keeravaani",
     "vote_average": 9.8,
@@ -3128,7 +4116,7 @@
     "popularity": 98.3
   },
   {
-    "id": 92,
+    "id": 120,
     "title": "Sehari (OY!)",
     "artist": "Benny Dayal, Yuvan Shankar Raja",
     "vote_average": 9.4,
@@ -3162,7 +4150,7 @@
     "popularity": 99.6
   },
   {
-    "id": 93,
+    "id": 121,
     "title": "Hoyna Hoyna (Gang Leader)",
     "artist": "Inno Genga, Anirudh Ravichander",
     "vote_average": 9.0,
@@ -3196,7 +4184,7 @@
     "popularity": 90.9
   },
   {
-    "id": 94,
+    "id": 122,
     "title": "Top Lesi Poddi (Iddarammayilatho)",
     "artist": "Sagar, Geetha Madhuri, Devi Sri Prasad",
     "vote_average": 9.7,
@@ -3230,7 +4218,7 @@
     "popularity": 92.2
   },
   {
-    "id": 95,
+    "id": 123,
     "title": "Vachindamma (Geetha Govindam)",
     "artist": "Sid Sriram, Gopi Sundar",
     "vote_average": 9.3,
@@ -3264,7 +4252,7 @@
     "popularity": 93.5
   },
   {
-    "id": 96,
+    "id": 124,
     "title": "Lover",
     "artist": "Diljit Dosanjh",
     "vote_average": 8.9,
@@ -3298,7 +4286,7 @@
     "popularity": 94.8
   },
   {
-    "id": 97,
+    "id": 125,
     "title": "Born to Shine",
     "artist": "Diljit Dosanjh",
     "vote_average": 9.6,
@@ -3332,7 +4320,7 @@
     "popularity": 96.1
   },
   {
-    "id": 98,
+    "id": 126,
     "title": "G.O.A.T.",
     "artist": "Diljit Dosanjh",
     "vote_average": 9.2,
@@ -3366,7 +4354,7 @@
     "popularity": 97.4
   },
   {
-    "id": 99,
+    "id": 127,
     "title": "Hass Hass",
     "artist": "Diljit Dosanjh, Sia",
     "vote_average": 8.8,
@@ -3400,7 +4388,7 @@
     "popularity": 98.7
   },
   {
-    "id": 100,
+    "id": 128,
     "title": "Brown Munde",
     "artist": "AP Dhillon, Gurinder Gill, Shinda Kahlon",
     "vote_average": 9.5,
@@ -3434,7 +4422,7 @@
     "popularity": 90.0
   },
   {
-    "id": 101,
+    "id": 129,
     "title": "Excuses",
     "artist": "AP Dhillon, Gurinder Gill",
     "vote_average": 9.1,
@@ -3468,7 +4456,7 @@
     "popularity": 91.3
   },
   {
-    "id": 102,
+    "id": 130,
     "title": "With You",
     "artist": "AP Dhillon",
     "vote_average": 9.8,
@@ -3502,7 +4490,7 @@
     "popularity": 92.6
   },
   {
-    "id": 103,
+    "id": 131,
     "title": "295",
     "artist": "Sidhu Moose Wala",
     "vote_average": 9.4,
@@ -3536,7 +4524,7 @@
     "popularity": 93.9
   },
   {
-    "id": 104,
+    "id": 132,
     "title": "The Last Ride",
     "artist": "Sidhu Moose Wala",
     "vote_average": 9.0,
@@ -3570,7 +4558,7 @@
     "popularity": 95.2
   },
   {
-    "id": 105,
+    "id": 133,
     "title": "So High",
     "artist": "Sidhu Moose Wala, BYG BYRD",
     "vote_average": 9.7,
@@ -3604,109 +4592,7 @@
     "popularity": 96.5
   },
   {
-    "id": 106,
-    "title": "Illuminati (Aavesham)",
-    "artist": "Sushin Shyam, Dabzee",
-    "vote_average": 9.3,
-    "vote_count": 45178,
-    "backdrop_path": "https://img.youtube.com/vi/tOM-nWPcR4U/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/tOM-nWPcR4U/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/tOM-nWPcR4U/hqdefault.jpg",
-    "tagline": "Iconic Malayalam Masterpiece (2024)",
-    "overview": "'Illuminati (Aavesham)' by Sushin Shyam, Dabzee. Released in 2024. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Malayalam, Mollywood, Hip-Hop, Viral",
-    "language": "Malayalam",
-    "release_year": 2024,
-    "era": "2024-2025",
-    "youtube_id": "tOM-nWPcR4U",
-    "spotify_id": "sp_106",
-    "apple_music_id": "am_106",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Illuminati (Aavesham)",
-        "duration": "3:45",
-        "videoId": "tOM-nWPcR4U"
-      },
-      {
-        "number": 2,
-        "title": "Illuminati (Aavesham) (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "tOM-nWPcR4U"
-      }
-    ],
-    "popularity": 97.8
-  },
-  {
-    "id": 107,
-    "title": "Jaada (Aavesham)",
-    "artist": "Sushin Shyam, Sreenath Bhasi",
-    "vote_average": 8.9,
-    "vote_count": 45491,
-    "backdrop_path": "https://img.youtube.com/vi/HUAAYwtusLI/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/HUAAYwtusLI/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/HUAAYwtusLI/hqdefault.jpg",
-    "tagline": "Iconic Malayalam Masterpiece (2024)",
-    "overview": "'Jaada (Aavesham)' by Sushin Shyam, Sreenath Bhasi. Released in 2024. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Malayalam, Mollywood, Swag, Soundtrack",
-    "language": "Malayalam",
-    "release_year": 2024,
-    "era": "2024-2025",
-    "youtube_id": "HUAAYwtusLI",
-    "spotify_id": "sp_107",
-    "apple_music_id": "am_107",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Jaada (Aavesham)",
-        "duration": "3:45",
-        "videoId": "HUAAYwtusLI"
-      },
-      {
-        "number": 2,
-        "title": "Jaada (Aavesham) (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "HUAAYwtusLI"
-      }
-    ],
-    "popularity": 99.1
-  },
-  {
-    "id": 108,
-    "title": "Kuthanthram (Manjummel Boys)",
-    "artist": "Sushin Shyam, Vedan",
-    "vote_average": 9.6,
-    "vote_count": 45804,
-    "backdrop_path": "https://img.youtube.com/vi/W6-O00alJUo/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/W6-O00alJUo/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/W6-O00alJUo/hqdefault.jpg",
-    "tagline": "Iconic Malayalam Masterpiece (2024)",
-    "overview": "'Kuthanthram (Manjummel Boys)' by Sushin Shyam, Vedan. Released in 2024. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Malayalam, Mollywood, Rap, Underground",
-    "language": "Malayalam",
-    "release_year": 2024,
-    "era": "2024-2025",
-    "youtube_id": "W6-O00alJUo",
-    "spotify_id": "sp_108",
-    "apple_music_id": "am_108",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Kuthanthram (Manjummel Boys)",
-        "duration": "3:45",
-        "videoId": "W6-O00alJUo"
-      },
-      {
-        "number": 2,
-        "title": "Kuthanthram (Manjummel Boys) (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "W6-O00alJUo"
-      }
-    ],
-    "popularity": 90.4
-  },
-  {
-    "id": 109,
+    "id": 134,
     "title": "Neela Nilave (RDX)",
     "artist": "Jakes Bejoy, Kapil Kapilan",
     "vote_average": 9.2,
@@ -3740,7 +4626,7 @@
     "popularity": 91.7
   },
   {
-    "id": 110,
+    "id": 135,
     "title": "Malare (Premam)",
     "artist": "Vijay Yesudas, Rajesh Murugesan",
     "vote_average": 8.8,
@@ -3774,7 +4660,7 @@
     "popularity": 93.0
   },
   {
-    "id": 111,
+    "id": 136,
     "title": "Darshana (Hridayam)",
     "artist": "Hesham Abdul Wahab, Darshana Rajendran",
     "vote_average": 9.5,
@@ -3808,7 +4694,7 @@
     "popularity": 94.3
   },
   {
-    "id": 112,
+    "id": 137,
     "title": "Periyone (Aadujeevitham)",
     "artist": "A. R. Rahman, Jithin Raj",
     "vote_average": 9.1,
@@ -3842,7 +4728,7 @@
     "popularity": 95.6
   },
   {
-    "id": 113,
+    "id": 138,
     "title": "Pasoori",
     "artist": "Ali Sethi, Shae Gill",
     "vote_average": 9.8,
@@ -3876,7 +4762,7 @@
     "popularity": 96.9
   },
   {
-    "id": 114,
+    "id": 139,
     "title": "Kahani Suno 2.0",
     "artist": "Kaifi Khalil",
     "vote_average": 9.4,
@@ -3910,7 +4796,7 @@
     "popularity": 98.2
   },
   {
-    "id": 115,
+    "id": 140,
     "title": "Arjan Vailly (Animal)",
     "artist": "Bhupinder Babbal, Manan Bhardwaj",
     "vote_average": 9.0,
@@ -3944,7 +4830,7 @@
     "popularity": 99.5
   },
   {
-    "id": 116,
+    "id": 141,
     "title": "Cheques",
     "artist": "Shubh",
     "vote_average": 9.7,
@@ -3978,7 +4864,7 @@
     "popularity": 90.8
   },
   {
-    "id": 117,
+    "id": 142,
     "title": "Baller",
     "artist": "Shubh, Ikky",
     "vote_average": 9.3,
@@ -4012,7 +4898,7 @@
     "popularity": 92.1
   },
   {
-    "id": 118,
+    "id": 143,
     "title": "Tu Hai Kahan",
     "artist": "AUR",
     "vote_average": 8.9,
@@ -4046,7 +4932,7 @@
     "popularity": 93.4
   },
   {
-    "id": 119,
+    "id": 144,
     "title": "Wishes",
     "artist": "Talwiinder, Hasan Raheem, Umair",
     "vote_average": 9.6,
@@ -4080,7 +4966,7 @@
     "popularity": 94.7
   },
   {
-    "id": 120,
+    "id": 145,
     "title": "Blinding Lights",
     "artist": "The Weeknd",
     "vote_average": 9.2,
@@ -4114,7 +5000,7 @@
     "popularity": 96.0
   },
   {
-    "id": 121,
+    "id": 146,
     "title": "Starboy",
     "artist": "The Weeknd, Daft Punk",
     "vote_average": 8.8,
@@ -4148,7 +5034,7 @@
     "popularity": 97.3
   },
   {
-    "id": 122,
+    "id": 147,
     "title": "Save Your Tears",
     "artist": "The Weeknd",
     "vote_average": 9.5,
@@ -4182,7 +5068,7 @@
     "popularity": 98.6
   },
   {
-    "id": 123,
+    "id": 148,
     "title": "Shape of You",
     "artist": "Ed Sheeran",
     "vote_average": 9.1,
@@ -4216,7 +5102,7 @@
     "popularity": 99.9
   },
   {
-    "id": 124,
+    "id": 149,
     "title": "Perfect",
     "artist": "Ed Sheeran",
     "vote_average": 9.8,
@@ -4250,7 +5136,7 @@
     "popularity": 91.2
   },
   {
-    "id": 125,
+    "id": 150,
     "title": "Bad Habits",
     "artist": "Ed Sheeran",
     "vote_average": 9.4,
@@ -4284,7 +5170,7 @@
     "popularity": 92.5
   },
   {
-    "id": 126,
+    "id": 151,
     "title": "As It Was",
     "artist": "Harry Styles",
     "vote_average": 9.0,
@@ -4318,7 +5204,7 @@
     "popularity": 93.8
   },
   {
-    "id": 127,
+    "id": 152,
     "title": "Watermelon Sugar",
     "artist": "Harry Styles",
     "vote_average": 9.7,
@@ -4352,7 +5238,7 @@
     "popularity": 95.1
   },
   {
-    "id": 128,
+    "id": 153,
     "title": "Someone You Loved",
     "artist": "Lewis Capaldi",
     "vote_average": 9.3,
@@ -4386,7 +5272,7 @@
     "popularity": 96.4
   },
   {
-    "id": 129,
+    "id": 154,
     "title": "Stay",
     "artist": "The Kid LAROI, Justin Bieber",
     "vote_average": 8.9,
@@ -4420,7 +5306,7 @@
     "popularity": 97.7
   },
   {
-    "id": 130,
+    "id": 155,
     "title": "Peaches",
     "artist": "Justin Bieber, Daniel Caesar, Giveon",
     "vote_average": 9.6,
@@ -4454,7 +5340,7 @@
     "popularity": 99.0
   },
   {
-    "id": 131,
+    "id": 156,
     "title": "Flowers",
     "artist": "Miley Cyrus",
     "vote_average": 9.2,
@@ -4488,7 +5374,7 @@
     "popularity": 90.3
   },
   {
-    "id": 132,
+    "id": 157,
     "title": "Cruel Summer",
     "artist": "Taylor Swift",
     "vote_average": 8.8,
@@ -4522,7 +5408,7 @@
     "popularity": 91.6
   },
   {
-    "id": 133,
+    "id": 158,
     "title": "Anti-Hero",
     "artist": "Taylor Swift",
     "vote_average": 9.5,
@@ -4556,7 +5442,7 @@
     "popularity": 92.9
   },
   {
-    "id": 134,
+    "id": 159,
     "title": "Blank Space",
     "artist": "Taylor Swift",
     "vote_average": 9.1,
@@ -4590,7 +5476,7 @@
     "popularity": 94.2
   },
   {
-    "id": 135,
+    "id": 160,
     "title": "Levitating",
     "artist": "Dua Lipa",
     "vote_average": 9.8,
@@ -4624,7 +5510,7 @@
     "popularity": 95.5
   },
   {
-    "id": 136,
+    "id": 161,
     "title": "Don't Start Now",
     "artist": "Dua Lipa",
     "vote_average": 9.4,
@@ -4658,7 +5544,7 @@
     "popularity": 96.8
   },
   {
-    "id": 137,
+    "id": 162,
     "title": "Industry Baby",
     "artist": "Lil Nas X, Jack Harlow",
     "vote_average": 9.0,
@@ -4692,7 +5578,7 @@
     "popularity": 98.1
   },
   {
-    "id": 138,
+    "id": 163,
     "title": "Sunflower",
     "artist": "Post Malone, Swae Lee",
     "vote_average": 9.7,
@@ -4726,7 +5612,7 @@
     "popularity": 99.4
   },
   {
-    "id": 139,
+    "id": 164,
     "title": "Circles",
     "artist": "Post Malone",
     "vote_average": 9.3,
@@ -4760,7 +5646,7 @@
     "popularity": 90.7
   },
   {
-    "id": 140,
+    "id": 165,
     "title": "Counting Stars",
     "artist": "OneRepublic",
     "vote_average": 8.9,
@@ -4794,7 +5680,7 @@
     "popularity": 92.0
   },
   {
-    "id": 141,
+    "id": 166,
     "title": "Believer",
     "artist": "Imagine Dragons",
     "vote_average": 9.6,
@@ -4828,7 +5714,7 @@
     "popularity": 93.3
   },
   {
-    "id": 142,
+    "id": 167,
     "title": "Demons",
     "artist": "Imagine Dragons",
     "vote_average": 9.2,
@@ -4862,7 +5748,7 @@
     "popularity": 94.6
   },
   {
-    "id": 143,
+    "id": 168,
     "title": "Bones",
     "artist": "Imagine Dragons",
     "vote_average": 8.8,
@@ -4896,7 +5782,7 @@
     "popularity": 95.9
   },
   {
-    "id": 144,
+    "id": 169,
     "title": "Bohemian Rhapsody",
     "artist": "Queen",
     "vote_average": 9.5,
@@ -4930,7 +5816,7 @@
     "popularity": 97.2
   },
   {
-    "id": 145,
+    "id": 170,
     "title": "Hotel California",
     "artist": "Eagles",
     "vote_average": 9.1,
@@ -4964,7 +5850,7 @@
     "popularity": 98.5
   },
   {
-    "id": 146,
+    "id": 171,
     "title": "Sweet Child O' Mine",
     "artist": "Guns N' Roses",
     "vote_average": 9.8,
@@ -4998,7 +5884,7 @@
     "popularity": 99.8
   },
   {
-    "id": 147,
+    "id": 172,
     "title": "Smells Like Teen Spirit",
     "artist": "Nirvana",
     "vote_average": 9.4,
@@ -5032,7 +5918,7 @@
     "popularity": 91.1
   },
   {
-    "id": 148,
+    "id": 173,
     "title": "In The End",
     "artist": "Linkin Park",
     "vote_average": 9.0,
@@ -5066,7 +5952,7 @@
     "popularity": 92.4
   },
   {
-    "id": 149,
+    "id": 174,
     "title": "Numb",
     "artist": "Linkin Park",
     "vote_average": 9.7,
@@ -5100,7 +5986,7 @@
     "popularity": 93.7
   },
   {
-    "id": 150,
+    "id": 175,
     "title": "Viva La Vida",
     "artist": "Coldplay",
     "vote_average": 9.3,
@@ -5134,7 +6020,7 @@
     "popularity": 95.0
   },
   {
-    "id": 151,
+    "id": 176,
     "title": "Yellow",
     "artist": "Coldplay",
     "vote_average": 8.9,
@@ -5168,7 +6054,7 @@
     "popularity": 96.3
   },
   {
-    "id": 152,
+    "id": 177,
     "title": "Fix You",
     "artist": "Coldplay",
     "vote_average": 9.6,
@@ -5202,7 +6088,7 @@
     "popularity": 97.6
   },
   {
-    "id": 153,
+    "id": 178,
     "title": "Rolling in the Deep",
     "artist": "Adele",
     "vote_average": 9.2,
@@ -5236,7 +6122,7 @@
     "popularity": 98.9
   },
   {
-    "id": 154,
+    "id": 179,
     "title": "Easy On Me",
     "artist": "Adele",
     "vote_average": 8.8,
@@ -5270,7 +6156,7 @@
     "popularity": 90.2
   },
   {
-    "id": 155,
+    "id": 180,
     "title": "Someone Like You",
     "artist": "Adele",
     "vote_average": 9.5,
@@ -5304,7 +6190,7 @@
     "popularity": 91.5
   },
   {
-    "id": 156,
+    "id": 181,
     "title": "Shallow",
     "artist": "Lady Gaga, Bradley Cooper",
     "vote_average": 9.1,
@@ -5338,7 +6224,7 @@
     "popularity": 92.8
   },
   {
-    "id": 157,
+    "id": 182,
     "title": "Uptown Funk",
     "artist": "Mark Ronson, Bruno Mars",
     "vote_average": 9.8,
@@ -5372,7 +6258,7 @@
     "popularity": 94.1
   },
   {
-    "id": 158,
+    "id": 183,
     "title": "24K Magic",
     "artist": "Bruno Mars",
     "vote_average": 9.4,
@@ -5406,7 +6292,7 @@
     "popularity": 95.4
   },
   {
-    "id": 159,
+    "id": 184,
     "title": "That's What I Like",
     "artist": "Bruno Mars",
     "vote_average": 9.0,
@@ -5440,7 +6326,7 @@
     "popularity": 96.7
   },
   {
-    "id": 160,
+    "id": 185,
     "title": "Heat Waves",
     "artist": "Glass Animals",
     "vote_average": 9.7,
@@ -5474,7 +6360,7 @@
     "popularity": 98.0
   },
   {
-    "id": 161,
+    "id": 186,
     "title": "Take Me To Church",
     "artist": "Hozier",
     "vote_average": 9.3,
@@ -5508,7 +6394,7 @@
     "popularity": 99.3
   },
   {
-    "id": 162,
+    "id": 187,
     "title": "Wake Me Up",
     "artist": "Avicii, Aloe Blacc",
     "vote_average": 8.9,
@@ -5542,7 +6428,7 @@
     "popularity": 90.6
   },
   {
-    "id": 163,
+    "id": 188,
     "title": "The Nights",
     "artist": "Avicii",
     "vote_average": 9.6,
@@ -5576,7 +6462,7 @@
     "popularity": 91.9
   },
   {
-    "id": 164,
+    "id": 189,
     "title": "Titanium",
     "artist": "David Guetta, Sia",
     "vote_average": 9.2,
@@ -5610,7 +6496,7 @@
     "popularity": 93.2
   },
   {
-    "id": 165,
+    "id": 190,
     "title": "Closer",
     "artist": "The Chainsmokers, Halsey",
     "vote_average": 8.8,
@@ -5644,7 +6530,7 @@
     "popularity": 94.5
   },
   {
-    "id": 166,
+    "id": 191,
     "title": "Bad Guy",
     "artist": "Billie Eilish",
     "vote_average": 9.5,
@@ -5678,41 +6564,7 @@
     "popularity": 95.8
   },
   {
-    "id": 167,
-    "title": "Espresso",
-    "artist": "Sabrina Carpenter",
-    "vote_average": 9.1,
-    "vote_count": 19271,
-    "backdrop_path": "https://img.youtube.com/vi/eVli-tstM5E/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/eVli-tstM5E/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/eVli-tstM5E/hqdefault.jpg",
-    "tagline": "Iconic English Masterpiece (2024)",
-    "overview": "'Espresso' by Sabrina Carpenter. Released in 2024. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "English, Nu-Disco, Pop, Summer Hit",
-    "language": "English",
-    "release_year": 2024,
-    "era": "2024-2025",
-    "youtube_id": "eVli-tstM5E",
-    "spotify_id": "sp_167",
-    "apple_music_id": "am_167",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Espresso",
-        "duration": "3:45",
-        "videoId": "eVli-tstM5E"
-      },
-      {
-        "number": 2,
-        "title": "Espresso (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "eVli-tstM5E"
-      }
-    ],
-    "popularity": 97.1
-  },
-  {
-    "id": 168,
+    "id": 192,
     "title": "Dynamite",
     "artist": "BTS",
     "vote_average": 9.8,
@@ -5746,7 +6598,7 @@
     "popularity": 98.4
   },
   {
-    "id": 169,
+    "id": 193,
     "title": "Butter",
     "artist": "BTS",
     "vote_average": 9.4,
@@ -5780,7 +6632,7 @@
     "popularity": 99.7
   },
   {
-    "id": 170,
+    "id": 194,
     "title": "Boy With Luv",
     "artist": "BTS, Halsey",
     "vote_average": 9.0,
@@ -5814,7 +6666,7 @@
     "popularity": 91.0
   },
   {
-    "id": 171,
+    "id": 195,
     "title": "Seven",
     "artist": "Jung Kook, Latto",
     "vote_average": 9.7,
@@ -5848,7 +6700,7 @@
     "popularity": 92.3
   },
   {
-    "id": 172,
+    "id": 196,
     "title": "Standing Next to You",
     "artist": "Jung Kook",
     "vote_average": 9.3,
@@ -5882,7 +6734,7 @@
     "popularity": 93.6
   },
   {
-    "id": 173,
+    "id": 197,
     "title": "DDU-DU DDU-DU",
     "artist": "BLACKPINK",
     "vote_average": 8.9,
@@ -5916,7 +6768,7 @@
     "popularity": 94.9
   },
   {
-    "id": 174,
+    "id": 198,
     "title": "Kill This Love",
     "artist": "BLACKPINK",
     "vote_average": 9.6,
@@ -5950,7 +6802,7 @@
     "popularity": 96.2
   },
   {
-    "id": 175,
+    "id": 199,
     "title": "How You Like That",
     "artist": "BLACKPINK",
     "vote_average": 9.2,
@@ -5984,7 +6836,7 @@
     "popularity": 97.5
   },
   {
-    "id": 176,
+    "id": 200,
     "title": "Pink Venom",
     "artist": "BLACKPINK",
     "vote_average": 8.8,
@@ -6018,7 +6870,7 @@
     "popularity": 98.8
   },
   {
-    "id": 177,
+    "id": 201,
     "title": "Super Shy",
     "artist": "NewJeans",
     "vote_average": 9.5,
@@ -6052,7 +6904,7 @@
     "popularity": 90.1
   },
   {
-    "id": 178,
+    "id": 202,
     "title": "OMG",
     "artist": "NewJeans",
     "vote_average": 9.1,
@@ -6086,7 +6938,7 @@
     "popularity": 91.4
   },
   {
-    "id": 179,
+    "id": 203,
     "title": "Hype Boy",
     "artist": "NewJeans",
     "vote_average": 9.8,
@@ -6120,7 +6972,7 @@
     "popularity": 92.7
   },
   {
-    "id": 180,
+    "id": 204,
     "title": "Ditto",
     "artist": "NewJeans",
     "vote_average": 9.4,
@@ -6154,7 +7006,7 @@
     "popularity": 94.0
   },
   {
-    "id": 181,
+    "id": 205,
     "title": "God's Menu",
     "artist": "Stray Kids",
     "vote_average": 9.0,
@@ -6188,7 +7040,7 @@
     "popularity": 95.3
   },
   {
-    "id": 182,
+    "id": 206,
     "title": "MANIAC",
     "artist": "Stray Kids",
     "vote_average": 9.7,
@@ -6222,7 +7074,7 @@
     "popularity": 96.6
   },
   {
-    "id": 183,
+    "id": 207,
     "title": "S-Class",
     "artist": "Stray Kids",
     "vote_average": 9.3,
@@ -6256,7 +7108,7 @@
     "popularity": 97.9
   },
   {
-    "id": 184,
+    "id": 208,
     "title": "Cupid (Twin Ver.)",
     "artist": "FIFTY FIFTY",
     "vote_average": 8.9,
@@ -6290,7 +7142,7 @@
     "popularity": 99.2
   },
   {
-    "id": 185,
+    "id": 209,
     "title": "Like Crazy",
     "artist": "Jimin",
     "vote_average": 9.6,
@@ -6324,7 +7176,7 @@
     "popularity": 90.5
   },
   {
-    "id": 186,
+    "id": 210,
     "title": "Gangnam Style",
     "artist": "PSY",
     "vote_average": 9.2,
@@ -6358,7 +7210,7 @@
     "popularity": 91.8
   },
   {
-    "id": 187,
+    "id": 211,
     "title": "Love Scenario",
     "artist": "iKON",
     "vote_average": 8.8,
@@ -6392,7 +7244,7 @@
     "popularity": 93.1
   },
   {
-    "id": 188,
+    "id": 212,
     "title": "Idol",
     "artist": "YOASOBI",
     "vote_average": 9.5,
@@ -6426,7 +7278,7 @@
     "popularity": 94.4
   },
   {
-    "id": 189,
+    "id": 213,
     "title": "Yoru ni Kakeru (Racing into the Night)",
     "artist": "YOASOBI",
     "vote_average": 9.1,
@@ -6460,7 +7312,7 @@
     "popularity": 95.7
   },
   {
-    "id": 190,
+    "id": 214,
     "title": "Gurenge (Demon Slayer)",
     "artist": "LiSA",
     "vote_average": 9.8,
@@ -6494,7 +7346,7 @@
     "popularity": 97.0
   },
   {
-    "id": 191,
+    "id": 215,
     "title": "Kaikai Kitan (Jujutsu Kaisen)",
     "artist": "Eve",
     "vote_average": 9.4,
@@ -6526,821 +7378,5 @@
       }
     ],
     "popularity": 98.3
-  },
-  {
-    "id": 192,
-    "title": "Despacito",
-    "artist": "Luis Fonsi, Daddy Yankee",
-    "vote_average": 9.0,
-    "vote_count": 27096,
-    "backdrop_path": "https://img.youtube.com/vi/kJQP7kiw5Fk/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/kJQP7kiw5Fk/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/kJQP7kiw5Fk/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2017)",
-    "overview": "'Despacito' by Luis Fonsi, Daddy Yankee. Released in 2017. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Reggaeton, Latin Pop, 8 Billion Views",
-    "language": "Latin",
-    "release_year": 2017,
-    "era": "2010s",
-    "youtube_id": "kJQP7kiw5Fk",
-    "spotify_id": "sp_192",
-    "apple_music_id": "am_192",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Despacito",
-        "duration": "3:45",
-        "videoId": "kJQP7kiw5Fk"
-      },
-      {
-        "number": 2,
-        "title": "Despacito (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "kJQP7kiw5Fk"
-      }
-    ],
-    "popularity": 99.6
-  },
-  {
-    "id": 193,
-    "title": "Mi Gente",
-    "artist": "J Balvin, Willy William",
-    "vote_average": 9.7,
-    "vote_count": 27409,
-    "backdrop_path": "https://img.youtube.com/vi/wnJ6LuUFpMo/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/wnJ6LuUFpMo/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/wnJ6LuUFpMo/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2017)",
-    "overview": "'Mi Gente' by J Balvin, Willy William. Released in 2017. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Reggaeton, Global Hit, Dance",
-    "language": "Latin",
-    "release_year": 2017,
-    "era": "2010s",
-    "youtube_id": "wnJ6LuUFpMo",
-    "spotify_id": "sp_193",
-    "apple_music_id": "am_193",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Mi Gente",
-        "duration": "3:45",
-        "videoId": "wnJ6LuUFpMo"
-      },
-      {
-        "number": 2,
-        "title": "Mi Gente (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "wnJ6LuUFpMo"
-      }
-    ],
-    "popularity": 90.9
-  },
-  {
-    "id": 194,
-    "title": "Bailando",
-    "artist": "Enrique Iglesias, Descemer Bueno, Gente De Zona",
-    "vote_average": 9.3,
-    "vote_count": 27722,
-    "backdrop_path": "https://img.youtube.com/vi/b8I-7Wk_Vbc/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/b8I-7Wk_Vbc/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/b8I-7Wk_Vbc/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2014)",
-    "overview": "'Bailando' by Enrique Iglesias, Descemer Bueno, Gente De Zona. Released in 2014. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Latin Pop, Flamenco, 3 Billion Views",
-    "language": "Latin",
-    "release_year": 2014,
-    "era": "2010s",
-    "youtube_id": "b8I-7Wk_Vbc",
-    "spotify_id": "sp_194",
-    "apple_music_id": "am_194",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Bailando",
-        "duration": "3:45",
-        "videoId": "b8I-7Wk_Vbc"
-      },
-      {
-        "number": 2,
-        "title": "Bailando (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "b8I-7Wk_Vbc"
-      }
-    ],
-    "popularity": 92.2
-  },
-  {
-    "id": 195,
-    "title": "Danza Kuduro",
-    "artist": "Don Omar, Lucenzo",
-    "vote_average": 8.9,
-    "vote_count": 28035,
-    "backdrop_path": "https://img.youtube.com/vi/7zp1TbLFPp8/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/7zp1TbLFPp8/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/7zp1TbLFPp8/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2010)",
-    "overview": "'Danza Kuduro' by Don Omar, Lucenzo. Released in 2010. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Kuduro, Reggaeton, Fast Five",
-    "language": "Latin",
-    "release_year": 2010,
-    "era": "2010s",
-    "youtube_id": "7zp1TbLFPp8",
-    "spotify_id": "sp_195",
-    "apple_music_id": "am_195",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Danza Kuduro",
-        "duration": "3:45",
-        "videoId": "7zp1TbLFPp8"
-      },
-      {
-        "number": 2,
-        "title": "Danza Kuduro (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "7zp1TbLFPp8"
-      }
-    ],
-    "popularity": 93.5
-  },
-  {
-    "id": 196,
-    "title": "Tití Me Preguntó",
-    "artist": "Bad Bunny",
-    "vote_average": 9.6,
-    "vote_count": 28348,
-    "backdrop_path": "https://img.youtube.com/vi/Cr8K88UcO0s/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/Cr8K88UcO0s/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/Cr8K88UcO0s/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2022)",
-    "overview": "'Tití Me Preguntó' by Bad Bunny. Released in 2022. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Dembow, Latin Trap, Grammy Winner",
-    "language": "Latin",
-    "release_year": 2022,
-    "era": "2020s",
-    "youtube_id": "Cr8K88UcO0s",
-    "spotify_id": "sp_196",
-    "apple_music_id": "am_196",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Tití Me Preguntó",
-        "duration": "3:45",
-        "videoId": "Cr8K88UcO0s"
-      },
-      {
-        "number": 2,
-        "title": "Tití Me Preguntó (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "Cr8K88UcO0s"
-      }
-    ],
-    "popularity": 94.8
-  },
-  {
-    "id": 197,
-    "title": "Me Porto Bonito",
-    "artist": "Bad Bunny, Chencho Corleone",
-    "vote_average": 9.2,
-    "vote_count": 28661,
-    "backdrop_path": "https://img.youtube.com/vi/saGYMhApaH8/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/saGYMhApaH8/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/saGYMhApaH8/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2022)",
-    "overview": "'Me Porto Bonito' by Bad Bunny, Chencho Corleone. Released in 2022. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Reggaeton, Latin, Billboard #1",
-    "language": "Latin",
-    "release_year": 2022,
-    "era": "2020s",
-    "youtube_id": "saGYMhApaH8",
-    "spotify_id": "sp_197",
-    "apple_music_id": "am_197",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Me Porto Bonito",
-        "duration": "3:45",
-        "videoId": "saGYMhApaH8"
-      },
-      {
-        "number": 2,
-        "title": "Me Porto Bonito (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "saGYMhApaH8"
-      }
-    ],
-    "popularity": 96.1
-  },
-  {
-    "id": 198,
-    "title": "Dákiti",
-    "artist": "Bad Bunny, Jhayco",
-    "vote_average": 8.8,
-    "vote_count": 28974,
-    "backdrop_path": "https://img.youtube.com/vi/TmKh7lAwnBI/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/TmKh7lAwnBI/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/TmKh7lAwnBI/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2020)",
-    "overview": "'Dákiti' by Bad Bunny, Jhayco. Released in 2020. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Reggaeton, Synth, Global #1",
-    "language": "Latin",
-    "release_year": 2020,
-    "era": "2020s",
-    "youtube_id": "TmKh7lAwnBI",
-    "spotify_id": "sp_198",
-    "apple_music_id": "am_198",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Dákiti",
-        "duration": "3:45",
-        "videoId": "TmKh7lAwnBI"
-      },
-      {
-        "number": 2,
-        "title": "Dákiti (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "TmKh7lAwnBI"
-      }
-    ],
-    "popularity": 97.4
-  },
-  {
-    "id": 199,
-    "title": "Monaco",
-    "artist": "Bad Bunny",
-    "vote_average": 9.5,
-    "vote_count": 29287,
-    "backdrop_path": "https://img.youtube.com/vi/_PJvpq8uOZM/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/_PJvpq8uOZM/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/_PJvpq8uOZM/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2023)",
-    "overview": "'Monaco' by Bad Bunny. Released in 2023. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Latin Trap, Hip-Hop, Formula 1",
-    "language": "Latin",
-    "release_year": 2023,
-    "era": "2020s",
-    "youtube_id": "_PJvpq8uOZM",
-    "spotify_id": "sp_199",
-    "apple_music_id": "am_199",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Monaco",
-        "duration": "3:45",
-        "videoId": "_PJvpq8uOZM"
-      },
-      {
-        "number": 2,
-        "title": "Monaco (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "_PJvpq8uOZM"
-      }
-    ],
-    "popularity": 98.7
-  },
-  {
-    "id": 200,
-    "title": "Shakira: Bzrp Music Sessions, Vol. 53",
-    "artist": "Bizarrap, Shakira",
-    "vote_average": 9.1,
-    "vote_count": 29600,
-    "backdrop_path": "https://img.youtube.com/vi/CocEMWdc7Ck/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/CocEMWdc7Ck/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/CocEMWdc7Ck/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2023)",
-    "overview": "'Shakira: Bzrp Music Sessions, Vol. 53' by Bizarrap, Shakira. Released in 2023. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Electropop, Diss Track, Global Viral",
-    "language": "Latin",
-    "release_year": 2023,
-    "era": "2020s",
-    "youtube_id": "CocEMWdc7Ck",
-    "spotify_id": "sp_200",
-    "apple_music_id": "am_200",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Shakira: Bzrp Music Sessions, Vol. 53",
-        "duration": "3:45",
-        "videoId": "CocEMWdc7Ck"
-      },
-      {
-        "number": 2,
-        "title": "Shakira: Bzrp Music Sessions, Vol. 53 (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "CocEMWdc7Ck"
-      }
-    ],
-    "popularity": 90.0
-  },
-  {
-    "id": 201,
-    "title": "Hips Don't Lie",
-    "artist": "Shakira, Wyclef Jean",
-    "vote_average": 9.8,
-    "vote_count": 29913,
-    "backdrop_path": "https://img.youtube.com/vi/DUT5rEU6pqM/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/DUT5rEU6pqM/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/DUT5rEU6pqM/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2006)",
-    "overview": "'Hips Don't Lie' by Shakira, Wyclef Jean. Released in 2006. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Latin Pop, Salsa, Legend",
-    "language": "Latin",
-    "release_year": 2006,
-    "era": "2000s",
-    "youtube_id": "DUT5rEU6pqM",
-    "spotify_id": "sp_201",
-    "apple_music_id": "am_201",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Hips Don't Lie",
-        "duration": "3:45",
-        "videoId": "DUT5rEU6pqM"
-      },
-      {
-        "number": 2,
-        "title": "Hips Don't Lie (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "DUT5rEU6pqM"
-      }
-    ],
-    "popularity": 91.3
-  },
-  {
-    "id": 202,
-    "title": "Waka Waka (This Time for Africa)",
-    "artist": "Shakira, Freshlyground",
-    "vote_average": 9.4,
-    "vote_count": 30226,
-    "backdrop_path": "https://img.youtube.com/vi/pRpeEdMmmQ0/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/pRpeEdMmmQ0/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/pRpeEdMmmQ0/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2010)",
-    "overview": "'Waka Waka (This Time for Africa)' by Shakira, Freshlyground. Released in 2010. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, World Pop, World Cup, 3 Billion Views",
-    "language": "Latin",
-    "release_year": 2010,
-    "era": "2010s",
-    "youtube_id": "pRpeEdMmmQ0",
-    "spotify_id": "sp_202",
-    "apple_music_id": "am_202",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Waka Waka (This Time for Africa)",
-        "duration": "3:45",
-        "videoId": "pRpeEdMmmQ0"
-      },
-      {
-        "number": 2,
-        "title": "Waka Waka (This Time for Africa) (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "pRpeEdMmmQ0"
-      }
-    ],
-    "popularity": 92.6
-  },
-  {
-    "id": 203,
-    "title": "Chantaje",
-    "artist": "Shakira, Maluma",
-    "vote_average": 9.0,
-    "vote_count": 30539,
-    "backdrop_path": "https://img.youtube.com/vi/6Mgqbai3fKo/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/6Mgqbai3fKo/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/6Mgqbai3fKo/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2016)",
-    "overview": "'Chantaje' by Shakira, Maluma. Released in 2016. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Reggaeton, Pop, 2 Billion Views",
-    "language": "Latin",
-    "release_year": 2016,
-    "era": "2010s",
-    "youtube_id": "6Mgqbai3fKo",
-    "spotify_id": "sp_203",
-    "apple_music_id": "am_203",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Chantaje",
-        "duration": "3:45",
-        "videoId": "6Mgqbai3fKo"
-      },
-      {
-        "number": 2,
-        "title": "Chantaje (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "6Mgqbai3fKo"
-      }
-    ],
-    "popularity": 93.9
-  },
-  {
-    "id": 204,
-    "title": "Hawái",
-    "artist": "Maluma",
-    "vote_average": 9.7,
-    "vote_count": 30852,
-    "backdrop_path": "https://img.youtube.com/vi/pK060iUFWXg/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/pK060iUFWXg/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/pK060iUFWXg/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2020)",
-    "overview": "'Hawái' by Maluma. Released in 2020. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Reggaeton, Pop, Hit",
-    "language": "Latin",
-    "release_year": 2020,
-    "era": "2020s",
-    "youtube_id": "pK060iUFWXg",
-    "spotify_id": "sp_204",
-    "apple_music_id": "am_204",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Hawái",
-        "duration": "3:45",
-        "videoId": "pK060iUFWXg"
-      },
-      {
-        "number": 2,
-        "title": "Hawái (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "pK060iUFWXg"
-      }
-    ],
-    "popularity": 95.2
-  },
-  {
-    "id": 205,
-    "title": "Felices los 4",
-    "artist": "Maluma",
-    "vote_average": 9.3,
-    "vote_count": 31165,
-    "backdrop_path": "https://img.youtube.com/vi/t_jHrUE5IOk/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/t_jHrUE5IOk/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/t_jHrUE5IOk/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2017)",
-    "overview": "'Felices los 4' by Maluma. Released in 2017. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Reggaeton, Latin Pop, Hit",
-    "language": "Latin",
-    "release_year": 2017,
-    "era": "2010s",
-    "youtube_id": "t_jHrUE5IOk",
-    "spotify_id": "sp_205",
-    "apple_music_id": "am_205",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Felices los 4",
-        "duration": "3:45",
-        "videoId": "t_jHrUE5IOk"
-      },
-      {
-        "number": 2,
-        "title": "Felices los 4 (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "t_jHrUE5IOk"
-      }
-    ],
-    "popularity": 96.5
-  },
-  {
-    "id": 206,
-    "title": "Calma (Remix)",
-    "artist": "Pedro Capó, Farruko",
-    "vote_average": 8.9,
-    "vote_count": 31478,
-    "backdrop_path": "https://img.youtube.com/vi/1_zgKRBrT0Y/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/1_zgKRBrT0Y/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/1_zgKRBrT0Y/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2018)",
-    "overview": "'Calma (Remix)' by Pedro Capó, Farruko. Released in 2018. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Reggae-Pop, Beach, 2 Billion Views",
-    "language": "Latin",
-    "release_year": 2018,
-    "era": "2010s",
-    "youtube_id": "1_zgKRBrT0Y",
-    "spotify_id": "sp_206",
-    "apple_music_id": "am_206",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Calma (Remix)",
-        "duration": "3:45",
-        "videoId": "1_zgKRBrT0Y"
-      },
-      {
-        "number": 2,
-        "title": "Calma (Remix) (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "1_zgKRBrT0Y"
-      }
-    ],
-    "popularity": 97.8
-  },
-  {
-    "id": 207,
-    "title": "Pepas",
-    "artist": "Farruko",
-    "vote_average": 9.6,
-    "vote_count": 31791,
-    "backdrop_path": "https://img.youtube.com/vi/y8trd3gjJt0/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/y8trd3gjJt0/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/y8trd3gjJt0/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2021)",
-    "overview": "'Pepas' by Farruko. Released in 2021. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Guaracha, EDM, Festival",
-    "language": "Latin",
-    "release_year": 2021,
-    "era": "2020s",
-    "youtube_id": "y8trd3gjJt0",
-    "spotify_id": "sp_207",
-    "apple_music_id": "am_207",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Pepas",
-        "duration": "3:45",
-        "videoId": "y8trd3gjJt0"
-      },
-      {
-        "number": 2,
-        "title": "Pepas (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "y8trd3gjJt0"
-      }
-    ],
-    "popularity": 99.1
-  },
-  {
-    "id": 208,
-    "title": "Con Calma",
-    "artist": "Daddy Yankee, Snow",
-    "vote_average": 9.2,
-    "vote_count": 32104,
-    "backdrop_path": "https://img.youtube.com/vi/DiItGE3eAyQ/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/DiItGE3eAyQ/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/DiItGE3eAyQ/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2019)",
-    "overview": "'Con Calma' by Daddy Yankee, Snow. Released in 2019. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Reggaeton, Dance, 2 Billion Views",
-    "language": "Latin",
-    "release_year": 2019,
-    "era": "2010s",
-    "youtube_id": "DiItGE3eAyQ",
-    "spotify_id": "sp_208",
-    "apple_music_id": "am_208",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Con Calma",
-        "duration": "3:45",
-        "videoId": "DiItGE3eAyQ"
-      },
-      {
-        "number": 2,
-        "title": "Con Calma (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "DiItGE3eAyQ"
-      }
-    ],
-    "popularity": 90.4
-  },
-  {
-    "id": 209,
-    "title": "Ella Baila Sola",
-    "artist": "Eslabon Armado, Peso Pluma",
-    "vote_average": 8.8,
-    "vote_count": 32417,
-    "backdrop_path": "https://img.youtube.com/vi/lZiaYpD9ZrI/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/lZiaYpD9ZrI/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/lZiaYpD9ZrI/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2023)",
-    "overview": "'Ella Baila Sola' by Eslabon Armado, Peso Pluma. Released in 2023. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Regional Mexican, Corrido, Global #1",
-    "language": "Latin",
-    "release_year": 2023,
-    "era": "2020s",
-    "youtube_id": "lZiaYpD9ZrI",
-    "spotify_id": "sp_209",
-    "apple_music_id": "am_209",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Ella Baila Sola",
-        "duration": "3:45",
-        "videoId": "lZiaYpD9ZrI"
-      },
-      {
-        "number": 2,
-        "title": "Ella Baila Sola (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "lZiaYpD9ZrI"
-      }
-    ],
-    "popularity": 91.7
-  },
-  {
-    "id": 210,
-    "title": "La Fama",
-    "artist": "Rosalía, The Weeknd",
-    "vote_average": 9.5,
-    "vote_count": 32730,
-    "backdrop_path": "https://img.youtube.com/vi/e-CEd6xrRQc/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/e-CEd6xrRQc/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/e-CEd6xrRQc/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2021)",
-    "overview": "'La Fama' by Rosalía, The Weeknd. Released in 2021. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Bachata, Latin Pop, Hit",
-    "language": "Latin",
-    "release_year": 2021,
-    "era": "2020s",
-    "youtube_id": "e-CEd6xrRQc",
-    "spotify_id": "sp_210",
-    "apple_music_id": "am_210",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "La Fama",
-        "duration": "3:45",
-        "videoId": "e-CEd6xrRQc"
-      },
-      {
-        "number": 2,
-        "title": "La Fama (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "e-CEd6xrRQc"
-      }
-    ],
-    "popularity": 93.0
-  },
-  {
-    "id": 211,
-    "title": "Despechá",
-    "artist": "Rosalía",
-    "vote_average": 9.1,
-    "vote_count": 33043,
-    "backdrop_path": "https://img.youtube.com/vi/5g2hT4GmAGU/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/5g2hT4GmAGU/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/5g2hT4GmAGU/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2022)",
-    "overview": "'Despechá' by Rosalía. Released in 2022. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Mambo, Electropop, Summer Hit",
-    "language": "Latin",
-    "release_year": 2022,
-    "era": "2020s",
-    "youtube_id": "5g2hT4GmAGU",
-    "spotify_id": "sp_211",
-    "apple_music_id": "am_211",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Despechá",
-        "duration": "3:45",
-        "videoId": "5g2hT4GmAGU"
-      },
-      {
-        "number": 2,
-        "title": "Despechá (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "5g2hT4GmAGU"
-      }
-    ],
-    "popularity": 94.3
-  },
-  {
-    "id": 212,
-    "title": "Malamente",
-    "artist": "Rosalía",
-    "vote_average": 9.8,
-    "vote_count": 33356,
-    "backdrop_path": "https://img.youtube.com/vi/Rht7rBHuXW8/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/Rht7rBHuXW8/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/Rht7rBHuXW8/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2018)",
-    "overview": "'Malamente' by Rosalía. Released in 2018. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Nuevo Flamenco, Latin Pop, Grammy Winner",
-    "language": "Latin",
-    "release_year": 2018,
-    "era": "2010s",
-    "youtube_id": "Rht7rBHuXW8",
-    "spotify_id": "sp_212",
-    "apple_music_id": "am_212",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Malamente",
-        "duration": "3:45",
-        "videoId": "Rht7rBHuXW8"
-      },
-      {
-        "number": 2,
-        "title": "Malamente (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "Rht7rBHuXW8"
-      }
-    ],
-    "popularity": 95.6
-  },
-  {
-    "id": 213,
-    "title": "Todo De Ti",
-    "artist": "Rauw Alejandro",
-    "vote_average": 9.4,
-    "vote_count": 33669,
-    "backdrop_path": "https://img.youtube.com/vi/CFPLIaMpGrY/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/CFPLIaMpGrY/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/CFPLIaMpGrY/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2021)",
-    "overview": "'Todo De Ti' by Rauw Alejandro. Released in 2021. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Synthpop, Nu-Disco, Hit",
-    "language": "Latin",
-    "release_year": 2021,
-    "era": "2020s",
-    "youtube_id": "CFPLIaMpGrY",
-    "spotify_id": "sp_213",
-    "apple_music_id": "am_213",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Todo De Ti",
-        "duration": "3:45",
-        "videoId": "CFPLIaMpGrY"
-      },
-      {
-        "number": 2,
-        "title": "Todo De Ti (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "CFPLIaMpGrY"
-      }
-    ],
-    "popularity": 96.9
-  },
-  {
-    "id": 214,
-    "title": "Telepatía",
-    "artist": "Kali Uchis",
-    "vote_average": 9.0,
-    "vote_count": 33982,
-    "backdrop_path": "https://img.youtube.com/vi/bn_p95HbHoQ/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/bn_p95HbHoQ/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/bn_p95HbHoQ/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2020)",
-    "overview": "'Telepatía' by Kali Uchis. Released in 2020. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Dream Pop, R&B, Viral",
-    "language": "Latin",
-    "release_year": 2020,
-    "era": "2020s",
-    "youtube_id": "bn_p95HbHoQ",
-    "spotify_id": "sp_214",
-    "apple_music_id": "am_214",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Telepatía",
-        "duration": "3:45",
-        "videoId": "bn_p95HbHoQ"
-      },
-      {
-        "number": 2,
-        "title": "Telepatía (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "bn_p95HbHoQ"
-      }
-    ],
-    "popularity": 98.2
-  },
-  {
-    "id": 215,
-    "title": "Provenza",
-    "artist": "Karol G",
-    "vote_average": 9.7,
-    "vote_count": 34295,
-    "backdrop_path": "https://img.youtube.com/vi/ca48oMV59LU/hqdefault.jpg",
-    "poster_path": "https://img.youtube.com/vi/ca48oMV59LU/hqdefault.jpg",
-    "artwork": "https://img.youtube.com/vi/ca48oMV59LU/hqdefault.jpg",
-    "tagline": "Iconic Latin Masterpiece (2022)",
-    "overview": "'Provenza' by Karol G. Released in 2022. High-fidelity ad-free stream directly integrated with YouTube, Spotify, Apple Music, and JioSaavn.",
-    "genres": "Latin, Afrobeat, Reggaeton, Summer",
-    "language": "Latin",
-    "release_year": 2022,
-    "era": "2020s",
-    "youtube_id": "ca48oMV59LU",
-    "spotify_id": "sp_215",
-    "apple_music_id": "am_215",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Provenza",
-        "duration": "3:45",
-        "videoId": "ca48oMV59LU"
-      },
-      {
-        "number": 2,
-        "title": "Provenza (Acoustic / Live)",
-        "duration": "3:20",
-        "videoId": "ca48oMV59LU"
-      }
-    ],
-    "popularity": 99.5
   }
 ]

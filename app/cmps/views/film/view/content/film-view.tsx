@@ -1,12 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Disc3, Music2, Pause, Play, Volume2 } from 'lucide-react'
+import { Disc3, Music2, Play } from 'lucide-react'
 import config from '../../../../../config'
 import { useMediaQuery } from '../../../../../hooks/use-media-query'
 import { store } from '../../../../../store'
-import {
-  playAlbumPreview,
-  stopAlbumPreview,
-} from '../../../../../utils/audio-synth'
 import { down, orientation } from '../../../../../utils/mq'
 import { cn } from '../../../../../utils/tw'
 import type { Film } from '../../../../../vf'
@@ -23,11 +19,18 @@ export const FilmView = ({
   const isSmallScreen = useMediaQuery(down('md'))
   const isLandscape = useMediaQuery(orientation('landscape'))
   const [viewHovered, setViewHovered] = useState(false)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [currentStep, setCurrentStep] = useState(0)
 
   const filmRef = useRef<Film>(undefined)
   const ua = store((state) => state.ua)
+  const isPlaying = store(
+    (state) =>
+      state.playerOpen &&
+      Boolean(
+        state.activeTrack &&
+          (state.activeTrack.albumTitle === film?.title ||
+            state.activeTrack.title === film?.title),
+      ),
+  )
 
   const [backdropHidden, setBackdropHidden] = useState(true)
   const [backdropErrored, setBackdropErrored] = useState(true)
@@ -35,30 +38,9 @@ export const FilmView = ({
   useEffect(() => {
     if (filmRef.current?.tmdbId !== film?.tmdbId) {
       setBackdropHidden(true)
-      stopAlbumPreview()
-      setIsPlaying(false)
     }
     filmRef.current = film
   }, [film])
-
-  useEffect(() => {
-    return () => {
-      stopAlbumPreview()
-    }
-  }, [])
-
-  const handleTogglePlay = () => {
-    if (!film) return
-    if (isPlaying) {
-      stopAlbumPreview()
-      setIsPlaying(false)
-    } else {
-      setIsPlaying(true)
-      playAlbumPreview(film.tmdbId, (step) => {
-        setCurrentStep(step)
-      })
-    }
-  }
 
   const isIOS = useMemo(() => ua.getOS()?.name === 'iOS', [ua])
 
@@ -218,48 +200,6 @@ export const FilmView = ({
                 >
                   <Play className='size-4 fill-white' /> Stream on YouTube
                 </Button>
-
-                <Button
-                  size='sm'
-                  variant='outline'
-                  onClick={handleTogglePlay}
-                  className={cn(
-                    'cursor-pointer gap-2 font-bold transition-all',
-                    isPlaying
-                      ? 'border-amber-500 text-amber-500'
-                      : '',
-                  )}
-                >
-                  {isPlaying ? (
-                    <>
-                      <Pause className='size-4' /> Synth Preview
-                    </>
-                  ) : (
-                    <>
-                      <Play className='size-4' /> Synth Preview
-                    </>
-                  )}
-                </Button>
-
-                {/* Animated Equalizer Waveform */}
-                {isPlaying && (
-                  <div className='flex items-center gap-1 h-5 px-2 bg-muted/60 rounded-md border border-border/40'>
-                    <Volume2 className='size-3.5 text-primary mr-1' />
-                    {[0, 1, 2, 3, 4, 5].map((i) => {
-                      const h = [6, 14, 18, 10, 16, 8][(currentStep + i) % 6]
-                      return (
-                        <div
-                          key={i}
-                          className='w-1 bg-primary rounded-full transition-all duration-150'
-                          style={{ height: `${h}px` }}
-                        />
-                      )
-                    })}
-                    <span className='text-[0.65rem] font-mono text-muted-foreground ml-1'>
-                      LIVE SYNTH
-                    </span>
-                  </div>
-                )}
               </div>
             </div>
           </div>

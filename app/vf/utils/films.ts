@@ -1,0 +1,94 @@
+import type { VoroforceCell } from '../types'
+
+export interface TrackItem {
+  number: number
+  title: string
+  duration: string
+}
+
+export type FilmData = Record<string, any>
+export type FilmBatch = FilmData[]
+export type FilmBatches = Map<number, FilmBatch>
+
+export class Film {
+  tmdbId: number
+  imdbId?: string
+  title: string
+  artist: string
+  tagline?: string
+  overview?: string
+  genres?: string[]
+  year: number
+  rating: number
+  popularity: number
+  poster: string
+  backdrop: string
+  tracks: TrackItem[]
+  spotifyId?: string
+  appleMusicId?: string
+  youtubeId?: string
+
+  constructor(data: FilmData) {
+    this.tmdbId = Number(data.id)
+    this.imdbId = data.imdb_id ? String(data.imdb_id) : undefined
+    this.title = String(data.title)
+    this.artist = data.artist ? String(data.artist) : 'Various Artists'
+    this.tagline = data.tagline ? String(data.tagline) : undefined
+    this.overview = data.overview ? String(data.overview) : undefined
+    this.genres = data.genres
+      ? Array.isArray(data.genres)
+        ? data.genres
+        : String(data.genres).split(', ')
+      : undefined
+    this.year = Number(data.release_year)
+    this.rating = Number(data.vote_average) * 10
+    this.popularity = Number(data.popularity)
+    this.poster = String(data.poster_path)
+    this.backdrop = String(data.backdrop_path ?? data.poster_path)
+    this.tracks = Array.isArray(data.tracks) ? data.tracks : []
+    this.spotifyId = data.spotify_id ? String(data.spotify_id) : undefined
+    this.appleMusicId = data.apple_music_id ? String(data.apple_music_id) : undefined
+    this.youtubeId = data.youtube_id ? String(data.youtube_id) : undefined
+  }
+}
+
+export const Album = Film
+export type AlbumData = FilmData
+export type AlbumBatch = FilmBatch
+export type AlbumBatches = FilmBatches
+
+const loadCellFilmBatch = async (batchIndex: number) => {
+  const baseUrl =
+    import.meta.env.VITE_MUSIC_INFO_BASE_URL ??
+    import.meta.env.VITE_FILM_INFO_BASE_URL ??
+    '/json'
+  const url = `${baseUrl}/${batchIndex}.json`
+  try {
+    const response = await fetch(url)
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`)
+    }
+    return await response.json()
+  } catch (error) {
+    console.log('batchIndex', batchIndex)
+    console.error('Error loading JSON:', error)
+  }
+}
+
+export const getCellFilm = async (
+  cell: VoroforceCell,
+  filmBatches: FilmBatches,
+) => {
+  if (!cell) return
+  let filmBatch = filmBatches.get(cell.subgrid)
+  if (!filmBatch) {
+    filmBatch = await loadCellFilmBatch(cell.subgrid)
+    filmBatches.set(cell.subgrid, filmBatch ?? [])
+  }
+
+  return filmBatch?.[cell.subgridIndex]
+    ? new Film(filmBatch[cell.subgridIndex])
+    : undefined
+}
+
+export const getCellAlbum = getCellFilm

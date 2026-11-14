@@ -1,0 +1,288 @@
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Disc3, Music2, Pause, Play, Volume2 } from 'lucide-react'
+import config from '../../../../../config'
+import { useMediaQuery } from '../../../../../hooks/use-media-query'
+import { store } from '../../../../../store'
+import {
+  playAlbumPreview,
+  stopAlbumPreview,
+} from '../../../../../utils/audio-synth'
+import { down, orientation } from '../../../../../utils/mq'
+import { cn } from '../../../../../utils/tw'
+import type { Film } from '../../../../../vf'
+import { AnimateDimensionsChange } from '../../../../common/animate-dimensions-change'
+import { Badge } from '../../../../ui/badge'
+import { Button } from '../../../../ui/button'
+import { FilmPoster } from '../../shared/film-poster'
+import { FilmRatingGauge } from '../../shared/film-rating-gauge'
+
+export const FilmView = ({
+  film,
+  className = '',
+}: { film?: Film; className?: string }) => {
+  const isSmallScreen = useMediaQuery(down('md'))
+  const isLandscape = useMediaQuery(orientation('landscape'))
+  const [viewHovered, setViewHovered] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [currentStep, setCurrentStep] = useState(0)
+
+  const filmRef = useRef<Film>(undefined)
+  const ua = store((state) => state.ua)
+
+  const [backdropHidden, setBackdropHidden] = useState(true)
+  const [backdropErrored, setBackdropErrored] = useState(true)
+
+  useEffect(() => {
+    if (filmRef.current?.tmdbId !== film?.tmdbId) {
+      setBackdropHidden(true)
+      stopAlbumPreview()
+      setIsPlaying(false)
+    }
+    filmRef.current = film
+  }, [film])
+
+  useEffect(() => {
+    return () => {
+      stopAlbumPreview()
+    }
+  }, [])
+
+  const handleTogglePlay = () => {
+    if (!film) return
+    if (isPlaying) {
+      stopAlbumPreview()
+      setIsPlaying(false)
+    } else {
+      setIsPlaying(true)
+      playAlbumPreview(film.tmdbId, (step) => {
+        setCurrentStep(step)
+      })
+    }
+  }
+
+  const isIOS = useMemo(() => ua.getOS()?.name === 'iOS', [ua])
+
+  if (!film) return null
+
+  return (
+    <AnimateDimensionsChange
+      enabled={!(isSmallScreen && isLandscape)}
+      axis='height'
+      className='relative ease-linear max-lg:landscape:static'
+      duration={300}
+      delay={0}
+      {...(!isSmallScreen && {
+        onMouseEnter: () => setViewHovered(true),
+        onMouseLeave: () => setViewHovered(false),
+      })}
+    >
+      <div className={cn('landscape:h-full relative overflow-hidden', className)}>
+        {/* Ambient album backdrop glow */}
+        <div
+          className={cn(
+            'absolute inset-0 h-full w-full transition-colors duration-700',
+            {
+              '!bg-background': viewHovered,
+              'bg-background/80 backdrop-blur-md':
+                isSmallScreen || isIOS || backdropErrored || backdropHidden,
+            },
+          )}
+        >
+          {!isIOS && (
+            <img
+              className={cn(
+                'h-full w-full object-cover object-center opacity-0 transition-opacity duration-700 filter blur-2xl scale-125 will-change-[opacity]',
+                {
+                  '!w-0 !h-0': backdropErrored,
+                  '!opacity-25 dark:!opacity-20': !backdropHidden,
+                },
+              )}
+              alt=''
+              src={`${config.backdropBaseUrl}${film.backdrop}`}
+              onLoad={() => {
+                setBackdropHidden(false)
+                setBackdropErrored(false)
+              }}
+              onError={() => {
+                setBackdropErrored(true)
+              }}
+            />
+          )}
+        </div>
+
+        <div className='relative z-1 flex h-full w-full flex-col p-4 md:p-6 lg:p-8 max-h-[85vh] overflow-y-auto'>
+          {/* Main Album Header with Vinyl & Artwork */}
+          <div className='flex flex-col md:flex-row gap-6 items-start'>
+            {/* Album Sleeve & Vinyl Record Graphic */}
+            <div className='relative group/vinyl shrink-0 mx-auto md:mx-0'>
+              {/* Spinning Vinyl Record (slides out) */}
+              <div
+                className={cn(
+                  'absolute top-2 left-6 h-36 w-36 md:h-44 md:w-44 rounded-full bg-neutral-950 border-4 border-neutral-800 shadow-2xl flex items-center justify-center transition-all duration-700 ease-out z-0',
+                  {
+                    'translate-x-12 md:translate-x-18 rotate-180': isPlaying,
+                    'group-hover/vinyl:translate-x-8': !isPlaying,
+                  },
+                )}
+              >
+                {/* Vinyl Grooves */}
+                <div className='absolute inset-2 rounded-full border border-neutral-700/40' />
+                <div className='absolute inset-5 rounded-full border border-neutral-700/30' />
+                <div className='absolute inset-8 rounded-full border border-neutral-700/20' />
+                <div className='absolute inset-11 rounded-full border border-neutral-700/20' />
+
+                {/* Center Disc Label with Rotating Vinyl Icon */}
+                <div
+                  className={cn(
+                    'h-12 w-12 md:h-14 md:w-14 rounded-full bg-primary/90 flex items-center justify-center text-primary-foreground shadow-inner',
+                    {
+                      'animate-[spin_4s_linear_infinite]': isPlaying,
+                    },
+                  )}
+                >
+                  <Disc3 className='size-6 md:size-7' />
+                </div>
+              </div>
+
+              {/* Album Cover Sleeve */}
+              <div className='relative z-10 h-40 w-40 md:h-48 md:w-48 shadow-2xl rounded-lg overflow-hidden border border-border/50 bg-card'>
+                <FilmPoster
+                  film={film}
+                  className='h-full w-full object-cover transition-transform duration-300 group-hover/vinyl:scale-105'
+                />
+              </div>
+            </div>
+
+            {/* Album Details */}
+            <div className='flex flex-col grow justify-between gap-3 w-full'>
+              <div>
+                <p className='text-xs md:text-sm font-black text-primary tracking-widest uppercase mb-1 flex items-center gap-1.5'>
+                  <Music2 className='size-4' />
+                  {film.artist}
+                </p>
+                <div className='flex items-start justify-between gap-4'>
+                  <h2 className='font-black text-2xl md:text-3xl lg:text-4xl leading-tight text-foreground'>
+                    {film.title}
+                    {film.year && (
+                      <span className='font-normal text-muted-foreground text-xl md:text-2xl ml-2'>
+                        ({film.year})
+                      </span>
+                    )}
+                  </h2>
+                  <FilmRatingGauge value={film.rating} />
+                </div>
+
+                {film.tagline && (
+                  <p className='text-sm md:text-base text-muted-foreground italic mt-2'>
+                    "{film.tagline}"
+                  </p>
+                )}
+              </div>
+
+              {/* Genre Badges */}
+              <div className='flex flex-wrap gap-1.5 my-2'>
+                {film.genres?.map((genre) => (
+                  <Badge
+                    key={genre}
+                    variant='secondary'
+                    className='text-xs py-0.5 px-2 font-medium'
+                  >
+                    {genre}
+                  </Badge>
+                ))}
+              </div>
+
+              {/* Audio Preview Controls */}
+              <div className='flex flex-wrap items-center gap-3 pt-2 border-t border-border/40'>
+                <Button
+                  size='sm'
+                  onClick={handleTogglePlay}
+                  className={cn(
+                    'cursor-pointer gap-2 font-bold transition-all shadow-md',
+                    isPlaying
+                      ? 'bg-amber-500 hover:bg-amber-600 text-black'
+                      : 'bg-primary hover:bg-primary/90 text-primary-foreground',
+                  )}
+                >
+                  {isPlaying ? (
+                    <>
+                      <Pause className='size-4' /> Pause Preview
+                    </>
+                  ) : (
+                    <>
+                      <Play className='size-4' /> Play Preview
+                    </>
+                  )}
+                </Button>
+
+                {/* Animated Equalizer Waveform */}
+                {isPlaying && (
+                  <div className='flex items-center gap-1 h-5 px-2 bg-muted/60 rounded-md border border-border/40'>
+                    <Volume2 className='size-3.5 text-primary mr-1' />
+                    {[0, 1, 2, 3, 4, 5].map((i) => {
+                      const h = [6, 14, 18, 10, 16, 8][(currentStep + i) % 6]
+                      return (
+                        <div
+                          key={i}
+                          className='w-1 bg-primary rounded-full transition-all duration-150'
+                          style={{ height: `${h}px` }}
+                        />
+                      )
+                    })}
+                    <span className='text-[0.65rem] font-mono text-muted-foreground ml-1'>
+                      LIVE SYNTH
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Album Overview & Story */}
+          {film.overview && (
+            <div className='mt-6 pt-4 border-t border-border/40'>
+              <h4 className='text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2'>
+                About this Record
+              </h4>
+              <p className='text-sm md:text-base leading-relaxed text-foreground/90'>
+                {film.overview}
+              </p>
+            </div>
+          )}
+
+          {/* Tracklist Accordion / Section */}
+          {film.tracks && film.tracks.length > 0 && (
+            <div className='mt-6 pt-4 border-t border-border/40'>
+              <h4 className='text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center justify-between'>
+                <span>Tracklist</span>
+                <span className='font-normal text-muted-foreground/70'>
+                  {film.tracks.length} tracks
+                </span>
+              </h4>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-2 text-xs md:text-sm font-medium'>
+                {film.tracks.map((track) => (
+                  <div
+                    key={track.number}
+                    className='flex items-center justify-between p-2 rounded-md hover:bg-muted/50 border border-transparent hover:border-border/40 transition-colors'
+                  >
+                    <div className='flex items-center gap-2.5 truncate mr-2'>
+                      <span className='font-mono text-xs text-muted-foreground w-4 text-right'>
+                        {track.number}
+                      </span>
+                      <span className='truncate text-foreground/90'>
+                        {track.title}
+                      </span>
+                    </div>
+                    <span className='font-mono text-xs text-muted-foreground shrink-0'>
+                      {track.duration}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </AnimateDimensionsChange>
+  )
+}

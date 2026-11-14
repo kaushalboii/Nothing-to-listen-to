@@ -454,3 +454,4 @@ with open(os.path.join(json_dir, "0.json"), "w", encoding="utf-8") as f:
     json.dump(formatted_json, f, indent=2)
 
 print("Saved public/json/0.json successfully.")
+

@@ -126,3 +126,4 @@ export const stopAlbumPreview = () => {
 }
 
 export const isAlbumPreviewPlaying = () => isPlaying
+

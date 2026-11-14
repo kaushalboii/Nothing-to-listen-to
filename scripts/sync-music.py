@@ -224,3 +224,4 @@ print(f"Successfully saved {len(final_records)} records to {JSON_OUTPUT}")
 print("Generating WebGL DDS texture atlases...")
 subprocess.run([sys.executable, os.path.join(SCRIPT_DIR, "generate-textures.py")])
 print("=== Music Sync Complete! ===")
+

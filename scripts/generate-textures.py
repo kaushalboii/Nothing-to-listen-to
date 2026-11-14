@@ -298,3 +298,4 @@ for d in ["high", "mid", "low"]:
     print(f"Wrote {dds_path} ({len(dds_data)} bytes)")
 
 print("All album covers and DDS texture atlases generated successfully!")
+

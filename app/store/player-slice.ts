@@ -36,3 +36,4 @@ export const createPlayerSlice: StateCreator<
   playTrack: (track) => set({ activeTrack: track, playerOpen: true, isMinimized: false }),
   stopTrack: () => set({ activeTrack: null, playerOpen: false }),
 })
+

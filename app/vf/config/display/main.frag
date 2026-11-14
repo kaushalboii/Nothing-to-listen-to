@@ -56,7 +56,7 @@ precision highp float;
 #define DEFAULT_WEIGHTED_X_DIST_SCALE 1.0
 #define X_DIST_SCALING_EDGE_ASPECT_CORRECTION 1 // sometimes looks better without it due to extreme vertical elongation and small sizes
 
-#define MEDIA_ENABLED 1
+#define MEDIA_ENABLED 0
 #define MEDIA_HIDDEN 0
 #define MEDIA_GAMMA_CONVERSION_FACTOR 2
 #define MEDIA_GRAYSCALE 0
@@ -724,12 +724,45 @@ void rotateMediaUv(inout vec2 mediaUv, in uint index) {
     mediaUv = rotatedUv + centerUv;
 }
 
-// Assigns a random vec3 color based on the primary cell index
+// Assigns a procedural vinyl record aesthetic with sound grooves, sheen, and label
 void randomCellColor(inout vec3 c, inout float a, in Plot plot) {
-    float r = randomColorChannel(plot.indices.x);
-    float g = randomColorChannel(plot.indices.x + 1u);
-    float b = randomColorChannel(plot.indices.x + 2u);
-    c = vec3(r, g, b);
+    float hue = randomColorChannel(plot.indices.x);
+    vec3 labelColor = vec3(
+        0.5 + 0.5 * cos(6.28318 * (hue + 0.0)),
+        0.5 + 0.5 * cos(6.28318 * (hue + 0.33)),
+        0.5 + 0.5 * cos(6.28318 * (hue + 0.67))
+    );
+
+    vec2 uv = plot.mediaUv - vec2(0.5);
+    float dist = length(uv);
+
+    // Deep vinyl black base
+    vec3 vinyl = vec3(0.06, 0.06, 0.07);
+
+    // Concentric vinyl sound grooves
+    float grooves = sin(dist * 160.0) * 0.5 + 0.5;
+    grooves = pow(grooves, 2.5) * 0.09;
+    vinyl += vec3(grooves);
+
+    // Dynamic light sheen / anisotropic shimmer
+    float angle = atan(uv.y, uv.x);
+    float sheen = pow(max(0.0, sin(angle * 2.0 + 1.2)), 6.0) * 0.12;
+    sheen += pow(max(0.0, cos(angle * 2.0 - 0.8)), 8.0) * 0.08;
+    vinyl += vec3(sheen);
+
+    // Center record label
+    if (dist < 0.22) {
+        vinyl = mix(labelColor * 0.9, vec3(0.95), smoothstep(0.19, 0.22, dist) * 0.2);
+        if (dist < 0.045) {
+            vinyl = vec3(0.02, 0.02, 0.02); // spindle hole
+        } else if (dist < 0.055) {
+            vinyl = vec3(0.65, 0.65, 0.68); // spindle ring
+        }
+    } else if (dist > 0.47) {
+        vinyl *= 0.7; // outer rim
+    }
+
+    c = vinyl;
 }
 
 vec2 getMirroredTileUV(vec2 uv, float shrinkAmount) {
@@ -1345,11 +1378,8 @@ Plot plot() {
 //        borderRoundness = clamp(borderRoundness, EDGE_BORDER_ROUNDNESS_MIN * fBorderRoundnessMod * resolutionScale, EDGE_BORDER_ROUNDNESS_MAX * fBorderRoundnessMod * resolutionScale);
 //    #endif
 
-    vec2 mediaUv;
-    #if MEDIA_ENABLED == 1
-        vec4 mediaBbox = calcMediaBbox(index, cellCoords, bulgeFactor, mediaBulgeFactor, edgeStepStart*2., mediaWeightOffsetScale);
-        mediaUv = calcMediaUv(mediaBbox, index, mediaBulgeFactor);
-    #endif
+    vec4 mediaBbox = calcMediaBbox(index, cellCoords, bulgeFactor, mediaBulgeFactor, edgeStepStart*2., mediaWeightOffsetScale);
+    vec2 mediaUv = calcMediaUv(mediaBbox, index, mediaBulgeFactor);
 
     float weight;
     float weightOffset;

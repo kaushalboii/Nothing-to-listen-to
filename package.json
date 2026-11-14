@@ -6,7 +6,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite --port 3000 --host 0.0.0.0",
-		"build": "tsc -b && vite build",
+		"build": "tsc -b && vite build && cp dist/index.html dist/404.html && touch dist/.nojekyll",
 		"analyze": "VITE_ANALYZE_BUNDLE=1 vite build",
 		"preview": "vite preview --port 3000 --host 0.0.0.0",
 		"lint": "biome lint .",
@@ -15,7 +15,7 @@
 		"check:write": "biome check . --write --unsafe",
 		"clean:dist": "npx rimraf dist",
 		"sync:music": "python3 scripts/sync-music.py",
-		"generate:music": "python3 scripts/generate-music-data.py && python3 scripts/generate-textures.py",
+		"generate:music": "python3 scripts/sync-music.py",
 		"test": "vitest",
 		"test:unit": "vitest",
 		"test:unit:ui": "vitest --ui",

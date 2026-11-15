@@ -91,15 +91,22 @@ export const getCellFilm = async (
   filmBatches: FilmBatches,
 ) => {
   if (!cell) return
-  let filmBatch = filmBatches.get(cell.subgrid)
-  if (!filmBatch) {
-    filmBatch = await loadCellFilmBatch(cell.subgrid)
-    filmBatches.set(cell.subgrid, filmBatch ?? [])
+  const subgrid = cell.subgrid ?? 0
+  const subgridIndex =
+    cell.subgridIndex ??
+    (typeof cell.id === 'number' ? cell.id : cell.index) ??
+    0
+
+  let filmBatch = filmBatches.get(subgrid)
+  if (!filmBatch || filmBatch.length === 0) {
+    filmBatch = await loadCellFilmBatch(subgrid)
+    if (filmBatch) {
+      filmBatches.set(subgrid, filmBatch)
+    }
   }
 
-  return filmBatch?.[cell.subgridIndex]
-    ? new Film(filmBatch[cell.subgridIndex])
-    : undefined
+  const record = filmBatch?.[subgridIndex]
+  return record ? new Film(record) : undefined
 }
 
 export const getCellAlbum = getCellFilm

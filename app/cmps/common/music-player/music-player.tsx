@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import {
   ChevronDown,
   ChevronUp,
@@ -55,15 +55,12 @@ export const MusicPlayer = () => {
     : FALLBACK_VIDEO_ID
 
   // Construct embed URL based on chosen player mode (default: 100% ad-free Piped / Invidious)
-  const embedUrl = useMemo(() => {
-    if (playerMode === 'piped') {
-      return `https://piped.video/embed/${videoId}?autoplay=1`
-    }
-    if (playerMode === 'invidious') {
-      return `https://yewtu.be/embed/${videoId}?autoplay=1&playsinline=1`
-    }
-    return `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&modestbranding=1&iv_load_policy=3`
-  }, [playerMode, videoId])
+  const embedUrl =
+    playerMode === 'piped'
+      ? `https://piped.video/embed/${videoId}?autoplay=1`
+      : playerMode === 'invidious'
+      ? `https://yewtu.be/embed/${videoId}?autoplay=1&playsinline=1`
+      : `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&modestbranding=1&iv_load_policy=3`
 
   const directYtWatchUrl = activeTrack.videoId && activeTrack.videoId.length === 11
     ? `https://www.youtube.com/watch?v=${activeTrack.videoId}`

@@ -21,12 +21,16 @@ export const handleControls = () => {
   const { controls } = voroforce
 
   controls.listen('focused', (async ({ cell }: { cell: VoroforceCell }) => {
-    if (cell) setFilm(await getCellFilm(cell, filmBatches))
+    if (cell) {
+      const film = await getCellFilm(cell, filmBatches)
+      if (film) setFilm(film)
+    }
   }) as unknown as EventListener)
 
   controls.listen('selected', (async ({ cell }: { cell: VoroforceCell }) => {
     if (cell) {
-      setFilm(await getCellFilm(cell, filmBatches))
+      const film = await getCellFilm(cell, filmBatches)
+      if (film) setFilm(film)
       // controls.pinPointer()
     } else {
       // controls.unpinPointer()

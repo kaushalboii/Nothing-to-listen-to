@@ -65,9 +65,17 @@ export const FilmViewDrawer = () => {
   const [film, voroforceCell] = useMemo(() => {
     if (freezeFilm) return [filmRef.current, voroforceCellRef.current]
     filmRef.current = activeFilm
-    voroforceCellRef.current = voroforce?.cells?.focused
+    voroforceCellRef.current =
+      voroforce?.cells?.selected ?? voroforce?.cells?.focused
     return [activeFilm, voroforceCellRef.current]
-  }, [activeFilm, freezeFilm])
+  }, [activeFilm, freezeFilm, voroforce])
+
+  useEffect(() => {
+    if (activeFilm) {
+      filmRef.current = activeFilm
+      setFreezeFilm(false)
+    }
+  }, [activeFilm])
 
   useEffect(() => {
     if (mountContent) return
@@ -95,7 +103,10 @@ export const FilmViewDrawer = () => {
   useEffect(() => {
     if (isSelectMode) {
       let direction = getDefaultDirection(isLandscape)
-      const voroforceCell = voroforceCellRef.current
+      const voroforceCell =
+        voroforceCellRef.current ??
+        voroforce?.cells?.selected ??
+        voroforce?.cells?.focused
       if (voroforceCell) {
         if (isLandscape) {
           if (voroforceCell.x < window.innerWidth / (isSmallScreen ? 2 : 3)) {
@@ -112,7 +123,7 @@ export const FilmViewDrawer = () => {
     } else {
       onClose()
     }
-  }, [isSelectMode, isLandscape, isSmallScreen, onClose])
+  }, [isSelectMode, isLandscape, isSmallScreen, onClose, activeFilm, voroforce])
 
   return (
     <Modal

@@ -157,24 +157,40 @@ export const MusicSearchModal = () => {
     setFilm(filmObj)
     setSearchOpen(false)
 
-    const cellIndex = typeof record.id === 'number' ? record.id : Number(record.id)
+    const cellId = typeof record.id === 'number' ? record.id : Number(record.id)
 
     if (voroforce?.controls) {
       const controls = voroforce.controls as any
       const cells = (voroforce.cells ?? controls.cells) as any
-      const targetCell = cells?.[cellIndex] ?? (Array.isArray(cells) ? cells.find((c: any) => c.index === cellIndex || c.id === record.id) : null)
 
-      if (typeof controls.selectCell === 'function') {
-        controls.selectCell(cellIndex)
+      // Locate the exact Voronoi cell on the 3D sphere matching this song's ID
+      let targetCell: any = null
+      if (Array.isArray(cells) || (cells && typeof cells.length === 'number')) {
+        for (let i = 0; i < cells.length; i++) {
+          if (cells[i]?.id === cellId) {
+            targetCell = cells[i]
+            break
+          }
+        }
       }
-      if (typeof controls.focusCell === 'function') {
-        controls.focusCell(cellIndex)
+      if (!targetCell && cells?.[cellId]) {
+        targetCell = cells[cellId]
       }
-      if (targetCell && typeof controls.pinPointer === 'function') {
-        controls.pinPointer(targetCell)
-      }
-      if (typeof controls.navigateToCell === 'function') {
-        controls.navigateToCell(cellIndex)
+
+      if (targetCell) {
+        if (typeof controls.pinPointer === 'function') {
+          controls.pinPointer(targetCell)
+        }
+        if (typeof controls.focusCell === 'function') {
+          controls.focusCell(targetCell)
+        }
+        if (typeof controls.selectCell === 'function') {
+          controls.selectCell(targetCell)
+        }
+      } else if (typeof controls.navigateToCellById === 'function') {
+        controls.navigateToCellById(cellId)
+      } else if (typeof controls.selectCell === 'function') {
+        controls.selectCell(cellId)
       }
     }
 

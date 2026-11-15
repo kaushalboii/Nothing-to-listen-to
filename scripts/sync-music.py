@@ -60,31 +60,33 @@ MUSIC_KEYWORDS = [
     "visualizer", "remix", "hook step", "title track", "promo song"
 ]
 
-BROAD_YT_SEARCH_TERMS = [
-    ("trending songs 2026", "English"),
-    ("latest hit songs 2026", "English"),
-    ("billboard top songs 2026", "English"),
-    ("trending tamil song 2026", "Tamil"),
-    ("latest tamil songs 2026", "Tamil"),
-    ("new tamil songs", "Tamil"),
-    ("om songs", "Tamil"),
-    ("kanguva songs", "Tamil"),
-    ("jailer 2 songs", "Tamil"),
-    ("trending telugu song 2026", "Telugu"),
-    ("latest telugu songs 2026", "Telugu"),
-    ("pushpa 2 songs", "Telugu"),
-    ("devara songs", "Telugu"),
-    ("trending hindi songs 2026", "Hindi"),
-    ("latest bollywood songs 2026", "Hindi"),
-    ("trending malayalam songs 2026", "Malayalam"),
-    ("latest malayalam songs 2026", "Malayalam"),
-    ("aavesham songs", "Malayalam"),
-    ("trending punjabi songs 2026", "Punjabi"),
-    ("latest punjabi songs 2026", "Punjabi"),
-    ("latest k-pop song 2026", "K-Pop"),
-    ("latest latin hit 2026", "Latin"),
-    ("trending japanese songs 2026", "Japanese"),
-]
+def get_broad_yt_search_terms():
+    curr = datetime.now().year
+    return [
+        (f"trending songs {curr}", "English"),
+        (f"latest hit songs {curr}", "English"),
+        ("billboard top songs", "English"),
+        (f"trending tamil song {curr}", "Tamil"),
+        (f"latest tamil songs {curr}", "Tamil"),
+        ("new tamil songs", "Tamil"),
+        ("om songs", "Tamil"),
+        ("kanguva songs", "Tamil"),
+        ("jailer 2 songs", "Tamil"),
+        (f"trending telugu song {curr}", "Telugu"),
+        (f"latest telugu songs {curr}", "Telugu"),
+        ("pushpa 2 songs", "Telugu"),
+        ("devara songs", "Telugu"),
+        (f"trending hindi songs {curr}", "Hindi"),
+        (f"latest bollywood songs {curr}", "Hindi"),
+        (f"trending malayalam songs {curr}", "Malayalam"),
+        (f"latest malayalam songs {curr}", "Malayalam"),
+        ("aavesham songs", "Malayalam"),
+        (f"trending punjabi songs {curr}", "Punjabi"),
+        (f"latest punjabi songs {curr}", "Punjabi"),
+        (f"latest k-pop song {curr}", "K-Pop"),
+        (f"latest latin hit {curr}", "Latin"),
+        (f"trending japanese songs {curr}", "Japanese"),
+    ]
 
 PRIORITY_VERIFIED_HITS = [
     ("FA FA FA", ["OM", "Sai Abhyankkar", "Fahadh Faasil"], "Tamil", "Wjew3Rc1PYI"),
@@ -268,7 +270,7 @@ def scrape_youtube_broad_music():
     candidates = []
     seen_vids = set()
 
-    for term, default_lang in BROAD_YT_SEARCH_TERMS:
+    for term, default_lang in get_broad_yt_search_terms():
         url = "https://www.youtube.com/results?search_query=" + urllib.parse.quote(term)
         try:
             req = urllib.request.Request(url, headers=HEADERS)
@@ -681,12 +683,14 @@ def main():
         vid = item["youtube_id"]
         artwork = item.get("artwork") or f"https://img.youtube.com/vi/{vid}/hqdefault.jpg"
         lang = item.get("lang", "English")
-        year = item.get("year", 2026)
+        curr_year = datetime.now().year
+        year = item.get("year", curr_year)
 
         raw_cat = item.get("category", "Music")
         cat_tokens = [c.strip() for c in re.split(r"[,/]+", str(raw_cat)) if c.strip() and c.strip().lower() not in (lang.lower(), "music")]
         unique_genre_tokens = list(dict.fromkeys([lang, "Trending"] + cat_tokens))
         genres_str = ", ".join(unique_genre_tokens)
+        era_str = f"New & Trending ({curr_year - 1}-{curr_year})"
 
         final_records.append({
             "id": idx,
@@ -702,7 +706,7 @@ def main():
             "genres": genres_str,
             "language": lang,
             "release_year": year,
-            "era": "New & Trending (2024-2026)",
+            "era": era_str,
             "trending": True,
             "youtube_id": vid,
             "spotify_id": f"sp_{idx}",
@@ -715,6 +719,7 @@ def main():
         })
 
     # Fill remaining slots up to 216 from curated existing catalog to preserve timeless master tracks
+    curr_year = datetime.now().year
     for r in existing_records:
         if len(final_records) >= 216:
             break
@@ -728,8 +733,8 @@ def main():
         idx = len(final_records)
         r_copy = dict(r)
         r_copy["id"] = idx
-        if int(r_copy.get("release_year", 0)) >= 2024:
-            r_copy["era"] = "New & Trending (2024-2026)"
+        if int(r_copy.get("release_year", 0)) >= curr_year - 2:
+            r_copy["era"] = f"New & Trending ({curr_year - 1}-{curr_year})"
         final_records.append(r_copy)
 
     log(f"Total curated catalog size: {len(final_records)} (Exact 216 Voroforce grid)")

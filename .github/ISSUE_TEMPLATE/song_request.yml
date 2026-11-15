@@ -1,0 +1,57 @@
+name: 🎵 Report / Request Missing Song
+description: Request a missing song to be automatically verified on Spotify/Apple Music and added to Nothing to Listen To
+title: "[Song Request]: "
+labels: ["song-request", "automated"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### 🎵 Automated Song Addition System
+        Submitting this form immediately triggers our automated Python verification engine.
+        If the song is commercially available on official streaming platforms (Spotify / Apple Music / YouTube), it will be automatically added to the 3D Voronoi galaxy and deployed live!
+
+  - type: input
+    id: song_title
+    attributes:
+      label: Song Title
+      description: The exact name of the song
+      placeholder: "e.g. FA FA FA, Fire Song, Veezha Veera"
+    validations:
+      required: true
+
+  - type: input
+    id: artist_movie
+    attributes:
+      label: Artist, Singer, Composer, or Movie
+      description: Context helps our verification bot locate the exact track
+      placeholder: "e.g. OM, Kanguva, Sai Abhyankkar, Anirudh, Devi Sri Prasad"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: language
+    attributes:
+      label: Primary Language / Genre
+      description: Select the primary regional or global language
+      options:
+        - Tamil
+        - Telugu
+        - Hindi
+        - Malayalam
+        - Punjabi
+        - English
+        - K-Pop
+        - Latin
+        - Japanese
+        - Other
+    validations:
+      required: false
+
+  - type: input
+    id: streaming_link
+    attributes:
+      label: YouTube, Spotify, or Apple Music Link
+      description: Optional direct link to the official song or video
+      placeholder: "https://www.youtube.com/watch?v=... or https://open.spotify.com/track/..."
+    validations:
+      required: false

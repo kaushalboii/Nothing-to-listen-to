@@ -21,6 +21,11 @@ export interface UiSlice {
   favoritesOpen: boolean
   setFavoritesOpen: (favoritesOpen: boolean) => void
   toggleFavoritesOpen: () => void
+  reportOpen: boolean
+  setReportOpen: (reportOpen: boolean) => void
+  toggleReportOpen: () => void
+  reportInitialQuery: string
+  setReportInitialQuery: (q: string) => void
   addCustomLinkTypeOpen: boolean | DialogProps['direction']
   setAddCustomLinkTypeOpen: (open: boolean | DialogProps['direction']) => void
   toggleAddCustomLinkTypeOpen: () => void
@@ -65,6 +70,17 @@ export const createUiSlice: StateCreator<UiSlice, [], [], UiSlice> = (
     },
     toggleFavoritesOpen: () => {
       set({ favoritesOpen: !get().favoritesOpen })
+    },
+    reportOpen: false,
+    setReportOpen: (reportOpen: boolean) => {
+      set({ reportOpen })
+    },
+    toggleReportOpen: () => {
+      set({ reportOpen: !get().reportOpen })
+    },
+    reportInitialQuery: '',
+    setReportInitialQuery: (reportInitialQuery: string) => {
+      set({ reportInitialQuery })
     },
     addCustomLinkTypeOpen: false,
     setAddCustomLinkTypeOpen: (

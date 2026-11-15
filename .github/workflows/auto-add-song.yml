@@ -1,0 +1,158 @@
+name: Auto-Process Requested Song & Deploy
+
+on:
+  issues:
+    types: [opened, labeled]
+
+permissions:
+  contents: write
+  issues: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
+
+jobs:
+  process-song-request:
+    if: |
+      contains(github.event.issue.labels.*.name, 'song-request') ||
+      github.event.label.name == 'song-request' ||
+      startsWith(github.event.issue.title, '[Song Request]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: pip install Pillow requests
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Parse Song Request from Issue
+        id: parse
+        env:
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          python3 - << 'EOF'
+          import os, re
+
+          title_raw = os.environ.get("ISSUE_TITLE", "")
+          body_raw = os.environ.get("ISSUE_BODY", "")
+
+          # Extract from title
+          song_title = re.sub(r"^\[Song Request\]:\s*", "", title_raw, flags=re.IGNORECASE).strip()
+
+          # Extract from form fields if present
+          def extract_field(field_name, text):
+              m = re.search(rf"###\s*{re.escape(field_name)}\s*\n+([^\n#]+)", text, flags=re.IGNORECASE)
+              return m.group(1).strip() if m else ""
+
+          f_title = extract_field("Song Title", body_raw)
+          if f_title and f_title.lower() != "_no response_":
+              song_title = f_title
+
+          artist = extract_field("Artist, Singer, Composer, or Movie", body_raw)
+          if artist.lower() == "_no response_": artist = ""
+
+          lang = extract_field("Primary Language / Genre", body_raw)
+          if lang.lower() == "_no response_": lang = ""
+
+          link = extract_field("YouTube, Spotify, or Apple Music Link", body_raw)
+          if link.lower() == "_no response_": link = ""
+
+          print(f"::set-output name=title::{song_title}")
+          print(f"::set-output name=artist::{artist}")
+          print(f"::set-output name=lang::{lang}")
+          print(f"::set-output name=link::{link}")
+          EOF
+
+      - name: Run Song Request Ingestion Engine
+        id: ingest
+        continue-on-error: true
+        run: |
+          python3 scripts/request-song.py \
+            --title "${{ steps.parse.outputs.title }}" \
+            --artist "${{ steps.parse.outputs.artist }}" \
+            --lang "${{ steps.parse.outputs.lang }}" \
+            --link "${{ steps.parse.outputs.link }}" \
+            --issue-number "${{ github.event.issue.number }}"
+
+      # SUCCESS FLOW
+      - name: Commit and push changes if verified
+        if: steps.ingest.outcome == 'success'
+        run: |
+          git config --global user.name "kaushalboii"
+          git config --global user.email "124547139+kaushalboii@users.noreply.github.com"
+          git add public/json/ public/media/
+          if git diff --staged --quiet; then
+            echo "Working tree is clean."
+          else
+            git commit -m "feat(music): auto-add requested song '${{ steps.parse.outputs.title }}' (Issue #${{ github.event.issue.number }})"
+            git pull --rebase origin main || true
+            for i in 1 2 3; do
+              git push origin main && break || (git pull --rebase origin main && sleep 3)
+            done
+          fi
+
+      - name: Build project
+        if: steps.ingest.outcome == 'success'
+        env:
+          BASE_PATH: /Nothing-to-listen-to/
+        run: npm run build
+
+      - name: Deploy to gh-pages branch
+        if: steps.ingest.outcome == 'success'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          force_orphan: true
+
+      - name: Deploy to GitHub Actions Pages
+        if: steps.ingest.outcome == 'success'
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+
+      - name: Comment and Close Issue on Success
+        if: steps.ingest.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue comment ${{ github.event.issue.number }} --body "🎉 **Song Successfully Added & Live!**
+
+          **${{ steps.parse.outputs.title }}** by **${{ steps.parse.outputs.artist }}** has been automatically verified on Spotify & Apple Music, added to the 3D Voronoi galaxy, and deployed live!
+
+          🎧 **Listen now**: [kaushalboii.github.io/Nothing-to-listen-to](https://kaushalboii.github.io/Nothing-to-listen-to/)"
+          gh issue close ${{ github.event.issue.number }} --reason "completed"
+
+      # FAILURE / MANUAL REVIEW NOTIFICATION FLOW
+      - name: Notify Maintainer on Verification Failure
+        if: steps.ingest.outcome != 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue comment ${{ github.event.issue.number }} --body "⚠️ **Auto-Sync Notice: Manual Review Required**
+
+          The automated streaming verifier could not confirm **'${{ steps.parse.outputs.title }}'** on official commercial streaming catalogs (Spotify / Apple Music).
+
+          🔔 **Notification to Maintainer**: @kaushalboii — please review this request and manually update or add the track if appropriate."
+          gh issue edit ${{ github.event.issue.number }} --add-label "needs-manual-review,failed-auto-sync"
+          echo "::warning title=Song Request Verification Failed::Could not auto-verify '${{ steps.parse.outputs.title }}'. Manual review required."

@@ -6,6 +6,7 @@ import { LowFpsAlert } from './low-fps-alert'
 import { Settings } from './settings'
 import { MusicPlayer } from '../common/music-player/music-player'
 import { MusicSearchModal } from './search/music-search-modal'
+import { ReportSongModal } from './report/report-song-modal'
 
 const PrimaryViews = () => (
   <>
@@ -18,6 +19,7 @@ const PrimaryViews = () => (
     <HotkeysView />
     <MusicPlayer />
     <MusicSearchModal />
+    <ReportSongModal />
   </>
 )
 

@@ -117,3 +117,17 @@ jobs:
             - **100% Ad-Free Streaming Engine**: Pure music streaming with zero ad interruptions
             - **Verified Streaming Metadata**: Multi-platform integration with Spotify, Apple Music, and YouTube Music
             - **Live Web App**: [kaushalboii.github.io/Nothing-to-listen-to](https://kaushalboii.github.io/Nothing-to-listen-to/)
+
+      - name: Alert Maintainer on Sync Failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "🚨 [Auto-Sync Alert] Daily Music Release Sync Failed ($(date -u +'%Y-%m-%d'))" \
+            --body "⚠️ The automated 4x-daily music release sync encountered an issue. Manual update or review is required.
+
+            - **Workflow Run**: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            - **Commit**: ${{ github.sha }}
+            - **Action Required**: Please inspect the workflow run logs and perform a manual update if necessary." \
+            --label "sync-failure,needs-manual-review" || true

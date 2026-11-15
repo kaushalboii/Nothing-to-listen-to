@@ -4,6 +4,7 @@ import {
   Globe2,
   Music2,
   Play,
+  PlusCircle,
   Search,
   Sparkles,
   X,
@@ -39,15 +40,25 @@ const ERA_FILTERS = [
 ]
 
 export const MusicSearchModal = () => {
-  const { searchOpen, setSearchOpen, filmBatches, setFilm, setMode, playTrack } =
-    useShallowState((state) => ({
-      searchOpen: state.searchOpen,
-      setSearchOpen: state.setSearchOpen,
-      filmBatches: state.filmBatches,
-      setFilm: state.setFilm,
-      setMode: state.setMode,
-      playTrack: state.playTrack,
-    }))
+  const {
+    searchOpen,
+    setSearchOpen,
+    filmBatches,
+    setFilm,
+    setMode,
+    playTrack,
+    setReportOpen,
+    setReportInitialQuery,
+  } = useShallowState((state) => ({
+    searchOpen: state.searchOpen,
+    setSearchOpen: state.setSearchOpen,
+    filmBatches: state.filmBatches,
+    setFilm: state.setFilm,
+    setMode: state.setMode,
+    playTrack: state.playTrack,
+    setReportOpen: state.setReportOpen,
+    setReportInitialQuery: state.setReportInitialQuery,
+  }))
 
   const [query, setQuery] = useState('')
   const [selectedLang, setSelectedLang] = useState('All')
@@ -245,12 +256,25 @@ export const MusicSearchModal = () => {
         {/* Search Results List */}
         <div className='overflow-y-auto p-2 divide-y divide-border/20 flex-1'>
           {filtered.length === 0 ? (
-            <div className='flex flex-col items-center justify-center py-12 px-4 text-center'>
+            <div className='flex flex-col items-center justify-center py-10 px-4 text-center'>
               <Music2 className='size-10 text-muted-foreground/50 mb-3' />
               <p className='font-bold text-foreground text-sm'>No songs found</p>
               <p className='text-xs text-muted-foreground mt-1 max-w-xs'>
-                Try adjusting your search query, or resetting the language and era filters above.
+                Try adjusting your search query, or requesting this track to be automatically fetched and added.
               </p>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={() => {
+                  setSearchOpen(false)
+                  setReportInitialQuery(query)
+                  setReportOpen(true)
+                }}
+                className='mt-4 flex items-center gap-1.5 rounded-full border-primary/50 text-primary hover:bg-primary/10 cursor-pointer shadow-sm'
+              >
+                <PlusCircle className='size-3.5' />
+                <span>Request &quot;{query || 'Missing Song'}&quot; to be auto-added</span>
+              </Button>
             </div>
           ) : (
             filtered.map((record) => {

@@ -383,31 +383,55 @@ export default class BaseScene {
   initBaseMediaUniforms() {
     const compressedMediaVersions = this.getCompressedMediaVersions()
     const uncompressedMediaVersions = this.getUnCompressedMediaVersions()
+    const compressedSupported =
+      this.globalConfig.media?.compressedFormatsSupported !== false
+
+    const fallbackTexture =
+      this.virtualMediaGridTextures[0] ?? new Texture(this.gl, {})
+
     return {
       bMediaEnabled: { value: this.globalConfig.media?.enabled ?? false },
-      uMediaV0Texture: { value: this.compressedMediaGridTextures[0] },
-      uMediaV1Texture: { value: this.compressedMediaGridTextures[1] },
-      uMediaV2Texture: { value: this.compressedMediaGridTextures[2] },
+      uMediaV0Texture: {
+        value: !compressedSupported
+          ? fallbackTexture
+          : this.compressedMediaGridTextures[0],
+      },
+      uMediaV1Texture: {
+        value: !compressedSupported
+          ? fallbackTexture
+          : this.compressedMediaGridTextures[1],
+      },
+      uMediaV2Texture: {
+        value: !compressedSupported
+          ? fallbackTexture
+          : this.compressedMediaGridTextures[2],
+      },
       uMediaV3Texture: {
-        value: this.virtualMediaGridTextures[0] ?? new Texture(this.gl, {}),
+        value: fallbackTexture,
       },
       iStdMediaVersionNumCols: {
-        value: compressedMediaVersions?.map((v) => v?.cols ?? 0) ?? [0, 0, 0],
+        value: !compressedSupported
+          ? [18, 18, 18]
+          : (compressedMediaVersions?.map((v) => v?.cols ?? 0) ?? [0, 0, 0]),
       },
       iStdMediaVersionNumRows: {
-        value: compressedMediaVersions?.map((v) => v?.rows ?? 0) ?? [0, 0, 0],
+        value: !compressedSupported
+          ? [12, 12, 12]
+          : (compressedMediaVersions?.map((v) => v?.rows ?? 0) ?? [0, 0, 0]),
       },
       iStdMediaVersionNumLayers: {
-        value: compressedMediaVersions?.map((v) => v?.layers ?? 0) ?? [0, 0, 0],
+        value: !compressedSupported
+          ? [1, 1, 1]
+          : (compressedMediaVersions?.map((v) => v?.layers ?? 0) ?? [0, 0, 0]),
       },
       iVirtMediaVersionNumCols: {
-        value: uncompressedMediaVersions[0]?.virtualCols ?? 0,
+        value: uncompressedMediaVersions[0]?.virtualCols ?? 18,
       },
       iVirtMediaVersionNumRows: {
-        value: uncompressedMediaVersions[0]?.virtualRows ?? 0,
+        value: uncompressedMediaVersions[0]?.virtualRows ?? 12,
       },
       iVirtMediaVersionNumLayers: {
-        value: uncompressedMediaVersions[0]?.virtualLayers ?? 0,
+        value: uncompressedMediaVersions[0]?.virtualLayers ?? 1,
       },
     }
   }

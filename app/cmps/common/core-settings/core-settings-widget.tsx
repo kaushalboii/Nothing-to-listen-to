@@ -1,4 +1,5 @@
 import { type ReactNode, useState } from 'react'
+import { Smartphone } from 'lucide-react'
 
 import { THEME } from '../../../consts'
 import { useMediaQuery } from '../../../hooks/use-media-query'
@@ -62,20 +63,20 @@ export function CoreSettingsWidget({
     : estimatedDeviceClass
 
   const isSmallScreen = useMediaQuery(down('md'))
+  const isMobile =
+    isSmallScreen ||
+    deviceClass === DEVICE_CLASS.mobile ||
+    (typeof window !== 'undefined' &&
+      ('ontouchstart' in window || window.innerWidth < 768))
 
   const [preset, setPreset] = useState<VOROFORCE_PRESET | undefined>(
     storePreset ??
-      (isSmallScreen
-        ? deviceClass === DEVICE_CLASS.mobile
-          ? VOROFORCE_PRESET.mobile
-          : VOROFORCE_PRESET.minimal
+      (isMobile
+        ? VOROFORCE_PRESET.mobile
         : isDefined(deviceClass)
           ? (
               PRESET_ITEMS.filter(
-                (p) =>
-                  !Array.isArray(p) &&
-                  (p.id !== VOROFORCE_PRESET.mobile ||
-                    deviceClass === DEVICE_CLASS.mobile),
+                (p) => !Array.isArray(p) && p.id !== VOROFORCE_PRESET.mobile,
               ) as PresetItem[]
             ).find((p) =>
               isDefined(p.recommendedDeviceClass)
@@ -87,10 +88,8 @@ export function CoreSettingsWidget({
 
   const [cellLimit, setCellLimit] = useState<CELL_LIMIT | undefined>(
     storeCellLimit ??
-      (isSmallScreen
-        ? deviceClass === DEVICE_CLASS.mobile
-          ? CELL_LIMIT.xxs
-          : CELL_LIMIT.xs
+      (isMobile
+        ? CELL_LIMIT.xxs
         : isDefined(deviceClass)
           ? CELL_LIMIT_ITEMS.findLast(
               (p) =>
@@ -111,24 +110,43 @@ export function CoreSettingsWidget({
       className='overflow-visible'
       innerClassName={cn('flex flex-col gap-4', className)}
     >
-      <PresetSelector
-        className={cn(hideSelectorsOnMobile && 'max-md:hidden')}
-        value={preset}
-        onValueChange={(value: VOROFORCE_PRESET) => {
-          setPreset(value)
-          setIsDirty(value !== storePreset || cellLimit !== storeCellLimit)
-        }}
-        deviceClass={deviceClass}
-      />
-      <CellLimitSelector
-        className={cn(hideSelectorsOnMobile && 'max-md:hidden')}
-        value={cellLimit}
-        onValueChange={(value: CELL_LIMIT) => {
-          setCellLimit(value)
-          setIsDirty(preset !== storePreset || value !== storeCellLimit)
-        }}
-        deviceClass={deviceClass}
-      />
+      {isMobile ? (
+        <div className='flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900/80 p-3.5 text-xs'>
+          <div className='flex items-center gap-2.5'>
+            <div className='flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400'>
+              <Smartphone className='h-4 w-4' />
+            </div>
+            <div className='flex flex-col'>
+              <span className='font-semibold text-zinc-100'>Mobile Galaxy</span>
+              <span className='text-zinc-400 text-xxs'>5,000 albums locked for smooth phone performance</span>
+            </div>
+          </div>
+          <span className='rounded-full bg-amber-500/20 px-2.5 py-1 font-bold text-amber-400 text-xxs'>
+            5,000
+          </span>
+        </div>
+      ) : (
+        <>
+          <PresetSelector
+            className={cn(hideSelectorsOnMobile && 'max-md:hidden')}
+            value={preset}
+            onValueChange={(value: VOROFORCE_PRESET) => {
+              setPreset(value)
+              setIsDirty(value !== storePreset || cellLimit !== storeCellLimit)
+            }}
+            deviceClass={deviceClass}
+          />
+          <CellLimitSelector
+            className={cn(hideSelectorsOnMobile && 'max-md:hidden')}
+            value={cellLimit}
+            onValueChange={(value: CELL_LIMIT) => {
+              setCellLimit(value)
+              setIsDirty(preset !== storePreset || value !== storeCellLimit)
+            }}
+            deviceClass={deviceClass}
+          />
+        </>
+      )}
       <FadeTransition
         transitionOptions={{
           initialEntered: submitVisibility === 'always',
@@ -140,9 +158,9 @@ export function CoreSettingsWidget({
           onClick={() => {
             if (isSubmitted) return
             setIsSubmitted(true)
-            const newPreset = isDefined(preset)
-              ? preset
-              : (isSmallScreen ? VOROFORCE_PRESET.mobile : VOROFORCE_PRESET.minimal)
+            const newPreset = isMobile
+              ? VOROFORCE_PRESET.mobile
+              : (isDefined(preset) ? preset : VOROFORCE_PRESET.minimal)
             if (
               theme === THEME.light &&
               newPreset !== VOROFORCE_PRESET.minimal
@@ -151,18 +169,16 @@ export function CoreSettingsWidget({
             }
             setStorePreset(newPreset)
             setStoreCellLimit(
-              isDefined(cellLimit)
-                ? cellLimit
-                : isSmallScreen
-                  ? CELL_LIMIT.xxs
-                  : CELL_LIMIT.sm,
+              isMobile
+                ? CELL_LIMIT.xxs
+                : (isDefined(cellLimit) ? cellLimit : CELL_LIMIT.sm),
             )
             setPlayedIntro(true)
             onSubmit?.()
           }}
           size='lg'
           disabled={
-            !isSmallScreen && (!isDefined(preset) || !isDefined(cellLimit))
+            !isMobile && (!isDefined(preset) || !isDefined(cellLimit))
           }
           {...submitProps}
           className={cn(

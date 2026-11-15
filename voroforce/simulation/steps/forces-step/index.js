@@ -158,6 +158,10 @@ export default class ForcesSimulationStep extends BaseSimulationStep {
   handleCellTargetMediaVersion(cell) {
     if (!this.mediaConfig.enabled) return
 
+    if (this.mediaConfig.compressedFormatsSupported === false) {
+      cell.targetMediaVersion = 3
+    }
+
     if (cell.targetMediaVersion !== cell.mediaVersion) {
       const mediaVersion = this.mediaConfig.versions[cell.targetMediaVersion]
 

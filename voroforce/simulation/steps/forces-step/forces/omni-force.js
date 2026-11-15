@@ -223,6 +223,11 @@ export const omniForce = () => {
           colLevelAdjacency,
           rowLevelAdjacency,
         ) => {
+          if (globalConfig.media?.compressedFormatsSupported === false) {
+            cell.targetMediaVersion = 3
+            return
+          }
+
           if (handleMediaSpeedLimits && speedScale > mediaHighestSpeedLimit)
             return
 

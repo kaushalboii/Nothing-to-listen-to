@@ -85,14 +85,21 @@ export class Loader extends CustomEventTarget {
     this.dispatchEvent(new LoaderEvent('preloaded'))
     onLoad?.()
 
-    // Burst-load first PRELOAD_COUNT images in parallel to populate
-    // the visible viewport as fast as possible.
-    const PRELOAD_COUNT = 20
+    // Preload ALL layers in staggered batches so the full galaxy fills
+    // in immediately without needing the user to scroll.
+    const BATCH_SIZE = 8
+    const BATCH_DELAY_MS = 25 // fast staggered dispatch for smooth loading
     const totalLayers = this.config.versions[versionIndex].layers ?? 216
-    const count = Math.min(PRELOAD_COUNT, totalLayers)
-    for (let i = 0; i < count; i++) {
-      void this.loadMediaLayer(versionIndex, i, null)
+    const loadBatch = (startIndex) => {
+      const end = Math.min(startIndex + BATCH_SIZE, totalLayers)
+      for (let i = startIndex; i < end; i++) {
+        void this.loadMediaLayer(versionIndex, i, null)
+      }
+      if (end < totalLayers) {
+        setTimeout(() => loadBatch(end), BATCH_DELAY_MS)
+      }
     }
+    loadBatch(0)
   }
 
   async loadMediaLayer(versionIndex, layerIndex, onLoad) {

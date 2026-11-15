@@ -100,8 +100,8 @@ export const getVoroforceConfig = (state: StoreState) => {
     : (cellLimit ?? config.cells)
 
   if (isMobile) {
-    // Safety caps for mobile devices to prevent GPU and CPU thread freeze
-    config.cells = Math.min(config.cells || 5000, 5000)
+    // Locked strictly to 5000 cells for mobile devices
+    config.cells = 5000
     if (config.multiThreading) {
       config.multiThreading.enabled = false
     }

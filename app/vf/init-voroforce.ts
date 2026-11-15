@@ -1,7 +1,7 @@
 import voroforce from '√/index'
 
 import { store } from '../store'
-import { DEVICE_CLASS, VOROFORCE_PRESET } from './consts'
+import { CELL_LIMIT, DEVICE_CLASS, VOROFORCE_PRESET } from './consts'
 import { initVoroforceIntegrations } from './integrations'
 import type { VoroforceInstance } from './types'
 import { getVoroforceConfig, getVoroforceConfigUniforms } from './utils'
@@ -25,6 +25,7 @@ export const initVoroforce = ({
         ('ontouchstart' in window || window.innerWidth < 768))
     if (isMobile) {
       state.setPreset(VOROFORCE_PRESET.mobile)
+      state.setCellLimit(CELL_LIMIT.xxs)
     } else {
       return
     }

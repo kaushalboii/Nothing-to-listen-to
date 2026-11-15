@@ -84,6 +84,7 @@ export const FilmViewFooter = ({
                       tagline: film.tagline,
                       year: film.year,
                       poster: film.poster,
+                      youtubeId: film.youtubeId,
                     }
                   }
                   setUserConfig(userConfig)

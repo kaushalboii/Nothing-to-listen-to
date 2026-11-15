@@ -34,6 +34,7 @@ export type UserConfig = {
       tmdbId: Film['tmdbId']
       imdbId?: Film['imdbId']
       poster?: Film['poster']
+      youtubeId?: string
     }
   }
 }

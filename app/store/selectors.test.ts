@@ -77,10 +77,15 @@ const createMockState = (overrides: Partial<StoreState> = {}): StoreState => ({
   activeTrack: null,
   playerOpen: false,
   isMinimized: false,
+  playlist: [],
+  playlistIndex: 0,
   setActiveTrack: () => {},
   setPlayerOpen: () => {},
   setIsMinimized: () => {},
   playTrack: () => {},
+  playPlaylist: () => {},
+  nextTrack: () => {},
+  prevTrack: () => {},
   stopTrack: () => {},
 
   // Apply overrides

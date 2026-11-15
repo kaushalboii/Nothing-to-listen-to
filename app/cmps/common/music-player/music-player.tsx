@@ -1,8 +1,11 @@
+import { useMemo } from 'react'
 import {
   ChevronDown,
   ChevronUp,
   Disc3,
   ExternalLink,
+  SkipBack,
+  SkipForward,
   Volume2,
   X,
   Youtube,
@@ -15,21 +18,44 @@ import { Button } from '../../ui/button'
 const FALLBACK_VIDEO_ID = 'ZdMZ40GSVmc' // Anirudh - Badass (Leo)
 
 export const MusicPlayer = () => {
-  const { activeTrack, playerOpen, isMinimized, setIsMinimized, stopTrack } =
-    useShallowState((state) => ({
-      activeTrack: state.activeTrack,
-      playerOpen: state.playerOpen,
-      isMinimized: state.isMinimized,
-      setIsMinimized: state.setIsMinimized,
-      stopTrack: state.stopTrack,
-    }))
+  const {
+    activeTrack,
+    playerOpen,
+    isMinimized,
+    setIsMinimized,
+    stopTrack,
+    playlist,
+    playlistIndex,
+    nextTrack,
+    prevTrack,
+  } = useShallowState((state) => ({
+    activeTrack: state.activeTrack,
+    playerOpen: state.playerOpen,
+    isMinimized: state.isMinimized,
+    setIsMinimized: state.setIsMinimized,
+    stopTrack: state.stopTrack,
+    playlist: state.playlist,
+    playlistIndex: state.playlistIndex,
+    nextTrack: state.nextTrack,
+    prevTrack: state.prevTrack,
+  }))
 
   const videoId = activeTrack?.videoId && activeTrack.videoId.length === 11
     ? activeTrack.videoId
     : FALLBACK_VIDEO_ID
 
+  // If playlist has multiple videos, pass the remaining video IDs to YouTube's native playlist parameter
+  const playlistParam = useMemo(() => {
+    if (!playlist || playlist.length <= 1) return ''
+    const currentVid = activeTrack?.videoId && activeTrack.videoId.length === 11 ? activeTrack.videoId : FALLBACK_VIDEO_ID
+    const remainingIds = playlist
+      .map((t) => t.videoId)
+      .filter((id): id is string => Boolean(id && id.length === 11 && id !== currentVid))
+    return remainingIds.length > 0 ? `&playlist=${remainingIds.join(',')}` : ''
+  }, [playlist, activeTrack?.videoId])
+
   // Official Native YouTube Player (Zero 3rd-party proxies, zero Piped branding)
-  const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1&modestbranding=1`
+  const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1&modestbranding=1${playlistParam}`
 
   if (!playerOpen || !activeTrack) return null
 
@@ -62,9 +88,16 @@ export const MusicPlayer = () => {
           </div>
 
           <div className='min-w-0 flex flex-col'>
-            <p className='truncate font-black text-sm text-foreground leading-tight'>
-              {activeTrack.title}
-            </p>
+            <div className='flex items-center gap-1.5 min-w-0'>
+              <p className='truncate font-black text-sm text-foreground leading-tight'>
+                {activeTrack.title}
+              </p>
+              {playlist && playlist.length > 1 && (
+                <span className='shrink-0 text-[10px] font-bold text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded-full'>
+                  {playlistIndex + 1}/{playlist.length}
+                </span>
+              )}
+            </div>
             <p className='truncate text-xs font-semibold text-primary'>
               {activeTrack.artist}
             </p>
@@ -72,7 +105,30 @@ export const MusicPlayer = () => {
         </div>
 
         {/* Action Controls */}
-        <div className='flex items-center gap-1.5 shrink-0'>
+        <div className='flex items-center gap-1 shrink-0'>
+          {playlist && playlist.length > 1 && (
+            <>
+              <Button
+                size='icon'
+                variant='ghost'
+                className='size-7 rounded-full cursor-pointer hover:bg-primary/10'
+                onClick={prevTrack}
+                title='Previous Track'
+              >
+                <SkipBack className='size-3.5' />
+              </Button>
+              <Button
+                size='icon'
+                variant='ghost'
+                className='size-7 rounded-full cursor-pointer hover:bg-primary/10'
+                onClick={nextTrack}
+                title='Next Track'
+              >
+                <SkipForward className='size-3.5' />
+              </Button>
+            </>
+          )}
+
           <a
             href={directYtWatchUrl}
             target='_blank'

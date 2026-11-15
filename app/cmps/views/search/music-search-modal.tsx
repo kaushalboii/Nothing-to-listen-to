@@ -30,7 +30,7 @@ const LANGUAGE_FILTERS = [
 const ERA_FILTERS = [
   'All Eras',
   '🔥 New This Week',
-  '2024-2025',
+  '2024-2026',
   '2020s',
   '2010s',
   '2000s',
@@ -109,7 +109,7 @@ export const MusicSearchModal = () => {
       if (selectedEra !== 'All Eras') {
         const year = Number(rec.release_year || 0)
         if (selectedEra === '🔥 New This Week' && !rec.trending && year < 2024) return false
-        if (selectedEra === '2024-2025' && year < 2024) return false
+        if ((selectedEra === '2024-2026' || selectedEra === '2024-2025') && year < 2024) return false
         if (selectedEra === '2020s' && (year < 2020 || year > 2023)) return false
         if (selectedEra === '2010s' && (year < 2010 || year > 2019)) return false
         if (selectedEra === '2000s' && (year < 2000 || year > 2009)) return false

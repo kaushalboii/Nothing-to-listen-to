@@ -82,6 +82,28 @@ npm run build
 npm run preview
 ```
 
+### Dynamic Daily Music Sync
+```bash
+# Fetch latest releases of today across all languages and rebuild 3D textures
+npm run sync:music
+```
+
+---
+
+## 🔄 Automated Daily Releases & Auto-Deployment Pipeline
+
+1. **Daily Auto-Sync Cron (`.github/workflows/update-music.yml`)**:
+   - Runs automatically every day at midnight UTC (`0 0 * * *`).
+   - Fetches live daily chart releases across **Apple Music India** (Tamil, Hindi, Telugu, Punjabi, Malayalam), **Global/US**, **Japan**, **Latin America**, and optional YouTube feeds.
+   - Automatically resolves verified official YouTube video IDs in parallel and downloads high-resolution 600x600 official cover artwork.
+   - Rebuilds the WebGL compressed DXT1 DDS texture atlas and updates `public/json/0.json`.
+   - Automatically commits and pushes the new daily songs and textures back to `main`.
+   - Immediately compiles the production web app and deploys it live to **GitHub Pages**.
+2. **Manual Pushes (`.github/workflows/deploy.yml`)**:
+   - Whenever you push changes manually to `main`, GitHub Pages automatically rebuilds and publishes the latest site.
+3. **Manual 1-Click Sync**:
+   - Go to your GitHub repository -> **Actions** tab -> **Auto-Sync Latest Daily Music & Deploy** -> click **Run workflow**.
+
 ---
 
 ## 🏗 Architecture & Tech Stack

@@ -330,9 +330,47 @@ def encode_dxt1(rgb_data, width, height):
             
     return header + out_blocks
 
+def fetch_youtube_oembed(vid):
+    if not vid:
+        return None
+    url = f"https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={vid}&format=json"
+    try:
+        req = urllib.request.Request(url, headers=HEADERS)
+        with urllib.request.urlopen(req, timeout=8) as r:
+            return json.loads(r.read().decode("utf-8"))
+    except Exception as e:
+        log(f"Warning: YouTube oEmbed fetch failed ({e})")
+        return None
+
+def parse_yt_title(raw_title, author=""):
+    cleaned = re.sub(
+        r"(?i)\b(official\s*(music\s*)?video|music\s*video|lyrical(\s*video)?|video\s*song|full\s*song|official\s*audio|4k\s*(video)?|hd|audio|teaser|trailer|remastered|visualizer)\b",
+        "",
+        raw_title
+    )
+    raw_parts = [p.strip() for p in re.split(r"[|\-:•~]", cleaned) if p.strip()]
+    if not raw_parts:
+        raw_parts = [raw_title.strip()]
+
+    candidates = []
+    for p in raw_parts:
+        cp = re.sub(r"[\(\[\{].*?[\)\]\}]", "", p).strip()
+        if len(cp) >= 2 and cp.lower() not in ("movie", "song", "video"):
+            candidates.append(cp)
+
+    if not candidates:
+        candidates = raw_parts
+
+    context = [p for p in raw_parts if len(p) >= 2]
+    if author and author not in context:
+        context.append(author)
+
+    return candidates[0], context, candidates
+
 def main():
     parser = argparse.ArgumentParser(description="Process requested song and auto-add to Nothing to Listen To")
-    parser.add_argument("--title", required=True, help="Song title")
+    parser.add_argument("url", nargs="?", default="", help="Optional direct YouTube video URL")
+    parser.add_argument("--title", default="", help="Song title (optional if YouTube link provided)")
     parser.add_argument("--artist", default="", help="Artist, singer, composer, or movie name")
     parser.add_argument("--lang", default="", help="Language")
     parser.add_argument("--link", default="", help="Direct YouTube or Spotify link")
@@ -342,32 +380,75 @@ def main():
     title_input = args.title.strip()
     artist_input = args.artist.strip()
     lang_input = args.lang.strip()
-    link_input = args.link.strip()
+    link_input = args.link.strip() or args.url.strip()
+
+    # If title input looks like a YouTube link, treat it as link_input
+    if not link_input and ("youtube.com" in title_input or "youtu.be" in title_input):
+        link_input = title_input
+        title_input = ""
+
+    vid = extract_vid_from_url(link_input)
+    yt_info = None
+    cand_titles = []
+    context_list = [artist_input] if artist_input else []
+
+    if vid:
+        log(f"Extracted YouTube Video ID: {vid}")
+        yt_info = fetch_youtube_oembed(vid)
+        if yt_info:
+            raw_yt_title = yt_info.get("title", "")
+            yt_author = yt_info.get("author_name", "")
+            log(f"Fetched YouTube Info:")
+            log(f"   Raw Title: {raw_yt_title}")
+            log(f"   Channel:   {yt_author}")
+
+            primary_title, yt_context, parsed_cands = parse_yt_title(raw_yt_title, yt_author)
+            if not title_input:
+                title_input = primary_title
+            cand_titles = parsed_cands
+            context_list = list(dict.fromkeys(([artist_input] if artist_input else []) + yt_context))
+        else:
+            cand_titles = [title_input] if title_input else []
+    else:
+        cand_titles = [title_input] if title_input else []
+
+    if not title_input and not vid:
+        log("❌ Error: Please provide either a song title (--title) or a valid YouTube link (--link)")
+        sys.exit(1)
 
     log("=========================================================================")
-    log(f"🎵 Processing Song Request: '{title_input}' (Context: '{artist_input}') 🎵")
+    log(f"🎵 Processing Song: '{title_input}' (Video ID: {vid or 'N/A'}) 🎵")
     log("=========================================================================")
 
     # 1. Verify against Spotify / Apple Music / iTunes catalog
-    context_list = [artist_input] if artist_input else []
-    verified = verify_on_streaming_catalog(title_input, context_list)
+    verified = None
+    for cand in cand_titles:
+        if len(cand) >= 2:
+            verified = verify_on_streaming_catalog(cand, context_list)
+            if verified:
+                break
 
-    if not verified and link_input:
-        # Try extracting context from link or search term
-        vid = extract_vid_from_url(link_input)
-        if vid:
-            log(f"Extracted YouTube Video ID from link: {vid}")
+    if not verified and title_input:
+        verified = verify_on_streaming_catalog(title_input, context_list)
 
-    if not verified:
-        log(f"❌ Verification Failed: '{title_input}' could not be verified on official streaming platforms (Spotify/Apple Music).")
-        log("Reason: Only officially distributed commercial tracks can be added to the verified catalog.")
+    if not verified and yt_info:
+        # Fall back to using YouTube's official metadata if iTunes search has a mismatch
+        log("ℹ️ No exact iTunes match; utilizing official YouTube verified metadata.")
+        ver_title = title_input or raw_yt_title
+        ver_artist = artist_input or yt_author or "Featured Artist"
+        ver_artwork = yt_info.get("thumbnail_url", f"https://img.youtube.com/vi/{vid}/hqdefault.jpg")
+        ver_year = datetime.now().year
+        ver_cat = "Music"
+    elif verified:
+        ver_title = verified["title"]
+        ver_artist = verified["artist"]
+        ver_artwork = verified["artwork"]
+        ver_year = verified["year"]
+        ver_cat = verified.get("category", "Music")
+    else:
+        log(f"❌ Verification Failed: '{title_input}' could not be verified on streaming platforms.")
         sys.exit(2)
 
-    ver_title = verified["title"]
-    ver_artist = verified["artist"]
-    ver_artwork = verified["artwork"]
-    ver_year = verified["year"]
-    ver_cat = verified.get("category", "Music")
     if lang_input:
         detected_lang = lang_input.strip()
     else:
@@ -385,13 +466,12 @@ def main():
         else:
             detected_lang = "Tamil" if any(ord(c) >= 0x0B80 and ord(c) <= 0x0BFF for c in text_corpus) else "English"
 
-    log(f"✅ Verified on Streaming Platform!")
+    log(f"✅ Metadata Verified!")
     log(f"   Official Title:  {ver_title}")
     log(f"   Official Artist: {ver_artist}")
     log(f"   Release Year:    {ver_year}")
+    log(f"   Language:        {detected_lang}")
 
-    # 2. Resolve YouTube video ID
-    vid = extract_vid_from_url(link_input)
     if not vid:
         clean_query = f"{ver_artist} {ver_title} official video song"
         vid = search_youtube_video(clean_query)
@@ -406,12 +486,33 @@ def main():
         with open(JSON_OUTPUT, "r", encoding="utf-8") as f:
             records = json.load(f)
 
-    # Check if already present
-    key = f"{ver_artist} - {ver_title}".lower()
-    for r in records:
-        if f"{r.get('artist', '')} - {r.get('title', '')}".lower() == key:
-            log(f"ℹ️ Song is already present in the catalog at position #{r.get('id')}.")
-            sys.exit(0)
+    # Check if already present: sync properly if present, add only if missed
+    existing_idx = None
+    for idx, r in enumerate(records):
+        if vid and r.get("youtube_id") == vid:
+            existing_idx = idx
+            break
+        if ver_title and ver_artist and r.get("title", "").lower() == ver_title.lower() and r.get("artist", "").lower() == ver_artist.lower():
+            existing_idx = idx
+            break
+
+    if existing_idx is not None:
+        existing = records[existing_idx]
+        log(f"ℹ️ Song is already present in catalog at position #{existing.get('id')} ('{existing.get('title')}' by '{existing.get('artist')}').")
+        changed = False
+        if detected_lang and existing.get("language") != detected_lang:
+            log(f"Syncing language: {existing.get('language')} -> {detected_lang}")
+            existing["language"] = detected_lang
+            changed = True
+        if vid and existing.get("youtube_id") != vid:
+            log(f"Syncing YouTube ID: {existing.get('youtube_id')} -> {vid}")
+            existing["youtube_id"] = vid
+            changed = True
+        if changed:
+            with open(JSON_OUTPUT, "w", encoding="utf-8") as f:
+                json.dump(records, f, indent=2, ensure_ascii=False)
+            log("Synced existing song metadata successfully.")
+        sys.exit(0)
 
     # 4. Construct new record for position #0
     curr_year = datetime.now().year

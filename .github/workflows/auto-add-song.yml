@@ -31,10 +31,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip'
 
       - name: Install Python dependencies
-        run: pip install -r requirements.txt
+        run: pip install Pillow requests
 
       - name: Parse Song Request from Issue
         id: parse
@@ -69,6 +68,10 @@ jobs:
           link = extract_field("YouTube, Spotify, or Apple Music Link", body_raw)
           if link.lower() == "_no response_": link = ""
 
+          if ("youtube.com" in song_title or "youtu.be" in song_title) and not link:
+              link = song_title
+              song_title = ""
+
           output_path = os.environ.get("GITHUB_OUTPUT")
           if output_path:
               with open(output_path, "a", encoding="utf-8") as f:
@@ -83,6 +86,7 @@ jobs:
         continue-on-error: true
         run: |
           python3 scripts/request-song.py \
+            "${{ steps.parse.outputs.link }}" \
             --title "${{ steps.parse.outputs.title }}" \
             --artist "${{ steps.parse.outputs.artist }}" \
             --lang "${{ steps.parse.outputs.lang }}" \

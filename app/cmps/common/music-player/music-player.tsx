@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import {
   ChevronDown,
   ChevronUp,
@@ -24,15 +25,30 @@ export const MusicPlayer = () => {
       stopTrack: state.stopTrack,
     }))
 
-  if (!playerOpen || !activeTrack) return null
-
-  const query = encodeURIComponent(`${activeTrack.artist} ${activeTrack.title}`.trim())
-  const videoId = activeTrack.videoId && activeTrack.videoId.length === 11
+  const videoId = activeTrack?.videoId && activeTrack.videoId.length === 11
     ? activeTrack.videoId
     : FALLBACK_VIDEO_ID
 
-  // Official native YouTube embed (Zero 3rd parties)
-  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1`
+  // In-built ad-free stream engine with automatic silent fallback
+  const [embedSrc, setEmbedSrc] = useState(
+    `https://piped.video/embed/${videoId}?autoplay=1`,
+  )
+
+  useEffect(() => {
+    setEmbedSrc(`https://piped.video/embed/${videoId}?autoplay=1`)
+  }, [videoId])
+
+  const handleIframeError = () => {
+    setEmbedSrc((prev) =>
+      prev.includes('piped.video')
+        ? `https://yewtu.be/embed/${videoId}?autoplay=1&playsinline=1`
+        : `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1`,
+    )
+  }
+
+  if (!playerOpen || !activeTrack) return null
+
+  const query = encodeURIComponent(`${activeTrack.artist} ${activeTrack.title}`.trim())
 
   const directYtWatchUrl = activeTrack.videoId && activeTrack.videoId.length === 11
     ? `https://www.youtube.com/watch?v=${activeTrack.videoId}`
@@ -108,7 +124,7 @@ export const MusicPlayer = () => {
         </div>
       </div>
 
-      {/* Embedded Official YouTube Player */}
+      {/* Embedded In-Built Ad-Free Player */}
       <div
         className={cn('relative mt-3 overflow-hidden rounded-xl bg-black transition-all duration-300', {
           'h-56 md:h-64 opacity-100': !isMinimized,
@@ -116,10 +132,12 @@ export const MusicPlayer = () => {
         })}
       >
         <iframe
-          src={embedUrl}
+          key={embedSrc}
+          src={embedSrc}
           title={`${activeTrack.artist} - ${activeTrack.title}`}
           allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
           allowFullScreen
+          onError={handleIframeError}
           className='absolute inset-0 h-full w-full border-0'
         />
       </div>

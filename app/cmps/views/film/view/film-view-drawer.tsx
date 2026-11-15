@@ -1,6 +1,5 @@
 import {
   Suspense,
-  lazy,
   useCallback,
   useEffect,
   useMemo,
@@ -15,22 +14,7 @@ import { down, orientation } from '../../../../utils/mq'
 import { cn } from '../../../../utils/tw'
 import { type Film, VOROFORCE_MODE, type VoroforceCell } from '../../../../vf'
 import { Modal } from '../../../common/modal'
-
-const AddCustomLinkModal = lazy(() =>
-  import('./content').then((module) => ({
-    default: module.AddCustomLinkModal,
-  })),
-)
-
-const FilmView = lazy(() =>
-  import('./content').then((module) => ({ default: module.FilmView })),
-)
-
-const FilmViewFooter = lazy(() =>
-  import('./content').then((module) => ({
-    default: module.FilmViewFooter,
-  })),
-)
+import { AddCustomLinkModal, FilmView, FilmViewFooter } from './content'
 
 const getDefaultDirection = (isLandscape: boolean): DialogProps['direction'] =>
   isLandscape ? 'left' : 'top'
@@ -66,17 +50,12 @@ export const FilmViewDrawer = () => {
     if (freezeFilm) return [filmRef.current, voroforceCellRef.current]
     filmRef.current = activeFilm
     voroforceCellRef.current =
-      voroforce?.cells?.selected ?? voroforce?.cells?.focused
+      (voroforce?.controls as any)?.cells?.selected ??
+      voroforce?.cells?.selected ??
+      (voroforce?.controls as any)?.cells?.focused ??
+      voroforce?.cells?.focused
     return [activeFilm, voroforceCellRef.current]
   }, [activeFilm, freezeFilm, voroforce])
-
-  useEffect(() => {
-    if (activeFilm) {
-      filmRef.current = activeFilm
-      setFreezeFilm(false)
-      setOpen(true)
-    }
-  }, [activeFilm])
 
   useEffect(() => {
     if (mountContent) return
@@ -107,7 +86,9 @@ export const FilmViewDrawer = () => {
       let direction = getDefaultDirection(isLandscape)
       const voroforceCell =
         voroforceCellRef.current ??
+        (voroforce?.controls as any)?.cells?.selected ??
         voroforce?.cells?.selected ??
+        (voroforce?.controls as any)?.cells?.focused ??
         voroforce?.cells?.focused
       if (voroforceCell) {
         if (isLandscape) {

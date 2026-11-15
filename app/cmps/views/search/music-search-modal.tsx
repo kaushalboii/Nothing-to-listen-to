@@ -170,11 +170,11 @@ export const MusicSearchModal = () => {
 
     if (voroforce?.controls) {
       const controls = voroforce.controls as any
-      const cells = (voroforce.cells ?? controls.cells) as any
+      const cells = controls.cells || (voroforce as any).cells
 
       // Locate the exact Voronoi cell on the 3D sphere matching this song's ID
       let targetCell: any = null
-      if (Array.isArray(cells) || (cells && typeof cells.length === 'number')) {
+      if (Array.isArray(cells)) {
         for (let i = 0; i < cells.length; i++) {
           if (cells[i]?.id === cellId) {
             targetCell = cells[i]
@@ -187,6 +187,9 @@ export const MusicSearchModal = () => {
       }
 
       if (targetCell) {
+        if (typeof controls.selectCell === 'function') {
+          controls.selectCell(targetCell)
+        }
         if (typeof controls.pinPointer === 'function') {
           controls.pinPointer(targetCell)
         }
@@ -195,6 +198,9 @@ export const MusicSearchModal = () => {
         }
       } else if (typeof controls.navigateToCellById === 'function') {
         controls.navigateToCellById(cellId)
+        if (typeof controls.selectCell === 'function') {
+          controls.selectCell(cellId)
+        }
       }
     }
 

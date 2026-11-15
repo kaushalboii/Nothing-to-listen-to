@@ -47,10 +47,16 @@ export const ReportSongModal = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!title.trim()) return
+    const isUrlInTitle = title.includes('youtube.com') || title.includes('youtu.be')
+    const effectiveLink = isUrlInTitle ? title.trim() : link.trim()
+    const effectiveTitle = isUrlInTitle
+      ? 'Auto-Extract from YouTube Link'
+      : (title.trim() || (effectiveLink ? 'Auto-Extract from YouTube Link' : ''))
 
-    const issueTitle = `[Song Request]: ${title.trim()}`
-    const issueBody = `### Song Title\n\n${title.trim()}\n\n### Artist, Singer, Composer, or Movie\n\n${artist.trim() || '_No response_'}\n\n### Primary Language / Genre\n\n${language}\n\n### YouTube, Spotify, or Apple Music Link\n\n${link.trim() || '_No response_'}\n\n---\n*Submitted via Nothing to Listen To Web App*`
+    if (!effectiveTitle && !effectiveLink) return
+
+    const issueTitle = `[Song Request]: ${effectiveTitle}`
+    const issueBody = `### Song Title\n\n${effectiveTitle}\n\n### Artist, Singer, Composer, or Movie\n\n${artist.trim() || '_No response_'}\n\n### Primary Language / Genre\n\n${language}\n\n### YouTube, Spotify, or Apple Music Link\n\n${effectiveLink || '_No response_'}\n\n---\n*Submitted via Nothing to Listen To Web App*`
 
     const issueUrl = `https://github.com/kaushalboii/Nothing-to-listen-to/issues/new?title=${encodeURIComponent(
       issueTitle
@@ -150,14 +156,13 @@ export const ReportSongModal = () => {
             {/* Song Title Input */}
             <div className='flex flex-col gap-1.5'>
               <Label htmlFor='song-title' className='text-xs font-semibold'>
-                Song Title <span className='text-primary'>*</span>
+                Song Title or YouTube Video Link <span className='text-primary'>*</span>
               </Label>
               <Input
                 id='song-title'
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder='e.g. FA FA FA, Annakiliye, Fire Song, Veezha Veera'
-                required
+                placeholder='e.g. Annakiliye OR paste https://www.youtube.com/watch?v=...'
                 autoFocus
                 className='h-9 text-xs rounded-lg bg-background/50 border-border/80'
               />

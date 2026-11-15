@@ -584,10 +584,24 @@ def main():
 
     log(f"Total curated catalog size: {len(final_records)} (Exact 216 Voroforce grid)")
 
-    # 6. Save JSON file
+    # 6. Save JSON file & Sync Status Metadata
     with open(JSON_OUTPUT, "w", encoding="utf-8") as f:
         json.dump(final_records, f, indent=2, ensure_ascii=False)
     log(f"Successfully wrote {JSON_OUTPUT}")
+
+    status_path = os.path.join(PROJECT_DIR, "public", "json", "sync-status.json")
+    from datetime import datetime, timezone
+    status_data = {
+        "last_synced_utc": datetime.now(timezone.utc).isoformat(),
+        "total_songs": len(final_records),
+        "trending_songs": len(resolved_candidates),
+        "top_release": final_records[0]["title"] if final_records else "",
+        "top_artist": final_records[0]["artist"] if final_records else "",
+        "status": "healthy"
+    }
+    with open(status_path, "w", encoding="utf-8") as f:
+        json.dump(status_data, f, indent=2)
+    log(f"Successfully wrote {status_path}")
 
     # 7. Download Thumbnails & Build DXT1 DDS WebGL Texture Atlas
     log("=== Processing Media & Building WebGL DXT1 DDS Texture Atlas ===")

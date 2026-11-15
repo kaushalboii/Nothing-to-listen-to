@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {
   ChevronDown,
   ChevronUp,
@@ -26,27 +25,6 @@ export const MusicPlayer = () => {
       stopTrack: state.stopTrack,
     }))
 
-  const [playerMode, setPlayerMode] = useState<'piped' | 'invidious' | 'youtube'>(() => {
-    try {
-      return (localStorage.getItem('ntlt_player_mode') as any) || 'piped'
-    } catch {
-      return 'piped'
-    }
-  })
-
-  const handleToggleMode = () => {
-    const nextMode =
-      playerMode === 'piped'
-        ? 'invidious'
-        : playerMode === 'invidious'
-        ? 'youtube'
-        : 'piped'
-    setPlayerMode(nextMode)
-    try {
-      localStorage.setItem('ntlt_player_mode', nextMode)
-    } catch {}
-  }
-
   if (!playerOpen || !activeTrack) return null
 
   const query = encodeURIComponent(`${activeTrack.artist} ${activeTrack.title}`.trim())
@@ -54,13 +32,8 @@ export const MusicPlayer = () => {
     ? activeTrack.videoId
     : FALLBACK_VIDEO_ID
 
-  // Construct embed URL based on chosen player mode (default: 100% ad-free Piped / Invidious)
-  const embedUrl =
-    playerMode === 'piped'
-      ? `https://piped.video/embed/${videoId}?autoplay=1`
-      : playerMode === 'invidious'
-      ? `https://yewtu.be/embed/${videoId}?autoplay=1&playsinline=1`
-      : `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&modestbranding=1&iv_load_policy=3`
+  // Built-in Ad-Shield YouTube Player (Zero 3rd parties, official YouTube CDN, privacy-enhanced, tracking-free, and annotation-blocked)
+  const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&modestbranding=1&iv_load_policy=3&controls=1`
 
   const directYtWatchUrl = activeTrack.videoId && activeTrack.videoId.length === 11
     ? `https://www.youtube.com/watch?v=${activeTrack.videoId}`
@@ -100,23 +73,13 @@ export const MusicPlayer = () => {
 
         {/* Action Controls */}
         <div className='flex items-center gap-1.5 shrink-0'>
-          <button
-            onClick={handleToggleMode}
-            className={cn(
-              'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer select-none',
-              playerMode !== 'youtube'
-                ? 'bg-emerald-500/15 text-emerald-500 hover:bg-emerald-500/25 border border-emerald-500/30 shadow-sm'
-                : 'bg-muted/70 text-muted-foreground hover:bg-muted hover:text-foreground border border-border/50',
-            )}
-            title='Click to switch streaming engine: 🛡️ Ad-Free (Piped) / 🛡️ Ad-Free (Invidious) / ▶️ Direct YouTube'
+          <div
+            className='inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 shadow-sm select-none'
+            title='In-house Ad-Shield active: privacy-enhanced, tracking-free playback on official YouTube engine'
           >
             <ShieldCheck className='size-3.5' />
-            <span>
-              {playerMode === 'piped' && '🛡️ Ad-Free (Piped)'}
-              {playerMode === 'invidious' && '🛡️ Ad-Free (Invidious)'}
-              {playerMode === 'youtube' && '▶️ YouTube'}
-            </span>
-          </button>
+            <span>🛡️ Ad-Shield Active</span>
+          </div>
 
           <a
             href={directYtWatchUrl}

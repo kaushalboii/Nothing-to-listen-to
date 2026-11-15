@@ -9,7 +9,7 @@ import {
   Sparkles,
   X,
 } from 'lucide-react'
-import { useShallowState } from '../../../store'
+import { store, useShallowState } from '../../../store'
 import { cn } from '../../../utils/tw'
 import { Film, handleModeChange, VOROFORCE_MODE } from '../../../vf'
 import { AlbumCover } from '../film/shared/film-poster'
@@ -80,7 +80,7 @@ export const MusicSearchModal = () => {
             setLocalRecords(data)
           }
         })
-        .catch(() => {})
+        .catch(() => { })
     }
   }, [filmBatches])
 
@@ -143,7 +143,7 @@ export const MusicSearchModal = () => {
 
       // Full search corpus for comprehensive discovery
       const combined = `${title} ${artist} ${genres} ${year} ${lang} ${tagline} ${overview} ${tracks}`
-      
+
       // Token-based matching: every keyword entered by the user must match somewhere in the song metadata
       const tokens = q.split(/\s+/).filter(Boolean)
       return tokens.every((token) => combined.includes(token))
@@ -153,10 +153,21 @@ export const MusicSearchModal = () => {
   if (!searchOpen) return null
 
   const handleSelectRecord = (record: any) => {
-    const filmObj = new Film(record)
-    setFilm(filmObj)
+    // 1. Immediately close search modal
     setSearchOpen(false)
 
+    // 2. Instantiate and set Film
+    const filmObj = new Film(record)
+    setFilm(filmObj)
+
+    // 3. Immediately update global store state
+    store.setState({
+      mode: VOROFORCE_MODE.select,
+      film: filmObj,
+      searchOpen: false,
+    })
+
+    // 4. Focus Voronoi cell in 3D
     const cellId = typeof record.id === 'number' ? record.id : Number(record.id)
 
     if (voroforce?.controls) {
@@ -194,7 +205,7 @@ export const MusicSearchModal = () => {
       }
     }
 
-    // Trigger full 3D shader, simulation force, and camera focus
+    // 5. Trigger full 3D shader, simulation force, and camera focus
     handleModeChange(VOROFORCE_MODE.select)
   }
 
@@ -208,6 +219,7 @@ export const MusicSearchModal = () => {
       videoId: record.youtube_id,
       query: `${record.artist} ${firstTrack}`,
     })
+    handleSelectRecord(record)
   }
 
   return (

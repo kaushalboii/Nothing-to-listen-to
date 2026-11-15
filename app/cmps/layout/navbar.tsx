@@ -1,4 +1,4 @@
-import { Disc3, Flame, GithubIcon, Heart, Info, PlusCircle, Search, Settings } from 'lucide-react'
+import { Disc3, Flame, GithubIcon, Heart, Info, Search, Settings } from 'lucide-react'
 
 import { useShallowState } from '@/store'
 import config from '../../config'
@@ -17,9 +17,6 @@ export const Navbar = () => {
     toggleSearchOpen,
     favoritesOpen,
     toggleFavoritesOpen,
-    reportOpen,
-    toggleReportOpen,
-    setReportInitialQuery,
     hasFavorites,
     canChangeTheme,
   } = useShallowState((state) => ({
@@ -31,9 +28,6 @@ export const Navbar = () => {
     toggleSearchOpen: state.toggleSearchOpen,
     favoritesOpen: state.favoritesOpen,
     toggleFavoritesOpen: state.toggleFavoritesOpen,
-    reportOpen: state.reportOpen,
-    toggleReportOpen: state.toggleReportOpen,
-    setReportInitialQuery: state.setReportInitialQuery,
     hasFavorites:
       state.userConfig.favorites &&
       Object.keys(state.userConfig.favorites).length > 0,
@@ -65,22 +59,6 @@ export const Navbar = () => {
       >
         <Flame className='size-3.5 fill-amber-500 text-amber-500 animate-pulse' />
         <span className='hidden sm:inline'>New This Week</span>
-      </Button>
-      <Button
-        variant='outline'
-        size='sm'
-        onClick={() => {
-          setReportInitialQuery('')
-          toggleReportOpen()
-        }}
-        title='🎵 Request / Report Missing Song (Automated Ingestion)'
-        className={cn(
-          'pointer-events-auto flex items-center gap-1.5 h-6 lg:h-8 px-2 lg:px-3 rounded-full text-xs font-semibold border-primary/40 bg-primary/10 hover:bg-primary/20 text-primary shadow-sm cursor-pointer',
-          { 'border-foreground bg-primary/30': reportOpen }
-        )}
-      >
-        <PlusCircle className='size-3.5' />
-        <span className='hidden md:inline'>Request Song</span>
       </Button>
       <Button
         variant='ghost'

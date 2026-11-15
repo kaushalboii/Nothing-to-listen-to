@@ -40,7 +40,7 @@ export const FilmViewDrawer = () => {
   const isSmallScreen = useMediaQuery(down('md'))
   const isLandscape = useMediaQuery(orientation('landscape'))
   const [direction, setDirection] = useState(getDefaultDirection(isLandscape))
-  const [mountContent, setMountContent] = useState(false)
+  const [mountContent, setMountContent] = useState(true)
   const [freezeFilm, setFreezeFilm] = useState(false)
   const filmRef = useRef<Film>(undefined)
   const voroforceCellRef = useRef<VoroforceCell>(undefined)
@@ -74,6 +74,7 @@ export const FilmViewDrawer = () => {
     if (activeFilm) {
       filmRef.current = activeFilm
       setFreezeFilm(false)
+      setOpen(true)
     }
   }, [activeFilm])
 

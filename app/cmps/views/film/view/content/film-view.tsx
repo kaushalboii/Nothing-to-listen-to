@@ -92,7 +92,7 @@ export const FilmView = ({
           )}
         </div>
 
-        <div className='relative z-1 flex h-full w-full flex-col p-4 md:p-6 lg:p-8 pb-44 md:pb-48 max-h-[85vh] overflow-y-auto'>
+        <div className='relative z-1 flex h-full w-full flex-col p-4 md:p-6 lg:p-8 pb-16 md:pb-20 max-h-[85vh] overflow-y-auto'>
           {/* Main Album Header with Vinyl & Artwork */}
           <div className='flex flex-col md:flex-row gap-6 items-start'>
             {/* Album Sleeve & Vinyl Record Graphic */}

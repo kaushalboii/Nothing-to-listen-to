@@ -123,7 +123,7 @@ export const FilmViewDrawer = () => {
           onMouseLeave: () => setFreezeFilm(false),
         }),
         className: cn(
-          'group landscape:max-h-[85vh] landscape:w-[480px] md:landscape:w-[520px] lg:landscape:w-[560px]',
+          'group landscape:max-h-[18rem] landscape:w-2/5 md:landscape:max-h-[24rem]',
           {
             'contain-layout contain-paint contain-style':
               !addCustomLinkTypeOpen,

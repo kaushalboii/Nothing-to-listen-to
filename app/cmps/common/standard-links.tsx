@@ -68,7 +68,7 @@ export const StdLinks = ({
           variant='outline'
           size='sm'
           className={cn(
-            'rounded-lg border-border/80 font-semibold text-xs transition-colors backdrop-blur-md',
+            'rounded-full h-6 px-2.5 text-[11px] border-border/80 font-semibold transition-colors backdrop-blur-md',
             p.color,
             buttonClassName,
           )}

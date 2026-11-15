@@ -15,7 +15,7 @@ export const revealVoroforceContainer = () => {
 
 let afterModeChangeTimeout: NodeJS.Timeout
 
-const handleModeChange = (mode: VOROFORCE_MODE): void => {
+export const handleModeChange = (mode: VOROFORCE_MODE): void => {
   const {
     setMode,
     voroforce,

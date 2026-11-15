@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   ChevronDown,
   ChevronUp,
@@ -26,7 +26,26 @@ export const MusicPlayer = () => {
       stopTrack: state.stopTrack,
     }))
 
-  const [isAdFree, setIsAdFree] = useState(true)
+  const [playerMode, setPlayerMode] = useState<'piped' | 'invidious' | 'youtube'>(() => {
+    try {
+      return (localStorage.getItem('ntlt_player_mode') as any) || 'piped'
+    } catch {
+      return 'piped'
+    }
+  })
+
+  const handleToggleMode = () => {
+    const nextMode =
+      playerMode === 'piped'
+        ? 'invidious'
+        : playerMode === 'invidious'
+        ? 'youtube'
+        : 'piped'
+    setPlayerMode(nextMode)
+    try {
+      localStorage.setItem('ntlt_player_mode', nextMode)
+    } catch {}
+  }
 
   if (!playerOpen || !activeTrack) return null
 
@@ -35,10 +54,16 @@ export const MusicPlayer = () => {
     ? activeTrack.videoId
     : FALLBACK_VIDEO_ID
 
-  // Construct embed URL: 100% ad-free Invidious stream by default, with official YouTube fallback
-  const embedUrl = isAdFree
-    ? `https://yewtu.be/embed/${videoId}?autoplay=1&playsinline=1`
-    : `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1`
+  // Construct embed URL based on chosen player mode (default: 100% ad-free Piped / Invidious)
+  const embedUrl = useMemo(() => {
+    if (playerMode === 'piped') {
+      return `https://piped.video/embed/${videoId}?autoplay=1`
+    }
+    if (playerMode === 'invidious') {
+      return `https://yewtu.be/embed/${videoId}?autoplay=1&playsinline=1`
+    }
+    return `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&modestbranding=1&iv_load_policy=3`
+  }, [playerMode, videoId])
 
   const directYtWatchUrl = activeTrack.videoId && activeTrack.videoId.length === 11
     ? `https://www.youtube.com/watch?v=${activeTrack.videoId}`
@@ -79,21 +104,21 @@ export const MusicPlayer = () => {
         {/* Action Controls */}
         <div className='flex items-center gap-1.5 shrink-0'>
           <button
-            onClick={() => setIsAdFree(!isAdFree)}
+            onClick={handleToggleMode}
             className={cn(
               'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer select-none',
-              isAdFree
+              playerMode !== 'youtube'
                 ? 'bg-emerald-500/15 text-emerald-500 hover:bg-emerald-500/25 border border-emerald-500/30 shadow-sm'
                 : 'bg-muted/70 text-muted-foreground hover:bg-muted hover:text-foreground border border-border/50',
             )}
-            title={
-              isAdFree
-                ? '🛡️ Ad-Free Stream Active (No ads/pre-rolls). Click to switch to Official YouTube.'
-                : 'Click to enable 100% Ad-Free streaming mode.'
-            }
+            title='Click to switch streaming engine: 🛡️ Ad-Free (Piped) / 🛡️ Ad-Free (Invidious) / ▶️ Direct YouTube'
           >
             <ShieldCheck className='size-3.5' />
-            <span>{isAdFree ? 'Ad-Free' : 'YouTube'}</span>
+            <span>
+              {playerMode === 'piped' && '🛡️ Ad-Free (Piped)'}
+              {playerMode === 'invidious' && '🛡️ Ad-Free (Invidious)'}
+              {playerMode === 'youtube' && '▶️ YouTube'}
+            </span>
           </button>
 
           <a

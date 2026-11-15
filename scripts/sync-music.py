@@ -89,18 +89,18 @@ def get_broad_yt_search_terms():
     ]
 
 PRIORITY_VERIFIED_HITS = [
-    ("FA FA FA", ["OM", "Sai Abhyankkar", "Fahadh Faasil"], "Tamil", "Wjew3Rc1PYI"),
-    ("Fire Song", ["Kanguva", "Devi Sri Prasad", "Suriya"], "Tamil", "f-iQ1pT4dco"),
-    ("Veezha Veera", ["OM", "Sai Abhyankkar", "Dhanush"], "Tamil", "Wjew3Rc1PYI"),
-    ("Radhimaa", ["Sai Abhyankkar", "Think Indie"], "Tamil", "4r9r6Fhm9I0"),
-    ("Kissik", ["Pushpa 2 The Rule", "DSP", "Sreeleela"], "Telugu", "3u3p6e5gQo8"),
-    ("Fear Song", ["Devara", "Anirudh Ravichander", "NTR"], "Telugu", "b73C0hPq0tE"),
-    ("Dileep Theme", ["Jailer 2", "Anirudh Ravichander"], "Tamil", "jR3rWCBeO6M"),
-    ("Ta Takkara", ["Kalki 2898 AD", "Santhosh Narayanan"], "Telugu", "exkJKrAVzAc"),
-    ("Illuminati", ["Aavesham", "Sushin Shyam", "Fahadh Faasil"], "Malayalam", "ietprsshiSs"),
-    ("Jaana Samjho Na", ["Bhool Bhulaiyaa 3", "Tanishk Bagchi"], "Hindi", "ekr2nIex040"),
-    ("Pushpa Pushpa", ["Pushpa 2", "DSP"], "Telugu", "o00gkntNm5w"),
-    ("Chuttamalle", ["Devara", "Anirudh Ravichander", "Shilpa Rao"], "Telugu", "kPa7bsKwL-c"),
+    ("FA FA FA", ["OM", "Sai Abhyankkar"], "Tamil", "OM"),
+    ("Fire Song", ["Kanguva", "Devi Sri Prasad"], "Tamil", "Kanguva"),
+    ("Veezha Veera", ["OM", "Sai Abhyankkar"], "Tamil", "OM"),
+    ("Radhimaa", ["Sai Abhyankkar", "Think Indie"], "Tamil", "Think Indie"),
+    ("Kissik", ["Pushpa 2 The Rule", "DSP"], "Telugu", "Pushpa 2"),
+    ("Fear Song", ["Devara", "Anirudh Ravichander"], "Telugu", "Devara"),
+    ("Dileep Theme", ["Jailer 2", "Anirudh Ravichander"], "Tamil", "Jailer 2"),
+    ("Ta Takkara", ["Kalki 2898 AD", "Santhosh Narayanan"], "Telugu", "Kalki 2898 AD"),
+    ("Illuminati", ["Aavesham", "Sushin Shyam"], "Malayalam", "Aavesham"),
+    ("Jaana Samjho Na", ["Bhool Bhulaiyaa 3", "Tanishk Bagchi"], "Hindi", "Bhool Bhulaiyaa 3"),
+    ("Pushpa Pushpa", ["Pushpa 2", "DSP"], "Telugu", "Pushpa 2"),
+    ("Chuttamalle", ["Devara", "Anirudh Ravichander"], "Telugu", "Devara"),
 ]
 
 TAMIL_ARTISTS = ["anirudh", "a. r. rahman", "ar rahman", "harris jayaraj", "yuvan", "ilaiyaraaja", "santhosh narayanan", "gv prakash", "dhanush", "sid sriram", "hiphop tamizha", "d. imman", "vidyasagar", "vijay", "sean roldan", "shakthisree gopalan", "pradeep kumar", "kamal haasan", "sai abhyankkar", "thamizh adhavan", "thamizh aadhavan"]
@@ -351,18 +351,35 @@ def fetch_apple_feed(feed_url, default_lang="English"):
             continue
     return songs
 
-def search_youtube_video(query):
-    url = "https://www.youtube.com/results?search_query=" + urllib.parse.quote(query)
-    try:
-        req = urllib.request.Request(url, headers=HEADERS)
-        with urllib.request.urlopen(req, timeout=5) as resp:
-            html = resp.read().decode("utf-8", errors="ignore")
-            matches = re.findall(r'\"videoId\":\"([a-zA-Z0-9_-]{11})\"', html)
-            if matches:
-                return matches[0]
-    except Exception:
-        pass
+def search_youtube_exact(song_title, artist, movie_hint=""):
+    clean_title = re.sub(r"[\(\[\{][^\)\]\}]*[\)\]\}]", "", song_title).strip()
+    clean_title = re.sub(r"\b(from|official|video|audio|lyric|lyrical|song)\b.*$", "", clean_title, flags=re.IGNORECASE).strip(" -–—:|")
+    
+    queries = [
+        f"{artist} {clean_title} official song",
+        f"{clean_title} {movie_hint} song" if movie_hint else f"{artist} {clean_title}",
+        f"{clean_title} official video song"
+    ]
+    for q in queries:
+        url = "https://www.youtube.com/results?search_query=" + urllib.parse.quote(q)
+        try:
+            req = urllib.request.Request(url, headers=HEADERS)
+            with urllib.request.urlopen(req, timeout=6) as resp:
+                html = resp.read().decode("utf-8", errors="ignore")
+                matches = list(re.finditer(r"\"videoRenderer\":\{\"videoId\":\"([a-zA-Z0-9_-]{11})\".*?\"title\":\{\"runs\":\[\{\"text\":\"([^\"]+)\"\}", html))
+                title_words = [w.lower() for w in re.findall(r"\w+", clean_title) if len(w) > 1]
+                for m in matches:
+                    vid, vtitle = m.group(1), m.group(2)
+                    if any(w in vtitle.lower() for w in title_words):
+                        return vid
+                if matches:
+                    return matches[0].group(1)
+        except Exception:
+            continue
     return None
+
+def search_youtube_video(query):
+    return search_youtube_exact(query, "")
 
 def process_thumbnail_and_tile(idx, img_url, fallback_vid, tile_w=110, tile_h=165):
     out_file = os.path.join(SINGLE_DIR, f"{idx}.jpg")
@@ -574,11 +591,11 @@ def main():
     # 2. Ingest Guaranteed Priority Hits (FA FA FA from OM, Fire Song, etc.)
     priority_verified_songs = []
     log("Ingesting and verifying priority chart-toppers (OM, Kanguva, Pushpa 2, Devara)...")
-    for title, ctx, lang, preferred_vid in PRIORITY_VERIFIED_HITS:
+    for title, ctx, lang, movie_hint in PRIORITY_VERIFIED_HITS:
         v = verify_on_streaming_catalog(title, ctx)
         if v:
             v["lang"] = lang
-            v["vid"] = preferred_vid
+            v["movie_hint"] = movie_hint
             priority_verified_songs.append(v)
             log(f"  + Priority Verified: {v['title']} by {v['artist']} [{lang}]")
 
@@ -645,19 +662,15 @@ def main():
 
     log(f"Selected {len(candidate_songs)} top verified multi-platform tracks.")
 
-    # 6. Resolve YouTube Video IDs for any chart songs missing a videoId
+    # 6. Resolve YouTube Video IDs dynamically
     def resolve_song_yt(song_item):
         title = song_item["title"].strip()
         artist = song_item["artist"].strip()
-        key = f"{artist} - {title}".lower()
-        vid = song_item.get("vid") or yt_cache.get(key)
+        movie_hint = song_item.get("movie_hint", "")
+        # Resolve dynamically with exact videoRenderer title matching
+        vid = search_youtube_exact(title, artist, movie_hint)
         if not vid:
-            clean_t = re.sub(r"\(feat\.[^)]*\)", "", title, flags=re.IGNORECASE).strip()
-            clean_t = re.sub(r"\[From \"[^\"]*\"\]", "", clean_t).strip()
-            vid = search_youtube_video(f"{artist} {clean_t} official music video")
-            if not vid:
-                vid = POPULAR_FALLBACK_VIDS[hash(key) % len(POPULAR_FALLBACK_VIDS)]
-        yt_cache[key] = vid
+            vid = "AZ3U1PkKpYo"
         song_item["youtube_id"] = vid
         return song_item
 

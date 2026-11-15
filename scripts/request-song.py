@@ -105,18 +105,35 @@ def verify_on_streaming_catalog(title, context_list=None):
             pass
     return None
 
-def search_youtube_video(query):
-    url = "https://www.youtube.com/results?search_query=" + urllib.parse.quote(query)
-    try:
-        req = urllib.request.Request(url, headers=HEADERS)
-        with urllib.request.urlopen(req, timeout=6) as resp:
-            html = resp.read().decode("utf-8", errors="ignore")
-            matches = re.findall(r'\"videoId\":\"([a-zA-Z0-9_-]{11})\"', html)
-            if matches:
-                return matches[0]
-    except Exception:
-        pass
+def search_youtube_exact(song_title, artist, movie_hint=""):
+    clean_title = re.sub(r"[\(\[\{][^\)\]\}]*[\)\]\}]", "", song_title).strip()
+    clean_title = re.sub(r"\b(from|official|video|audio|lyric|lyrical|song)\b.*$", "", clean_title, flags=re.IGNORECASE).strip(" -–—:|")
+    
+    queries = [
+        f"{artist} {clean_title} official song",
+        f"{clean_title} {movie_hint} song" if movie_hint else f"{artist} {clean_title}",
+        f"{clean_title} official video song"
+    ]
+    for q in queries:
+        url = "https://www.youtube.com/results?search_query=" + urllib.parse.quote(q)
+        try:
+            req = urllib.request.Request(url, headers=HEADERS)
+            with urllib.request.urlopen(req, timeout=6) as resp:
+                html = resp.read().decode("utf-8", errors="ignore")
+                matches = list(re.finditer(r"\"videoRenderer\":\{\"videoId\":\"([a-zA-Z0-9_-]{11})\".*?\"title\":\{\"runs\":\[\{\"text\":\"([^\"]+)\"\}", html))
+                title_words = [w.lower() for w in re.findall(r"\w+", clean_title) if len(w) > 1]
+                for m in matches:
+                    vid, vtitle = m.group(1), m.group(2)
+                    if any(w in vtitle.lower() for w in title_words):
+                        return vid
+                if matches:
+                    return matches[0].group(1)
+        except Exception:
+            continue
     return None
+
+def search_youtube_video(query):
+    return search_youtube_exact(query, "")
 
 def extract_vid_from_url(url_str):
     if not url_str:

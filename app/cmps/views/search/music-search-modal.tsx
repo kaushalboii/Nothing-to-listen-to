@@ -11,7 +11,7 @@ import {
 } from 'lucide-react'
 import { useShallowState } from '../../../store'
 import { cn } from '../../../utils/tw'
-import { Film, VOROFORCE_MODE } from '../../../vf'
+import { Film, handleModeChange, VOROFORCE_MODE } from '../../../vf'
 import { AlbumCover } from '../film/shared/film-poster'
 import { Button } from '../../ui/button'
 
@@ -45,19 +45,19 @@ export const MusicSearchModal = () => {
     setSearchOpen,
     filmBatches,
     setFilm,
-    setMode,
     playTrack,
     setReportOpen,
     setReportInitialQuery,
+    voroforce,
   } = useShallowState((state) => ({
     searchOpen: state.searchOpen,
     setSearchOpen: state.setSearchOpen,
     filmBatches: state.filmBatches,
     setFilm: state.setFilm,
-    setMode: state.setMode,
     playTrack: state.playTrack,
     setReportOpen: state.setReportOpen,
     setReportInitialQuery: state.setReportInitialQuery,
+    voroforce: state.voroforce,
   }))
 
   const [query, setQuery] = useState('')
@@ -155,8 +155,31 @@ export const MusicSearchModal = () => {
   const handleSelectRecord = (record: any) => {
     const filmObj = new Film(record)
     setFilm(filmObj)
-    setMode(VOROFORCE_MODE.select)
     setSearchOpen(false)
+
+    const cellIndex = typeof record.id === 'number' ? record.id : Number(record.id)
+
+    if (voroforce?.controls) {
+      const controls = voroforce.controls as any
+      const cells = (voroforce.cells ?? controls.cells) as any
+      const targetCell = cells?.[cellIndex] ?? (Array.isArray(cells) ? cells.find((c: any) => c.index === cellIndex || c.id === record.id) : null)
+
+      if (typeof controls.selectCell === 'function') {
+        controls.selectCell(cellIndex)
+      }
+      if (typeof controls.focusCell === 'function') {
+        controls.focusCell(cellIndex)
+      }
+      if (targetCell && typeof controls.pinPointer === 'function') {
+        controls.pinPointer(targetCell)
+      }
+      if (typeof controls.navigateToCell === 'function') {
+        controls.navigateToCell(cellIndex)
+      }
+    }
+
+    // Trigger full 3D shader, simulation force, and camera focus
+    handleModeChange(VOROFORCE_MODE.select)
   }
 
   const handlePlayDirect = (e: React.MouseEvent, record: any) => {

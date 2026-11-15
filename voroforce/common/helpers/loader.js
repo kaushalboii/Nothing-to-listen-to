@@ -63,6 +63,11 @@ export class Loader extends CustomEventTarget {
     }
   }
 
+  dispatchPreloaded(onLoad) {
+    this.dispatchEvent(new LoaderEvent('preloaded'))
+    onLoad?.()
+  }
+
   _preloadFirstUncompressedLayer(onLoad) {
     // Find the first uncompressed-single version index
     const versionIndex = this.config.versions.findIndex(
@@ -74,11 +79,20 @@ export class Loader extends CustomEventTarget {
       onLoad?.()
       return
     }
-    // Preload layer 0 of the uncompressed version to unblock the reveal gate
-    void this.loadMediaLayer(versionIndex, 0, () => {
-      this.dispatchEvent(new LoaderEvent('preloaded'))
-      onLoad?.()
-    })
+
+    // Fire reveal immediately so the user sees the canvas right away,
+    // then kick off a parallel burst to preload the first N images.
+    this.dispatchEvent(new LoaderEvent('preloaded'))
+    onLoad?.()
+
+    // Burst-load first PRELOAD_COUNT images in parallel to populate
+    // the visible viewport as fast as possible.
+    const PRELOAD_COUNT = 20
+    const totalLayers = this.config.versions[versionIndex].layers ?? 216
+    const count = Math.min(PRELOAD_COUNT, totalLayers)
+    for (let i = 0; i < count; i++) {
+      void this.loadMediaLayer(versionIndex, i, null)
+    }
   }
 
   async loadMediaLayer(versionIndex, layerIndex, onLoad) {
@@ -196,26 +210,19 @@ export class Loader extends CustomEventTarget {
         offset += 4 // levelSize field
         bytes = new Uint8Array(arrayBuffer, offset, levelSize)
       } else {
-        const res = await fetch(src)
-        if (!res.ok) {
-          throw new Error(`Failed to fetch image: ${res.status}`)
-        }
-        const blob = await res.blob()
-
-        async function loadImage(src) {
+        // For JPEG/uncompressed images: use Image directly so the browser
+        // can serve from the preload cache (set via <link rel=preload>).
+        // This avoids a redundant fetch+blob URL roundtrip.
+        async function loadImage(url) {
           return new Promise((resolve, reject) => {
             const img = new Image()
-            img.onload = () => {
-              URL.revokeObjectURL(img.src)
-              resolve(img)
-            }
-            img.onerror = () => {
-              reject(new Error('Failed to load image'))
-            }
-            img.src = src
+            img.onload = () => resolve(img)
+            img.onerror = () => reject(new Error(`Failed to load image: ${url}`))
+            img.crossOrigin = 'anonymous'
+            img.src = url
           })
         }
-        bytes = await loadImage(URL.createObjectURL(blob))
+        bytes = await loadImage(src)
       }
 
       this.loadedIndex++

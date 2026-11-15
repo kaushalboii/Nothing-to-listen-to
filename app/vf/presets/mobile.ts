@@ -59,7 +59,12 @@ export default {
     enabled: false,
     renderInParallel: true,
   },
-  media: mediaConfigWithUncompressedSingleVersion,
+  media: {
+    ...mediaConfigWithUncompressedSingleVersion,
+    // Don't block canvas reveal on image preloading — show canvas immediately
+    // and stream images in the background as cells become visible.
+    preload: false,
+  },
   controls: controlsConfig,
   revealScreenDelay: {
     default: 200,

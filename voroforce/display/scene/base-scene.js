@@ -363,6 +363,16 @@ export default class BaseScene {
       case 'first':
         this.loader.preloadFirstMediaLayerAllGridVersions()
         break
+      default:
+        // preload: false — if compressed formats aren't supported, still need
+        // to unblock the reveal gate and kick off a burst-load of first images
+        if (this.globalConfig.media.compressedFormatsSupported === false) {
+          this.loader._preloadFirstUncompressedLayer()
+        } else {
+          // Desktop with preload:false — dispatch preloaded immediately
+          this.loader.dispatchPreloaded()
+        }
+        break
     }
   }
 

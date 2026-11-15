@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import {
   ChevronDown,
   ChevronUp,
@@ -29,22 +28,8 @@ export const MusicPlayer = () => {
     ? activeTrack.videoId
     : FALLBACK_VIDEO_ID
 
-  // In-built ad-free stream engine with automatic silent fallback
-  const [embedSrc, setEmbedSrc] = useState(
-    `https://piped.video/embed/${videoId}?autoplay=1`,
-  )
-
-  useEffect(() => {
-    setEmbedSrc(`https://piped.video/embed/${videoId}?autoplay=1`)
-  }, [videoId])
-
-  const handleIframeError = () => {
-    setEmbedSrc((prev) =>
-      prev.includes('piped.video')
-        ? `https://yewtu.be/embed/${videoId}?autoplay=1&playsinline=1`
-        : `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1`,
-    )
-  }
+  // Official Native YouTube Player (Zero 3rd-party proxies, zero Piped branding)
+  const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1&modestbranding=1`
 
   if (!playerOpen || !activeTrack) return null
 
@@ -124,7 +109,7 @@ export const MusicPlayer = () => {
         </div>
       </div>
 
-      {/* Embedded In-Built Ad-Free Player */}
+      {/* Official YouTube Embed Player */}
       <div
         className={cn('relative mt-3 overflow-hidden rounded-xl bg-black transition-all duration-300', {
           'h-56 md:h-64 opacity-100': !isMinimized,
@@ -132,12 +117,10 @@ export const MusicPlayer = () => {
         })}
       >
         <iframe
-          key={embedSrc}
-          src={embedSrc}
+          src={embedUrl}
           title={`${activeTrack.artist} - ${activeTrack.title}`}
           allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
           allowFullScreen
-          onError={handleIframeError}
           className='absolute inset-0 h-full w-full border-0'
         />
       </div>

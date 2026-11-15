@@ -147,6 +147,16 @@ function useIntroVisible() {
     }, [revealScreenDelay])
 
     useEffect(() => {
+      if (isMobileDevice) {
+        const mobileSafetyTimer = setTimeout(() => {
+          hideScreen = false
+          forceUpdate()
+        }, 1500)
+        return () => clearTimeout(mobileSafetyTimer)
+      }
+    }, [])
+
+    useEffect(() => {
       let timeout: NodeJS.Timeout
       let lastWidth = typeof window !== 'undefined' ? window.innerWidth : 0
 

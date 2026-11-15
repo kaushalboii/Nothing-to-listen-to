@@ -11,12 +11,14 @@ import './styles.css'
 
 initTelemetry()
 
-window.addEventListener('DOMContentLoaded', () => {
+const bootstrap = () => {
   const urlParams = new URLSearchParams(window.location.search)
   const disableUIOverrideParam = urlParams.get('disableUI')
+  const rootEl = document.getElementById('root')
+  if (!rootEl) return
+
   if (!config.disableUI && !disableUIOverrideParam) {
-    // biome-ignore lint/style/noNonNullAssertion: exists
-    createRoot(document.getElementById('root')!).render(
+    createRoot(rootEl).render(
       <StrictMode>
         <ErrorBoundary>
           <App />
@@ -28,4 +30,10 @@ window.addEventListener('DOMContentLoaded', () => {
     void initVoroforce({ force: true })
   }
   animateDocTitleSuffix()
-})
+}
+
+if (document.readyState === 'loading') {
+  window.addEventListener('DOMContentLoaded', bootstrap)
+} else {
+  bootstrap()
+}

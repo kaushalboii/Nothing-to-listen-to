@@ -44,6 +44,7 @@ export function CoreSettingsWidget({
     storeCellLimit,
     theme,
     setTheme,
+    setPlayedIntro,
   } = useShallowState((state) => ({
     setStorePreset: state.setPreset,
     storePreset: state.preset,
@@ -53,6 +54,7 @@ export function CoreSettingsWidget({
     estimatedDeviceClass: state.estimatedDeviceClass,
     theme: state.theme,
     setTheme: state.setTheme,
+    setPlayedIntro: state.setPlayedIntro,
   }))
 
   const deviceClass = isDefined(storeDeviceClass)
@@ -140,7 +142,7 @@ export function CoreSettingsWidget({
             setIsSubmitted(true)
             const newPreset = isDefined(preset)
               ? preset
-              : VOROFORCE_PRESET.minimal
+              : (isSmallScreen ? VOROFORCE_PRESET.mobile : VOROFORCE_PRESET.minimal)
             if (
               theme === THEME.light &&
               newPreset !== VOROFORCE_PRESET.minimal
@@ -148,7 +150,14 @@ export function CoreSettingsWidget({
               setTheme(THEME.dark)
             }
             setStorePreset(newPreset)
-            setStoreCellLimit(isDefined(cellLimit) ? cellLimit : CELL_LIMIT.sm)
+            setStoreCellLimit(
+              isDefined(cellLimit)
+                ? cellLimit
+                : isSmallScreen
+                  ? CELL_LIMIT.xxs
+                  : CELL_LIMIT.sm,
+            )
+            setPlayedIntro(true)
             onSubmit?.()
           }}
           size='lg'

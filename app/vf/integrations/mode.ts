@@ -114,6 +114,11 @@ export const handleMode = () => {
   // Safety net: Guarantee the loading veil lifts even on slow or constrained mobile devices
   const safetyTimeout = setTimeout(() => {
     revealVoroforceContainer()
+    const { playedIntro, setPlayedIntro } = store.getState()
+    if (!playedIntro) {
+      setPlayedIntro(true)
+      handleModeChange(VOROFORCE_MODE.preview)
+    }
   }, 2500)
 
   if (initialMode === VOROFORCE_MODE.intro) {

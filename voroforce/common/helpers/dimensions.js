@@ -48,11 +48,23 @@ export class Dimensions extends CustomEventTarget {
   }
 
   update() {
-    const width = this.container.clientWidth
-    const height = this.container.clientHeight
+    const width =
+      this.container?.clientWidth ||
+      (typeof window !== 'undefined' ? window.innerWidth : 360) ||
+      360
+    const height =
+      this.container?.clientHeight ||
+      (typeof window !== 'undefined' ? window.innerHeight : 640) ||
+      640
     const diagonal = Math.sqrt(width ** 2 + height ** 2)
-    const aspect = width / height
-    const pixelRatio = Math.min(Math.max(window.devicePixelRatio, 1), 1.5)
+    const aspect = width / (height || 1)
+    const pixelRatio = Math.min(
+      Math.max(
+        typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1,
+        1,
+      ),
+      1.5,
+    )
 
     this.#state = {
       width,

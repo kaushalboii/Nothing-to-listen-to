@@ -176,6 +176,11 @@ export const MusicSearchModal = () => {
             type='text'
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === ' ' || e.code === 'Space') {
+                e.stopPropagation()
+              }
+            }}
             placeholder='Search 216+ songs, artists, languages, eras, or genres...'
             autoFocus
             className='w-full bg-transparent text-base md:text-lg font-medium text-foreground placeholder:text-muted-foreground outline-none'

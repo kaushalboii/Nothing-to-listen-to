@@ -1,8 +1,10 @@
+import { useState } from 'react'
 import {
   ChevronDown,
   ChevronUp,
   Disc3,
   ExternalLink,
+  ShieldCheck,
   Volume2,
   X,
   Youtube,
@@ -24,6 +26,8 @@ export const MusicPlayer = () => {
       stopTrack: state.stopTrack,
     }))
 
+  const [isAdFree, setIsAdFree] = useState(true)
+
   if (!playerOpen || !activeTrack) return null
 
   const query = encodeURIComponent(`${activeTrack.artist} ${activeTrack.title}`.trim())
@@ -31,8 +35,10 @@ export const MusicPlayer = () => {
     ? activeTrack.videoId
     : FALLBACK_VIDEO_ID
 
-  // Construct ad-free privacy-enhanced YouTube embed URL with verified video ID
-  const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1`
+  // Construct embed URL: 100% ad-free Invidious stream by default, with official YouTube fallback
+  const embedUrl = isAdFree
+    ? `https://yewtu.be/embed/${videoId}?autoplay=1&playsinline=1`
+    : `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1`
 
   const directYtWatchUrl = activeTrack.videoId && activeTrack.videoId.length === 11
     ? `https://www.youtube.com/watch?v=${activeTrack.videoId}`
@@ -72,6 +78,24 @@ export const MusicPlayer = () => {
 
         {/* Action Controls */}
         <div className='flex items-center gap-1.5 shrink-0'>
+          <button
+            onClick={() => setIsAdFree(!isAdFree)}
+            className={cn(
+              'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer select-none',
+              isAdFree
+                ? 'bg-emerald-500/15 text-emerald-500 hover:bg-emerald-500/25 border border-emerald-500/30 shadow-sm'
+                : 'bg-muted/70 text-muted-foreground hover:bg-muted hover:text-foreground border border-border/50',
+            )}
+            title={
+              isAdFree
+                ? '🛡️ Ad-Free Stream Active (No ads/pre-rolls). Click to switch to Official YouTube.'
+                : 'Click to enable 100% Ad-Free streaming mode.'
+            }
+          >
+            <ShieldCheck className='size-3.5' />
+            <span>{isAdFree ? 'Ad-Free' : 'YouTube'}</span>
+          </button>
+
           <a
             href={directYtWatchUrl}
             target='_blank'

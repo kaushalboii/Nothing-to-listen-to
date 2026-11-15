@@ -502,6 +502,16 @@ export default class Controls extends BaseControls {
   }
 
   onKeyDown(e) {
+    const activeEl = document.activeElement
+    if (
+      activeEl &&
+      (activeEl.tagName === 'INPUT' ||
+        activeEl.tagName === 'TEXTAREA' ||
+        activeEl.isContentEditable)
+    ) {
+      return
+    }
+
     if (!this.hasFocus()) return
 
     switch (e.code) {

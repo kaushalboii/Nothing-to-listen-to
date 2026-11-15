@@ -52,7 +52,7 @@ HEADERS = {
 }
 
 # Regional Artists Lookup for accurate Language classification
-TAMIL_ARTISTS = ["anirudh", "a. r. rahman", "ar rahman", "harris jayaraj", "yuvan", "ilaiyaraaja", "santhosh narayanan", "gv prakash", "dhanush", "sid sriram", "hiphop tamizha", "d. imman", "vidyasagar", "vijay", "sean roldan", "shakthisree gopalan", "pradeep kumar", "kamal haasan"]
+TAMIL_ARTISTS = ["anirudh", "a. r. rahman", "ar rahman", "harris jayaraj", "yuvan", "ilaiyaraaja", "santhosh narayanan", "gv prakash", "dhanush", "sid sriram", "hiphop tamizha", "d. imman", "vidyasagar", "vijay", "sean roldan", "shakthisree gopalan", "pradeep kumar", "kamal haasan", "sai abhyankkar", "thamizh adhavan"]
 TELUGU_ARTISTS = ["devi sri prasad", "thaman", "keeravani", "ram miriyala", "anurag kulkarni", "mangli", "vivek sagar", "chaitan", "bheems", "kaala bhairava"]
 HINDI_ARTISTS = ["arijit", "pritam", "sachin-jigar", "vishal mishra", "jubin", "neha kakkar", "badshah", "shreya ghoshal", "sonu nigam", "shankar-ehsaan-loy", "tanishk bagchi", "mithoon", "atif aslam", "kumar sanu", "alka yagnik", "vishal-shekhar"]
 PUNJABI_ARTISTS = ["diljit", "karan aujla", "ap dhillon", "sidhu moose wala", "shubh", "guru randhawa", "b praak", "ammy virk", "jassie gill", "harrdy sandhu"]
@@ -65,6 +65,27 @@ POPULAR_FALLBACK_VIDS = [
     "ekr2nIex040", "kPa7bsKwL-c", "5WsUIeNAtbM", "AY3Yea6hBbI", "o00gkntNm5w",
     "V9PVRfjEBTI", "D2F6ZK5ydJ0", "8cVkLeCqUHk", "KEG7b851Ric", "bB3-CUMERIU",
     "FGNc3BibU3o", "uTuchIYZdbM", "H58vbez_m4E", "GWNrPJyRTcA", "IZHGcU0U_W0"
+]
+
+ESSENTIAL_VIRAL_HITS = [
+    {"title": "FA FA FA (OM)", "artist": "Sai Abhyankkar, Thamizh Adhavan", "year": 2026, "lang": "Tamil", "category": "Kollywood, Trending", "vid": "AZ3U1PkKpYo"},
+    {"title": "Fire Song (Kanguva)", "artist": "Devi Sri Prasad, B Praak", "year": 2024, "lang": "Tamil", "category": "Kollywood, Mass Anthem", "vid": "QxqAnkt4uwY"},
+    {"title": "OM Title Track", "artist": "Sai Abhyankkar", "year": 2026, "lang": "Tamil", "category": "Kollywood, Soundtrack", "vid": "aGSOpb_6kv8"},
+    {"title": "Katchi Sera", "artist": "Sai Abhyankkar", "year": 2024, "lang": "Tamil", "category": "Indie Pop, Viral Hit", "vid": "VU23OPQ1Pmc"},
+    {"title": "Aasa Kooda", "artist": "Sai Abhyankkar", "year": 2024, "lang": "Tamil", "category": "Indie Pop, Viral Hit", "vid": "a3Ue-LN5B9U"},
+    {"title": "Fear Song (Devara)", "artist": "Anirudh Ravichander", "year": 2024, "lang": "Telugu", "category": "Tollywood, Mass Anthem", "vid": "JKG6okLn2qA"},
+    {"title": "Chuttamalle (Devara)", "artist": "Shilpa Rao, Anirudh Ravichander", "year": 2024, "lang": "Telugu", "category": "Tollywood, Melodic", "vid": "GWNrPJyRTcA"},
+    {"title": "Sthuthi (Bougainvillea)", "artist": "Sushin Shyam", "year": 2024, "lang": "Malayalam", "category": "Mollywood, Viral Dance", "vid": "exkJKrAVzAc"},
+    {"title": "Pushpa Pushpa (Pushpa 2)", "artist": "Devi Sri Prasad, Nakash Aziz", "year": 2024, "lang": "Telugu", "category": "Tollywood, Mass Anthem", "vid": "ietprsshiSs"},
+    {"title": "Kissik (Pushpa 2)", "artist": "Devi Sri Prasad, Sublahshini", "year": 2024, "lang": "Telugu", "category": "Tollywood, Dance", "vid": "8cVkLeCqUHk"},
+    {"title": "Angaaron (Pushpa 2)", "artist": "Shreya Ghoshal, Devi Sri Prasad", "year": 2024, "lang": "Telugu", "category": "Tollywood, Romantic", "vid": "0DVAM48BhQU"},
+    {"title": "Illuminati (Aavesham)", "artist": "Sushin Shyam, Dabzee", "year": 2024, "lang": "Malayalam", "category": "Mollywood, Swag Anthem", "vid": "tOM-nWPcR4U"},
+    {"title": "Jaada (Aavesham)", "artist": "Sushin Shyam, Sreenath Bhasi", "year": 2024, "lang": "Malayalam", "category": "Mollywood, Swag", "vid": "HUAAYwtusLI"},
+    {"title": "APT.", "artist": "ROSÉ, Bruno Mars", "year": 2024, "lang": "K-Pop", "category": "Pop, Global #1", "vid": "ekr2nIex040"},
+    {"title": "Die With A Smile", "artist": "Lady Gaga, Bruno Mars", "year": 2024, "lang": "English", "category": "Pop, Billboard #1", "vid": "kPa7bsKwL-c"},
+    {"title": "Tauba Tauba (Bad Newz)", "artist": "Karan Aujla", "year": 2024, "lang": "Hindi", "category": "Bollywood, Dance", "vid": "uTuchIYZdbM"},
+    {"title": "Aaj Ki Raat (Stree 2)", "artist": "Sachin-Jigar, Madhubanti Bagchi", "year": 2024, "lang": "Hindi", "category": "Bollywood, Dance", "vid": "o00gkntNm5w"},
+    {"title": "Ami Je Tomar 3.0 (Bhool Bhulaiyaa 3)", "artist": "Arijit Singh, Shreya Ghoshal", "year": 2024, "lang": "Hindi", "category": "Bollywood, Classical", "vid": "FGNc3BibU3o"},
 ]
 
 def log(msg):
@@ -483,6 +504,14 @@ def main():
     # 3. Deduplicate candidate songs and select top candidates
     candidate_songs = []
     seen_candidates = set()
+
+    # Always prioritize essential viral hits (OM, FA FA FA, Fire Song, Katchi Sera, Devara, Pushpa 2, etc.)
+    for h in ESSENTIAL_VIRAL_HITS:
+        k = f"{h['artist']} - {h['title']}".lower()
+        seen_candidates.add(k)
+        seen_candidates.add(h['title'].lower())
+        candidate_songs.append(dict(h))
+
     for s in live_songs:
         title = s["title"].strip()
         artist = s["artist"].strip()
@@ -538,6 +567,11 @@ def main():
         lang = item.get("lang", "English")
         year = item.get("year", 2026)
 
+        raw_cat = item.get("category", "Music")
+        cat_tokens = [c.strip() for c in re.split(r"[,/]+", str(raw_cat)) if c.strip() and c.strip().lower() not in (lang.lower(), "music")]
+        unique_genre_tokens = list(dict.fromkeys([lang, "Trending"] + cat_tokens))
+        genres_str = ", ".join(unique_genre_tokens)
+
         final_records.append({
             "id": idx,
             "title": title,
@@ -549,7 +583,7 @@ def main():
             "artwork": artwork,
             "tagline": f"🔥 Daily Hot Release ({year})",
             "overview": f"Official ad-free stream for '{title}' by {artist}. Trending globally across live music charts.",
-            "genres": f"{lang}, Trending, {item.get('category', 'Music')}",
+            "genres": genres_str,
             "language": lang,
             "release_year": year,
             "era": "New & Trending (2024-2026)",

@@ -37,11 +37,16 @@ export class Film {
     this.artist = data.artist ? String(data.artist) : 'Various Artists'
     this.tagline = data.tagline ? String(data.tagline) : undefined
     this.overview = data.overview ? String(data.overview) : undefined
-    this.genres = data.genres
+    const rawGenres = data.genres
       ? Array.isArray(data.genres)
         ? data.genres
-        : String(data.genres).split(', ')
-      : undefined
+        : String(data.genres).split(/,\s*/)
+      : []
+    const lang = data.language ? String(data.language).toLowerCase() : ''
+    const uniqueGenres = Array.from(
+      new Set(rawGenres.map((g) => String(g).trim()).filter(Boolean)),
+    ).filter((g) => g.toLowerCase() !== lang)
+    this.genres = uniqueGenres.length > 0 ? uniqueGenres : undefined
     this.year = Number(data.release_year)
     this.rating = Number(data.vote_average) * 10
     this.popularity = Number(data.popularity)

@@ -375,12 +375,20 @@ def main():
     parser.add_argument("--lang", default="", help="Language")
     parser.add_argument("--link", default="", help="Direct YouTube or Spotify link")
     parser.add_argument("--issue-number", default="", help="GitHub issue number if triggered from issue")
+    parser.add_argument("--force", action="store_true", help="Force add without network search")
+    parser.add_argument("--artwork", default="", help="Optional custom artwork URL")
+    parser.add_argument("--year", type=int, default=0, help="Optional release year")
     args = parser.parse_args()
 
     title_input = args.title.strip()
     artist_input = args.artist.strip()
     lang_input = args.lang.strip()
     link_input = args.link.strip() or args.url.strip()
+
+    # If title input looks like a placeholder, clear it so it auto-extracts
+    placeholders = ["auto-extract from youtube link", "auto-extract", "auto extract", "song title", "auto-extract from youtube"]
+    if title_input.lower().strip() in placeholders:
+        title_input = ""
 
     # If title input looks like a YouTube link, treat it as link_input
     if not link_input and ("youtube.com" in title_input or "youtu.be" in title_input):
@@ -431,7 +439,13 @@ def main():
     if not verified and title_input:
         verified = verify_on_streaming_catalog(title_input, context_list)
 
-    if not verified and yt_info:
+    if args.force:
+        ver_title = title_input or (raw_yt_title if yt_info else "Pablo Sandhanam Theme")
+        ver_artist = artist_input or (yt_author if yt_info else "Anirudh Ravichander")
+        ver_artwork = args.artwork or (yt_info.get("thumbnail_url") if yt_info else f"https://img.youtube.com/vi/{vid}/hqdefault.jpg")
+        ver_year = args.year or 2022
+        ver_cat = "Soundtrack"
+    elif not verified and yt_info:
         # Fall back to using YouTube's official metadata if iTunes search has a mismatch
         log("ℹ️ No exact iTunes match; utilizing official YouTube verified metadata.")
         ver_title = title_input or raw_yt_title

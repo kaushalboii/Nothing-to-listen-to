@@ -132,8 +132,10 @@ export const Favorites = () => {
             <Button
               variant='outline'
               onClick={() => {
-                userConfig.favorites = undefined
-                setUserConfig(userConfig)
+                setUserConfig({
+                  ...userConfig,
+                  favorites: undefined,
+                })
               }}
             >
               Clear favorites
@@ -146,63 +148,67 @@ export const Favorites = () => {
         className='not-landscape:w-full bg-background/60 lg:w-full landscape:h-full'
         innerClassName='max-h-[calc(100vh-var(--spacing)*12)]'
       >
-        <div className='flex min-h-64 w-full flex-col gap-4 p-4 pb-18 md:gap-6 md:p-6 md:pb-24 lg:flex lg:pt-16 lg:pb-24'>
+        <div className='flex min-h-64 w-full flex-col gap-3.5 p-3.5 pb-18 md:gap-5 md:p-6 md:pb-24 lg:flex lg:pt-16 lg:pb-24'>
           {hasFavorites ? (
             <>
               {favoriteEntries.map(({ key, film }, index) => (
                 <div
-                  className='relative flex h-36 w-full cursor-auto flex-row overflow-hidden rounded-xl border bg-card/60'
+                  className='relative flex min-h-[7.5rem] w-full cursor-auto flex-row items-stretch overflow-hidden rounded-xl border border-border/60 bg-card/85 backdrop-blur-md shadow-sm transition-all hover:border-border'
                   key={key}
                 >
                   <div
-                    className='relative group/poster cursor-pointer shrink-0'
+                    className='relative group/poster cursor-pointer shrink-0 w-28 h-28 sm:w-32 sm:h-32 m-2 sm:m-2.5 rounded-lg overflow-hidden bg-zinc-900 shadow-md'
                     onClick={() => handlePlayOne(index)}
                     title={`Play ${film.title}`}
                   >
-                    <FilmPoster film={film} />
+                    <FilmPoster film={film} className='h-full w-full object-cover' />
                     <div className='absolute inset-0 bg-black/40 opacity-0 group-hover/poster:opacity-100 transition-opacity flex items-center justify-center'>
                       <Play className='size-8 text-white fill-white drop-shadow-md' />
                     </div>
                   </div>
-                  <div className='flex h-full grow flex-col justify-between gap-3 p-4 min-w-0'>
-                    <div>
+                  <div className='flex flex-1 flex-col justify-between p-2.5 sm:p-3 sm:pl-0 min-w-0 pr-18 sm:pr-24'>
+                    <div className='min-w-0'>
                       {(film as any).artist && (
-                        <p className='text-xs font-bold text-primary uppercase tracking-wider mb-0.5 truncate'>
+                        <p className='text-xs font-bold text-amber-500 uppercase tracking-wider mb-0.5 truncate'>
                           {(film as any).artist}
                         </p>
                       )}
-                      <h6 className='pr-3 font-black text-2xl leading-none truncate'>
+                      <h6 className='font-black text-base sm:text-lg leading-tight truncate text-foreground'>
                         {film.title}
-                        <span className='font-normal text-foreground/50'>
-                          &nbsp;({film.year})
-                        </span>
+                        {film.year && (
+                          <span className='font-normal text-muted-foreground text-sm'>
+                            &nbsp;({film.year})
+                          </span>
+                        )}
                       </h6>
+                      {film.tagline && (
+                        <p className='line-clamp-1 mt-1 text-xs text-muted-foreground italic'>
+                          {film.tagline}
+                        </p>
+                      )}
                     </div>
-                    <p className='line-clamp-1 hidden font-medium text-base text-foreground/90 leading-none md:inline-block'>
-                      {film.tagline}
-                    </p>
                     <div
                       className={cn(
-                        'pointer-events-auto flex flex-row flex-wrap gap-1.5',
+                        'pointer-events-auto flex flex-row flex-wrap items-center gap-1.5 mt-2',
                       )}
                     >
                       <StdLinks
                         film={film}
-                        buttonClassName='text-xxs !py-1 !px-2 !h-auto'
+                        buttonClassName='text-[10px] !py-0.5 !px-2 !h-6'
                       />
                       {hasCustomLinks && (
                         <CustomLinks
                           film={film}
                           addNewDisabled
-                          buttonClassName='!py-1 !px-2 !h-auto'
+                          buttonClassName='text-[10px] !py-0.5 !px-2 !h-6'
                         />
                       )}
                     </div>
                   </div>
-                  <div className='absolute top-4 right-4 flex flex-row items-center gap-1.5'>
+                  <div className='absolute top-2.5 right-2.5 sm:top-3 sm:right-3 flex flex-row items-center gap-1.5'>
                     <Button
                       size='icon'
-                      className='!size-6 [&_svg]:!size-3.5 cursor-pointer rounded-full bg-red-600 hover:bg-red-700 text-white shadow-sm'
+                      className='!size-7 [&_svg]:!size-3.5 cursor-pointer rounded-full bg-red-600 hover:bg-red-700 text-white shadow-sm'
                       onClick={() => handlePlayOne(index)}
                       title={`Play ${film.title}`}
                     >
@@ -212,7 +218,7 @@ export const Favorites = () => {
                       <Button
                         size='icon'
                         variant='outline'
-                        className='!size-6 [&_svg]:!size-3.5 cursor-pointer rounded-full'
+                        className='!size-7 [&_svg]:!size-3.5 cursor-pointer rounded-full'
                         onClick={() => {
                           voroforceControls.navigateToCellById(film.cellId)
                         }}
@@ -224,11 +230,17 @@ export const Favorites = () => {
                     <Button
                       size='icon'
                       variant='outline'
-                      className='!size-6 [&_svg]:!size-3.5 cursor-pointer rounded-full hover:bg-destructive/15 hover:text-destructive'
+                      className='!size-7 [&_svg]:!size-3.5 cursor-pointer rounded-full hover:bg-destructive/15 hover:text-destructive'
                       onClick={() => {
-                        delete favorites?.[Number.parseInt(key)]
-                        userConfig.favorites = { ...favorites }
-                        setUserConfig(userConfig)
+                        const nextFavorites = { ...favorites }
+                        delete nextFavorites[Number.parseInt(key)]
+                        setUserConfig({
+                          ...userConfig,
+                          favorites:
+                            Object.keys(nextFavorites).length > 0
+                              ? nextFavorites
+                              : undefined,
+                        })
                       }}
                       title='Remove from favorites'
                     >

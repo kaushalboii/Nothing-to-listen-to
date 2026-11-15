@@ -71,11 +71,11 @@ export const FilmViewFooter = ({
                 size='icon'
                 variant={isFavorite ? 'default' : 'outline'}
                 onClick={() => {
+                  const currentFavorites = { ...(userConfig.favorites ?? {}) }
                   if (isFavorite) {
-                    delete userConfig.favorites?.[film.tmdbId]
+                    delete currentFavorites[film.tmdbId]
                   } else {
-                    if (!userConfig.favorites) userConfig.favorites = {}
-                    userConfig.favorites[film.tmdbId] = {
+                    currentFavorites[film.tmdbId] = {
                       cellId: voroforceCell?.id,
                       imdbId: film.imdbId,
                       tmdbId: film.tmdbId,
@@ -87,7 +87,13 @@ export const FilmViewFooter = ({
                       youtubeId: film.youtubeId,
                     }
                   }
-                  setUserConfig(userConfig)
+                  setUserConfig({
+                    ...userConfig,
+                    favorites:
+                      Object.keys(currentFavorites).length > 0
+                        ? currentFavorites
+                        : undefined,
+                  })
                 }}
                 className='pointer-events-auto hidden rounded-lg border-foreground/40 hover:border-foreground backdrop-blur-lg md:inline-flex size-7'
               >

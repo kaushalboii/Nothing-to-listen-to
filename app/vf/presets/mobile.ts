@@ -1,3 +1,4 @@
+import { mediaConfigWithUncompressedSingleVersion } from '../config/media'
 import { VOROFORCE_MODE } from '../consts'
 import type { VoroforceInstance } from '../types'
 
@@ -58,9 +59,7 @@ export default {
     enabled: false, // TODO headers seem to be in order (SharedArrayBuffer exists) but black screen, used to work, needs triage (it works in local network though?!?)
     renderInParallel: true,
   },
-  media: {
-    compressionFormat: 'ktx',
-  },
+  media: mediaConfigWithUncompressedSingleVersion,
   controls: controlsConfig,
   display: {
     scene: {

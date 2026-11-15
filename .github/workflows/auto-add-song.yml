@@ -72,6 +72,11 @@ jobs:
               link = song_title
               song_title = ""
 
+          # Handle template placeholder titles
+          placeholders = ["auto-extract from youtube link", "auto-extract", "auto extract", "song title", "auto-extract from youtube"]
+          if song_title.lower().strip() in placeholders:
+              song_title = ""
+
           output_path = os.environ.get("GITHUB_OUTPUT")
           if output_path:
               with open(output_path, "a", encoding="utf-8") as f:

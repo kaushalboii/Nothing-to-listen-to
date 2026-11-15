@@ -5,28 +5,49 @@ export class CompressedMediaGridArrayTexture extends Texture {
     let ext
     let internalFormat
     if (args.compressionFormat === 'etc') {
-      // ext = gl.getExtension('WEBGL_compressed_texture_etc1')
       ext = gl.getExtension('WEBGL_compressed_texture_etc')
       if (!ext) {
-        // Extension not supported
-        console.error('ETC1 texture compression not supported')
+        console.warn('ETC texture compression not supported')
       }
-      internalFormat = ext.COMPRESSED_RGB_ETC1_WEBGL
+      internalFormat = ext?.COMPRESSED_RGB_ETC1_WEBGL
     } else if (args.compressionFormat === 'ktx') {
-      // ext = gl.getExtension('WEBGL_compressed_texture_etc1')
       ext = gl.getExtension('WEBGL_compressed_texture_etc')
       if (!ext) {
-        // Extension not supported
-        console.error('ETC texture compression not supported')
+        console.warn('ETC texture compression not supported')
       }
-      internalFormat = ext.COMPRESSED_RGB8_ETC2
+      internalFormat = ext?.COMPRESSED_RGB8_ETC2
     } else {
       ext = gl.getExtension('WEBGL_compressed_texture_s3tc')
       if (!ext) {
-        // Extension not supported
-        console.error('S3TC texture compression not supported')
+        console.warn('S3TC texture compression not supported')
       }
-      internalFormat = ext.COMPRESSED_RGB_S3TC_DXT1_EXT
+      internalFormat = ext?.COMPRESSED_RGB_S3TC_DXT1_EXT
+    }
+
+    if (!ext || !internalFormat) {
+      super(gl, {
+        ...args,
+        target: gl.TEXTURE_2D_ARRAY,
+        internalFormat: gl.RGBA8,
+        minFilter: gl.LINEAR,
+        magFilter: gl.LINEAR,
+        wrapS: gl.CLAMP_TO_EDGE,
+        wrapT: gl.CLAMP_TO_EDGE,
+      })
+      this.compressedTexExt = null
+      this.internalFormat = gl.RGBA8
+      this.bind()
+      try {
+        gl.texStorage3D(
+          gl.TEXTURE_2D_ARRAY,
+          1,
+          gl.RGBA8,
+          args.width || 1,
+          args.height || 1,
+          args.length || 1,
+        )
+      } catch (e) {}
+      return
     }
 
     super(gl, {
@@ -149,6 +170,7 @@ export class CompressedMediaGridArrayTexture extends Texture {
     }
 
     this.pendingLayerUpdates.forEach(({ index, bytes }) => {
+      if (!this.compressedTexExt || !this.internalFormat) return
       this.gl.compressedTexSubImage3D(
         this.gl.TEXTURE_2D_ARRAY,
         0,

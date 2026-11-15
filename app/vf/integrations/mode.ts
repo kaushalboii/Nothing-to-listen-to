@@ -111,22 +111,31 @@ export const handleMode = () => {
 
   const { loader, ticker } = voroforce
 
+  // Safety net: Guarantee the loading veil lifts even on slow or constrained mobile devices
+  const safetyTimeout = setTimeout(() => {
+    revealVoroforceContainer()
+  }, 2500)
+
   if (initialMode === VOROFORCE_MODE.intro) {
     if (config.media.enabled && loader.loadingMediaLayers !== 0) {
       loader.listenOnce('idle', () => {
+        clearTimeout(safetyTimeout)
         // media will be uploaded on next tick
         ticker.listenOnce('tick', handleIntro)
       })
     } else {
+      clearTimeout(safetyTimeout)
       handleIntro()
     }
   } else {
     if (config.media.enabled && config.media.preload) {
       loader.listenOnce('preloaded', () => {
+        clearTimeout(safetyTimeout)
         // media will be uploaded to gpu on the next tick
         ticker.listenOnce('tick', revealVoroforceContainer)
       })
     } else {
+      clearTimeout(safetyTimeout)
       revealVoroforceContainer()
     }
   }

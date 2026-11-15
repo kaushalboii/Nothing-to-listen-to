@@ -53,9 +53,12 @@ export default class Display {
       media.compressionFormat =
         compressionFormatKeys[(index + 1) % compressionFormatKeys.length]
       if (!this.gl.getExtension(compressionFormats[media.compressionFormat])) {
-        throw new Error('All compression formats are not supported.')
+        media.compressedFormatsSupported = false
+        console.warn('Compressed texture formats (DDS/KTX) are not supported on this device/browser. Falling back to uncompressed media.')
+        return
       }
     }
+    media.compressedFormatsSupported = true
   }
 
   initScene() {

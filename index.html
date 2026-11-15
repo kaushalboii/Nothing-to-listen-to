@@ -12,12 +12,17 @@
         --background: #09090b;
         --foreground: #fafafa;
       }
-      body {
+      html, body {
         margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
         background-color: #09090b;
         color: #fafafa;
         font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         overflow: hidden;
+        overscroll-behavior: none;
+        -webkit-overflow-scrolling: touch;
       }
       @keyframes spin-slow {
         from { transform: rotate(0deg); }
@@ -125,9 +130,9 @@
     <div
       id="voroforce"
       class="pointer-events-auto fixed inset-x-0 top-0 h-dvh w-screen"
-      style="position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;"
+      style="position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;touch-action:none;overflow:hidden;"
     >
-      <canvas class="h-full w-full pointer-events-none" style="width:100%;height:100%;display:block;"></canvas>
+      <canvas class="h-full w-full pointer-events-none" style="width:100%;height:100%;display:block;touch-action:none;"></canvas>
     </div>
     <script type="module" src="/app/main.tsx"></script>
   </body>

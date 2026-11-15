@@ -6,6 +6,7 @@ import type { THEME } from '../../consts'
 import type { StoreState } from '../../store'
 import {
   DEFAULT_VOROFORCE_PRESET,
+  DEVICE_CLASS,
   type VOROFORCE_MODE,
   VOROFORCE_PRESET,
 } from '../consts'
@@ -67,12 +68,20 @@ export const getVoroforceConfig = (state: StoreState) => {
   const cellsOverrideParam = urlParams.get('cells')
   const customLinkBase64Param = urlParams.get('customLinkBase64')
 
+  const isMobile =
+    state.ua.getDevice().is('mobile') ||
+    state.deviceClass === DEVICE_CLASS.mobile ||
+    (typeof window !== 'undefined' &&
+      ('ontouchstart' in window || window.innerWidth < 768))
+
   let preset = initialPreset
   if (presetOverrideParam && VOROFORCE_PRESET[presetOverrideParam]) {
     preset = presetOverrideParam
   }
 
-  if (!preset) preset = DEFAULT_VOROFORCE_PRESET
+  if (!preset) {
+    preset = isMobile ? VOROFORCE_PRESET.mobile : DEFAULT_VOROFORCE_PRESET
+  }
 
   let config = mergeConfigs(
     baseConfig,
@@ -89,6 +98,20 @@ export const getVoroforceConfig = (state: StoreState) => {
   config.cells = cellsOverrideParam
     ? Number.parseInt(cellsOverrideParam)
     : (cellLimit ?? config.cells)
+
+  if (isMobile) {
+    // Safety caps for mobile devices to prevent GPU and CPU thread freeze
+    config.cells = Math.min(config.cells || 5000, 5000)
+    if (config.multiThreading) {
+      config.multiThreading.enabled = false
+    }
+    config.display = config.display || {}
+    config.display.renderer = config.display.renderer || {}
+    config.display.renderer.pixelRatio = Math.min(
+      typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1,
+      1.25,
+    )
+  }
 
   if ('devTools' in userConfig) {
     config.devTools.enabled = !!userConfig.devTools

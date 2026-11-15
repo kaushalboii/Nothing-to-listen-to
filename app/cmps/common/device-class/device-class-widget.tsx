@@ -48,8 +48,8 @@ export function DeviceClassWidget({
   )
 
   useEffect(() => {
-    if (!storeDeviceClass) {
-      if (estimatedDeviceClass) {
+    if (!isDefined(storeDeviceClass)) {
+      if (isDefined(estimatedDeviceClass)) {
         setSelectedDeviceClass(estimatedDeviceClass)
       } else {
         if (!voroforce) {

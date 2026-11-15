@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useState } from 'react'
-import { useShallowState } from '../../../store'
+import { store, useShallowState } from '../../../store'
 import { isDefined } from '../../../utils/misc'
 import { cn } from '../../../utils/tw'
 import { VOROFORCE_MODE } from '../../../vf'
@@ -89,6 +89,7 @@ export const Intro = () => {
           >
             <SmallScreenWarning />
             <CoreSettingsWidget
+              hideSelectorsOnMobile
               submitLabel='Continue'
               submitVisibility='always'
             />
@@ -108,7 +109,16 @@ const MoviesDatasetLicenseInfo = () => (
 
 const DEFAULT_REVEAL_SCREEN_DELAY = 1200
 const DEFAULT_PREVIEW_MODE_REVEAL_SCREEN_DELAY = 600
-let hideScreen = OBSCURE_VISUAL_DEFECTS
+const isMobileDevice =
+  typeof window !== 'undefined' &&
+  ('ontouchstart' in window ||
+    navigator.maxTouchPoints > 0 ||
+    window.innerWidth < 768)
+
+let hideScreen =
+  OBSCURE_VISUAL_DEFECTS &&
+  (!isMobileDevice || !store.getState().playedIntro || !store.getState().preset)
+
 function useIntroVisible() {
   const { introRequired, voroforceMediaPreloaded, revealScreenDelay } =
     useShallowState((state) => ({
@@ -126,22 +136,36 @@ function useIntroVisible() {
     const [, forceUpdate] = useReducer((x) => x + 1, 0)
     // biome-ignore lint/correctness/useExhaustiveDependencies: intentional
     useEffect(() => {
-      setTimeout(() => {
+      const initialDelay = isMobileDevice
+        ? Math.min(revealScreenDelay, 250)
+        : revealScreenDelay
+      const timeoutId = setTimeout(() => {
         hideScreen = false
         forceUpdate()
-      }, revealScreenDelay)
-    }, [])
+      }, initialDelay)
+      return () => clearTimeout(timeoutId)
+    }, [revealScreenDelay])
 
     useEffect(() => {
       let timeout: NodeJS.Timeout
+      let lastWidth = typeof window !== 'undefined' ? window.innerWidth : 0
+
       const onResize = () => {
+        const currentWidth = window.innerWidth
+        // On mobile and touch devices, scrolling triggers window resize due to dynamic address bar expand/collapse.
+        // Never obscure the screen on mobile or when width hasn't significantly changed (>= 50px).
+        if (isMobileDevice || Math.abs(currentWidth - lastWidth) < 50) {
+          lastWidth = currentWidth
+          return
+        }
+        lastWidth = currentWidth
         hideScreen = true
         forceUpdate()
         clearTimeout(timeout)
         timeout = setTimeout(() => {
           hideScreen = false
           forceUpdate()
-        }, revealScreenDelay)
+        }, Math.min(revealScreenDelay, 300))
       }
       window.addEventListener('resize', onResize)
       return () => {

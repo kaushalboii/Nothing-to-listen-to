@@ -26,12 +26,14 @@ export function CoreSettingsWidget({
   submitLabel = 'Apply',
   submitProps,
   submitVisibility = 'dirty',
+  hideSelectorsOnMobile = false,
 }: {
   className?: string
   onSubmit?: () => void
   submitLabel?: string | ReactNode
   submitProps?: ButtonProps
   submitVisibility?: 'dirty' | 'always'
+  hideSelectorsOnMobile?: boolean
 }) {
   const {
     storeDeviceClass,
@@ -108,7 +110,7 @@ export function CoreSettingsWidget({
       innerClassName={cn('flex flex-col gap-4', className)}
     >
       <PresetSelector
-        className='max-md:hidden'
+        className={cn(hideSelectorsOnMobile && 'max-md:hidden')}
         value={preset}
         onValueChange={(value: VOROFORCE_PRESET) => {
           setPreset(value)
@@ -117,7 +119,7 @@ export function CoreSettingsWidget({
         deviceClass={deviceClass}
       />
       <CellLimitSelector
-        className='max-md:hidden'
+        className={cn(hideSelectorsOnMobile && 'max-md:hidden')}
         value={cellLimit}
         onValueChange={(value: CELL_LIMIT) => {
           setCellLimit(value)

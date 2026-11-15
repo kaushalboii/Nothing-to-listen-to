@@ -56,12 +56,23 @@ const controlsConfig = Object.assign(
 export default {
   cells: 5000,
   multiThreading: {
-    enabled: false, // TODO headers seem to be in order (SharedArrayBuffer exists) but black screen, used to work, needs triage (it works in local network though?!?)
+    enabled: false,
     renderInParallel: true,
   },
   media: mediaConfigWithUncompressedSingleVersion,
   controls: controlsConfig,
+  revealScreenDelay: {
+    default: 200,
+    modes: {
+      [VOROFORCE_MODE.preview]: 150,
+      [VOROFORCE_MODE.select]: 150,
+      [VOROFORCE_MODE.intro]: 200,
+    },
+  },
   display: {
+    renderer: {
+      pixelRatio: 1.25,
+    },
     scene: {
       main: {
         uniforms: {

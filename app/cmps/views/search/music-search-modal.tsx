@@ -124,18 +124,18 @@ export const MusicSearchModal = () => {
       const genres = String(rec.genres || '').toLowerCase()
       const year = String(rec.release_year || '')
       const lang = String(rec.language || '').toLowerCase()
+      const tagline = String(rec.tagline || '').toLowerCase()
+      const overview = String(rec.overview || '').toLowerCase()
       const tracks = Array.isArray(rec.tracks)
         ? rec.tracks.map((t: any) => String(t.title || '').toLowerCase()).join(' ')
         : ''
 
-      return (
-        title.includes(q) ||
-        artist.includes(q) ||
-        genres.includes(q) ||
-        year.includes(q) ||
-        lang.includes(q) ||
-        tracks.includes(q)
-      )
+      // Full search corpus for comprehensive discovery
+      const combined = `${title} ${artist} ${genres} ${year} ${lang} ${tagline} ${overview} ${tracks}`
+      
+      // Token-based matching: every keyword entered by the user must match somewhere in the song metadata
+      const tokens = q.split(/\s+/).filter(Boolean)
+      return tokens.every((token) => combined.includes(token))
     })
   }, [localRecords, query, selectedLang, selectedEra])
 

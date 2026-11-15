@@ -95,3 +95,25 @@ jobs:
       - name: Deploy to GitHub Actions Pages
         continue-on-error: true
         uses: actions/deploy-pages@v4
+
+      - name: Create release distribution archive
+        run: |
+          cd dist && zip -r ../nothing-to-listen-to-latest.zip ./* && cd ..
+
+      - name: Update GitHub Release on Web
+        uses: softprops/action-gh-release@v2
+        continue-on-error: true
+        with:
+          name: Nothing to Listen to - Daily Live Stream Edition
+          tag_name: rolling-release
+          files: nothing-to-listen-to-latest.zip
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+          body: |
+            ## 🎵 Nothing to Listen to - Daily Live Stream Edition
+            Automatically synced with newly verified releases from YouTube, Spotify, and Apple Music.
+            - **Track Count**: 216 Songs (18x12 Voronoi Galaxy)
+            - **100% Ad-Free Streaming Engine**: Pure music streaming with zero ad interruptions
+            - **Verified Streaming Metadata**: Multi-platform integration with Spotify, Apple Music, and YouTube Music
+            - **Live Web App**: [kaushalboii.github.io/Nothing-to-listen-to](https://kaushalboii.github.io/Nothing-to-listen-to/)

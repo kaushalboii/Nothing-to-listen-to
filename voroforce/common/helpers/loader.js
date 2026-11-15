@@ -20,11 +20,6 @@ export class Loader extends CustomEventTarget {
   }
 
   preloadAllMediaLayersVersion0(onLoad) {
-    if (this.config.compressedFormatsSupported === false) {
-      // On mobile without compressed texture support, preload the first uncompressed-single layer instead
-      this._preloadFirstUncompressedLayer(onLoad)
-      return
-    }
     const count = this.config.versions[0].layers
     let loaded = 0
     const onLoadLayer = () => {
@@ -40,14 +35,9 @@ export class Loader extends CustomEventTarget {
   }
 
   preloadFirstMediaLayerAllGridVersions(onLoad) {
-    if (this.config.compressedFormatsSupported === false) {
-      // On mobile without compressed texture support, preload the first uncompressed-single layer instead
-      this._preloadFirstUncompressedLayer(onLoad)
-      return
-    }
-    const count = this.config.versions.filter(
-      ({ type }) => !type || type === 'compressed-grid',
-    ).length
+    const count = this.config.compressedFormatsSupported === false
+      ? 1 // on mobile, version 0 has the full JPEG atlas
+      : this.config.versions.filter(({ type }) => !type || type === 'compressed-grid').length
     let loaded = 0
     const onLoadLayer = () => {
       loaded++
@@ -56,7 +46,8 @@ export class Loader extends CustomEventTarget {
         onLoad?.()
       }
     }
-    for (let i = 0; i < count; i++) {
+    const maxVersions = this.config.compressedFormatsSupported === false ? 1 : this.config.versions.length
+    for (let i = 0; i < maxVersions; i++) {
       const type = this.config.versions[i].type
       if (type && type !== 'compressed-grid') continue
       void this.loadMediaLayer(i, 0, onLoadLayer)

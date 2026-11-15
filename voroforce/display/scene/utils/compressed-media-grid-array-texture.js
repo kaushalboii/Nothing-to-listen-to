@@ -170,21 +170,35 @@ export class CompressedMediaGridArrayTexture extends Texture {
     }
 
     this.pendingLayerUpdates.forEach(({ index, bytes }) => {
-      if (!this.compressedTexExt || !this.internalFormat) return
-      this.gl.compressedTexSubImage3D(
-        this.gl.TEXTURE_2D_ARRAY,
-        0,
-        0,
-        0,
-        index,
-        this.width,
-        this.height,
-        1,
-        // media.internalFormat,
-        // this.compressedTexExt.COMPRESSED_RGB_S3TC_DXT1_EXT,
-        this.internalFormat,
-        bytes,
-      )
+      if (this.compressedTexExt && this.internalFormat !== this.gl.RGBA8) {
+        this.gl.compressedTexSubImage3D(
+          this.gl.TEXTURE_2D_ARRAY,
+          0,
+          0,
+          0,
+          index,
+          this.width,
+          this.height,
+          1,
+          this.internalFormat,
+          bytes,
+        )
+      } else {
+        // Standard WebGL 2 texSubImage3D for uncompressed JPEG atlas (mobile fallback)
+        this.gl.texSubImage3D(
+          this.gl.TEXTURE_2D_ARRAY,
+          0,
+          0,
+          0,
+          index,
+          this.width,
+          this.height,
+          1,
+          this.gl.RGBA,
+          this.gl.UNSIGNED_BYTE,
+          bytes,
+        )
+      }
     })
 
     this.pendingLayerUpdates = []

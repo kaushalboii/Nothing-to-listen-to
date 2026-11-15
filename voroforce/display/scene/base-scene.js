@@ -387,7 +387,9 @@ export default class BaseScene {
       this.globalConfig.media?.compressedFormatsSupported !== false
 
     const fallbackTexture =
-      this.virtualMediaGridTextures[0] ?? new Texture(this.gl, {})
+      this.compressedMediaGridTextures[0] ??
+      this.virtualMediaGridTextures[0] ??
+      new Texture(this.gl, {})
 
     return {
       bMediaEnabled: { value: this.globalConfig.media?.enabled ?? false },

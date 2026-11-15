@@ -69,6 +69,9 @@ export function CoreSettingsWidget({
     (typeof window !== 'undefined' &&
       ('ontouchstart' in window || window.innerWidth < 768))
 
+  const isMobileDesktopView =
+    typeof window !== 'undefined' && window.innerWidth >= 768
+
   const [preset, setPreset] = useState<VOROFORCE_PRESET | undefined>(
     storePreset ??
       (isMobile
@@ -89,7 +92,7 @@ export function CoreSettingsWidget({
   const [cellLimit, setCellLimit] = useState<CELL_LIMIT | undefined>(
     storeCellLimit ??
       (isMobile
-        ? CELL_LIMIT.xxs
+        ? (isMobileDesktopView ? CELL_LIMIT.xxs : CELL_LIMIT.min)
         : isDefined(deviceClass)
           ? CELL_LIMIT_ITEMS.findLast(
               (p) =>
@@ -118,11 +121,15 @@ export function CoreSettingsWidget({
             </div>
             <div className='flex flex-col'>
               <span className='font-semibold text-zinc-100'>Mobile Galaxy</span>
-              <span className='text-zinc-400 text-xxs'>5,000 albums locked for smooth phone performance</span>
+              <span className='text-zinc-400 text-xxs'>
+                {isMobileDesktopView
+                  ? 'Desktop View: 5,000 albums'
+                  : 'Phone View: 1,000 albums for instant loading'}
+              </span>
             </div>
           </div>
           <span className='rounded-full bg-amber-500/20 px-2.5 py-1 font-bold text-amber-400 text-xxs'>
-            5,000
+            {isMobileDesktopView ? '5,000' : '1,000'}
           </span>
         </div>
       ) : (
@@ -170,7 +177,7 @@ export function CoreSettingsWidget({
             setStorePreset(newPreset)
             setStoreCellLimit(
               isMobile
-                ? CELL_LIMIT.xxs
+                ? (isMobileDesktopView ? CELL_LIMIT.xxs : CELL_LIMIT.min)
                 : (isDefined(cellLimit) ? cellLimit : CELL_LIMIT.sm),
             )
             setPlayedIntro(true)

@@ -24,8 +24,9 @@ export function CellLimitSelector({
   const cellLimitItems: SelectorItems = useMemo(() => {
     return CELL_LIMIT_ITEMS.filter(
       (cellLimit) =>
-        cellLimit.value !== CELL_LIMIT.xxs ||
-        deviceClass === DEVICE_CLASS.mobile,
+        cellLimit.value !== CELL_LIMIT.min &&
+        (cellLimit.value !== CELL_LIMIT.xxs ||
+          deviceClass === DEVICE_CLASS.mobile),
     ).map((cellLimit) => {
       const hasWarning =
         isDefined(cellLimit.recommendedDeviceClass) &&

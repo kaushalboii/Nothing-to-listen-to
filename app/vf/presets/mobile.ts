@@ -54,7 +54,7 @@ const controlsConfig = Object.assign(
 )
 
 export default {
-  cells: 5000,
+  cells: 1000,
   multiThreading: {
     enabled: false,
     renderInParallel: true,

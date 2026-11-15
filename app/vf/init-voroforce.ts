@@ -25,7 +25,9 @@ export const initVoroforce = ({
         ('ontouchstart' in window || window.innerWidth < 768))
     if (isMobile) {
       state.setPreset(VOROFORCE_PRESET.mobile)
-      state.setCellLimit(CELL_LIMIT.xxs)
+      const isMobileDesktopView =
+        typeof window !== 'undefined' && window.innerWidth >= 768
+      state.setCellLimit(isMobileDesktopView ? CELL_LIMIT.xxs : CELL_LIMIT.min)
     } else {
       return
     }

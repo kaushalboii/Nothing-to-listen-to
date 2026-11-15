@@ -100,8 +100,9 @@ export const getVoroforceConfig = (state: StoreState) => {
     : (cellLimit ?? config.cells)
 
   if (isMobile) {
-    // Locked strictly to 5000 cells for mobile devices
-    config.cells = 5000
+    const isMobileDesktopView =
+      typeof window !== 'undefined' && window.innerWidth >= 768
+    config.cells = isMobileDesktopView ? 5000 : 1000
     if (config.multiThreading) {
       config.multiThreading.enabled = false
     }

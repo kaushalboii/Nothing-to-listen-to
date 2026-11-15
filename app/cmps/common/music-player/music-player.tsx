@@ -1,8 +1,10 @@
+import { useCallback, useState } from 'react'
 import {
   ChevronDown,
   ChevronUp,
   Disc3,
   ExternalLink,
+  RefreshCw,
   ShieldCheck,
   Volume2,
   X,
@@ -15,6 +17,40 @@ import { Button } from '../../ui/button'
 
 const FALLBACK_VIDEO_ID = 'ZdMZ40GSVmc' // Anirudh - Badass (Leo)
 
+export type PlayerEngineId = 'piped' | 'invidious' | 'youtube'
+
+interface PlayerEngineOption {
+  id: PlayerEngineId
+  name: string
+  badgeLabel: string
+  description: string
+  getEmbedUrl: (id: string) => string
+}
+
+const PLAYER_ENGINES: PlayerEngineOption[] = [
+  {
+    id: 'piped',
+    name: 'Piped (Ad-Free)',
+    badgeLabel: '🛡️ 100% Ad-Free (Piped)',
+    description: 'Ad-free privacy engine: completely strips YouTube pre-roll ads and trackers at source',
+    getEmbedUrl: (id: string) => `https://piped.video/embed/${id}?autoplay=1`,
+  },
+  {
+    id: 'invidious',
+    name: 'Invidious (Ad-Free)',
+    badgeLabel: '🛡️ 100% Ad-Free (Invidious)',
+    description: 'Open-source ad-stripped video mirror (zero ads, zero tracking)',
+    getEmbedUrl: (id: string) => `https://yewtu.be/embed/${id}?autoplay=1&playsinline=1`,
+  },
+  {
+    id: 'youtube',
+    name: 'Direct YouTube',
+    badgeLabel: '▶️ Official YouTube',
+    description: 'Official YouTube CDN (uses your logged-in YouTube Premium account or browser extensions)',
+    getEmbedUrl: (id: string) => `https://www.youtube.com/embed/${id}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1`,
+  },
+]
+
 export const MusicPlayer = () => {
   const { activeTrack, playerOpen, isMinimized, setIsMinimized, stopTrack } =
     useShallowState((state) => ({
@@ -25,6 +61,33 @@ export const MusicPlayer = () => {
       stopTrack: state.stopTrack,
     }))
 
+  // Persistent engine preference (defaults to 100% ad-free Piped engine)
+  const [engineId, setEngineId] = useState<PlayerEngineId>(() => {
+    try {
+      const saved = localStorage.getItem('ntlt_player_engine')
+      if (saved === 'piped' || saved === 'invidious' || saved === 'youtube') {
+        return saved
+      }
+    } catch {
+      // ignore
+    }
+    return 'piped'
+  })
+
+  const handleCycleEngine = useCallback(() => {
+    setEngineId((curr) => {
+      const next: PlayerEngineId =
+        curr === 'piped' ? 'invidious' : curr === 'invidious' ? 'youtube' : 'piped'
+      try {
+        localStorage.setItem('ntlt_player_engine', next)
+      } catch {
+        // ignore
+      }
+      return next
+    })
+  }, [])
+
+  // Hook rules: all hooks must be declared before any early return
   if (!playerOpen || !activeTrack) return null
 
   const query = encodeURIComponent(`${activeTrack.artist} ${activeTrack.title}`.trim())
@@ -32,8 +95,9 @@ export const MusicPlayer = () => {
     ? activeTrack.videoId
     : FALLBACK_VIDEO_ID
 
-  // Built-in Ad-Shield YouTube Player (Zero 3rd parties, official YouTube CDN, privacy-enhanced, tracking-free, and annotation-blocked)
-  const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&modestbranding=1&iv_load_policy=3&controls=1`
+  const activeEngine =
+    PLAYER_ENGINES.find((e) => e.id === engineId) ?? PLAYER_ENGINES[0]
+  const embedUrl = activeEngine.getEmbedUrl(videoId)
 
   const directYtWatchUrl = activeTrack.videoId && activeTrack.videoId.length === 11
     ? `https://www.youtube.com/watch?v=${activeTrack.videoId}`
@@ -43,6 +107,8 @@ export const MusicPlayer = () => {
   const appleMusicUrl = `${config.appleMusicSearchUrl}${query}`
   const ytMusicUrl = `${config.youtubeMusicSearchUrl}${query}`
   const jiosaavnUrl = `${config.jiosaavnSearchUrl}${query}`
+
+  const isAdFree = engineId !== 'youtube'
 
   return (
     <div
@@ -71,22 +137,29 @@ export const MusicPlayer = () => {
           </div>
         </div>
 
-        {/* Action Controls */}
+        {/* Action Controls & Engine Switcher */}
         <div className='flex items-center gap-1.5 shrink-0'>
-          <div
-            className='inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 shadow-sm select-none'
-            title='In-house Ad-Shield active: privacy-enhanced, tracking-free playback on official YouTube engine'
+          <button
+            onClick={handleCycleEngine}
+            className={cn(
+              'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer select-none border shadow-sm',
+              isAdFree
+                ? 'bg-emerald-500/15 text-emerald-500 hover:bg-emerald-500/25 border-emerald-500/30'
+                : 'bg-muted/70 text-muted-foreground hover:bg-muted hover:text-foreground border-border/50',
+            )}
+            title={`Active Engine: ${activeEngine.name}. ${activeEngine.description}. Click to switch engine (Piped 🛡️ / Invidious 🛡️ / YouTube ▶️).`}
           >
-            <ShieldCheck className='size-3.5' />
-            <span>🛡️ Ad-Shield Active</span>
-          </div>
+            <ShieldCheck className={cn('size-3.5', isAdFree ? 'text-emerald-500' : 'text-muted-foreground')} />
+            <span>{activeEngine.badgeLabel}</span>
+            <RefreshCw className='size-2.5 opacity-60 ml-0.5' />
+          </button>
 
           <a
             href={directYtWatchUrl}
             target='_blank'
             rel='noreferrer'
             className='inline-flex items-center justify-center size-7 rounded-full bg-red-600/10 hover:bg-red-600/20 text-red-600 transition-colors cursor-pointer'
-            title='Watch on YouTube'
+            title='Watch directly on YouTube website'
           >
             <Youtube className='size-4' />
           </a>
@@ -117,7 +190,7 @@ export const MusicPlayer = () => {
         </div>
       </div>
 
-      {/* Embedded YouTube Player */}
+      {/* Embedded Stream Player */}
       <div
         className={cn('relative mt-3 overflow-hidden rounded-xl bg-black transition-all duration-300', {
           'h-56 md:h-64 opacity-100': !isMinimized,
@@ -125,6 +198,7 @@ export const MusicPlayer = () => {
         })}
       >
         <iframe
+          key={`${engineId}-${videoId}`}
           src={embedUrl}
           title={`${activeTrack.artist} - ${activeTrack.title}`}
           allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'

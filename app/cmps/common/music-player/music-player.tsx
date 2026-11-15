@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useRef } from 'react'
 import {
   ChevronDown,
   ChevronUp,
@@ -44,19 +44,53 @@ export const MusicPlayer = () => {
     ? activeTrack.videoId
     : FALLBACK_VIDEO_ID
 
-  // If playlist has multiple videos, pass the remaining video IDs to YouTube's native playlist parameter
-  const playlistParam = useMemo(() => {
-    if (!playlist || playlist.length <= 1) return ''
-    const currentVid = activeTrack?.videoId && activeTrack.videoId.length === 11 ? activeTrack.videoId : FALLBACK_VIDEO_ID
-    const remainingIds = playlist
-      .map((t) => t.videoId)
-      .filter((id): id is string => Boolean(id && id.length === 11 && id !== currentVid))
-    return remainingIds.length > 0 ? `&playlist=${remainingIds.join(',')}` : ''
-  }, [playlist, activeTrack?.videoId])
+  const iframeRef = useRef<HTMLIFrameElement>(null)
 
-  // Official Native YouTube Player (Zero 3rd-party proxies, zero Piped branding)
+  // Listen for YouTube video ended event to automatically advance tracks in playlist
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (
+        event.origin !== 'https://www.youtube-nocookie.com' &&
+        event.origin !== 'https://www.youtube.com'
+      ) {
+        return
+      }
+
+      try {
+        const data =
+          typeof event.data === 'string' ? JSON.parse(event.data) : event.data
+
+        // When YouTube embed fires onStateChange with info === 0 (YT.PlayerState.ENDED)
+        if (
+          data?.event === 'onStateChange' &&
+          (data?.info === 0 || data?.info === '0')
+        ) {
+          nextTrack()
+        }
+      } catch (_) {}
+    }
+
+    window.addEventListener('message', handleMessage)
+    return () => {
+      window.removeEventListener('message', handleMessage)
+    }
+  }, [nextTrack])
+
+  // When iframe loads, notify YouTube embed to start listening for state change events
+  const handleIframeLoad = () => {
+    try {
+      iframeRef.current?.contentWindow?.postMessage(
+        JSON.stringify({
+          event: 'listening',
+        }),
+        '*',
+      )
+    } catch (_) {}
+  }
+
+  // Official Native YouTube Player (Zero 3rd-party proxies, strictly matched to activeTrack)
   const originParam = typeof window !== 'undefined' && window.location.origin ? `&origin=${encodeURIComponent(window.location.origin)}` : ''
-  const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1&modestbranding=1${originParam}${playlistParam}`
+  const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1&modestbranding=1${originParam}`
 
   if (!playerOpen || !activeTrack) return null
 
@@ -174,7 +208,10 @@ export const MusicPlayer = () => {
         })}
       >
         <iframe
+          key={`${videoId}-${playlistIndex}`}
+          ref={iframeRef}
           src={embedUrl}
+          onLoad={handleIframeLoad}
           title={`${activeTrack.artist} - ${activeTrack.title}`}
           allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
           allowFullScreen

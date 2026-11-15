@@ -25,7 +25,6 @@ export const Favorites = () => {
     hasCustomLinks,
     voroforceControls,
     playPlaylist,
-    filmBatches,
   } = useShallowState((state) => ({
     open: state.favoritesOpen,
     setOpen: state.setFavoritesOpen,
@@ -36,27 +35,21 @@ export const Favorites = () => {
       state.userConfig.customLinks && state.userConfig.customLinks.length > 0,
     voroforceControls: state.voroforce?.controls,
     playPlaylist: state.playPlaylist,
-    filmBatches: state.filmBatches,
   }))
 
   const [localRecords, setLocalRecords] = useState<any[]>([])
 
   // Load raw records to resolve video IDs for favorites
   useEffect(() => {
-    const batch = filmBatches.get(0)
-    if (batch && batch.length > 0) {
-      setLocalRecords(batch)
-    } else {
-      const rawBase = import.meta.env.BASE_URL || '/'
-      const normalizedBase = rawBase.endsWith('/') ? rawBase.slice(0, -1) : rawBase
-      fetch(`${normalizedBase}/json/0.json`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (Array.isArray(data)) setLocalRecords(data)
-        })
-        .catch(() => {})
-    }
-  }, [filmBatches])
+    const rawBase = import.meta.env.BASE_URL || '/'
+    const normalizedBase = rawBase.endsWith('/') ? rawBase.slice(0, -1) : rawBase
+    fetch(`${normalizedBase}/json/0.json`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) setLocalRecords(data)
+      })
+      .catch(() => {})
+  }, [])
 
   const hasFavorites = favorites && Object.keys(favorites).length > 0
 
@@ -64,7 +57,10 @@ export const Favorites = () => {
     if (!favorites) return []
     return Object.entries(favorites).map(([key, film]) => {
       const record = localRecords.find(
-        (r) => Number(r.id) === Number(film.tmdbId) || r.title === film.title,
+        (r) =>
+          Number(r.id) === Number(film.tmdbId) ||
+          r.title?.toLowerCase() === film.title?.toLowerCase() ||
+          (r.title && film.title && (r.title.includes(film.title) || film.title.includes(r.title))),
       )
       const videoId =
         (film as any).youtubeId ||
@@ -73,7 +69,10 @@ export const Favorites = () => {
         undefined
       return {
         key,
-        film,
+        film: {
+          ...film,
+          artist: (film as any).artist || record?.artist,
+        },
         videoId,
       }
     })

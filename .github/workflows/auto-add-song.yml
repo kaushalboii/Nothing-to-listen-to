@@ -34,16 +34,7 @@ jobs:
           cache: 'pip'
 
       - name: Install Python dependencies
-        run: pip install Pillow requests
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-
-      - name: Install Node dependencies
-        run: npm ci
+        run: pip install -r requirements.txt
 
       - name: Parse Song Request from Issue
         id: parse
@@ -78,10 +69,13 @@ jobs:
           link = extract_field("YouTube, Spotify, or Apple Music Link", body_raw)
           if link.lower() == "_no response_": link = ""
 
-          print(f"::set-output name=title::{song_title}")
-          print(f"::set-output name=artist::{artist}")
-          print(f"::set-output name=lang::{lang}")
-          print(f"::set-output name=link::{link}")
+          output_path = os.environ.get("GITHUB_OUTPUT")
+          if output_path:
+              with open(output_path, "a", encoding="utf-8") as f:
+                  f.write(f"title={song_title}\n")
+                  f.write(f"artist={artist}\n")
+                  f.write(f"lang={lang}\n")
+                  f.write(f"link={link}\n")
           EOF
 
       - name: Run Song Request Ingestion Engine
@@ -112,6 +106,17 @@ jobs:
             done
           fi
 
+      - name: Set up Node.js
+        if: steps.ingest.outcome == 'success'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Node dependencies
+        if: steps.ingest.outcome == 'success'
+        run: npm ci
+
       - name: Build project
         if: steps.ingest.outcome == 'success'
         env:
@@ -125,11 +130,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           force_orphan: true
-
-      - name: Deploy to GitHub Actions Pages
-        if: steps.ingest.outcome == 'success'
-        continue-on-error: true
-        uses: actions/deploy-pages@v4
 
       - name: Comment and Close Issue on Success
         if: steps.ingest.outcome == 'success'

@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { Check, Copy, ExternalLink, Mail, PlusCircle, Sparkles, X } from 'lucide-react'
+import {
+  Check,
+  Copy,
+  ExternalLink,
+  KeyRound,
+  Loader2,
+  Mail,
+  PlusCircle,
+  Sparkles,
+  X,
+} from 'lucide-react'
 import { useShallowState } from '@/store'
 import { Button } from '../../ui/button'
 import { Input } from '../../ui/input'
@@ -29,6 +39,17 @@ export const ReportSongModal = () => {
   const [artist, setArtist] = useState('')
   const [language, setLanguage] = useState('Tamil')
   const [link, setLink] = useState('')
+  const [token, setToken] = useState(() => {
+    try {
+      return localStorage.getItem('ntlt_github_token') || ''
+    } catch {
+      return ''
+    }
+  })
+  const [showTokenInput, setShowTokenInput] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [createdIssueNum, setCreatedIssueNum] = useState<number | null>(null)
   const [submitted, setSubmitted] = useState(false)
   const [copied, setCopied] = useState(false)
 
@@ -40,15 +61,65 @@ export const ReportSongModal = () => {
       }
       setSubmitted(false)
       setCopied(false)
+      setSubmitError(null)
+      setCreatedIssueNum(null)
     }
   }, [reportOpen, reportInitialQuery])
 
   if (!reportOpen) return null
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleDirectSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!title.trim()) return
 
+    setSubmitError(null)
+    const cleanToken = token.trim()
+
+    // If no token is saved or provided, reveal the token input so the user can paste it once
+    if (!cleanToken) {
+      setShowTokenInput(true)
+      return
+    }
+
+    const issueTitle = `[Song Request]: ${title.trim()}`
+    const issueBody = `### Song Title\n\n${title.trim()}\n\n### Artist, Singer, Composer, or Movie\n\n${artist.trim() || '_No response_'}\n\n### Primary Language / Genre\n\n${language}\n\n### YouTube, Spotify, or Apple Music Link\n\n${link.trim() || '_No response_'}\n\n---\n*Submitted via Nothing to Listen To Web App*`
+
+    setIsSubmitting(true)
+    try {
+      const res = await fetch('https://api.github.com/repos/kaushalboii/Nothing-to-listen-to/issues', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/vnd.github.v3+json',
+          Authorization: `Bearer ${cleanToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: issueTitle,
+          body: issueBody,
+          labels: ['song-request', 'automated'],
+        }),
+      })
+
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}))
+        throw new Error(errJson.message || `GitHub returned status ${res.status}`)
+      }
+
+      const data = await res.json()
+      try {
+        localStorage.setItem('ntlt_github_token', cleanToken)
+      } catch {}
+
+      setCreatedIssueNum(data.number)
+      setSubmitted(true)
+    } catch (err: any) {
+      setSubmitError(err.message || 'Failed to submit request')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleOpenGitHubFallback = () => {
     const issueTitle = `[Song Request]: ${title.trim()}`
     const issueBody = `### Song Title\n\n${title.trim()}\n\n### Artist, Singer, Composer, or Movie\n\n${artist.trim() || '_No response_'}\n\n### Primary Language / Genre\n\n${language}\n\n### YouTube, Spotify, or Apple Music Link\n\n${link.trim() || '_No response_'}\n\n---\n*Submitted via Nothing to Listen To Web App*`
 
@@ -56,7 +127,6 @@ export const ReportSongModal = () => {
       issueTitle
     )}&labels=song-request,automated&body=${encodeURIComponent(issueBody)}`
 
-    // Open GitHub Issue creation in new tab
     window.open(issueUrl, '_blank', 'noopener,noreferrer')
     setSubmitted(true)
   }
@@ -97,7 +167,7 @@ export const ReportSongModal = () => {
               Request / Report Missing Song
             </h2>
             <p className='text-xs text-muted-foreground'>
-              Automated ingestion pipeline verifies & adds tracks live
+              Automated ingestion pipeline verifies &amp; adds tracks live
             </p>
           </div>
         </div>
@@ -109,8 +179,8 @@ export const ReportSongModal = () => {
             <span className='font-semibold text-foreground'>
               100% Automated Workflow:
             </span>{' '}
-            Submitting immediately triggers our GitHub Actions Python engine. It verifies
-            the song on Spotify & Apple Music, downloads the vinyl artwork, updates the
+            Submitting triggers our GitHub Actions Python engine. It automatically verifies
+            the song on Spotify &amp; Apple Music, generates album artwork, updates the
             3D Voronoi galaxy, and deploys it live.
           </div>
         </div>
@@ -120,15 +190,26 @@ export const ReportSongModal = () => {
             <div className='size-12 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-500'>
               <Check className='size-6' />
             </div>
-            <h3 className='font-bold text-base text-foreground'>Request Formatted & Opened!</h3>
+            <h3 className='font-bold text-base text-foreground'>
+              {createdIssueNum ? `🚀 Request #${createdIssueNum} Auto-Submitted!` : 'Request Formatted & Submitted!'}
+            </h3>
             <p className='text-xs text-muted-foreground max-w-sm'>
-              Click <strong>&quot;Submit new issue&quot;</strong> on GitHub to trigger the automated bot immediately. The song will be verified and added to the live site.
+              The GitHub Actions engine has received <strong>&quot;{title}&quot;</strong> and is now verifying on Spotify &amp; Apple Music, generating textures, and pushing to the live 3D web gallery.
             </p>
+            <div className='flex items-center gap-2 text-xs text-emerald-500 font-semibold bg-emerald-500/10 px-3 py-1.5 rounded-full border border-emerald-500/20'>
+              <span className='size-2 rounded-full bg-emerald-500 animate-ping' />
+              Processing in GitHub Actions... Live in seconds!
+            </div>
             <div className='flex gap-2 mt-2'>
               <Button
                 variant='outline'
                 size='sm'
-                onClick={() => setSubmitted(false)}
+                onClick={() => {
+                  setSubmitted(false)
+                  setTitle('')
+                  setArtist('')
+                  setLink('')
+                }}
                 className='text-xs cursor-pointer'
               >
                 Request Another Song
@@ -143,7 +224,13 @@ export const ReportSongModal = () => {
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className='flex flex-col gap-3.5'>
+          <form onSubmit={handleDirectSubmit} className='flex flex-col gap-3.5'>
+            {submitError && (
+              <div className='p-2.5 rounded-lg border border-destructive/50 bg-destructive/10 text-destructive text-xs'>
+                {submitError}
+              </div>
+            )}
+
             {/* Song Title Input */}
             <div className='flex flex-col gap-1.5'>
               <Label htmlFor='song-title' className='text-xs font-semibold'>
@@ -153,7 +240,7 @@ export const ReportSongModal = () => {
                 id='song-title'
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder='e.g. FA FA FA, Fire Song, Veezha Veera, Radhimaa'
+                placeholder='e.g. FA FA FA, Annakiliye, Fire Song, Veezha Veera'
                 required
                 autoFocus
                 className='h-9 text-xs rounded-lg bg-background/50 border-border/80'
@@ -169,7 +256,7 @@ export const ReportSongModal = () => {
                 id='song-artist'
                 value={artist}
                 onChange={(e) => setArtist(e.target.value)}
-                placeholder='e.g. OM, Kanguva, Sai Abhyankkar, Anirudh, Devi Sri Prasad'
+                placeholder='e.g. OM, Kanguva, Sai Abhyankkar, Anirudh, Smith Asher'
                 className='h-9 text-xs rounded-lg bg-background/50 border-border/80'
               />
             </div>
@@ -209,6 +296,38 @@ export const ReportSongModal = () => {
               />
             </div>
 
+            {/* Token Input for 100% Direct In-App Auto-Submit */}
+            {(showTokenInput || token) && (
+              <div className='flex flex-col gap-1.5 p-3 rounded-xl border border-primary/20 bg-primary/5 animate-in fade-in'>
+                <div className='flex items-center justify-between'>
+                  <Label htmlFor='gh-token' className='text-xs font-semibold flex items-center gap-1.5 text-primary'>
+                    <KeyRound className='size-3.5' />
+                    <span>GitHub Personal Access Token (Saved in browser)</span>
+                  </Label>
+                  <a
+                    href='https://github.com/settings/tokens/new?scopes=public_repo&description=Nothing-to-listen-to-Song-Submit'
+                    target='_blank'
+                    rel='noreferrer'
+                    className='text-[10px] text-primary/80 hover:underline inline-flex items-center gap-0.5'
+                  >
+                    <span>Get token (public_repo)</span>
+                    <ExternalLink className='size-2.5' />
+                  </a>
+                </div>
+                <Input
+                  id='gh-token'
+                  type='password'
+                  value={token}
+                  onChange={(e) => setToken(e.target.value)}
+                  placeholder='ghp_... (paste once to enable 100% in-app submit without navigating)'
+                  className='h-8 text-xs rounded-lg bg-background/80 border-border/80 font-mono'
+                />
+                <p className='text-[10px] text-muted-foreground'>
+                  Stored securely in your browser&apos;s localStorage. Enables 1-click submit directly without leaving this page.
+                </p>
+              </div>
+            )}
+
             {/* Action Buttons */}
             <div className='flex items-center justify-between pt-2 border-t border-border/40 mt-1'>
               <div className='flex items-center gap-2'>
@@ -244,23 +363,37 @@ export const ReportSongModal = () => {
               </div>
 
               <div className='flex items-center gap-2'>
-                <Button
-                  type='button'
-                  variant='ghost'
-                  size='sm'
-                  onClick={() => setReportOpen(false)}
-                  className='text-xs h-8 cursor-pointer'
-                >
-                  Cancel
-                </Button>
+                {!token && (
+                  <Button
+                    type='button'
+                    variant='outline'
+                    size='sm'
+                    onClick={handleOpenGitHubFallback}
+                    className='text-[11px] h-8 px-2.5 cursor-pointer text-muted-foreground hover:text-foreground'
+                    title='Open issue form in GitHub tab'
+                  >
+                    <span>Open GitHub Form</span>
+                    <ExternalLink className='size-3 ml-1' />
+                  </Button>
+                )}
+
                 <Button
                   type='submit'
                   size='sm'
-                  disabled={!title.trim()}
+                  disabled={!title.trim() || isSubmitting}
                   className='flex items-center gap-1.5 text-xs h-8 px-3.5 bg-primary text-primary-foreground font-semibold shadow-sm cursor-pointer'
                 >
-                  <span>Submit Auto-Add Request</span>
-                  <ExternalLink className='size-3' />
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className='size-3.5 animate-spin' />
+                      <span>Submitting...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className='size-3.5' />
+                      <span>Auto-Submit to Bot</span>
+                    </>
+                  )}
                 </Button>
               </div>
             </div>

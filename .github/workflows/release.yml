@@ -2,14 +2,15 @@ name: Release
 
 on:
   push:
+    branches:
+      - main
     tags:
       - 'v*'
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Tag version (e.g. v1.0.0)'
-        required: true
-        default: 'v1.0.0'
+        description: 'Tag version (e.g. v1.1.1)'
+        required: false
 
 permissions:
   contents: write
@@ -20,6 +21,44 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch all tags
+        run: git fetch --tags --force || true
+
+      - name: Determine Release Tag
+        id: version
+        run: |
+          BASE_VERSION=$(node -p "require('./package.json').version")
+
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            TAG_NAME="${GITHUB_REF#refs/tags/}"
+          elif [[ -n "${{ github.event.inputs.tag }}" ]]; then
+            TAG_NAME="${{ github.event.inputs.tag }}"
+          else
+            # Find latest tag matching v<major>.<minor>.*
+            LATEST_TAG=$(git tag -l "v${BASE_VERSION%.*}*" | sort -V | tail -n 1)
+            if [[ -z "$LATEST_TAG" ]]; then
+              TAG_NAME="v${BASE_VERSION}"
+            else
+              PATCH=$(echo "$LATEST_TAG" | awk -F. '{print $NF}')
+              if [[ "$PATCH" =~ ^[0-9]+$ ]]; then
+                NEXT_PATCH=$((PATCH + 1))
+                TAG_NAME="v${BASE_VERSION%.*}.${NEXT_PATCH}"
+              else
+                TAG_NAME="v${BASE_VERSION}.${GITHUB_RUN_NUMBER}"
+              fi
+            fi
+            # Ensure tag uniqueness if already exists
+            if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+              TAG_NAME="${TAG_NAME}.${GITHUB_RUN_NUMBER}"
+            fi
+          fi
+
+          echo "tag=${TAG_NAME}" >> $GITHUB_OUTPUT
+          echo "title=Nothing to Listen to ${TAG_NAME}" >> $GITHUB_OUTPUT
+          echo "Selected release tag: ${TAG_NAME}"
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -37,26 +76,26 @@ jobs:
 
       - name: Create release distribution archive
         run: |
-          cd dist && zip -r ../nothing-to-listen-to-${{ github.ref_name || github.event.inputs.tag }}.zip ./* && cd ..
+          cd dist && zip -r ../nothing-to-listen-to-${{ steps.version.outputs.tag }}.zip ./* && cd ..
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: Nothing to Listen to ${{ github.ref_name || github.event.inputs.tag }}
-          tag_name: ${{ github.ref_name || github.event.inputs.tag }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: ${{ steps.version.outputs.title }}
+          tag_name: ${{ steps.version.outputs.tag }}
+          target_commitish: ${{ github.sha }}
           files: nothing-to-listen-to-*.zip
           generate_release_notes: true
           draft: false
           prerelease: false
           body: |
-            ## 🎵 Nothing to Listen to - Release ${{ github.ref_name || github.event.inputs.tag }}
+            ## 🎵 Nothing to Listen to - ${{ steps.version.outputs.tag }}
 
-            ### ✨ Key Features in this Release:
-            - **1:1 Square Vinyl Album WebGL Simulation**: Purpose-built Voroforce engine and custom GLSL shaders displaying album art in square format.
-            - **Direct In-App Ad-Free YouTube Player**: Privacy-enhanced streaming player (`youtube-nocookie.com`) allowing full songs and music videos to play directly inside the app with zero pre-roll ad networks.
-            - **Persistent Mini-Player**: Floating player at the bottom right that keeps playing music continuously while you browse the galaxy.
-            - **Everywhere Streaming**: One-click listening on **Spotify**, **Apple Music**, and **YouTube Music** for every song and album.
-            - **Real Dynamic Music Sync Engine (`scripts/sync-music.py`)**: Automatic fetching from YouTube & music charts without hardcoding.
-            - **Automated YouTube Sync Workflow (`.github/workflows/update-music.yml`)**: Daily automated cron job to sync newly uploaded YouTube tracks.
-            - **GitHub Pages Deployment**: Dual-mode deployment to `gh-pages` branch and GitHub Actions Pages.
-            - **Official Contact**: `contact.nothingtolisten@gmail.com`.
+            ### ✨ Highlights in this Release:
+            - **1:1 Square Vinyl Album WebGL Galaxy**: Purpose-built Voroforce engine and custom GLSL shaders displaying album art in square vinyl format.
+            - **Built-in Ad-Shield YouTube Player**: Privacy-enhanced player (`youtube-nocookie.com`) with zero tracking, blocked ad annotations, and official global CDN streaming.
+            - **Instant Search & 3D Focus**: Real-time keyword matching across titles, artists, and lyrics with instant modal dismissal and seamless camera focus onto the 3D vinyl tile.
+            - **Persistent Floating Player**: Keeps playing music continuously while you navigate the galaxy.
+            - **Cross-Platform Streaming**: One-click listening on **Spotify**, **Apple Music**, and **YouTube Music** for every single track.
+            - **Automated Verification Pipeline**: Automatically ingests missing songs, cross-verifies against commercial streaming APIs, downloads artwork, and deploys live.

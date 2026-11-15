@@ -24,6 +24,12 @@ export default defineConfig(({ mode }) => {
         input: {
           app: resolve(__dirname, 'index.html'),
         },
+        output: {
+          manualChunks: {
+            'vendor-react': ['react', 'react-dom'],
+            'vendor-icons': ['lucide-react'],
+          },
+        },
       },
     },
     resolve: {

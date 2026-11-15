@@ -52,7 +52,7 @@ export class Dimensions extends CustomEventTarget {
     const height = this.container.clientHeight
     const diagonal = Math.sqrt(width ** 2 + height ** 2)
     const aspect = width / height
-    const pixelRatio = Math.min(Math.max(window.devicePixelRatio, 1), 2)
+    const pixelRatio = Math.min(Math.max(window.devicePixelRatio, 1), 1.5)
 
     this.#state = {
       width,

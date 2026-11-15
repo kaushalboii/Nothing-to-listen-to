@@ -57,7 +57,7 @@ const forceSimulationStepConfigs = {
 }
 
 export default {
-  cells: 50000,
+  cells: 20000,
   media: mediaConfigWithUncompressedSingleVersion,
   display: {
     scene: {

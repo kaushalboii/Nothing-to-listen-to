@@ -25,9 +25,13 @@ export default defineConfig(({ mode }) => {
           app: resolve(__dirname, 'index.html'),
         },
         output: {
-          manualChunks: {
-            'vendor-react': ['react', 'react-dom'],
-            'vendor-icons': ['lucide-react'],
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (id.includes('ogl')) return 'vendor-ogl'
+              if (id.includes('@radix-ui') || id.includes('@floating-ui')) return 'vendor-radix'
+              if (id.includes('lucide-react')) return 'vendor-icons'
+              if (id.includes('detect-gpu') || id.includes('ua-parser-js')) return 'vendor-device'
+            }
           },
         },
       },

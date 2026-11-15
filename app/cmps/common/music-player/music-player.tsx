@@ -46,7 +46,7 @@ export const MusicPlayer = () => {
 
   const iframeRef = useRef<HTMLIFrameElement>(null)
 
-  // Listen for YouTube video ended event to automatically advance tracks in playlist
+  // Dual-layer YouTube listener: postMessage + official window.YT API for 100% reliable track completion
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (
@@ -60,11 +60,19 @@ export const MusicPlayer = () => {
         const data =
           typeof event.data === 'string' ? JSON.parse(event.data) : event.data
 
-        // When YouTube embed fires onStateChange with info === 0 (YT.PlayerState.ENDED)
-        if (
-          data?.event === 'onStateChange' &&
-          (data?.info === 0 || data?.info === '0')
-        ) {
+        const isEnded =
+          (data?.event === 'infoDelivery' && data?.info?.playerState === 0) ||
+          (data?.event === 'onStateChange' &&
+            (data?.info === 0 || data?.info === '0' || data?.data === 0)) ||
+          data?.info?.playerState === 0 ||
+          data?.playerState === 0
+
+        const isError =
+          data?.event === 'onError' ||
+          (data?.event === 'infoDelivery' &&
+            typeof data?.info?.errorCode === 'number')
+
+        if (isEnded || isError) {
           nextTrack()
         }
       } catch (_) {}
@@ -76,21 +84,76 @@ export const MusicPlayer = () => {
     }
   }, [nextTrack])
 
+  // Official window.YT.Player bridge for track transitions
+  useEffect(() => {
+    let player: any = null
+
+    const initPlayer = () => {
+      if ((window as any).YT && (window as any).YT.Player && iframeRef.current) {
+        try {
+          player = new (window as any).YT.Player(iframeRef.current, {
+            events: {
+              onStateChange: (event: any) => {
+                // 0 = YT.PlayerState.ENDED
+                if (event?.data === 0) {
+                  nextTrack()
+                }
+              },
+              onError: () => {
+                nextTrack()
+              },
+            },
+          })
+        } catch (_) {}
+      }
+    }
+
+    if ((window as any).YT && (window as any).YT.Player) {
+      initPlayer()
+    } else {
+      if (!document.getElementById('yt-iframe-api')) {
+        const tag = document.createElement('script')
+        tag.id = 'yt-iframe-api'
+        tag.src = 'https://www.youtube.com/iframe_api'
+        document.head.appendChild(tag)
+      }
+      const prevOnReady = (window as any).onYouTubeIframeAPIReady
+      ;(window as any).onYouTubeIframeAPIReady = () => {
+        if (typeof prevOnReady === 'function') prevOnReady()
+        initPlayer()
+      }
+    }
+
+    return () => {
+      if (player && typeof player.destroy === 'function') {
+        try {
+          player.destroy()
+        } catch (_) {}
+      }
+    }
+  }, [videoId, playlistIndex, nextTrack])
+
   // When iframe loads, notify YouTube embed to start listening for state change events
   const handleIframeLoad = () => {
     try {
-      iframeRef.current?.contentWindow?.postMessage(
-        JSON.stringify({
-          event: 'listening',
-        }),
-        '*',
-      )
+      const win = iframeRef.current?.contentWindow
+      if (win) {
+        win.postMessage(JSON.stringify({ event: 'listening' }), '*')
+        win.postMessage(
+          JSON.stringify({
+            event: 'command',
+            func: 'addEventListener',
+            args: ['onStateChange'],
+          }),
+          '*',
+        )
+      }
     } catch (_) {}
   }
 
   // Official Native YouTube Player (Zero 3rd-party proxies, strictly matched to activeTrack)
   const originParam = typeof window !== 'undefined' && window.location.origin ? `&origin=${encodeURIComponent(window.location.origin)}` : ''
-  const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1&modestbranding=1${originParam}`
+  const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1&modestbranding=1&iv_load_policy=3${originParam}`
 
   if (!playerOpen || !activeTrack) return null
 

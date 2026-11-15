@@ -56,17 +56,44 @@ export const Favorites = () => {
   const favoriteEntries = useMemo(() => {
     if (!favorites) return []
     return Object.entries(favorites).map(([key, film]) => {
-      const record = localRecords.find(
-        (r) =>
-          Number(r.id) === Number(film.tmdbId) ||
-          r.title?.toLowerCase() === film.title?.toLowerCase() ||
-          (r.title && film.title && (r.title.includes(film.title) || film.title.includes(r.title))),
+      const filmTitle = (film.title || '').trim().toLowerCase()
+
+      // 1. Prioritize exact title match
+      let record = localRecords.find(
+        (r) => r.title && r.title.trim().toLowerCase() === filmTitle,
       )
+
+      // 2. Substring title match
+      if (!record && filmTitle.length > 3) {
+        record = localRecords.find(
+          (r) =>
+            r.title &&
+            (r.title.toLowerCase().includes(filmTitle) ||
+              filmTitle.includes(r.title.toLowerCase())),
+        )
+      }
+
+      // 3. ID match only if title is compatible
+      if (!record && film.tmdbId !== undefined && film.tmdbId !== null) {
+        const idMatch = localRecords.find(
+          (r) => Number(r.id) === Number(film.tmdbId),
+        )
+        if (idMatch) {
+          const matchTitle = (idMatch.title || '').toLowerCase()
+          if (!filmTitle || matchTitle.includes(filmTitle) || filmTitle.includes(matchTitle)) {
+            record = idMatch
+          }
+        }
+      }
+
       const videoId =
-        (film as any).youtubeId ||
+        ((film as any).youtubeId && (film as any).youtubeId.length === 11
+          ? (film as any).youtubeId
+          : undefined) ||
         record?.youtube_id ||
         record?.tracks?.[0]?.videoId ||
         undefined
+
       return {
         key,
         film: {

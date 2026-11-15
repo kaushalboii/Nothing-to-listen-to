@@ -5,7 +5,35 @@
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      :root {
+        --background: #09090b;
+        --foreground: #fafafa;
+      }
+      body {
+        margin: 0;
+        background-color: #09090b;
+        color: #fafafa;
+        font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        overflow: hidden;
+      }
+      @keyframes spin-slow {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      @keyframes pulse-subtle {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.6; }
+      }
+      .pre-loader-pulse {
+        animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+      .pre-loader-spin {
+        animation: spin-slow 4s linear infinite;
+      }
+    </style>
     
     <!-- SEO Meta Tags -->
     <title>There's Nothing to Listen To - Interactive 3D Music & Album Discovery</title>
@@ -66,7 +94,34 @@
     </script>
   </head>
   <body class="bg-background">
-    <div id="root"></div>
+    <div id="root">
+      <div style="position:fixed;inset:0;z-index:50;display:flex;height:100vh;height:100dvh;width:100%;justify-content:center;background-color:#09090b;padding:0 3rem;box-sizing:border-box;">
+        <div style="display:flex;height:100%;flex-direction:column;align-items:stretch;width:100%;max-width:1200px;">
+          <div style="height:33.333%;"></div>
+          <div style="display:flex;height:33.333%;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
+            <h1 style="font-size:2.25rem;line-height:1;font-weight:900;margin:0;color:#fafafa;letter-spacing:-0.025em;">
+              <span>"<i>There's nothing</i></span>
+              <span style="position:relative;display:inline-flex;margin-left:0.35rem;">
+                <i>to listen to</i>"
+              </span>
+            </h1>
+            <p style="margin-top:0.75rem;font-size:0.875rem;color:#a1a1aa;font-weight:500;">
+              Spin through the timeless albums that defined generations.
+            </p>
+          </div>
+          <div style="position:relative;display:flex;height:33.333%;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:3rem;gap:1rem;">
+            <div class="pre-loader-pulse" style="display:flex;align-items:center;gap:0.5rem;color:#71717a;font-size:0.75rem;line-height:1;">
+              <svg class="pre-loader-spin" style="width:18px;height:18px;color:#f59e0b;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 6a6 6 0 0 0 0 12"></path>
+                <circle cx="12" cy="12" r="2" fill="#f59e0b"></circle>
+              </svg>
+              <span>An interactive WebGL galaxy celebrating 60+ years of legendary vinyl &amp; recorded music.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div
       id="voroforce"
       class="pointer-events-auto fixed inset-x-0 top-0 h-dvh w-screen"

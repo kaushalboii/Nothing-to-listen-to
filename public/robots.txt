@@ -1,21 +1,8 @@
-# Allow all crawlers to access the main application
+# Allow all web crawlers and search engine bots
 User-agent: *
 Allow: /
-
-# Block access to internal data
-Disallow: /json/
-Disallow: /media/
-Disallow: /assets/
-
-# Common crawl optimizations
-# Crawl-delay: 1
+Allow: /assets/
+Allow: /favicon.svg
 
 # Sitemap location
-Sitemap: https://nothing-to-watch.port80.ch/sitemap.xml
-
-# Block known problematic bots (optional)
-# User-agent: SemrushBot
-# Disallow: /
-# 
-# User-agent: AhrefsBot  
-# Disallow: /
+Sitemap: https://kaushalboii.github.io/Nothing-to-listen-to/sitemap.xml

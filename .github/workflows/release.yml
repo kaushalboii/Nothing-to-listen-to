@@ -85,7 +85,9 @@ jobs:
           name: ${{ steps.version.outputs.title }}
           tag_name: ${{ steps.version.outputs.tag }}
           target_commitish: ${{ github.sha }}
-          files: nothing-to-listen-to-*.zip
+          files: |
+            nothing-to-listen-to-*.zip
+            extension/ntlt-adblocker.zip
           generate_release_notes: true
           draft: false
           prerelease: false

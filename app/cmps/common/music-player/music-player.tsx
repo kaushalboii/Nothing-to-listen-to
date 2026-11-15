@@ -55,7 +55,8 @@ export const MusicPlayer = () => {
   }, [playlist, activeTrack?.videoId])
 
   // Official Native YouTube Player (Zero 3rd-party proxies, zero Piped branding)
-  const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1&modestbranding=1${playlistParam}`
+  const originParam = typeof window !== 'undefined' && window.location.origin ? `&origin=${encodeURIComponent(window.location.origin)}` : ''
+  const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1&modestbranding=1${originParam}${playlistParam}`
 
   if (!playerOpen || !activeTrack) return null
 

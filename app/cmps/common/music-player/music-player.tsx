@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import {
   ChevronDown,
   ChevronUp,
@@ -25,13 +24,6 @@ export const MusicPlayer = () => {
       stopTrack: state.stopTrack,
     }))
 
-  // Built-in ad-blocking engine with automatic silent mirror fallback
-  const [useFallbackMirror, setUseFallbackMirror] = useState(false)
-
-  useEffect(() => {
-    setUseFallbackMirror(false)
-  }, [activeTrack?.videoId])
-
   if (!playerOpen || !activeTrack) return null
 
   const query = encodeURIComponent(`${activeTrack.artist} ${activeTrack.title}`.trim())
@@ -39,10 +31,8 @@ export const MusicPlayer = () => {
     ? activeTrack.videoId
     : FALLBACK_VIDEO_ID
 
-  // Built-in ad blocker: streams directly through ad-stripped high-speed endpoints (0.07s latency, 0 ads)
-  const embedUrl = useFallbackMirror
-    ? `https://yewtu.be/embed/${videoId}?autoplay=1&playsinline=1`
-    : `https://piped.video/embed/${videoId}?autoplay=1`
+  // Official native YouTube embed (Zero 3rd parties)
+  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1`
 
   const directYtWatchUrl = activeTrack.videoId && activeTrack.videoId.length === 11
     ? `https://www.youtube.com/watch?v=${activeTrack.videoId}`
@@ -62,7 +52,7 @@ export const MusicPlayer = () => {
           : 'bottom-4 left-4 right-4 md:left-auto md:right-8 md:w-[480px] rounded-2xl bg-background/95 border border-border backdrop-blur-xl p-4',
       )}
     >
-      {/* Player Header / Controls Bar (Clean layout without badge clutter) */}
+      {/* Player Header / Controls Bar */}
       <div className='flex items-center justify-between gap-3'>
         <div className='flex items-center gap-3 min-w-0'>
           {/* Animated Vinyl Disc Icon */}
@@ -80,7 +70,7 @@ export const MusicPlayer = () => {
           </div>
         </div>
 
-        {/* Clean Action Controls */}
+        {/* Action Controls */}
         <div className='flex items-center gap-1.5 shrink-0'>
           <a
             href={directYtWatchUrl}
@@ -118,7 +108,7 @@ export const MusicPlayer = () => {
         </div>
       </div>
 
-      {/* Embedded Stream Player (Default 100% Ad-Free) */}
+      {/* Embedded Official YouTube Player */}
       <div
         className={cn('relative mt-3 overflow-hidden rounded-xl bg-black transition-all duration-300', {
           'h-56 md:h-64 opacity-100': !isMinimized,
@@ -126,12 +116,10 @@ export const MusicPlayer = () => {
         })}
       >
         <iframe
-          key={`${videoId}-${useFallbackMirror}`}
           src={embedUrl}
           title={`${activeTrack.artist} - ${activeTrack.title}`}
           allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
           allowFullScreen
-          onError={() => setUseFallbackMirror(true)}
           className='absolute inset-0 h-full w-full border-0'
         />
       </div>

@@ -1,4 +1,4 @@
-import { Disc3, Flame, GithubIcon, Heart, Info, Search, Settings } from 'lucide-react'
+import { Disc3, GithubIcon, Heart, Info, Search, Settings } from 'lucide-react'
 
 import { useShallowState } from '@/store'
 import config from '../../config'
@@ -50,16 +50,6 @@ export const Navbar = () => {
         </span>
       </div>
       <div className='flex flex-row items-center gap-1.5'>
-      <Button
-        variant='outline'
-        size='sm'
-        onClick={toggleSearchOpen}
-        title='🔥 Latest Releases of Today & This Week'
-        className='pointer-events-auto flex items-center gap-1.5 h-6 lg:h-8 px-2 lg:px-3 rounded-full text-xs font-bold border-amber-500/50 bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 shadow-sm cursor-pointer'
-      >
-        <Flame className='size-3.5 fill-amber-500 text-amber-500 animate-pulse' />
-        <span className='hidden sm:inline'>New This Week</span>
-      </Button>
       <Button
         variant='ghost'
         size='icon'

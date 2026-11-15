@@ -8,12 +8,12 @@ import {
   useState,
 } from 'react'
 
-import { selectIsSelectMode, useShallowState } from '@/store'
+import { selectIsSelectMode, store, useShallowState } from '@/store'
 import type { DialogProps } from 'vaul'
 import { useMediaQuery } from '../../../../hooks/use-media-query'
 import { down, orientation } from '../../../../utils/mq'
 import { cn } from '../../../../utils/tw'
-import type { Film, VoroforceCell } from '../../../../vf'
+import { type Film, VOROFORCE_MODE, type VoroforceCell } from '../../../../vf'
 import { Modal } from '../../../common/modal'
 
 const AddCustomLinkModal = lazy(() =>
@@ -98,11 +98,12 @@ export const FilmViewDrawer = () => {
 
   const handleClose = useCallback(() => {
     exitVoroforceSelectMode()
+    store.setState({ film: undefined, mode: VOROFORCE_MODE.preview })
     onClose()
   }, [exitVoroforceSelectMode, onClose])
 
   useEffect(() => {
-    if (isSelectMode) {
+    if (activeFilm || isSelectMode) {
       let direction = getDefaultDirection(isLandscape)
       const voroforceCell =
         voroforceCellRef.current ??
@@ -122,9 +123,10 @@ export const FilmViewDrawer = () => {
       setDirection(direction)
       setOpen(true)
     } else {
-      onClose()
+      setFreezeFilm(false)
+      setOpen(false)
     }
-  }, [isSelectMode, isLandscape, isSmallScreen, onClose, activeFilm, voroforce])
+  }, [isSelectMode, isLandscape, isSmallScreen, activeFilm, voroforce])
 
   return (
     <Modal

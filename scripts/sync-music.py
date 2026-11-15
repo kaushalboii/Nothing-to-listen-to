@@ -103,7 +103,7 @@ PRIORITY_VERIFIED_HITS = [
     ("Chuttamalle", ["Devara", "Anirudh Ravichander"], "Telugu", "Devara"),
 ]
 
-TAMIL_ARTISTS = ["anirudh", "a. r. rahman", "ar rahman", "harris jayaraj", "yuvan", "ilaiyaraaja", "santhosh narayanan", "gv prakash", "dhanush", "sid sriram", "hiphop tamizha", "d. imman", "vidyasagar", "vijay", "sean roldan", "shakthisree gopalan", "pradeep kumar", "kamal haasan", "sai abhyankkar", "thamizh adhavan", "thamizh aadhavan"]
+TAMIL_ARTISTS = ["anirudh", "a. r. rahman", "ar rahman", "harris jayaraj", "yuvan", "ilaiyaraaja", "santhosh narayanan", "gv prakash", "dhanush", "sid sriram", "hiphop tamizha", "d. imman", "vidyasagar", "vijay", "sean roldan", "shakthisree gopalan", "pradeep kumar", "kamal haasan", "sai abhyankkar", "thamizh adhavan", "thamizh aadhavan", "smith asher", "dheekshitha", "viky pup", "saurav srisan", "tanisha gnanavel"]
 TELUGU_ARTISTS = ["devi sri prasad", "dsp", "thaman", "keeravani", "ram miriyala", "anurag kulkarni", "mangli", "vivek sagar", "chaitan", "bheems", "kaala bhairava"]
 HINDI_ARTISTS = ["arijit", "pritam", "sachin-jigar", "vishal mishra", "jubin", "neha kakkar", "badshah", "shreya ghoshal", "sonu nigam", "shankar-ehsaan-loy", "tanishk bagchi", "mithoon", "atif aslam", "kumar sanu", "alka yagnik", "vishal-shekhar"]
 PUNJABI_ARTISTS = ["diljit", "karan aujla", "ap dhillon", "sidhu moose wala", "shubh", "guru randhawa", "b praak", "ammy virk", "jassie gill", "harrdy sandhu"]

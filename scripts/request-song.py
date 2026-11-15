@@ -368,7 +368,22 @@ def main():
     ver_artwork = verified["artwork"]
     ver_year = verified["year"]
     ver_cat = verified.get("category", "Music")
-    detected_lang = lang_input or "Tamil" if any(w in ver_title.lower() or w in ver_artist.lower() for w in ["om", "kanguva", "anirudh", "sai abhyankkar"]) else "English"
+    if lang_input:
+        detected_lang = lang_input.strip()
+    else:
+        text_corpus = f"{ver_title} {ver_artist} {title_input}".lower()
+        if any(w in text_corpus for w in ["tamil", "anirudh", "sai abhyankkar", "dheekshitha", "smith asher", "kanguva", "jailer", "om", "ar rahman", "yuvan", "harris jayaraj", "santhosh narayanan", "gv prakash", "kollywood", "annakiliye"]):
+            detected_lang = "Tamil"
+        elif any(w in text_corpus for w in ["telugu", "thaman", "devi sri prasad", "dsp", "tollywood", "keeravani"]):
+            detected_lang = "Telugu"
+        elif any(w in text_corpus for w in ["hindi", "arijit", "pritam", "badshah", "shreya ghoshal", "bollywood", "neha kakkar", "vishal"]):
+            detected_lang = "Hindi"
+        elif any(w in text_corpus for w in ["malayalam", "sushin shyam", "mollywood"]):
+            detected_lang = "Malayalam"
+        elif any(w in text_corpus for w in ["punjabi", "diljit", "sidhu", "ap dhillon", "karan aujla"]):
+            detected_lang = "Punjabi"
+        else:
+            detected_lang = "Tamil" if any(ord(c) >= 0x0B80 and ord(c) <= 0x0BFF for c in text_corpus) else "English"
 
     log(f"✅ Verified on Streaming Platform!")
     log(f"   Official Title:  {ver_title}")

@@ -82,7 +82,7 @@ export const FilmViewDrawer = () => {
   }, [exitVoroforceSelectMode, onClose])
 
   useEffect(() => {
-    if (activeFilm || isSelectMode) {
+    if (isSelectMode && activeFilm) {
       let direction = getDefaultDirection(isLandscape)
       const voroforceCell =
         voroforceCellRef.current ??
@@ -103,11 +103,11 @@ export const FilmViewDrawer = () => {
       }
       setDirection(direction)
       setOpen(true)
-    } else {
+    } else if (!isSelectMode) {
       setFreezeFilm(false)
       setOpen(false)
     }
-  }, [isSelectMode, isLandscape, isSmallScreen, activeFilm, voroforce])
+  }, [isSelectMode, activeFilm, isLandscape, isSmallScreen, voroforce])
 
   return (
     <Modal

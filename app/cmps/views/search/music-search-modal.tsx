@@ -176,14 +176,19 @@ export const MusicSearchModal = () => {
       let targetCell: any = null
       if (Array.isArray(cells)) {
         for (let i = 0; i < cells.length; i++) {
-          if (cells[i]?.id === cellId) {
-            targetCell = cells[i]
+          const c = cells[i]
+          if (
+            c &&
+            (c.id === cellId ||
+              c.subgridIndex === cellId ||
+              (c.subgrid === 0 && c.subgridIndex === cellId) ||
+              Number(c.id) === cellId ||
+              Number(c.subgridIndex) === cellId)
+          ) {
+            targetCell = c
             break
           }
         }
-      }
-      if (!targetCell && cells?.[cellId]) {
-        targetCell = cells[cellId]
       }
 
       if (targetCell) {
@@ -195,11 +200,6 @@ export const MusicSearchModal = () => {
         }
         if (typeof controls.focusCell === 'function') {
           controls.focusCell(targetCell)
-        }
-      } else if (typeof controls.navigateToCellById === 'function') {
-        controls.navigateToCellById(cellId)
-        if (typeof controls.selectCell === 'function') {
-          controls.selectCell(cellId)
         }
       }
     }

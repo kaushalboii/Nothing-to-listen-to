@@ -21,6 +21,7 @@ export const handleControls = () => {
   const { controls } = voroforce
 
   controls.listen('focused', (async ({ cell }: { cell: VoroforceCell }) => {
+    if (store.getState().mode === VOROFORCE_MODE.select) return
     if (cell) {
       const film = await getCellFilm(cell, filmBatches)
       if (film) setFilm(film)

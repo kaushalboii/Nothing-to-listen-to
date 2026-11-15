@@ -47,9 +47,9 @@ export const MusicPlayer = () => {
   return (
     <div
       className={cn(
-        'pointer-events-auto fixed z-70 transition-all duration-300 ease-out shadow-2xl',
+        'pointer-events-auto fixed z-70 transition-all duration-300 ease-out shadow-2xl overflow-hidden',
         isMinimized
-          ? 'bottom-4 left-4 right-4 md:left-auto md:right-8 md:w-96 rounded-2xl bg-background/95 border border-border backdrop-blur-xl p-3'
+          ? 'bottom-4 left-4 right-4 md:left-auto md:right-8 md:w-[480px] rounded-2xl bg-background/95 border border-border backdrop-blur-xl p-3.5'
           : 'bottom-4 left-4 right-4 md:left-auto md:right-8 md:w-[480px] rounded-2xl bg-background/95 border border-border backdrop-blur-xl p-4',
       )}
     >
@@ -125,18 +125,18 @@ export const MusicPlayer = () => {
         />
       </div>
 
-      {/* Cross-platform Listen Links (Essential clean buttons without overflow) */}
-      <div className='mt-2.5 pt-2 border-t border-border/40 flex items-center justify-between gap-2 text-xs'>
-        <span className='text-[0.7rem] font-medium text-muted-foreground flex items-center gap-1 shrink-0'>
+      {/* Cross-platform Listen Links (Clean responsive layout with zero overflow) */}
+      <div className='mt-2.5 pt-2 border-t border-border/40 flex flex-wrap items-center justify-between gap-1.5 text-xs'>
+        <span className='text-[0.7rem] font-semibold text-muted-foreground flex items-center gap-1 shrink-0'>
           <Volume2 className='size-3 text-emerald-500 animate-pulse' />
-          Listen on:
+          Listen:
         </span>
-        <div className='flex items-center gap-1.5 shrink-0'>
+        <div className='flex flex-wrap items-center gap-1.5 justify-end'>
           <a
             href={spotifyUrl}
             target='_blank'
             rel='noreferrer'
-            className='inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-semibold transition-colors'
+            className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-semibold text-[11px] transition-colors shrink-0'
           >
             Spotify
             <ExternalLink className='size-2.5' />
@@ -145,7 +145,7 @@ export const MusicPlayer = () => {
             href={appleMusicUrl}
             target='_blank'
             rel='noreferrer'
-            className='inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-pink-500/10 hover:bg-pink-500/20 text-pink-600 dark:text-pink-400 font-semibold transition-colors'
+            className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-pink-500/10 hover:bg-pink-500/20 text-pink-600 dark:text-pink-400 font-semibold text-[11px] transition-colors shrink-0'
           >
             Apple Music
             <ExternalLink className='size-2.5' />
@@ -154,7 +154,7 @@ export const MusicPlayer = () => {
             href={ytMusicUrl}
             target='_blank'
             rel='noreferrer'
-            className='inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 font-semibold transition-colors'
+            className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 font-semibold text-[11px] transition-colors shrink-0'
           >
             YouTube
             <ExternalLink className='size-2.5' />
@@ -163,7 +163,7 @@ export const MusicPlayer = () => {
             href={jiosaavnUrl}
             target='_blank'
             rel='noreferrer'
-            className='inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-teal-500/10 hover:bg-teal-500/20 text-teal-600 dark:text-teal-400 font-semibold transition-colors'
+            className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-teal-500/10 hover:bg-teal-500/20 text-teal-600 dark:text-teal-400 font-semibold text-[11px] transition-colors shrink-0'
           >
             JioSaavn
             <ExternalLink className='size-2.5' />

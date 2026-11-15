@@ -31,12 +31,30 @@
     "priority": 1,
     "action": { "type": "block" },
     "condition": {
+      "urlFilter": "||youtube-nocookie.com/api/stats/ads*",
+      "resourceTypes": ["xmlhttprequest", "other"]
+    }
+  },
+  {
+    "id": 5,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
       "urlFilter": "||youtube.com/pagead/*",
       "resourceTypes": ["xmlhttprequest", "script", "sub_frame", "other"]
     }
   },
   {
-    "id": 5,
+    "id": 6,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||youtube-nocookie.com/pagead/*",
+      "resourceTypes": ["xmlhttprequest", "script", "sub_frame", "other"]
+    }
+  },
+  {
+    "id": 7,
     "priority": 1,
     "action": { "type": "block" },
     "condition": {
@@ -45,7 +63,16 @@
     }
   },
   {
-    "id": 6,
+    "id": 8,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||youtube-nocookie.com/ptracking*",
+      "resourceTypes": ["xmlhttprequest", "other"]
+    }
+  },
+  {
+    "id": 9,
     "priority": 1,
     "action": { "type": "block" },
     "condition": {
@@ -54,7 +81,16 @@
     }
   },
   {
-    "id": 7,
+    "id": 10,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||youtube-nocookie.com/youtubei/v1/player/ad_break*",
+      "resourceTypes": ["xmlhttprequest", "other"]
+    }
+  },
+  {
+    "id": 11,
     "priority": 1,
     "action": { "type": "block" },
     "condition": {
@@ -63,12 +99,39 @@
     }
   },
   {
-    "id": 8,
+    "id": 12,
     "priority": 1,
     "action": { "type": "block" },
     "condition": {
       "urlFilter": "||static.doubleclick.net^",
       "resourceTypes": ["script", "other"]
+    }
+  },
+  {
+    "id": 13,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||googleadservices.com^",
+      "resourceTypes": ["xmlhttprequest", "script", "sub_frame", "other"]
+    }
+  },
+  {
+    "id": 14,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||adservice.google.com^",
+      "resourceTypes": ["xmlhttprequest", "script", "sub_frame", "other"]
+    }
+  },
+  {
+    "id": 15,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||2mdn.net^",
+      "resourceTypes": ["script", "sub_frame", "other"]
     }
   }
 ]

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "NTLT Ad-Shield (uBlock-Lite Powered)",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Personal declarative ad blocker for Nothing to Listen To & YouTube",
   "permissions": [
     "declarativeNetRequest"
@@ -11,7 +11,10 @@
     "*://*.youtube-nocookie.com/*",
     "*://*.doubleclick.net/*",
     "*://*.googleads.g.doubleclick.net/*",
-    "*://*.googlesyndication.com/*"
+    "*://*.googlesyndication.com/*",
+    "*://*.googleadservices.com/*",
+    "*://*.adservice.google.com/*",
+    "*://*.2mdn.net/*"
   ],
   "declarative_net_request": {
     "rule_resources": [

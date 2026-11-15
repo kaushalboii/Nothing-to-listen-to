@@ -21,8 +21,8 @@ export class Loader extends CustomEventTarget {
 
   preloadAllMediaLayersVersion0(onLoad) {
     if (this.config.compressedFormatsSupported === false) {
-      this.dispatchEvent(new LoaderEvent('preloaded'))
-      onLoad?.()
+      // On mobile without compressed texture support, preload the first uncompressed-single layer instead
+      this._preloadFirstUncompressedLayer(onLoad)
       return
     }
     const count = this.config.versions[0].layers
@@ -41,8 +41,8 @@ export class Loader extends CustomEventTarget {
 
   preloadFirstMediaLayerAllGridVersions(onLoad) {
     if (this.config.compressedFormatsSupported === false) {
-      this.dispatchEvent(new LoaderEvent('preloaded'))
-      onLoad?.()
+      // On mobile without compressed texture support, preload the first uncompressed-single layer instead
+      this._preloadFirstUncompressedLayer(onLoad)
       return
     }
     const count = this.config.versions.filter(
@@ -61,6 +61,24 @@ export class Loader extends CustomEventTarget {
       if (type && type !== 'compressed-grid') continue
       void this.loadMediaLayer(i, 0, onLoadLayer)
     }
+  }
+
+  _preloadFirstUncompressedLayer(onLoad) {
+    // Find the first uncompressed-single version index
+    const versionIndex = this.config.versions.findIndex(
+      ({ type }) => type && type !== 'compressed-grid',
+    )
+    if (versionIndex === -1) {
+      // No uncompressed version available — just unblock the preloaded gate
+      this.dispatchEvent(new LoaderEvent('preloaded'))
+      onLoad?.()
+      return
+    }
+    // Preload layer 0 of the uncompressed version to unblock the reveal gate
+    void this.loadMediaLayer(versionIndex, 0, () => {
+      this.dispatchEvent(new LoaderEvent('preloaded'))
+      onLoad?.()
+    })
   }
 
   async loadMediaLayer(versionIndex, layerIndex, onLoad) {

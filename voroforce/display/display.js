@@ -54,6 +54,9 @@ export default class Display {
         compressionFormatKeys[(index + 1) % compressionFormatKeys.length]
       if (!this.gl.getExtension(compressionFormats[media.compressionFormat])) {
         media.compressedFormatsSupported = false
+        // Disable compressed textures so the scene falls back to the
+        // uncompressed-single (JPEG) virtual texture path on mobile.
+        media.compressionFormat = null
         console.warn('Compressed texture formats (DDS/KTX) are not supported on this device/browser. Falling back to uncompressed media.')
         return
       }

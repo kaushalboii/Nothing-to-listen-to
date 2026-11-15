@@ -314,9 +314,11 @@ export default class BaseScene {
       return
     }
 
+    const compressedSupported = this.globalConfig.media.compressedFormatsSupported !== false
+
     this.compressedMediaGridTextures = this.getCompressedMediaVersions().map(
       (mediaVersion) => {
-        if (!mediaVersion) return new Texture(this.gl, {})
+        if (!mediaVersion || !compressedSupported) return new Texture(this.gl, {})
         const { width, height, layers } = mediaVersion
         return new CompressedMediaGridArrayTexture(this.gl, {
           width,

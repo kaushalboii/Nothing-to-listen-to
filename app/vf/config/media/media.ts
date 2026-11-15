@@ -59,8 +59,6 @@ export const mediaConfigWithUncompressedSingleVersion = {
   ...mediaConfig,
   versions: [
     ...mediaConfig.versions,
-    ...(import.meta.env.VITE_EXPERIMENTAL_MEDIA_VERSION_3_ENABLED
-      ? [uncompressedSingleMediaVersionConfig]
-      : []),
+    uncompressedSingleMediaVersionConfig, // always included for mobile fallback
   ],
 }

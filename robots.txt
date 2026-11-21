@@ -1,0 +1,8 @@
+# Allow all web crawlers and search engine bots
+User-agent: *
+Allow: /
+Allow: /assets/
+Allow: /favicon.svg
+
+# Sitemap location
+Sitemap: https://kaushalboii.github.io/Nothing-to-listen-to/sitemap.xml

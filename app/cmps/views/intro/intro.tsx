@@ -26,18 +26,14 @@ export const Intro = () => {
   useEffect(() => {
     if (isMobileDevice) {
       const state = store.getState()
-      const isMobileDesktopView =
-        typeof window !== 'undefined' && window.innerWidth >= 768
       if (!isDefined(state.deviceClass)) {
         state.setDeviceClass(DEVICE_CLASS.mobile)
       }
-      if (!state.preset) {
-        state.setPreset(VOROFORCE_PRESET.mobile)
+      if (!state.preset || state.preset === VOROFORCE_PRESET.mobile) {
+        state.setPreset(VOROFORCE_PRESET.minimal)
       }
-      if (!state.cellLimit) {
-        state.setCellLimit(
-          isMobileDesktopView ? CELL_LIMIT.xxs : CELL_LIMIT.min,
-        )
+      if (!state.cellLimit || state.cellLimit === CELL_LIMIT.min) {
+        state.setCellLimit(CELL_LIMIT.lg)
       }
     }
   }, [])
@@ -106,13 +102,9 @@ export const Intro = () => {
               size='lg'
               onClick={() => {
                 const state = store.getState()
-                const isMobileDesktopView =
-                  typeof window !== 'undefined' && window.innerWidth >= 768
                 state.setDeviceClass(DEVICE_CLASS.mobile)
-                state.setPreset(VOROFORCE_PRESET.mobile)
-                state.setCellLimit(
-                  isMobileDesktopView ? CELL_LIMIT.xxs : CELL_LIMIT.min,
-                )
+                state.setPreset(VOROFORCE_PRESET.minimal)
+                state.setCellLimit(CELL_LIMIT.lg)
                 state.setPlayedIntro(true)
               }}
               className='w-full h-12 rounded-xl text-sm font-bold bg-primary text-primary-foreground shadow-lg shadow-primary/20 cursor-pointer active:scale-95 transition-transform'

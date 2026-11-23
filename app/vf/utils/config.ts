@@ -5,7 +5,6 @@ import presets from '../presets'
 import type { THEME } from '../../consts'
 import type { StoreState } from '../../store'
 import {
-  CELL_LIMIT,
   DEFAULT_VOROFORCE_PRESET,
   DEVICE_CLASS,
   type VOROFORCE_MODE,
@@ -103,11 +102,9 @@ export const getVoroforceConfig = (state: StoreState) => {
     : (cellLimit ?? config.cells)
 
   if (isMobile) {
-    const isMobileDesktopView =
-      typeof window !== 'undefined' && window.innerWidth >= 768
     config.cells = cellsOverrideParam
       ? Number.parseInt(cellsOverrideParam)
-      : (cellLimit ?? (isMobileDesktopView ? CELL_LIMIT.xxs : CELL_LIMIT.min))
+      : (cellLimit ?? config.cells)
     if (config.multiThreading) {
       config.multiThreading.enabled = false
     }
@@ -115,7 +112,7 @@ export const getVoroforceConfig = (state: StoreState) => {
     config.display.renderer = config.display.renderer || {}
     config.display.renderer.pixelRatio = Math.min(
       typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1,
-      1.0,
+      1.5,
     )
   }
 

@@ -59,6 +59,19 @@ jobs:
         run: |
           python3 scripts/sync-music.py
 
+      - name: Generate KTX (ETC2) texture atlases for mobile
+        run: |
+          for dir in low mid high; do
+            src="public/media/$dir/jpg/0.jpg"
+            out="public/media/$dir/ktx/0.ktx"
+            mkdir -p "public/media/$dir/ktx"
+            if [ -f "$src" ]; then
+              npx texture-compressor -t etc -c ETC2_RGB -i "$src" -o "$out" -y && echo "Generated $out" || echo "WARN: texture-compressor failed for $dir, skipping"
+            else
+              echo "WARN: $src not found, skipping KTX for $dir"
+            fi
+          done
+
       - name: Commit and push automated updates to main
         run: |
           git config --global user.name "kaushalboii"

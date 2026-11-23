@@ -61,6 +61,7 @@ export default {
   },
   media: {
     ...mediaConfig,
+    compressionFormat: 'ktx', // prefer ETC2/KTX on mobile (Android WebGL2 always supports it); display.js falls back to jpg if unavailable
     preload: 'first',
   },
   controls: controlsConfig,

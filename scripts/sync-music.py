@@ -867,6 +867,35 @@ def main():
         except Exception as e:
             log(f"Notice saving mobile JPEG atlas: {e}")
 
+    # Generate KTX (ETC2) texture atlases for Android/iOS WebGL2 mobile devices.
+    # texture-compressor is in devDependencies and available after `npm ci` in GitHub Actions.
+    # This allows mobile to use the same compressed-texture pipeline as desktop (DDS/S3TC),
+    # bypassing the unreliable texSubImage3D JPEG fallback path entirely.
+    log("Generating KTX (ETC2) texture atlases for mobile WebGL2...")
+    for d in ["high", "mid", "low"]:
+        jpg_path = os.path.join(PROJECT_DIR, "public", "media", d, "jpg", "0.jpg")
+        ktx_dir = os.path.join(PROJECT_DIR, "public", "media", d, "ktx")
+        ktx_path = os.path.join(ktx_dir, "0.ktx")
+        os.makedirs(ktx_dir, exist_ok=True)
+        if not os.path.exists(jpg_path):
+            log(f"  WARN: {jpg_path} not found, skipping KTX for {d}")
+            continue
+        try:
+            result = subprocess.run(
+                ["npx", "--yes", "texture-compressor", "-t", "etc", "-c", "ETC2_RGB",
+                 "-i", jpg_path, "-o", ktx_path, "-y"],
+                capture_output=True, text=True, timeout=120
+            )
+            if result.returncode == 0:
+                size = os.path.getsize(ktx_path) if os.path.exists(ktx_path) else 0
+                log(f"  Wrote KTX atlas: {ktx_path} ({size:,} bytes)")
+            else:
+                log(f"  WARN: texture-compressor failed for {d}: {result.stderr[:200]}")
+        except FileNotFoundError:
+            log(f"  WARN: npx not found, skipping KTX generation (will be done in CI)")
+        except Exception as e:
+            log(f"  WARN: KTX generation error for {d}: {e}")
+
     log("=========================================================================")
     log("✅ Broad YouTube Ingestion & Streaming Platform Validation Succeeded!")
     log("=========================================================================")

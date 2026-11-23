@@ -151,8 +151,12 @@ export const MusicPlayer = () => {
     } catch (_) {}
   }
 
-  // Official Native YouTube Player (Zero 3rd-party proxies, zero verification/bot screens)
-  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1&modestbranding=1&iv_load_policy=3`
+  // Privacy-Enhanced Ad-Shielded YouTube Player (Zero 3rd-party proxies, cookies stripped to prevent mobile ad tracking)
+  const originParam =
+    typeof window !== 'undefined' && window.location.origin
+      ? `&origin=${encodeURIComponent(window.location.origin)}&widget_referrer=${encodeURIComponent(window.location.href)}`
+      : ''
+  const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1&modestbranding=1&iv_load_policy=3${originParam}`
 
   if (!playerOpen || !activeTrack) return null
 
@@ -275,6 +279,7 @@ export const MusicPlayer = () => {
           src={embedUrl}
           onLoad={handleIframeLoad}
           title={`${activeTrack.artist} - ${activeTrack.title}`}
+          referrerPolicy='strict-origin-when-cross-origin'
           allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
           allowFullScreen
           className='absolute inset-0 h-full w-full border-0'

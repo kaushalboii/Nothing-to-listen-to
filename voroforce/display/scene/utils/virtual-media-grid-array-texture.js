@@ -164,6 +164,7 @@ export class VirtualMediaGridArrayTexture extends Texture {
     })
 
     this.pendingLayerUpdates = []
+    this.needsUpdate = false
   }
 
   prepareLayerUpdate(index, bytes) {
@@ -171,5 +172,6 @@ export class VirtualMediaGridArrayTexture extends Texture {
       index,
       bytes,
     })
+    this.needsUpdate = true
   }
 }

@@ -345,13 +345,23 @@ export default class BaseScene {
       'mediaLayerLoaded',
       ({ data: { versionIndex, layerIndex, bytes, type } }) => {
         if (!type || type === 'compressed-grid') {
-          this.compressedMediaGridTextures[versionIndex].prepareLayerUpdate?.(
-            layerIndex,
-            bytes,
-          )
+          const tex = this.compressedMediaGridTextures[versionIndex]
+          if (tex) {
+            tex.prepareLayerUpdate?.(layerIndex, bytes)
+            tex.needsUpdate = true
+            try {
+              tex.update?.(versionIndex)
+            } catch (e) {}
+          }
         } else {
-          // TODO hardcoded to single version
-          this.virtualMediaGridTextures[0].prepareLayerUpdate(layerIndex, bytes)
+          const tex = this.virtualMediaGridTextures[0]
+          if (tex) {
+            tex.prepareLayerUpdate?.(layerIndex, bytes)
+            tex.needsUpdate = true
+            try {
+              tex.update?.(0)
+            } catch (e) {}
+          }
         }
       },
     )
@@ -378,6 +388,16 @@ export default class BaseScene {
 
   updateMedia() {
     if (!this.globalConfig.media?.enabled) return
+    this.compressedMediaGridTextures?.forEach((tex, i) => {
+      if (tex && (tex.needsUpdate || tex.pendingLayerUpdates?.length > 0)) {
+        tex.update?.(i)
+      }
+    })
+    this.virtualMediaGridTextures?.forEach((tex, i) => {
+      if (tex && (tex.needsUpdate || tex.pendingLayerUpdates?.length > 0)) {
+        tex.update?.(i + 3)
+      }
+    })
   }
 
   initBaseMediaUniforms() {
@@ -397,10 +417,14 @@ export default class BaseScene {
         value: this.compressedMediaGridTextures[0] ?? fallbackTexture,
       },
       uMediaV1Texture: {
-        value: this.compressedMediaGridTextures[1] ?? this.compressedMediaGridTextures[0] ?? fallbackTexture,
+        value: !compressedSupported
+          ? (this.compressedMediaGridTextures[0] ?? fallbackTexture)
+          : (this.compressedMediaGridTextures[1] ?? this.compressedMediaGridTextures[0] ?? fallbackTexture),
       },
       uMediaV2Texture: {
-        value: this.compressedMediaGridTextures[2] ?? this.compressedMediaGridTextures[0] ?? fallbackTexture,
+        value: !compressedSupported
+          ? (this.compressedMediaGridTextures[0] ?? fallbackTexture)
+          : (this.compressedMediaGridTextures[2] ?? this.compressedMediaGridTextures[0] ?? fallbackTexture),
       },
       uMediaV3Texture: {
         value: this.compressedMediaGridTextures[0] ?? fallbackTexture,

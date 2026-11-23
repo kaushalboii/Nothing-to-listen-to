@@ -471,10 +471,14 @@ export const omniForce = () => {
       // media loading logic for primary cell, needs to run before the other cells
       if (requestMediaVersions) {
         if (pointerSpeedScale < mediaVMaxSpeedLimit) {
-          primaryCell.targetMediaVersion = max(
-            primaryCell.targetMediaVersion,
-            maxTargetMediaVersion,
-          )
+          if (globalConfig.media?.compressedFormatsSupported === false) {
+            primaryCell.targetMediaVersion = 0
+          } else {
+            primaryCell.targetMediaVersion = max(
+              primaryCell.targetMediaVersion,
+              maxTargetMediaVersion,
+            )
+          }
         }
       }
 

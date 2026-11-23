@@ -185,9 +185,16 @@ export class Loader extends CustomEventTarget {
         async function loadImage(url) {
           return new Promise((resolve, reject) => {
             const img = new Image()
-            img.onload = () => resolve(img)
-            img.onerror = () => reject(new Error(`Failed to load image: ${url}`))
             img.crossOrigin = 'anonymous'
+            img.onload = async () => {
+              if ('decode' in img) {
+                try {
+                  await img.decode()
+                } catch (e) {}
+              }
+              resolve(img)
+            }
+            img.onerror = () => reject(new Error(`Failed to load image: ${url}`))
             img.src = url
           })
         }

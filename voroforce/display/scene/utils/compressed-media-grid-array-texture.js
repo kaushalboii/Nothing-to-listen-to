@@ -34,19 +34,44 @@ export class CompressedMediaGridArrayTexture extends Texture {
         wrapS: gl.CLAMP_TO_EDGE,
         wrapT: gl.CLAMP_TO_EDGE,
       })
+      this.width = args.width || 1980
+      this.height = args.height || 1980
+      this.length = args.length || 1
       this.compressedTexExt = null
       this.internalFormat = gl.RGBA8
       this.bind()
+      let allocated = false
       try {
         gl.texStorage3D(
           gl.TEXTURE_2D_ARRAY,
           1,
           gl.RGBA8,
-          args.width || 1,
-          args.height || 1,
-          args.length || 1,
+          this.width,
+          this.height,
+          this.length,
         )
-      } catch (e) {}
+        allocated = true
+      } catch (e) {
+        console.warn('[CompressedMediaGridArrayTexture] texStorage3D failed, trying texImage3D:', e)
+      }
+      if (!allocated) {
+        try {
+          gl.texImage3D(
+            gl.TEXTURE_2D_ARRAY,
+            0,
+            gl.RGBA8,
+            this.width,
+            this.height,
+            this.length,
+            0,
+            gl.RGBA,
+            gl.UNSIGNED_BYTE,
+            null,
+          )
+        } catch (e) {
+          console.error('[CompressedMediaGridArrayTexture] Texture allocation failed:', e)
+        }
+      }
       return
     }
 
@@ -67,6 +92,9 @@ export class CompressedMediaGridArrayTexture extends Texture {
       // minFilter: gl.LINEAR_MIPMAP_LINEAR, // Trilinear filtering with mipmaps
     })
 
+    this.width = args.width || 1980
+    this.height = args.height || 1980
+    this.length = args.length || 1
     this.compressedTexExt = ext
     this.internalFormat = internalFormat
 
@@ -185,23 +213,67 @@ export class CompressedMediaGridArrayTexture extends Texture {
         )
       } else {
         // Standard WebGL 2 texSubImage3D for uncompressed JPEG atlas (mobile fallback)
-        this.gl.texSubImage3D(
-          this.gl.TEXTURE_2D_ARRAY,
-          0,
-          0,
-          0,
-          index,
-          this.width,
-          this.height,
-          1,
-          this.gl.RGBA,
-          this.gl.UNSIGNED_BYTE,
-          bytes,
-        )
+        const w = bytes.naturalWidth || bytes.width || this.width || 1980
+        const h = bytes.naturalHeight || bytes.height || this.height || 1980
+
+        let uploadSource = bytes
+        let canvas = null
+        let ctx = null
+
+        // If bytes is an HTMLImageElement, draw to offscreen canvas for reliable cross-browser WebGL upload
+        if (typeof HTMLImageElement !== 'undefined' && bytes instanceof HTMLImageElement) {
+          canvas = document.createElement('canvas')
+          canvas.width = w
+          canvas.height = h
+          ctx = canvas.getContext('2d')
+          ctx.drawImage(bytes, 0, 0, w, h)
+          uploadSource = canvas
+        }
+
+        try {
+          this.gl.texSubImage3D(
+            this.gl.TEXTURE_2D_ARRAY,
+            0,
+            0,
+            0,
+            index,
+            w,
+            h,
+            1,
+            this.gl.RGBA,
+            this.gl.UNSIGNED_BYTE,
+            uploadSource,
+          )
+        } catch (err) {
+          console.warn('[CompressedMediaGridArrayTexture] Canvas texSubImage3D failed, trying raw ImageData buffer:', err)
+          if (!ctx && canvas) ctx = canvas.getContext('2d')
+          if (!ctx) {
+            canvas = document.createElement('canvas')
+            canvas.width = w
+            canvas.height = h
+            ctx = canvas.getContext('2d')
+            ctx.drawImage(bytes, 0, 0, w, h)
+          }
+          const imgData = ctx.getImageData(0, 0, w, h)
+          this.gl.texSubImage3D(
+            this.gl.TEXTURE_2D_ARRAY,
+            0,
+            0,
+            0,
+            index,
+            w,
+            h,
+            1,
+            this.gl.RGBA,
+            this.gl.UNSIGNED_BYTE,
+            new Uint8Array(imgData.data.buffer),
+          )
+        }
       }
     })
 
     this.pendingLayerUpdates = []
+    this.needsUpdate = false
   }
 
   prepareLayerUpdate(index, bytes) {
@@ -209,5 +281,6 @@ export class CompressedMediaGridArrayTexture extends Texture {
       index,
       bytes,
     })
+    this.needsUpdate = true
   }
 }

@@ -60,6 +60,13 @@ export const LowFpsAlert = () => {
 
   const open = useCallback(() => {
     if (!ticker) return
+    const isMobile =
+      deviceClass === DEVICE_CLASS.mobile ||
+      preset === VOROFORCE_PRESET.mobile ||
+      (typeof window !== 'undefined' &&
+        ('ontouchstart' in window || window.innerWidth < 768))
+    if (isMobile) return // Never freeze or interrupt mobile users with low fps alerts
+
     if (cooldown) {
       if (!cooldownTimeoutRef.current) {
         setTimeout(() => {
@@ -89,6 +96,8 @@ export const LowFpsAlert = () => {
     setCooldown(true)
   }, [
     ticker,
+    deviceClass,
+    preset,
     estimatedDeviceClass,
     setEstimatedDeviceClass,
     isLgScreen,
@@ -107,7 +116,6 @@ export const LowFpsAlert = () => {
     if (performanceMonitor && openedCount < warnLimit) {
       return performanceMonitor.subscribe({
         onDecline: () => {
-          console.log('fps decline')
           open()
         },
       })

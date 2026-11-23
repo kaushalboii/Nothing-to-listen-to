@@ -4,7 +4,6 @@ import {
   ChevronUp,
   Disc3,
   ExternalLink,
-  ShieldCheck,
   SkipBack,
   SkipForward,
   Volume2,
@@ -47,25 +46,12 @@ export const MusicPlayer = () => {
 
   const iframeRef = useRef<HTMLIFrameElement>(null)
 
-  // 100% Ad-Free stream engine preference (defaults to true for zero video ads on mobile)
-  const [isAdFree, setIsAdFree] = useState<boolean>(() => {
-    try {
-      const saved = localStorage.getItem('ntlt_ad_free_stream')
-      return saved !== null ? saved === 'true' : true
-    } catch {
-      return true
-    }
-  })
+  // Silent automatic fallback: plays 100% ad-free stream directly, falls back silently if ever needed
+  const [useFallback, setUseFallback] = useState(false)
 
-  const toggleAdFree = () => {
-    setIsAdFree((prev) => {
-      const next = !prev
-      try {
-        localStorage.setItem('ntlt_ad_free_stream', String(next))
-      } catch {}
-      return next
-    })
-  }
+  useEffect(() => {
+    setUseFallback(false)
+  }, [videoId])
 
   // Dual-layer YouTube listener: postMessage + official window.YT API for 100% reliable track completion
   useEffect(() => {
@@ -172,14 +158,14 @@ export const MusicPlayer = () => {
     } catch (_) {}
   }
 
-  // 100% Ad-Free Invidious stream (zero ads, zero tracking) with official YouTube privacy fallback
+  // Direct 100% Ad-Free stream (zero ads, zero tracking, zero pre-rolls)
   const originParam =
     typeof window !== 'undefined' && window.location.origin
       ? `&origin=${encodeURIComponent(window.location.origin)}&widget_referrer=${encodeURIComponent(window.location.href)}`
       : ''
-  const embedUrl = isAdFree
-    ? `https://yewtu.be/embed/${videoId}?autoplay=1&playsinline=1`
-    : `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1&modestbranding=1&iv_load_policy=3${originParam}`
+  const embedUrl = useFallback
+    ? `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1&modestbranding=1&iv_load_policy=3${originParam}`
+    : `https://yewtu.be/embed/${videoId}?autoplay=1&playsinline=1`
 
   if (!playerOpen || !activeTrack) return null
 
@@ -253,26 +239,6 @@ export const MusicPlayer = () => {
             </>
           )}
 
-          {/* 1-Click Ad-Free Stream Engine Switcher */}
-          <button
-            type='button'
-            onClick={toggleAdFree}
-            className={cn(
-              'inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold transition-all cursor-pointer select-none border shadow-sm',
-              isAdFree
-                ? 'bg-emerald-500/15 text-emerald-500 hover:bg-emerald-500/25 border-emerald-500/30'
-                : 'bg-muted/70 text-muted-foreground hover:bg-muted hover:text-foreground border-border/50',
-            )}
-            title={
-              isAdFree
-                ? '🛡️ 100% Ad-Free Stream Active (No video ads). Click to switch to Official YouTube.'
-                : 'Click to enable 100% Ad-Free streaming mode.'
-            }
-          >
-            <ShieldCheck className='size-3.5' />
-            <span>{isAdFree ? 'Ad-Free' : 'YouTube'}</span>
-          </button>
-
           <a
             href={directYtWatchUrl}
             target='_blank'
@@ -317,12 +283,10 @@ export const MusicPlayer = () => {
         })}
       >
         <iframe
-          key={`${videoId}-${playlistIndex}-${isAdFree}`}
+          key={`${videoId}-${playlistIndex}-${useFallback}`}
           ref={iframeRef}
           src={embedUrl}
-          onError={() => {
-            if (isAdFree) setIsAdFree(false)
-          }}
+          onError={() => setUseFallback(true)}
           onLoad={handleIframeLoad}
           title={`${activeTrack.artist} - ${activeTrack.title}`}
           allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'

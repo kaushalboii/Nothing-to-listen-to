@@ -213,61 +213,57 @@ export class CompressedMediaGridArrayTexture extends Texture {
         )
       } else {
         // Standard WebGL 2 texSubImage3D for uncompressed JPEG atlas (mobile fallback)
+        // ImageBitmap from createImageBitmap() is natively accepted on all mobile WebGL2 browsers.
+        // HTMLImageElement fallback also handled below.
         const w = bytes.naturalWidth || bytes.width || this.width || 1980
         const h = bytes.naturalHeight || bytes.height || this.height || 1980
 
-        let uploadSource = bytes
-        let canvas = null
-        let ctx = null
+        const uploadAttempt = (source) => {
+          this.gl.texSubImage3D(
+            this.gl.TEXTURE_2D_ARRAY,
+            0,
+            0,
+            0,
+            index,
+            w,
+            h,
+            1,
+            this.gl.RGBA,
+            this.gl.UNSIGNED_BYTE,
+            source,
+          )
+        }
 
-        // If bytes is an HTMLImageElement, draw to offscreen canvas for reliable cross-browser WebGL upload
-        if (typeof HTMLImageElement !== 'undefined' && bytes instanceof HTMLImageElement) {
-          canvas = document.createElement('canvas')
+        const uploadViaCanvas = () => {
+          const canvas = document.createElement('canvas')
           canvas.width = w
           canvas.height = h
-          ctx = canvas.getContext('2d')
+          const ctx = canvas.getContext('2d')
           ctx.drawImage(bytes, 0, 0, w, h)
-          uploadSource = canvas
+          // Try canvas object first (most mobile browsers accept this)
+          try {
+            uploadAttempt(canvas)
+            return
+          } catch (_) {}
+          // Last resort: raw pixel buffer
+          const imgData = ctx.getImageData(0, 0, w, h)
+          uploadAttempt(new Uint8Array(imgData.data.buffer))
         }
 
         try {
-          this.gl.texSubImage3D(
-            this.gl.TEXTURE_2D_ARRAY,
-            0,
-            0,
-            0,
-            index,
-            w,
-            h,
-            1,
-            this.gl.RGBA,
-            this.gl.UNSIGNED_BYTE,
-            uploadSource,
-          )
-        } catch (err) {
-          console.warn('[CompressedMediaGridArrayTexture] Canvas texSubImage3D failed, trying raw ImageData buffer:', err)
-          if (!ctx && canvas) ctx = canvas.getContext('2d')
-          if (!ctx) {
-            canvas = document.createElement('canvas')
-            canvas.width = w
-            canvas.height = h
-            ctx = canvas.getContext('2d')
-            ctx.drawImage(bytes, 0, 0, w, h)
+          // ImageBitmap is the most reliable source for texSubImage3D on mobile
+          if (typeof ImageBitmap !== 'undefined' && bytes instanceof ImageBitmap) {
+            uploadAttempt(bytes)
+          } else {
+            // HTMLImageElement or unknown: use offscreen canvas for reliable upload
+            uploadViaCanvas()
           }
-          const imgData = ctx.getImageData(0, 0, w, h)
-          this.gl.texSubImage3D(
-            this.gl.TEXTURE_2D_ARRAY,
-            0,
-            0,
-            0,
-            index,
-            w,
-            h,
-            1,
-            this.gl.RGBA,
-            this.gl.UNSIGNED_BYTE,
-            new Uint8Array(imgData.data.buffer),
-          )
+        } catch (err) {
+          console.warn('[CompressedMediaGridArrayTexture] texSubImage3D failed:', err)
+          // Final fallback: canvas approach
+          try { uploadViaCanvas() } catch (e2) {
+            console.error('[CompressedMediaGridArrayTexture] All upload methods failed:', e2)
+          }
         }
       }
     })

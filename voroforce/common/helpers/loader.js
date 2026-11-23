@@ -183,14 +183,23 @@ export class Loader extends CustomEventTarget {
         // can serve from the preload cache (set via <link rel=preload>).
         // This avoids a redundant fetch+blob URL roundtrip.
         async function loadImage(url) {
+          // Try createImageBitmap via fetch first — it pre-decodes off the main thread and
+          // is universally accepted by texSubImage3D on all mobile WebGL2 implementations.
+          try {
+            const resp = await fetch(url, { mode: 'cors' })
+            if (resp.ok) {
+              const blob = await resp.blob()
+              const bitmap = await createImageBitmap(blob)
+              return bitmap
+            }
+          } catch (_fetchErr) {}
+          // Fallback: HTMLImageElement with img.decode() for browsers without fetch cors or createImageBitmap
           return new Promise((resolve, reject) => {
             const img = new Image()
             img.crossOrigin = 'anonymous'
             img.onload = async () => {
               if ('decode' in img) {
-                try {
-                  await img.decode()
-                } catch (e) {}
+                try { await img.decode() } catch (e) {}
               }
               resolve(img)
             }

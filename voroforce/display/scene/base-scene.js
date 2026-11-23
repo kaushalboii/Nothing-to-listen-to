@@ -348,19 +348,11 @@ export default class BaseScene {
           const tex = this.compressedMediaGridTextures[versionIndex]
           if (tex) {
             tex.prepareLayerUpdate?.(layerIndex, bytes)
-            tex.needsUpdate = true
-            try {
-              tex.update?.(versionIndex)
-            } catch (e) {}
           }
         } else {
           const tex = this.virtualMediaGridTextures[0]
           if (tex) {
             tex.prepareLayerUpdate?.(layerIndex, bytes)
-            tex.needsUpdate = true
-            try {
-              tex.update?.(0)
-            } catch (e) {}
           }
         }
       },

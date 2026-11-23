@@ -5,6 +5,7 @@ import presets from '../presets'
 import type { THEME } from '../../consts'
 import type { StoreState } from '../../store'
 import {
+  CELL_LIMIT,
   DEFAULT_VOROFORCE_PRESET,
   DEVICE_CLASS,
   type VOROFORCE_MODE,

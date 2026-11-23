@@ -73,9 +73,9 @@ const loadCellFilmBatch = async (batchIndex: number) => {
     import.meta.env.VITE_MUSIC_INFO_BASE_URL ??
     import.meta.env.VITE_FILM_INFO_BASE_URL ??
     `${normalizedBase}/json`
-  const url = `${baseUrl}/${batchIndex}.json`
+  const url = `${baseUrl}/${batchIndex}.json?v=${Date.now().toString(36)}`
   try {
-    const response = await fetch(url)
+    const response = await fetch(url, { cache: 'no-cache' })
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`)
     }

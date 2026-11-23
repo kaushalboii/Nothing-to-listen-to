@@ -37,6 +37,7 @@ except ImportError:
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_DIR = os.path.dirname(SCRIPT_DIR)
 JSON_OUTPUT = os.path.join(PROJECT_DIR, "public", "json", "0.json")
+REQUESTED_JSON = os.path.join(PROJECT_DIR, "public", "json", "requested-songs.json")
 STATUS_OUTPUT = os.path.join(PROJECT_DIR, "public", "json", "sync-status.json")
 SINGLE_DIR = os.path.join(PROJECT_DIR, "public", "media", "single")
 TMP_DIR = "/tmp/music_sync_tmp"
@@ -463,20 +464,26 @@ def main():
         log(f"❌ Verification Failed: '{title_input}' could not be verified on streaming platforms.")
         sys.exit(2)
 
-    if lang_input:
+    if lang_input and lang_input.lower() not in ("auto-detect", "auto", "other", "_no response_"):
         detected_lang = lang_input.strip()
     else:
         text_corpus = f"{ver_title} {ver_artist} {title_input}".lower()
-        if any(w in text_corpus for w in ["tamil", "anirudh", "sai abhyankkar", "dheekshitha", "smith asher", "kanguva", "jailer", "om", "ar rahman", "yuvan", "harris jayaraj", "santhosh narayanan", "gv prakash", "kollywood", "annakiliye"]):
-            detected_lang = "Tamil"
-        elif any(w in text_corpus for w in ["telugu", "thaman", "devi sri prasad", "dsp", "tollywood", "keeravani"]):
+        if any(w in text_corpus for w in ["telugu", "thaman", "devi sri prasad", "dsp", "tollywood", "keeravani", "anantha sriram", "madhupriya"]):
             detected_lang = "Telugu"
+        elif any(w in text_corpus for w in ["tamil", "anirudh", "sai abhyankkar", "dheekshitha", "smith asher", "kanguva", "jailer", "om", "ar rahman", "yuvan", "harris jayaraj", "santhosh narayanan", "gv prakash", "kollywood", "annakiliye"]):
+            detected_lang = "Tamil"
         elif any(w in text_corpus for w in ["hindi", "arijit", "pritam", "badshah", "shreya ghoshal", "bollywood", "neha kakkar", "vishal"]):
             detected_lang = "Hindi"
         elif any(w in text_corpus for w in ["malayalam", "sushin shyam", "mollywood"]):
             detected_lang = "Malayalam"
         elif any(w in text_corpus for w in ["punjabi", "diljit", "sidhu", "ap dhillon", "karan aujla"]):
             detected_lang = "Punjabi"
+        elif any(w in text_corpus for w in ["bts", "blackpink", "newjeans", "stray kids", "k-pop"]):
+            detected_lang = "K-Pop"
+        elif any(w in text_corpus for w in ["yoasobi", "lisa", "ado", "japanese"]):
+            detected_lang = "Japanese"
+        elif any(w in text_corpus for w in ["bad bunny", "shakira", "karol g", "latin"]):
+            detected_lang = "Latin"
         else:
             detected_lang = "Tamil" if any(ord(c) >= 0x0B80 and ord(c) <= 0x0BFF for c in text_corpus) else "English"
 
@@ -570,6 +577,38 @@ def main():
         json.dump(updated_records, f, indent=2, ensure_ascii=False)
     log(f"Prepended '{ver_title}' to {JSON_OUTPUT}")
 
+    # 4b. Persist in requested-songs.json so daily sync never drops it
+    requested_records = []
+    if os.path.exists(REQUESTED_JSON):
+        try:
+            with open(REQUESTED_JSON, "r", encoding="utf-8") as f:
+                requested_records = json.load(f)
+        except Exception:
+            pass
+
+    # Avoid duplicate in requested_records
+    requested_records = [r for r in requested_records if r.get("youtube_id") != vid and not (r.get("title", "").lower() == ver_title.lower() and r.get("artist", "").lower() == ver_artist.lower())]
+    requested_records.insert(0, new_record)
+
+    try:
+        with open(REQUESTED_JSON, "w", encoding="utf-8") as f:
+            json.dump(requested_records, f, indent=2, ensure_ascii=False)
+        log(f"Persisted '{ver_title}' to {REQUESTED_JSON}")
+    except Exception as e:
+        log(f"Notice saving {REQUESTED_JSON}: {e}")
+
+    # Pass verified metadata to GitHub Actions outputs
+    gh_out = os.environ.get("GITHUB_OUTPUT")
+    if gh_out:
+        try:
+            with open(gh_out, "a", encoding="utf-8") as f:
+                f.write(f"resolved_title={ver_title}\n")
+                f.write(f"resolved_artist={ver_artist}\n")
+                f.write(f"resolved_lang={detected_lang}\n")
+                f.write(f"resolved_vid={vid}\n")
+        except Exception as e:
+            log(f"Notice writing GITHUB_OUTPUT: {e}")
+
     # 5. Update sync-status.json
     status_data = {
         "last_synced_utc": datetime.now(timezone.utc).isoformat(),
@@ -591,24 +630,68 @@ def main():
     ATLAS_H = ROWS * TILE_H
     atlas_pixels = bytearray(ATLAS_W * ATLAS_H * 3)
 
-    from concurrent.futures import ThreadPoolExecutor
+    # Shift existing local single covers: 214 -> 215, 213 -> 214, ... 0 -> 1
+    import shutil
+    for i in range(214, -1, -1):
+        src_path = os.path.join(SINGLE_DIR, f"{i}.jpg")
+        dst_path = os.path.join(SINGLE_DIR, f"{i+1}.jpg")
+        if os.path.exists(src_path):
+            shutil.copyfile(src_path, dst_path)
 
-    def process_item(item):
-        idx = item["id"]
+    # Process and save new cover for index 0
+    process_thumbnail_and_tile(0, ver_artwork, vid, TILE_W, TILE_H)
+
+    def load_tile_pixels(idx, item):
+        out_file = os.path.join(SINGLE_DIR, f"{idx}.jpg")
+        if os.path.exists(out_file):
+            if HAS_PIL:
+                try:
+                    with Image.open(out_file) as im:
+                        im = im.convert("RGB")
+                        tile = im.resize((TILE_W, TILE_H), Image.Resampling.BILINEAR)
+                        return tile.tobytes()
+                except Exception:
+                    pass
+            if sys.platform == "darwin":
+                bmp_path = os.path.join(TMP_DIR, f"tile_local_{idx}.bmp")
+                try:
+                    subprocess.run(["sips", "-s", "format", "bmp", "-z", str(TILE_H), str(TILE_W), out_file, "--out", bmp_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    if os.path.exists(bmp_path):
+                        with open(bmp_path, "rb") as fp:
+                            bmp_data = fp.read()
+                        os.remove(bmp_path)
+                        offset = struct.unpack_from('<I', bmp_data, 10)[0]
+                        w = struct.unpack_from('<i', bmp_data, 18)[0]
+                        h = struct.unpack_from('<i', bmp_data, 22)[0]
+                        h_abs = abs(h)
+                        is_top_down = (h < 0)
+                        row_stride = ((w * 3 + 3) // 4) * 4
+                        pixels = bytearray(TILE_W * TILE_H * 3)
+                        for ty in range(TILE_H):
+                            src_y = ty if is_top_down else (h_abs - 1 - ty)
+                            row_offset = offset + src_y * row_stride
+                            dst_row = ty * TILE_W * 3
+                            for tx in range(TILE_W):
+                                b = bmp_data[row_offset + tx * 3]
+                                g = bmp_data[row_offset + tx * 3 + 1]
+                                r = bmp_data[row_offset + tx * 3 + 2]
+                                pixels[dst_row + tx * 3] = r
+                                pixels[dst_row + tx * 3 + 1] = g
+                                pixels[dst_row + tx * 3 + 2] = b
+                        return bytes(pixels)
+                except Exception:
+                    pass
+        # Fallback to download if local image wasn't found
         art = item.get("artwork") or item.get("poster_path")
         yid = item.get("youtube_id", "AZ3U1PkKpYo")
-        pixels = process_thumbnail_and_tile(idx, art, yid, TILE_W, TILE_H)
-        return idx, pixels
+        return process_thumbnail_and_tile(idx, art, yid, TILE_W, TILE_H)
 
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        results = list(executor.map(process_item, updated_records[:216]))
-
-    for idx, pixels in results:
+    for idx, item in enumerate(updated_records[:216]):
+        pixels = load_tile_pixels(idx, item)
         col = idx % COLS
         row = idx // COLS
         ox = col * TILE_W
         oy = row * TILE_H
-
         if pixels and len(pixels) == TILE_W * TILE_H * 3:
             for ty in range(TILE_H):
                 src_row = ty * TILE_W * 3

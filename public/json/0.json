@@ -10,8 +10,8 @@
     "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a7/39/4c/a7394c20-db7f-ab1d-fadf-18a47350097e/8909024127200.png/600x600bb.jpg",
     "tagline": "🔥 User Requested & Auto-Verified (2026)",
     "overview": "User-requested official stream for 'Diviki Diviki (From \"January 12 Vidudala\")' by G.V. Prakash Kumar, Madhupriya, Haripriya & Anantha Sriram. Verified available on Spotify, Apple Music, and YouTube.",
-    "genres": "Tamil, Trending, Soundtrack",
-    "language": "Tamil",
+    "genres": "Telugu, Trending, Soundtrack",
+    "language": "Telugu",
     "release_year": 2026,
     "era": "New & Trending (2025-2026)",
     "trending": true,
@@ -32,10 +32,119 @@
         "videoId": "UckZ7N_Zt28"
       }
     ],
-    "popularity": 99.8
+    "popularity": 99.8,
+    "issue_number": 5
   },
   {
     "id": 1,
+    "title": "Shape of You",
+    "artist": "Ed Sheeran",
+    "vote_average": 9.9,
+    "vote_count": 35000,
+    "backdrop_path": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/e6/e8/15e6e8a4-4190-6a8b-86c3-ab4a51b88288/190295851286.jpg/600x600bb.jpg",
+    "poster_path": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/e6/e8/15e6e8a4-4190-6a8b-86c3-ab4a51b88288/190295851286.jpg/600x600bb.jpg",
+    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/e6/e8/15e6e8a4-4190-6a8b-86c3-ab4a51b88288/190295851286.jpg/600x600bb.jpg",
+    "tagline": "🔥 User Requested & Auto-Verified (2017)",
+    "overview": "User-requested official stream for 'Shape of You' by Ed Sheeran. Verified available on Spotify, Apple Music, and YouTube.",
+    "genres": "English, Trending, Pop",
+    "language": "English",
+    "release_year": 2017,
+    "era": "New & Trending (2025-2026)",
+    "trending": true,
+    "youtube_id": "JGwWNGJdvx8",
+    "spotify_id": "sp_req_1794799949",
+    "apple_music_id": "am_req_1794799949",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Shape of You",
+        "duration": "3:30",
+        "videoId": "JGwWNGJdvx8"
+      },
+      {
+        "number": 2,
+        "title": "Shape of You (Official)",
+        "duration": "3:45",
+        "videoId": "JGwWNGJdvx8"
+      }
+    ],
+    "popularity": 99.8,
+    "issue_number": 4
+  },
+  {
+    "id": 2,
+    "title": "Return Of The Dragon Machi",
+    "artist": "Hiphop Tamizha & Fejo",
+    "vote_average": 9.9,
+    "vote_count": 35000,
+    "backdrop_path": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/26/a4/c8/26a4c810-4b53-74db-9b1e-63febee354fc/823375577225_Cover.jpg/600x600bb.jpg",
+    "poster_path": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/26/a4/c8/26a4c810-4b53-74db-9b1e-63febee354fc/823375577225_Cover.jpg/600x600bb.jpg",
+    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/26/a4/c8/26a4c810-4b53-74db-9b1e-63febee354fc/823375577225_Cover.jpg/600x600bb.jpg",
+    "tagline": "🔥 User Requested & Auto-Verified (2026)",
+    "overview": "User-requested official stream for 'Return Of The Dragon Machi' by Hiphop Tamizha & Fejo. Verified available on Spotify, Apple Music, and YouTube.",
+    "genres": "Tamil, Trending, Hip-Hop",
+    "language": "Tamil",
+    "release_year": 2026,
+    "era": "New & Trending (2025-2026)",
+    "trending": true,
+    "youtube_id": "lB5KBsxTWjI",
+    "spotify_id": "sp_req_1794767874",
+    "apple_music_id": "am_req_1794767874",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Return Of The Dragon Machi",
+        "duration": "3:30",
+        "videoId": "lB5KBsxTWjI"
+      },
+      {
+        "number": 2,
+        "title": "Return Of The Dragon Machi (Official)",
+        "duration": "3:45",
+        "videoId": "lB5KBsxTWjI"
+      }
+    ],
+    "popularity": 99.8,
+    "issue_number": 3
+  },
+  {
+    "id": 3,
+    "title": "Pablo Sandhanam (Background Score)",
+    "artist": "Anirudh Ravichander",
+    "vote_average": 9.9,
+    "vote_count": 35000,
+    "backdrop_path": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/8a/c2/1e/8ac21e5d-9f8a-8999-8764-255f60c27125/196589305381.jpg/600x600bb.jpg",
+    "poster_path": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/8a/c2/1e/8ac21e5d-9f8a-8999-8764-255f60c27125/196589305381.jpg/600x600bb.jpg",
+    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/8a/c2/1e/8ac21e5d-9f8a-8999-8764-255f60c27125/196589305381.jpg/600x600bb.jpg",
+    "tagline": "🔥 User Requested & Auto-Verified (2022)",
+    "overview": "User-requested official stream for 'Pablo Sandhanam (Background Score)' by Anirudh Ravichander. Verified available on Spotify, Apple Music, and YouTube.",
+    "genres": "Tamil, Trending",
+    "language": "Tamil",
+    "release_year": 2022,
+    "era": "New & Trending (2025-2026)",
+    "trending": true,
+    "youtube_id": "s0tefh9uMec",
+    "spotify_id": "sp_req_1794753745",
+    "apple_music_id": "am_req_1794753745",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Pablo Sandhanam (Background Score)",
+        "duration": "3:30",
+        "videoId": "s0tefh9uMec"
+      },
+      {
+        "number": 2,
+        "title": "Pablo Sandhanam (Background Score) (Official)",
+        "duration": "3:45",
+        "videoId": "s0tefh9uMec"
+      }
+    ],
+    "popularity": 99.8,
+    "issue_number": 2
+  },
+  {
+    "id": 4,
     "title": "FA FA FA (From \"O.M: Operation Mole\")",
     "artist": "Sai Abhyankkar & Thamizh Aadhavan",
     "vote_average": 9.3,
@@ -70,7 +179,7 @@
     "popularity": 99.0
   },
   {
-    "id": 2,
+    "id": 5,
     "title": "Fire Song (From \"Kanguva\")",
     "artist": "Anurag Kulkarni, Deepthi Suresh, Devi Sri Prasad & Shree Mani",
     "vote_average": 9.4,
@@ -105,7 +214,7 @@
     "popularity": 98.78
   },
   {
-    "id": 3,
+    "id": 6,
     "title": "Veezha Veera (From \"OM Chapter 1: Udhiram  - The Blood Wood\") [Tamil]",
     "artist": "Sai Abhyankkar, Tippu & Arun Srinivasan",
     "vote_average": 9.5,
@@ -140,7 +249,7 @@
     "popularity": 98.56
   },
   {
-    "id": 4,
+    "id": 7,
     "title": "Radhimaa (feat. Sai Smriti) [From \"Think Indie\"]",
     "artist": "Sai Abhyankkar, Nargis Teji, Asma Teji & Vivek",
     "vote_average": 9.6,
@@ -175,7 +284,7 @@
     "popularity": 98.34
   },
   {
-    "id": 5,
+    "id": 8,
     "title": "Kissik - TELUGU",
     "artist": "Sublahshini",
     "vote_average": 9.7,
@@ -210,7 +319,7 @@
     "popularity": 98.12
   },
   {
-    "id": 6,
+    "id": 9,
     "title": "Fear Song (From \"Devara Part 1\") - TELUGU",
     "artist": "Anirudh Ravichander & Ramajogayya Sastry",
     "vote_average": 9.8,
@@ -245,7 +354,7 @@
     "popularity": 97.9
   },
   {
-    "id": 7,
+    "id": 10,
     "title": "Dileep Theme (Instrumental)",
     "artist": "Anirudh Ravichander",
     "vote_average": 9.9,
@@ -280,7 +389,7 @@
     "popularity": 97.68
   },
   {
-    "id": 8,
+    "id": 11,
     "title": "Ta Takkara (Complex Song)",
     "artist": "Sanjith Hegde, Dhee, Santhosh Narayanan & Ramajogayya Sastry",
     "vote_average": 9.3,
@@ -315,7 +424,7 @@
     "popularity": 97.46
   },
   {
-    "id": 9,
+    "id": 12,
     "title": "Illuminati (From \"Aavesham\")",
     "artist": "Sushin Shyam, Dabzee & Vinayak Sasikumar",
     "vote_average": 9.4,
@@ -350,7 +459,7 @@
     "popularity": 97.24
   },
   {
-    "id": 10,
+    "id": 13,
     "title": "Jaana Samjho Na",
     "artist": "Lijo George-Dj Chetas, Aditya Rikhari & Tulsi Kumar",
     "vote_average": 9.5,
@@ -385,7 +494,7 @@
     "popularity": 97.02
   },
   {
-    "id": 11,
+    "id": 14,
     "title": "Pushpa Pushpa (From \"Pushpa 2 the Rule\") - TELUGU",
     "artist": "Nakash Aziz, Deepak Blue & Chandrabose",
     "vote_average": 9.6,
@@ -420,7 +529,7 @@
     "popularity": 96.8
   },
   {
-    "id": 12,
+    "id": 15,
     "title": "Chuttamalle (From \"Devara Part 1\")",
     "artist": "Anirudh Ravichander, Shilpa Rao & Ramajogayya Sastry",
     "vote_average": 9.7,
@@ -455,7 +564,7 @@
     "popularity": 96.58
   },
   {
-    "id": 13,
+    "id": 16,
     "title": "As It Was",
     "artist": "Harry Styles",
     "vote_average": 9.8,
@@ -490,7 +599,7 @@
     "popularity": 96.36
   },
   {
-    "id": 14,
+    "id": 17,
     "title": "Intro",
     "artist": "The xx",
     "vote_average": 9.9,
@@ -525,7 +634,7 @@
     "popularity": 96.14
   },
   {
-    "id": 15,
+    "id": 18,
     "title": "Every Breath You Take",
     "artist": "The Police",
     "vote_average": 9.3,
@@ -560,7 +669,7 @@
     "popularity": 95.92
   },
   {
-    "id": 16,
+    "id": 19,
     "title": "Mere Humsafar (Original Score) [Female Version]",
     "artist": "Yashal Shahid",
     "vote_average": 9.4,
@@ -595,7 +704,7 @@
     "popularity": 95.7
   },
   {
-    "id": 17,
+    "id": 20,
     "title": "New",
     "artist": "Daya",
     "vote_average": 9.5,
@@ -630,7 +739,7 @@
     "popularity": 95.48
   },
   {
-    "id": 18,
+    "id": 21,
     "title": "Aye Zindagi",
     "artist": "Shaan",
     "vote_average": 9.6,
@@ -665,7 +774,7 @@
     "popularity": 95.26
   },
   {
-    "id": 19,
+    "id": 22,
     "title": "GUTS",
     "artist": "Amrit Maan & Desi Crew",
     "vote_average": 9.7,
@@ -700,7 +809,7 @@
     "popularity": 95.04
   },
   {
-    "id": 20,
+    "id": 23,
     "title": "Bien x Alikiba Finale Cover",
     "artist": "Kwetu Covers",
     "vote_average": 9.8,
@@ -735,7 +844,7 @@
     "popularity": 94.82
   },
   {
-    "id": 21,
+    "id": 24,
     "title": "COMPLETE",
     "artist": "Austin Blanchfill",
     "vote_average": 9.9,
@@ -770,7 +879,7 @@
     "popularity": 94.6
   },
   {
-    "id": 22,
+    "id": 25,
     "title": "Pavazha Malli (From \"Think Indie\")",
     "artist": "Sai Abhyankkar, Shruti Haasan & Vivek",
     "vote_average": 9.3,
@@ -805,7 +914,7 @@
     "popularity": 94.38
   },
   {
-    "id": 23,
+    "id": 26,
     "title": "Pattampoochi (From \"Vishwanath & Sons Tamil\")",
     "artist": "G.V. Prakash Kumar, Sublahshini & Arunraja Kamaraj",
     "vote_average": 9.4,
@@ -840,7 +949,7 @@
     "popularity": 94.16
   },
   {
-    "id": 24,
+    "id": 27,
     "title": "Pesamale",
     "artist": "Siri Xander & Arra Aria Khayal",
     "vote_average": 9.5,
@@ -875,7 +984,7 @@
     "popularity": 93.94
   },
   {
-    "id": 25,
+    "id": 28,
     "title": "Aeroplane (From \"Scene\")",
     "artist": "Sushin Shyam, Gana Bala & Rajpriyan",
     "vote_average": 9.6,
@@ -910,7 +1019,7 @@
     "popularity": 93.72
   },
   {
-    "id": 26,
+    "id": 29,
     "title": "Ooroda Oththa Don",
     "artist": "Sai Abhyankkar, Vangal Pulla Vicky, Thamizh Aadhavan & KK Nagar Gana Jeeva",
     "vote_average": 9.7,
@@ -945,7 +1054,7 @@
     "popularity": 93.5
   },
   {
-    "id": 27,
+    "id": 30,
     "title": "Naanga Naalu Peru",
     "artist": "Sai Abhyankkar, Silambarasan TR, Asal Kolaar & Arun Srinivasan",
     "vote_average": 9.8,
@@ -980,7 +1089,7 @@
     "popularity": 93.28
   },
   {
-    "id": 28,
+    "id": 31,
     "title": "Rathinamo (Female Version)",
     "artist": "Saurav Srisan & Tanisha Gnanavel",
     "vote_average": 9.9,
@@ -1015,7 +1124,7 @@
     "popularity": 93.06
   },
   {
-    "id": 29,
+    "id": 32,
     "title": "Vaama Vaama",
     "artist": "S.S. Thaman, Dhanush & Adesh Krishna",
     "vote_average": 9.3,
@@ -1050,7 +1159,7 @@
     "popularity": 92.84
   },
   {
-    "id": 30,
+    "id": 33,
     "title": "Thangame Thangame (From \"Idhayam Murali\")",
     "artist": "S.S. Thaman, D Dheeraj & Vivek",
     "vote_average": 9.4,
@@ -1085,7 +1194,7 @@
     "popularity": 92.62
   },
   {
-    "id": 31,
+    "id": 34,
     "title": "Adaavadi (From \"Love Insurance Kompany\")",
     "artist": "Anirudh Ravichander, Mathichiyam Bala, Rokesh, Heisenberg & Vignesh Shivan",
     "vote_average": 9.5,
@@ -1120,7 +1229,7 @@
     "popularity": 92.4
   },
   {
-    "id": 32,
+    "id": 35,
     "title": "Senjudare (From \"O.M: Operation Mole\")",
     "artist": "Sai Abhyankkar, Harini & Adesh Krishna",
     "vote_average": 9.6,
@@ -1155,7 +1264,7 @@
     "popularity": 92.18
   },
   {
-    "id": 33,
+    "id": 36,
     "title": "Ala Bolelo",
     "artist": "Anirudh Ravichander & Arunraja Kamaraj",
     "vote_average": 9.7,
@@ -1190,7 +1299,7 @@
     "popularity": 91.96
   },
   {
-    "id": 34,
+    "id": 37,
     "title": "Alaakaa Loova (From \"OM Chapter 1: Udhiram  - The Blood Wood\") [Tamil]",
     "artist": "Sai Abhyankkar & Rokesh",
     "vote_average": 9.8,
@@ -1225,7 +1334,7 @@
     "popularity": 91.74
   },
   {
-    "id": 35,
+    "id": 38,
     "title": "Om Chanting 432 Hz",
     "artist": "Music Body and Spirit",
     "vote_average": 9.9,
@@ -1260,7 +1369,7 @@
     "popularity": 91.52
   },
   {
-    "id": 36,
+    "id": 39,
     "title": "Relaxing Experiences",
     "artist": "Chakra Ray",
     "vote_average": 9.3,
@@ -1295,7 +1404,7 @@
     "popularity": 91.3
   },
   {
-    "id": 37,
+    "id": 40,
     "title": "Veera Veera (From \"OM Chapter 1: Udhiram  - The Blood Wood\") [Telugu]",
     "artist": "Sai Abhyankkar, Ritesh G Rao & Kasarla Shyam",
     "vote_average": 9.4,
@@ -1330,7 +1439,7 @@
     "popularity": 91.08
   },
   {
-    "id": 38,
+    "id": 41,
     "title": "Naayaka (From \"Kanguva\")",
     "artist": "Aravind Srinivas, Deepak Blue, Shenbagaraj, Narayanan Ravishankar, Govind Prasad, Shibi Srinivasan, Prasanna Adhisesha, Vikram Pitty, Abhijith Rao, Aparna Harikumar, Sushmita Narasimhan, Pavithra Chari, Lavita Lobo, Deepthi Suresh, Latha Krishna, Padmaja Sreenivasan & Sai Sharan",
     "vote_average": 9.5,
@@ -1365,7 +1474,7 @@
     "popularity": 90.86
   },
   {
-    "id": 39,
+    "id": 42,
     "title": "Kanga Kanguva",
     "artist": "Hemachandra, Sahithi & Rakendu Mouli",
     "vote_average": 9.6,
@@ -1400,7 +1509,7 @@
     "popularity": 90.64
   },
   {
-    "id": 40,
+    "id": 43,
     "title": "Mannimpu",
     "artist": "Raghu Dixit & Kalyan Chakravarthy",
     "vote_average": 9.7,
@@ -1435,7 +1544,7 @@
     "popularity": 90.42
   },
   {
-    "id": 41,
+    "id": 44,
     "title": "Yolo (From \"Kanguva\")",
     "artist": "Devi Sri Prasad, Sagar, Shraddha Das & Rakendu Mouli",
     "vote_average": 9.8,
@@ -1470,7 +1579,7 @@
     "popularity": 90.2
   },
   {
-    "id": 42,
+    "id": 45,
     "title": "Flower In A Hurricane [From GTAVI: Original Score]",
     "artist": "Justice, Tame Impala, SZA & King Gizzard & The Lizard Wizard",
     "vote_average": 9.9,
@@ -1505,7 +1614,7 @@
     "popularity": 89.98
   },
   {
-    "id": 43,
+    "id": 46,
     "title": "Dilruba Dilnasheen",
     "artist": "Rito Riba & Siddhant Kaushal",
     "vote_average": 9.3,
@@ -1540,7 +1649,7 @@
     "popularity": 89.76
   },
   {
-    "id": 44,
+    "id": 47,
     "title": "SWIM",
     "artist": "BTS",
     "vote_average": 9.4,
@@ -1575,7 +1684,7 @@
     "popularity": 89.53999999999999
   },
   {
-    "id": 45,
+    "id": 48,
     "title": "Grand Theft Auto: San Andreas (Official Theme Song)",
     "artist": "Michael Hunter",
     "vote_average": 9.5,
@@ -1610,7 +1719,7 @@
     "popularity": 89.32
   },
   {
-    "id": 46,
+    "id": 49,
     "title": "Roddy Theme (From \"Jailer 2\")",
     "artist": "Anirudh Ravichander",
     "vote_average": 9.6,
@@ -1645,7 +1754,7 @@
     "popularity": 89.1
   },
   {
-    "id": 47,
+    "id": 50,
     "title": "Jailer 2 Theme",
     "artist": "Anirudh Ravichander, M.S Krsna & Super Subu",
     "vote_average": 9.7,
@@ -1680,7 +1789,7 @@
     "popularity": 88.88
   },
   {
-    "id": 48,
+    "id": 51,
     "title": "The Wild Theme (From \"OM Chapter 1: Udhiram - The Blood Wood\")",
     "artist": "Sai Abhyankkar & Dhanush",
     "vote_average": 9.8,
@@ -1715,7 +1824,7 @@
     "popularity": 88.66
   },
   {
-    "id": 49,
+    "id": 52,
     "title": "Iphone Ringtone Trap (Remix)",
     "artist": "Jasser Labidi",
     "vote_average": 9.9,
@@ -1750,7 +1859,7 @@
     "popularity": 88.44
   },
   {
-    "id": 50,
+    "id": 53,
     "title": "Guzarish",
     "artist": "Satinder Sartaaj",
     "vote_average": 9.3,
@@ -1785,7 +1894,7 @@
     "popularity": 88.22
   },
   {
-    "id": 51,
+    "id": 54,
     "title": "Hriday Mein Jinke Sitaram",
     "artist": "Vishal Chaturvedi",
     "vote_average": 9.4,
@@ -1820,7 +1929,7 @@
     "popularity": 88.0
   },
   {
-    "id": 52,
+    "id": 55,
     "title": "The Child In Us",
     "artist": "Enigma",
     "vote_average": 9.5,
@@ -1855,7 +1964,7 @@
     "popularity": 87.78
   },
   {
-    "id": 53,
+    "id": 56,
     "title": "iPhone Cat :3",
     "artist": "lil meow on da beat",
     "vote_average": 9.6,
@@ -1890,7 +1999,7 @@
     "popularity": 87.56
   },
   {
-    "id": 54,
+    "id": 57,
     "title": "शम्भु स्तुति",
     "artist": "Ketan Kumar",
     "vote_average": 9.7,
@@ -1925,7 +2034,7 @@
     "popularity": 87.34
   },
   {
-    "id": 55,
+    "id": 58,
     "title": "Tu Mil Jaaye (From \"KING\")",
     "artist": "Sachin-Jigar, Arijit Singh, Ed Sheeran, Madhubanti Bagchi & Kumaar",
     "vote_average": 9.8,
@@ -1960,7 +2069,7 @@
     "popularity": 87.12
   },
   {
-    "id": 56,
+    "id": 59,
     "title": "Raga of Revenge (From \"DC\")",
     "artist": "Anirudh Ravichander",
     "vote_average": 9.9,
@@ -1995,7 +2104,7 @@
     "popularity": 86.9
   },
   {
-    "id": 57,
+    "id": 60,
     "title": "POKITO",
     "artist": "Daddy Yankee & Diljit Dosanjh",
     "vote_average": 9.3,
@@ -2030,7 +2139,7 @@
     "popularity": 86.68
   },
   {
-    "id": 58,
+    "id": 61,
     "title": "BAD TIMES",
     "artist": "Imael Angel & Cali Bee",
     "vote_average": 9.4,
@@ -2065,7 +2174,7 @@
     "popularity": 86.46
   },
   {
-    "id": 59,
+    "id": 62,
     "title": "WHERE IS MY HUSBAND!",
     "artist": "RAYE",
     "vote_average": 9.5,
@@ -2100,7 +2209,7 @@
     "popularity": 86.24
   },
   {
-    "id": 60,
+    "id": 63,
     "title": "OM Special Duty (From \"OM Chapter 1: Udhiram - The Blood Wood\")",
     "artist": "Sai Abhyankkar",
     "vote_average": 9.6,
@@ -2135,7 +2244,7 @@
     "popularity": 86.02
   },
   {
-    "id": 61,
+    "id": 64,
     "title": "hate that i made you love me",
     "artist": "Ariana Grande",
     "vote_average": 9.7,
@@ -2170,7 +2279,7 @@
     "popularity": 85.8
   },
   {
-    "id": 62,
+    "id": 65,
     "title": "Jai Jai Ram",
     "artist": "A.R. Rahman, Shreya Ghoshal, Arijit Singh & Kumar Vishwas",
     "vote_average": 9.8,
@@ -2205,7 +2314,7 @@
     "popularity": 85.58
   },
   {
-    "id": 63,
+    "id": 66,
     "title": "SHERU BHAI FUNK",
     "artist": "1HXSX",
     "vote_average": 9.9,
@@ -2240,7 +2349,7 @@
     "popularity": 85.36
   },
   {
-    "id": 64,
+    "id": 67,
     "title": "KALYANI (Remix)",
     "artist": "ARJN, KDS, FIFTY4 & Shreya Ghoshal",
     "vote_average": 9.3,
@@ -2275,7 +2384,7 @@
     "popularity": 85.14
   },
   {
-    "id": 65,
+    "id": 68,
     "title": "Soviet Connection (Theme from Gta IV)",
     "artist": "Michael Hunter",
     "vote_average": 9.4,
@@ -2310,7 +2419,7 @@
     "popularity": 84.92
   },
   {
-    "id": 66,
+    "id": 69,
     "title": "Ik Onkar",
     "artist": "A.R. Rahman & Harshdeep Kaur",
     "vote_average": 9.5,
@@ -2345,7 +2454,7 @@
     "popularity": 84.7
   },
   {
-    "id": 67,
+    "id": 70,
     "title": "Ashke",
     "artist": "Karan Aujla & MXRCI",
     "vote_average": 9.6,
@@ -2380,7 +2489,7 @@
     "popularity": 84.48
   },
   {
-    "id": 68,
+    "id": 71,
     "title": "Namaste",
     "artist": "Anirudh Ravichander",
     "vote_average": 9.7,
@@ -2415,7 +2524,7 @@
     "popularity": 84.26
   },
   {
-    "id": 69,
+    "id": 72,
     "title": "STRUCT (Tiktok Version)",
     "artist": "UdieNnx",
     "vote_average": 9.8,
@@ -2450,7 +2559,7 @@
     "popularity": 84.03999999999999
   },
   {
-    "id": 70,
+    "id": 73,
     "title": "Killin' 'em",
     "artist": "Sushin Shyam & Yung Raja",
     "vote_average": 9.9,
@@ -2485,7 +2594,7 @@
     "popularity": 83.82
   },
   {
-    "id": 71,
+    "id": 74,
     "title": "Boston",
     "artist": "STELLA LEFTY",
     "vote_average": 9.3,
@@ -2520,7 +2629,7 @@
     "popularity": 83.6
   },
   {
-    "id": 72,
+    "id": 75,
     "title": "Jaiye Sajana",
     "artist": "Shashwat Sachdev, Jasmine Sandlas & Satinder Sartaaj",
     "vote_average": 9.4,
@@ -2555,7 +2664,7 @@
     "popularity": 83.38
   },
   {
-    "id": 73,
+    "id": 76,
     "title": "One Name",
     "artist": "Anirudh Ravichander & Super Subu",
     "vote_average": 9.5,
@@ -2590,7 +2699,7 @@
     "popularity": 83.16
   },
   {
-    "id": 74,
+    "id": 77,
     "title": "Mangal Rang (From \"Ramayana\")",
     "artist": "A.R. Rahman, Arijit Singh, Shreya Ghoshal & Kumar Vishwas",
     "vote_average": 9.6,
@@ -2625,7 +2734,7 @@
     "popularity": 82.94
   },
   {
-    "id": 75,
+    "id": 78,
     "title": "Muthuvel Pandian Theme (Instrumental)",
     "artist": "Anirudh Ravichander",
     "vote_average": 9.7,
@@ -2660,7 +2769,7 @@
     "popularity": 82.72
   },
   {
-    "id": 76,
+    "id": 79,
     "title": "Siya Entry (From \"OM Chapter 1: Udhiram  - The Blood Wood\")",
     "artist": "Sai Abhyankkar, Daniel & Vettori",
     "vote_average": 9.8,
@@ -2695,7 +2804,7 @@
     "popularity": 82.5
   },
   {
-    "id": 77,
+    "id": 80,
     "title": "The Rose (Instrumental)",
     "artist": "Anirudh Ravichander",
     "vote_average": 9.9,
@@ -2730,7 +2839,7 @@
     "popularity": 82.28
   },
   {
-    "id": 78,
+    "id": 81,
     "title": "Alfaaz - Vocals",
     "artist": "Hamza Malik & Zain Zohaib",
     "vote_average": 9.3,
@@ -2765,7 +2874,7 @@
     "popularity": 82.06
   },
   {
-    "id": 79,
+    "id": 82,
     "title": "Lose My Mind (feat. Doja Cat)",
     "artist": "Don Toliver",
     "vote_average": 9.4,
@@ -2800,7 +2909,7 @@
     "popularity": 82.0
   },
   {
-    "id": 80,
+    "id": 83,
     "title": "Mangala Vanname (From \"Ramayana\")",
     "artist": "A.R. Rahman, Abhay Jodhpurkar, Saindhavi & Karthik Netha",
     "vote_average": 9.5,
@@ -2835,7 +2944,7 @@
     "popularity": 82.0
   },
   {
-    "id": 81,
+    "id": 84,
     "title": "Love Me Like You Do",
     "artist": "Ellie Goulding",
     "vote_average": 9.6,
@@ -2870,7 +2979,7 @@
     "popularity": 82.0
   },
   {
-    "id": 82,
+    "id": 85,
     "title": "STRUCT (Slowed)",
     "artist": "UdieNnx",
     "vote_average": 9.7,
@@ -2905,7 +3014,7 @@
     "popularity": 82.0
   },
   {
-    "id": 83,
+    "id": 86,
     "title": "Super Mario Bros. Theme",
     "artist": "Boogie Heights",
     "vote_average": 9.8,
@@ -2940,7 +3049,7 @@
     "popularity": 82.0
   },
   {
-    "id": 84,
+    "id": 87,
     "title": "Cornfield Chase",
     "artist": "Hans Zimmer",
     "vote_average": 9.9,
@@ -2975,7 +3084,7 @@
     "popularity": 82.0
   },
   {
-    "id": 85,
+    "id": 88,
     "title": "Gehra Hua (From \"Dhurandhar\")",
     "artist": "Shashwat Sachdev, Arijit Singh, Irshad Kamil & Armaan Khan",
     "vote_average": 9.3,
@@ -3010,7 +3119,7 @@
     "popularity": 82.0
   },
   {
-    "id": 86,
+    "id": 89,
     "title": "Radha Radha Naam Jaap",
     "artist": "Sanatan Music",
     "vote_average": 9.4,
@@ -3045,7 +3154,7 @@
     "popularity": 82.0
   },
   {
-    "id": 87,
+    "id": 90,
     "title": "Welcome to Los Santos",
     "artist": "Oh No",
     "vote_average": 9.5,
@@ -3080,7 +3189,7 @@
     "popularity": 82.0
   },
   {
-    "id": 88,
+    "id": 91,
     "title": "OM",
     "artist": "Brodha V",
     "vote_average": 9.6,
@@ -3115,7 +3224,7 @@
     "popularity": 82.0
   },
   {
-    "id": 89,
+    "id": 92,
     "title": "Hukum - Thalaivar Alappara (From \"Jailer\")",
     "artist": "Anirudh Ravichander & Super Subu",
     "vote_average": 9.7,
@@ -3150,7 +3259,7 @@
     "popularity": 82.0
   },
   {
-    "id": 90,
+    "id": 93,
     "title": "Do I Wanna Know?",
     "artist": "Arctic Monkeys",
     "vote_average": 9.8,
@@ -3185,7 +3294,7 @@
     "popularity": 82.0
   },
   {
-    "id": 91,
+    "id": 94,
     "title": "Unfinished Business (From \"Jailer 2\")",
     "artist": "Anirudh Ravichander, Romy, Ananthakrrishnan & Anand Kashinath",
     "vote_average": 9.9,
@@ -3220,7 +3329,7 @@
     "popularity": 82.0
   },
   {
-    "id": 92,
+    "id": 95,
     "title": "Bhaja Govindam (From \"Reality\")",
     "artist": "Vaikom Vijayalakshmi, Bheems Ceciroleo & Sanare",
     "vote_average": 9.3,
@@ -3255,7 +3364,7 @@
     "popularity": 82.0
   },
   {
-    "id": 93,
+    "id": 96,
     "title": "Sai Pallavi's Intro",
     "artist": "G.V. Prakash Kumar",
     "vote_average": 9.4,
@@ -3290,7 +3399,7 @@
     "popularity": 82.0
   },
   {
-    "id": 94,
+    "id": 97,
     "title": "Mahiya",
     "artist": "Badshah, Shreya Ghoshal & Hiten",
     "vote_average": 9.5,
@@ -3325,7 +3434,7 @@
     "popularity": 82.0
   },
   {
-    "id": 95,
+    "id": 98,
     "title": "Airtel 2012 Ringtone",
     "artist": "Funny Tones",
     "vote_average": 9.6,
@@ -3360,7 +3469,7 @@
     "popularity": 82.0
   },
   {
-    "id": 96,
+    "id": 99,
     "title": "Sun Showers (From \"The Angry Birds Movie 3”)",
     "artist": "JISOO",
     "vote_average": 9.6,
@@ -3395,7 +3504,7 @@
     "popularity": 89.1
   },
   {
-    "id": 97,
+    "id": 100,
     "title": "Gangadhara Shankara",
     "artist": "S. Aishwarya, S Soundarya, Sruthi Ranjani & S.S. Thaman",
     "vote_average": 9.5,
@@ -3430,7 +3539,7 @@
     "popularity": 87.78
   },
   {
-    "id": 98,
+    "id": 101,
     "title": "Tum Se Hi",
     "artist": "Pritam & Mohit Chauhan",
     "vote_average": 9.6,
@@ -3465,7 +3574,7 @@
     "popularity": 87.56
   },
   {
-    "id": 99,
+    "id": 102,
     "title": "Hipnotique",
     "artist": "Suleymer",
     "vote_average": 9.7,
@@ -3500,7 +3609,7 @@
     "popularity": 87.34
   },
   {
-    "id": 100,
+    "id": 103,
     "title": "Succession (Main Title Theme)",
     "artist": "Nicholas Britell",
     "vote_average": 9.8,
@@ -3535,7 +3644,7 @@
     "popularity": 87.12
   },
   {
-    "id": 101,
+    "id": 104,
     "title": "Yeh Prem Mol Liya Title Track (From \"Yeh Prem Mol Liya\")",
     "artist": "Himesh Reshammiya, Shreya Ghoshal, Nihal Tauro & Kumaar",
     "vote_average": 9.9,
@@ -3570,7 +3679,7 @@
     "popularity": 86.9
   },
   {
-    "id": 102,
+    "id": 105,
     "title": "Muthumani",
     "artist": "Ilaiyaraaja & Shweta Mohan",
     "vote_average": 9.6,
@@ -3605,7 +3714,7 @@
     "popularity": 86.02
   },
   {
-    "id": 103,
+    "id": 106,
     "title": "Krishna Flute",
     "artist": "Mohan Krishan",
     "vote_average": 9.7,
@@ -3640,7 +3749,7 @@
     "popularity": 85.8
   },
   {
-    "id": 104,
+    "id": 107,
     "title": "Jamaican (Bam Bam) [Extended Mix]",
     "artist": "HUGEL & SOLTO (FR)",
     "vote_average": 9.8,
@@ -3675,7 +3784,7 @@
     "popularity": 85.58
   },
   {
-    "id": 105,
+    "id": 108,
     "title": "Sai Pallavi's Intro (From \"Amaran\") [Instrumental]",
     "artist": "G.V. Prakash Kumar",
     "vote_average": 9.4,
@@ -3710,7 +3819,7 @@
     "popularity": 84.92
   },
   {
-    "id": 106,
+    "id": 109,
     "title": "Magale",
     "artist": "Sai Abhyankkar, Harini & Karthik Netha",
     "vote_average": 9.5,
@@ -3745,7 +3854,7 @@
     "popularity": 84.7
   },
   {
-    "id": 107,
+    "id": 110,
     "title": "Hedwig's Theme",
     "artist": "John Williams",
     "vote_average": 9.6,
@@ -3780,7 +3889,7 @@
     "popularity": 84.48
   },
   {
-    "id": 108,
+    "id": 111,
     "title": "A Thousand Years",
     "artist": "Christina Perri",
     "vote_average": 9.8,
@@ -3815,7 +3924,7 @@
     "popularity": 84.03999999999999
   },
   {
-    "id": 109,
+    "id": 112,
     "title": "Parvati",
     "artist": "Sadhu Tiwari",
     "vote_average": 9.9,
@@ -3850,7 +3959,7 @@
     "popularity": 83.82
   },
   {
-    "id": 110,
+    "id": 113,
     "title": "Dahaa Theme (From \"Coolie\")",
     "artist": "Anirudh Ravichander, Lalo Salamanca & Heisenberg",
     "vote_average": 9.3,
@@ -3885,7 +3994,7 @@
     "popularity": 83.6
   },
   {
-    "id": 111,
+    "id": 114,
     "title": "Californication",
     "artist": "Red Hot Chili Peppers",
     "vote_average": 9.4,
@@ -3920,7 +4029,7 @@
     "popularity": 83.38
   },
   {
-    "id": 112,
+    "id": 115,
     "title": "Kannalane",
     "artist": "K.S. Chithra, A.R. Rahman & Chorus",
     "vote_average": 9.5,
@@ -3955,7 +4064,7 @@
     "popularity": 83.16
   },
   {
-    "id": 113,
+    "id": 116,
     "title": "Destiny - Mann Atkeya",
     "artist": "Shashwat Sachdev, Token, Vaibhav Gupta, Shahzad Ali & Traditional",
     "vote_average": 9.7,
@@ -3990,7 +4099,7 @@
     "popularity": 82.72
   },
   {
-    "id": 114,
+    "id": 117,
     "title": "Anjumalai Azhaga",
     "artist": "Pushpavanam Kuppuswamy",
     "vote_average": 9.8,
@@ -4025,7 +4134,7 @@
     "popularity": 82.5
   },
   {
-    "id": 115,
+    "id": 118,
     "title": "Unnai Thottu",
     "artist": "S.P. Balasubrahmanyam, Bala Bharathi, K.S. Chithra & Vairamuthu",
     "vote_average": 9.9,
@@ -4060,7 +4169,7 @@
     "popularity": 82.28
   },
   {
-    "id": 116,
+    "id": 119,
     "title": "Shree Hanuman Chalisa (From \"Ramayana\")",
     "artist": "A.R. Rahman, Shankar Mahadevan, Diljit Dosanjh, Sukhwinder Singh, Mohit Chauhan & Kailash Kher",
     "vote_average": 9.3,
@@ -4095,7 +4204,7 @@
     "popularity": 82.06
   },
   {
-    "id": 117,
+    "id": 120,
     "title": "Papa Meri Jaan (From \"Animal\")",
     "artist": "Sonu Nigam, Harshavardhan Rameshwar & Raj Shekhar",
     "vote_average": 9.4,
@@ -4130,7 +4239,7 @@
     "popularity": 82.0
   },
   {
-    "id": 118,
+    "id": 121,
     "title": "Midnight Sun",
     "artist": "Zara Larsson",
     "vote_average": 9.6,
@@ -4165,7 +4274,7 @@
     "popularity": 82.0
   },
   {
-    "id": 119,
+    "id": 122,
     "title": "Baby (feat. Ludacris)",
     "artist": "Justin Bieber",
     "vote_average": 9.7,
@@ -4200,7 +4309,7 @@
     "popularity": 82.0
   },
   {
-    "id": 120,
+    "id": 123,
     "title": "Take A Little",
     "artist": "Jaxson Blue Sounds",
     "vote_average": 9.8,
@@ -4235,7 +4344,7 @@
     "popularity": 82.0
   },
   {
-    "id": 121,
+    "id": 124,
     "title": "Shaitaan",
     "artist": "Anirudh Ravichander, Romy, Vivek & Super Subu",
     "vote_average": 9.3,
@@ -4270,7 +4379,7 @@
     "popularity": 82.0
   },
   {
-    "id": 122,
+    "id": 125,
     "title": "For A Reason",
     "artist": "Karan Aujla & Ikky",
     "vote_average": 9.4,
@@ -4305,7 +4414,7 @@
     "popularity": 82.0
   },
   {
-    "id": 123,
+    "id": 126,
     "title": "Ja Par Kripa Ram Ki Hoi",
     "artist": "Monu Sinha",
     "vote_average": 9.5,
@@ -4340,7 +4449,7 @@
     "popularity": 82.0
   },
   {
-    "id": 124,
+    "id": 127,
     "title": "Jai Radha Madhav-Lofi",
     "artist": "Vrinda Shri",
     "vote_average": 9.6,
@@ -4375,7 +4484,7 @@
     "popularity": 82.0
   },
   {
-    "id": 125,
+    "id": 128,
     "title": "Shiv Tandav Stotram",
     "artist": "Shankar Mahadevan",
     "vote_average": 9.7,
@@ -4410,7 +4519,7 @@
     "popularity": 82.0
   },
   {
-    "id": 126,
+    "id": 129,
     "title": "Illuminati",
     "artist": "Dabzee",
     "vote_average": 9.8,
@@ -4445,7 +4554,7 @@
     "popularity": 82.0
   },
   {
-    "id": 127,
+    "id": 130,
     "title": "Tuyo (Narcos Theme) [Extended Version]",
     "artist": "Rodrigo Amarante",
     "vote_average": 9.9,
@@ -4480,7 +4589,7 @@
     "popularity": 82.0
   },
   {
-    "id": 128,
+    "id": 131,
     "title": "Just A Woman",
     "artist": "Lainey Wilson",
     "vote_average": 9.3,
@@ -4515,7 +4624,7 @@
     "popularity": 82.0
   },
   {
-    "id": 129,
+    "id": 132,
     "title": "Choosin' Texas",
     "artist": "Ella Langley",
     "vote_average": 9.4,
@@ -4550,7 +4659,7 @@
     "popularity": 82.0
   },
   {
-    "id": 130,
+    "id": 133,
     "title": "Flower In A Hurricane",
     "artist": "Justice, SZA, King Gizzard & The Lizard Wizard & Tame Impala",
     "vote_average": 9.5,
@@ -4585,7 +4694,7 @@
     "popularity": 82.0
   },
   {
-    "id": 131,
+    "id": 134,
     "title": "I’m a Song (feat. Chris Stapleton)",
     "artist": "Stephen Wilson Jr.",
     "vote_average": 9.6,
@@ -4620,7 +4729,7 @@
     "popularity": 82.0
   },
   {
-    "id": 132,
+    "id": 135,
     "title": "Throwbacks",
     "artist": "Corey Smith",
     "vote_average": 9.6,
@@ -4655,7 +4764,7 @@
     "popularity": 95.26
   },
   {
-    "id": 133,
+    "id": 136,
     "title": "Kalaivaniye (From \"Meesaya Murukku 2\")",
     "artist": "Hiphop Tamizha, Sathya Prakash & Kaushik Krish",
     "vote_average": 9.9,
@@ -4690,7 +4799,7 @@
     "popularity": 94.6
   },
   {
-    "id": 134,
+    "id": 137,
     "title": "Aeroplane",
     "artist": "Sushin Shyam, Gana Bala & Rajpriyan",
     "vote_average": 9.6,
@@ -4725,7 +4834,7 @@
     "popularity": 93.72
   },
   {
-    "id": 135,
+    "id": 138,
     "title": "Jai Jai Ram (From \"Ramayana\")",
     "artist": "A.R. Rahman, Shreya Ghoshal, Arijit Singh & Kumar Vishwas",
     "vote_average": 9.7,
@@ -4760,7 +4869,7 @@
     "popularity": 90.42
   },
   {
-    "id": 136,
+    "id": 139,
     "title": "Alfaaz - Acoustic",
     "artist": "Hamza Malik, Zain Zohaib & Atif Khan",
     "vote_average": 9.7,
@@ -4795,7 +4904,7 @@
     "popularity": 85.8
   },
   {
-    "id": 137,
+    "id": 140,
     "title": "drop dead",
     "artist": "Olivia Rodrigo",
     "vote_average": 9.9,
@@ -4830,7 +4939,7 @@
     "popularity": 85.36
   },
   {
-    "id": 138,
+    "id": 141,
     "title": "Self Aware",
     "artist": "Temper City",
     "vote_average": 9.5,
@@ -4865,7 +4974,7 @@
     "popularity": 84.7
   },
   {
-    "id": 139,
+    "id": 142,
     "title": "Maula Mere Maula",
     "artist": "Roop Kumar Rathod",
     "vote_average": 9.7,
@@ -4900,7 +5009,7 @@
     "popularity": 84.26
   },
   {
-    "id": 140,
+    "id": 143,
     "title": "Killin' 'em (From \"Scene\")",
     "artist": "Sushin Shyam & Yung Raja",
     "vote_average": 9.8,
@@ -4935,7 +5044,7 @@
     "popularity": 84.03999999999999
   },
   {
-    "id": 141,
+    "id": 144,
     "title": "Jamaican (Bam Bam)",
     "artist": "HUGEL & SOLTO (FR)",
     "vote_average": 9.3,
@@ -4970,7 +5079,7 @@
     "popularity": 83.6
   },
   {
-    "id": 142,
+    "id": 145,
     "title": "Rama Theme",
     "artist": "Hans Zimmer & A.R. Rahman",
     "vote_average": 9.4,
@@ -5005,7 +5114,7 @@
     "popularity": 83.38
   },
   {
-    "id": 143,
+    "id": 146,
     "title": "Power Trip",
     "artist": "JENNIE",
     "vote_average": 9.6,
@@ -5040,7 +5149,7 @@
     "popularity": 82.94
   },
   {
-    "id": 144,
+    "id": 147,
     "title": "Dhun",
     "artist": "Mithoon & Arijit Singh",
     "vote_average": 9.7,
@@ -5075,7 +5184,7 @@
     "popularity": 82.72
   },
   {
-    "id": 145,
+    "id": 148,
     "title": "Chakkani Malle Jaji Ayyappa",
     "artist": "Ganga Puthra Narsing Rao",
     "vote_average": 9.9,
@@ -5110,7 +5219,7 @@
     "popularity": 82.28
   },
   {
-    "id": 146,
+    "id": 149,
     "title": "Succession (Main Title Theme) [Extended Intro Version]",
     "artist": "Nicholas Britell",
     "vote_average": 9.5,
@@ -5145,7 +5254,7 @@
     "popularity": 82.0
   },
   {
-    "id": 147,
+    "id": 150,
     "title": "Maine Tere Hi Bharose",
     "artist": "Suneel Lodhi",
     "vote_average": 9.6,
@@ -5180,7 +5289,7 @@
     "popularity": 82.0
   },
   {
-    "id": 148,
+    "id": 151,
     "title": "Hukum - Thalaivar Alappara",
     "artist": "Anirudh Ravichander & Super Subu",
     "vote_average": 9.7,
@@ -5215,7 +5324,7 @@
     "popularity": 82.0
   },
   {
-    "id": 149,
+    "id": 152,
     "title": "GTA San Andreas Theme",
     "artist": "Ben Morfitt (SquidPhysics)",
     "vote_average": 9.3,
@@ -5250,7 +5359,7 @@
     "popularity": 82.0
   },
   {
-    "id": 150,
+    "id": 153,
     "title": "Raindance",
     "artist": "Dave & Tems",
     "vote_average": 9.5,
@@ -5285,7 +5394,7 @@
     "popularity": 82.0
   },
   {
-    "id": 151,
+    "id": 154,
     "title": "Hukum Reloaded",
     "artist": "Anirudh Ravichander & Super Subu",
     "vote_average": 9.6,
@@ -5320,7 +5429,7 @@
     "popularity": 82.0
   },
   {
-    "id": 152,
+    "id": 155,
     "title": "Alaakaa Loova (From \"OM Chapter 1: Udhiram  - The Blood Wood\") [Telugu]",
     "artist": "Sai Abhyankkar, Chandra Bose, Ram Miriyala & Arun Kaundinya",
     "vote_average": 9.7,
@@ -5355,7 +5464,7 @@
     "popularity": 82.0
   },
   {
-    "id": 153,
+    "id": 156,
     "title": "Om Namo Bhagavate Vasudevaya",
     "artist": "Sanjith Hegde & Vijay Prakash",
     "vote_average": 9.9,
@@ -5390,7 +5499,7 @@
     "popularity": 82.0
   },
   {
-    "id": 154,
+    "id": 157,
     "title": "Someone Like You",
     "artist": "Adele",
     "vote_average": 9.4,
@@ -5425,7 +5534,7 @@
     "popularity": 82.0
   },
   {
-    "id": 155,
+    "id": 158,
     "title": "Dame Hombro",
     "artist": "Bulin 47 & Kevin Wai",
     "vote_average": 9.5,
@@ -5460,7 +5569,7 @@
     "popularity": 82.0
   },
   {
-    "id": 156,
+    "id": 159,
     "title": "Sita Ram",
     "artist": "Krishna Das",
     "vote_average": 9.9,
@@ -5495,7 +5604,7 @@
     "popularity": 86.9
   },
   {
-    "id": 157,
+    "id": 160,
     "title": "A Couple Minutes",
     "artist": "Olivia Dean",
     "vote_average": 9.3,
@@ -5530,7 +5639,7 @@
     "popularity": 86.68
   },
   {
-    "id": 158,
+    "id": 161,
     "title": "Krishnaya Vasudevaya - Shri Krishna Mantra",
     "artist": "Siddharth Amit Bhavsar & Prateeksha Srivastava",
     "vote_average": 9.4,
@@ -5565,7 +5674,7 @@
     "popularity": 83.38
   },
   {
-    "id": 159,
+    "id": 162,
     "title": "Judi Jodi (From \"Ramayana\") -  HINDI",
     "artist": "A.R. Rahman, Shreya Ghoshal & Kumar Vishwas",
     "vote_average": 9.6,
@@ -5600,7 +5709,7 @@
     "popularity": 82.94
   },
   {
-    "id": 160,
+    "id": 163,
     "title": "Never Fold",
     "artist": "Sidhu Moose Wala",
     "vote_average": 9.7,
@@ -5635,7 +5744,7 @@
     "popularity": 82.72
   },
   {
-    "id": 161,
+    "id": 164,
     "title": "her (feat. ZVC)",
     "artist": "JVKE",
     "vote_average": 9.9,
@@ -5670,7 +5779,7 @@
     "popularity": 82.28
   },
   {
-    "id": 162,
+    "id": 165,
     "title": "Putaapu Gang",
     "artist": "Anirudh Ravichander & Thamizh Aadhavan",
     "vote_average": 9.3,
@@ -5705,7 +5814,7 @@
     "popularity": 82.06
   },
   {
-    "id": 163,
+    "id": 166,
     "title": "Perfect",
     "artist": "Ed Sheeran",
     "vote_average": 9.4,
@@ -5740,7 +5849,7 @@
     "popularity": 82.0
   },
   {
-    "id": 164,
+    "id": 167,
     "title": "GiiiRIP",
     "artist": "BIGBANG",
     "vote_average": 9.5,
@@ -5775,7 +5884,7 @@
     "popularity": 82.0
   },
   {
-    "id": 165,
+    "id": 168,
     "title": "Magale (From \"Baththa\")",
     "artist": "Sai Abhyankkar, Harini & Karthik Netha",
     "vote_average": 9.8,
@@ -5810,7 +5919,7 @@
     "popularity": 82.0
   },
   {
-    "id": 166,
+    "id": 169,
     "title": "Criminal",
     "artist": "Britney Spears",
     "vote_average": 9.3,
@@ -5845,7 +5954,7 @@
     "popularity": 82.0
   },
   {
-    "id": 167,
+    "id": 170,
     "title": "APT.",
     "artist": "ROSÉ & Bruno Mars",
     "vote_average": 9.5,
@@ -5880,7 +5989,7 @@
     "popularity": 82.0
   },
   {
-    "id": 168,
+    "id": 171,
     "title": "I Wanna Be Yours",
     "artist": "Arctic Monkeys",
     "vote_average": 9.6,
@@ -5915,7 +6024,7 @@
     "popularity": 82.0
   },
   {
-    "id": 169,
+    "id": 172,
     "title": "Gallan Goodiyaan",
     "artist": "Yashita Sharma, Manish Kumar Tipu, Farhan Akhtar, Shankar Mahadevan & Sukhwinder Singh",
     "vote_average": 9.9,
@@ -5950,7 +6059,7 @@
     "popularity": 82.0
   },
   {
-    "id": 170,
+    "id": 173,
     "title": "Revival",
     "artist": "The Red Clay Strays",
     "vote_average": 9.4,
@@ -5985,7 +6094,7 @@
     "popularity": 82.0
   },
   {
-    "id": 171,
+    "id": 174,
     "title": "Bairan",
     "artist": "Banjaare",
     "vote_average": 9.9,
@@ -6020,7 +6129,7 @@
     "popularity": 96.14
   },
   {
-    "id": 172,
+    "id": 175,
     "title": "LISA TARANTINO",
     "artist": "DJ Trending",
     "vote_average": 9.3,
@@ -6055,7 +6164,7 @@
     "popularity": 95.92
   },
   {
-    "id": 173,
+    "id": 176,
     "title": "Rosé - New Trick (Break the Lock) [Remix]",
     "artist": "Xaym",
     "vote_average": 9.4,
@@ -6090,7 +6199,7 @@
     "popularity": 95.7
   },
   {
-    "id": 174,
+    "id": 177,
     "title": "Have Yourself a Merry Little Christmas",
     "artist": "Laufey & Peanuts",
     "vote_average": 9.5,
@@ -6125,7 +6234,7 @@
     "popularity": 95.48
   },
   {
-    "id": 175,
+    "id": 178,
     "title": "One Name (From \"Jailer 2\")",
     "artist": "Anirudh Ravichander & Heisenberg",
     "vote_average": 9.6,
@@ -6160,7 +6269,7 @@
     "popularity": 95.26
   },
   {
-    "id": 176,
+    "id": 179,
     "title": "In da Club",
     "artist": "50 Cent",
     "vote_average": 9.4,
@@ -6195,7 +6304,7 @@
     "popularity": 89.53999999999999
   },
   {
-    "id": 177,
+    "id": 180,
     "title": "Lose Yourself",
     "artist": "Eminem",
     "vote_average": 9.5,
@@ -6230,7 +6339,7 @@
     "popularity": 89.32
   },
   {
-    "id": 178,
+    "id": 181,
     "title": "Stan (feat. Dido)",
     "artist": "Eminem",
     "vote_average": 9.6,
@@ -6265,7 +6374,7 @@
     "popularity": 87.56
   },
   {
-    "id": 179,
+    "id": 182,
     "title": "Ek Onkar",
     "artist": "Asees Kaur",
     "vote_average": 9.9,
@@ -6300,7 +6409,7 @@
     "popularity": 86.9
   },
   {
-    "id": 180,
+    "id": 183,
     "title": "Andaaz e Karam",
     "artist": "Madhur Sharma, Moin & ER",
     "vote_average": 9.3,
@@ -6335,7 +6444,7 @@
     "popularity": 86.68
   },
   {
-    "id": 181,
+    "id": 184,
     "title": "Alfaaz (Alan Walker Relight)",
     "artist": "Alan Walker, Hamza Malik, Zain Zohaib & James Arthur",
     "vote_average": 9.5,
@@ -6370,7 +6479,7 @@
     "popularity": 86.24
   },
   {
-    "id": 182,
+    "id": 185,
     "title": "P.I.M.P.",
     "artist": "50 Cent",
     "vote_average": 9.8,
@@ -6405,7 +6514,7 @@
     "popularity": 85.58
   },
   {
-    "id": 183,
+    "id": 186,
     "title": "Pallikkattu Sabarimalaku",
     "artist": "Veeramani Raju",
     "vote_average": 9.9,
@@ -6440,7 +6549,7 @@
     "popularity": 85.36
   },
   {
-    "id": 184,
+    "id": 187,
     "title": "Ik Onkar (Mool Mantra)",
     "artist": "Harshdeep Kaur",
     "vote_average": 9.5,
@@ -6475,7 +6584,7 @@
     "popularity": 84.7
   },
   {
-    "id": 185,
+    "id": 188,
     "title": "Kharch Karod (Slow Version)",
     "artist": "Vikas Kumar",
     "vote_average": 9.9,
@@ -6510,7 +6619,7 @@
     "popularity": 83.82
   },
   {
-    "id": 186,
+    "id": 189,
     "title": "Namami Shamishan",
     "artist": "Religious India",
     "vote_average": 9.3,
@@ -6545,7 +6654,7 @@
     "popularity": 83.6
   },
   {
-    "id": 187,
+    "id": 190,
     "title": "As Long as You Love Me",
     "artist": "Backstreet Boys",
     "vote_average": 9.4,
@@ -6580,7 +6689,7 @@
     "popularity": 83.38
   },
   {
-    "id": 188,
+    "id": 191,
     "title": "Monster",
     "artist": "Skillet",
     "vote_average": 9.5,
@@ -6615,7 +6724,7 @@
     "popularity": 83.16
   },
   {
-    "id": 189,
+    "id": 192,
     "title": "Love the Way You Lie (feat. Rihanna)",
     "artist": "Eminem",
     "vote_average": 9.7,
@@ -6650,7 +6759,7 @@
     "popularity": 82.72
   },
   {
-    "id": 190,
+    "id": 193,
     "title": "Venom (Music from the Motion Picture)",
     "artist": "Eminem",
     "vote_average": 9.8,
@@ -6685,7 +6794,7 @@
     "popularity": 82.5
   },
   {
-    "id": 191,
+    "id": 194,
     "title": "Your Phone Linging",
     "artist": "Jahin Music",
     "vote_average": 9.4,
@@ -6720,7 +6829,7 @@
     "popularity": 82.0
   },
   {
-    "id": 192,
+    "id": 195,
     "title": "Papa Kahte Hain",
     "artist": "Udit Narayan",
     "vote_average": 9.5,
@@ -6755,7 +6864,7 @@
     "popularity": 82.0
   },
   {
-    "id": 193,
+    "id": 196,
     "title": "Papa Meri Jaan",
     "artist": "Sonu Nigam, Harshavardhan Rameshwar & Raj Shekhar",
     "vote_average": 9.8,
@@ -6790,7 +6899,7 @@
     "popularity": 82.0
   },
   {
-    "id": 194,
+    "id": 197,
     "title": "Boothanaadha",
     "artist": "Ranjin Raj",
     "vote_average": 9.9,
@@ -6825,7 +6934,7 @@
     "popularity": 82.0
   },
   {
-    "id": 195,
+    "id": 198,
     "title": "Starboy (feat. Daft Punk)",
     "artist": "The Weeknd",
     "vote_average": 9.3,
@@ -6860,7 +6969,7 @@
     "popularity": 82.0
   },
   {
-    "id": 196,
+    "id": 199,
     "title": "Shree Hanuman Chalisa",
     "artist": "Hariharan",
     "vote_average": 9.4,
@@ -6895,7 +7004,7 @@
     "popularity": 82.0
   },
   {
-    "id": 197,
+    "id": 200,
     "title": "London Boy",
     "artist": "Taylor Swift",
     "vote_average": 9.5,
@@ -6930,7 +7039,7 @@
     "popularity": 82.0
   },
   {
-    "id": 198,
+    "id": 201,
     "title": "Stand By Me (Live at The Print Shop)",
     "artist": "Stephen Wilson Jr.",
     "vote_average": 9.4,
@@ -6965,7 +7074,7 @@
     "popularity": 82.0
   },
   {
-    "id": 199,
+    "id": 202,
     "title": "Gary",
     "artist": "Stephen Wilson Jr.",
     "vote_average": 9.5,
@@ -7000,7 +7109,7 @@
     "popularity": 82.0
   },
   {
-    "id": 200,
+    "id": 203,
     "title": "Last Thing You Need",
     "artist": "Morgan Wallen",
     "vote_average": 9.6,
@@ -7035,7 +7144,7 @@
     "popularity": 82.0
   },
   {
-    "id": 201,
+    "id": 204,
     "title": "Still D.R.E. (feat. Snoop Dogg)",
     "artist": "Dr. Dre",
     "vote_average": 9.3,
@@ -7070,7 +7179,7 @@
     "popularity": 82.06
   },
   {
-    "id": 202,
+    "id": 205,
     "title": "Kurchi Madathapetti (From \"Guntur Kaaram\")",
     "artist": "S.S. Thaman, Sri Krishna, Sahithi Chaganti & Saraswati Putra Ramajogayya Sastry",
     "vote_average": 9.4,
@@ -7105,7 +7214,7 @@
     "popularity": 82.0
   },
   {
-    "id": 203,
+    "id": 206,
     "title": "Ordinary Person (From \"Leo\")",
     "artist": "Anirudh Ravichander & Nikhita Gandhi",
     "vote_average": 9.8,
@@ -7140,7 +7249,7 @@
     "popularity": 82.0
   },
   {
-    "id": 204,
+    "id": 207,
     "title": "Sing for the Moment",
     "artist": "Eminem",
     "vote_average": 9.9,
@@ -7175,7 +7284,7 @@
     "popularity": 82.0
   },
   {
-    "id": 205,
+    "id": 208,
     "title": "Give Me Everything (feat. Ne-Yo, Afrojack & Nayer)",
     "artist": "Pitbull",
     "vote_average": 9.4,
@@ -7210,7 +7319,7 @@
     "popularity": 82.0
   },
   {
-    "id": 206,
+    "id": 209,
     "title": "Boom Boom",
     "artist": "Sai Abhyankkar, bebhumika, Deepthi Suresh & Sanapati Bharadwaj Patrudu",
     "vote_average": 9.5,
@@ -7245,7 +7354,7 @@
     "popularity": 82.0
   },
   {
-    "id": 207,
+    "id": 210,
     "title": "Quit Playing Games (With My Heart)",
     "artist": "Backstreet Boys",
     "vote_average": 9.6,
@@ -7280,7 +7389,7 @@
     "popularity": 82.0
   },
   {
-    "id": 208,
+    "id": 211,
     "title": "Mockingbird",
     "artist": "Eminem",
     "vote_average": 9.7,
@@ -7315,7 +7424,7 @@
     "popularity": 82.0
   },
   {
-    "id": 209,
+    "id": 212,
     "title": "Neelothi",
     "artist": "Sooraj Santhosh, Chinmayi Sripada, Justin Prabhakaran & Sarathi",
     "vote_average": 9.6,
@@ -7350,7 +7459,7 @@
     "popularity": 95.26
   },
   {
-    "id": 210,
+    "id": 213,
     "title": "Vennilavu Saaral",
     "artist": "Kapil Kapilan, Rakshita Suresh & Yugabharathi",
     "vote_average": 9.3,
@@ -7385,7 +7494,7 @@
     "popularity": 94.38
   },
   {
-    "id": 211,
+    "id": 214,
     "title": "Om So Hum - I am the Universe",
     "artist": "Meditative Mind",
     "vote_average": 9.5,
@@ -7420,7 +7529,7 @@
     "popularity": 92.4
   },
   {
-    "id": 212,
+    "id": 215,
     "title": "Immigrant Song",
     "artist": "Led Zeppelin",
     "vote_average": 9.6,
@@ -7453,110 +7562,5 @@
       }
     ],
     "popularity": 82.0
-  },
-  {
-    "id": 213,
-    "title": "Ishq De Fanniyar - Female",
-    "artist": "Jyotica Tangri",
-    "vote_average": 9.3,
-    "vote_count": 53210,
-    "backdrop_path": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/27/26/79/27267993-521b-0ea9-5b7f-2a62c748e575/840780180598.png/600x600bb.jpg",
-    "poster_path": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/27/26/79/27267993-521b-0ea9-5b7f-2a62c748e575/840780180598.png/600x600bb.jpg",
-    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/27/26/79/27267993-521b-0ea9-5b7f-2a62c748e575/840780180598.png/600x600bb.jpg",
-    "tagline": "🔥 Daily Verified Release (2017)",
-    "overview": "Official multi-platform stream for 'Ishq De Fanniyar - Female' by Jyotica Tangri. Verified available on Spotify, Apple Music, and YouTube.",
-    "genres": "Hindi, Trending, Bollywood",
-    "language": "Hindi",
-    "release_year": 2017,
-    "era": "New & Trending (2025-2026)",
-    "trending": true,
-    "youtube_id": "7OGSeZP0sc8",
-    "spotify_id": "sp_91",
-    "apple_music_id": "am_91",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Ishq De Fanniyar - Female",
-        "duration": "3:25",
-        "videoId": "7OGSeZP0sc8"
-      },
-      {
-        "number": 2,
-        "title": "Ishq De Fanniyar - Female (Official)",
-        "duration": "3:40",
-        "videoId": "7OGSeZP0sc8"
-      }
-    ],
-    "popularity": 82.0
-  },
-  {
-    "id": 214,
-    "title": "Naakka Mukka",
-    "artist": "Vijay Antony",
-    "vote_average": 9.6,
-    "vote_count": 54140,
-    "backdrop_path": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/be/23/98/be2398b8-bd05-f59f-0753-916baa3a1232/dj.yenbxgme.jpg/600x600bb.jpg",
-    "poster_path": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/be/23/98/be2398b8-bd05-f59f-0753-916baa3a1232/dj.yenbxgme.jpg/600x600bb.jpg",
-    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/be/23/98/be2398b8-bd05-f59f-0753-916baa3a1232/dj.yenbxgme.jpg/600x600bb.jpg",
-    "tagline": "🔥 Daily Verified Release (2008)",
-    "overview": "Official multi-platform stream for 'Naakka Mukka' by Vijay Antony. Verified available on Spotify, Apple Music, and YouTube.",
-    "genres": "Tamil, Trending",
-    "language": "Tamil",
-    "release_year": 2008,
-    "era": "New & Trending (2025-2026)",
-    "trending": true,
-    "youtube_id": "zMs-VMzDCtE",
-    "spotify_id": "sp_94",
-    "apple_music_id": "am_94",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "Naakka Mukka",
-        "duration": "3:25",
-        "videoId": "zMs-VMzDCtE"
-      },
-      {
-        "number": 2,
-        "title": "Naakka Mukka (Official)",
-        "duration": "3:40",
-        "videoId": "zMs-VMzDCtE"
-      }
-    ],
-    "popularity": 82.0
-  },
-  {
-    "id": 215,
-    "title": "One Sun One Moon",
-    "artist": "Anirudh Ravichander, Super Subu, M.S Krsna & HEISENBERG",
-    "vote_average": 9.4,
-    "vote_count": 40500,
-    "backdrop_path": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/47/61/88/476188e2-5cd5-2320-8f0b-f9cd978560fd/885288695823.jpg/600x600bb.jpg",
-    "poster_path": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/47/61/88/476188e2-5cd5-2320-8f0b-f9cd978560fd/885288695823.jpg/600x600bb.jpg",
-    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/47/61/88/476188e2-5cd5-2320-8f0b-f9cd978560fd/885288695823.jpg/600x600bb.jpg",
-    "tagline": "🔥 Daily Verified Release (2026)",
-    "overview": "Official multi-platform stream for 'One Sun One Moon' by Anirudh Ravichander, Super Subu, M.S Krsna & HEISENBERG. Verified available on Spotify, Apple Music, and YouTube.",
-    "genres": "Tamil, Trending",
-    "language": "Tamil",
-    "release_year": 2026,
-    "era": "New & Trending (2025-2026)",
-    "trending": true,
-    "youtube_id": "Tn8-UEQnazA",
-    "spotify_id": "sp_50",
-    "apple_music_id": "am_50",
-    "tracks": [
-      {
-        "number": 1,
-        "title": "One Sun One Moon",
-        "duration": "3:25",
-        "videoId": "Tn8-UEQnazA"
-      },
-      {
-        "number": 2,
-        "title": "One Sun One Moon (Official)",
-        "duration": "3:40",
-        "videoId": "Tn8-UEQnazA"
-      }
-    ],
-    "popularity": 88.0
   }
 ]

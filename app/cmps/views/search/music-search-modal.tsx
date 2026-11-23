@@ -72,7 +72,7 @@ export const MusicSearchModal = () => {
     } else {
       const rawBase = import.meta.env.BASE_URL || '/'
       const normalizedBase = rawBase.endsWith('/') ? rawBase.slice(0, -1) : rawBase
-      fetch(`${normalizedBase}/json/0.json`)
+      fetch(`${normalizedBase}/json/0.json?v=${Date.now().toString(36)}`, { cache: 'no-cache' })
         .then((res) => res.json())
         .then((data) => {
           if (Array.isArray(data)) {

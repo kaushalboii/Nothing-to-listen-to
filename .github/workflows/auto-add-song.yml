@@ -102,13 +102,20 @@ jobs:
       - name: Commit and push changes if verified
         if: steps.ingest.outcome == 'success'
         run: |
+          SONG_TITLE="${{ steps.ingest.outputs.resolved_title }}"
+          if [ -z "$SONG_TITLE" ]; then
+            SONG_TITLE="${{ steps.parse.outputs.title }}"
+          fi
+          if [ -z "$SONG_TITLE" ]; then
+            SONG_TITLE="Community Requested Song"
+          fi
           git config --global user.name "kaushalboii"
           git config --global user.email "124547139+kaushalboii@users.noreply.github.com"
           git add public/json/ public/media/
           if git diff --staged --quiet; then
             echo "Working tree is clean."
           else
-            git commit -m "feat(music): auto-add requested song '${{ steps.parse.outputs.title }}' (Issue #${{ github.event.issue.number }})"
+            git commit -m "feat(music): auto-add requested song '${SONG_TITLE}' (Issue #${{ github.event.issue.number }})"
             git pull --rebase origin main || true
             for i in 1 2 3; do
               git push origin main && break || (git pull --rebase origin main && sleep 3)
@@ -140,14 +147,32 @@ jobs:
           publish_dir: ./dist
           force_orphan: true
 
+      - name: Upload artifact for GitHub Actions Pages
+        if: steps.ingest.outcome == 'success'
+        continue-on-error: true
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+      - name: Deploy to GitHub Actions Pages
+        if: steps.ingest.outcome == 'success'
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+
       - name: Comment and Close Issue on Success
         if: steps.ingest.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          SONG_TITLE="${{ steps.ingest.outputs.resolved_title }}"
+          if [ -z "$SONG_TITLE" ]; then SONG_TITLE="${{ steps.parse.outputs.title }}"; fi
+          if [ -z "$SONG_TITLE" ]; then SONG_TITLE="Requested Track"; fi
+          ARTIST_NAME="${{ steps.ingest.outputs.resolved_artist }}"
+          if [ -z "$ARTIST_NAME" ]; then ARTIST_NAME="${{ steps.parse.outputs.artist }}"; fi
+          if [ -z "$ARTIST_NAME" ]; then ARTIST_NAME="Featured Artist"; fi
           gh issue comment ${{ github.event.issue.number }} --body "🎉 **Song Successfully Added & Live!**
 
-          **${{ steps.parse.outputs.title }}** by **${{ steps.parse.outputs.artist }}** has been automatically verified on Spotify & Apple Music, added to the 3D Voronoi galaxy, and deployed live!
+          **${SONG_TITLE}** by **${ARTIST_NAME}** has been automatically verified on Spotify & Apple Music, added to the 3D Voronoi galaxy, and deployed live!
 
           🎧 **Listen now**: [kaushalboii.github.io/Nothing-to-listen-to](https://kaushalboii.github.io/Nothing-to-listen-to/)"
           gh issue close ${{ github.event.issue.number }} --reason "completed"

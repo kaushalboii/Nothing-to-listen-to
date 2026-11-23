@@ -6,6 +6,7 @@ import { Input } from '../../ui/input'
 import { Label } from '../../ui/label'
 
 const LANGUAGES = [
+  'Auto-Detect',
   'Tamil',
   'Telugu',
   'Hindi',
@@ -27,7 +28,7 @@ export const ReportSongModal = () => {
 
   const [title, setTitle] = useState('')
   const [artist, setArtist] = useState('')
-  const [language, setLanguage] = useState('Tamil')
+  const [language, setLanguage] = useState('Auto-Detect')
   const [link, setLink] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [copied, setCopied] = useState(false)

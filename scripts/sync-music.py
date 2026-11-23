@@ -40,6 +40,7 @@ except ImportError:
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_DIR = os.path.dirname(SCRIPT_DIR)
 JSON_OUTPUT = os.path.join(PROJECT_DIR, "public", "json", "0.json")
+REQUESTED_JSON = os.path.join(PROJECT_DIR, "public", "json", "requested-songs.json")
 STATUS_OUTPUT = os.path.join(PROJECT_DIR, "public", "json", "sync-status.json")
 SINGLE_DIR = os.path.join(PROJECT_DIR, "public", "media", "single")
 TMP_DIR = "/tmp/music_sync_tmp"
@@ -573,9 +574,19 @@ def main():
     log("🎵 Broad YouTube Music Ingestion & Streaming Platform Validation Pipeline 🎵")
     log("=========================================================================")
 
-    # 1. Load existing records and cache
+    # 1. Load existing records, persistent user requests, and cache
     existing_records = []
+    requested_records = []
     yt_cache = {}
+
+    if os.path.exists(REQUESTED_JSON):
+        try:
+            with open(REQUESTED_JSON, "r", encoding="utf-8") as f:
+                requested_records = json.load(f)
+            log(f"Loaded {len(requested_records)} persistent user-requested songs.")
+        except Exception as e:
+            log(f"Notice reading {REQUESTED_JSON}: {e}")
+
     if os.path.exists(JSON_OUTPUT):
         try:
             with open(JSON_OUTPUT, "r", encoding="utf-8") as f:
@@ -584,9 +595,21 @@ def main():
                     k = f"{r.get('artist', '')} - {r.get('title', '')}".lower()
                     if r.get("youtube_id"):
                         yt_cache[k] = r["youtube_id"]
+                    # If this record was user-requested and not yet in requested_records, preserve it
+                    if (r.get("tagline", "").find("User Requested") != -1 or str(r.get("spotify_id", "")).startswith("sp_req_")):
+                        if not any(req.get("youtube_id") == r.get("youtube_id") or (req.get("title", "").lower() == r.get("title", "").lower() and req.get("artist", "").lower() == r.get("artist", "").lower()) for req in requested_records):
+                            requested_records.append(dict(r))
             log(f"Loaded {len(existing_records)} existing records with {len(yt_cache)} cached YouTube IDs.")
         except Exception as e:
             log(f"Notice reading existing {JSON_OUTPUT}: {e}")
+
+    # Persist any newly discovered requested songs
+    if requested_records:
+        try:
+            with open(REQUESTED_JSON, "w", encoding="utf-8") as f:
+                json.dump(requested_records, f, indent=2, ensure_ascii=False)
+        except Exception as e:
+            log(f"Notice updating {REQUESTED_JSON}: {e}")
 
     # 2. Ingest Guaranteed Priority Hits (FA FA FA from OM, Fire Song, etc.)
     priority_verified_songs = []
@@ -683,7 +706,27 @@ def main():
     final_records = []
     master_seen = set()
 
+    # Step 7a: Prioritize Persistent User-Requested Songs at Top
+    log(f"Ingesting {len(requested_records)} persistent user-requested songs to top slots...")
+    for req in requested_records:
+        if len(final_records) >= 216:
+            break
+        key = f"{req.get('artist', '')} - {req.get('title', '')}".lower()
+        title_key = req.get("title", "").lower()
+        if key in master_seen or title_key in master_seen:
+            continue
+        master_seen.add(key)
+        master_seen.add(title_key)
+        idx = len(final_records)
+        r_copy = dict(req)
+        r_copy["id"] = idx
+        final_records.append(r_copy)
+        log(f"  + Pinned User Request #{idx}: '{r_copy.get('title')}' by {r_copy.get('artist')}")
+
+    # Step 7b: Add Daily Chart Releases
     for item in resolved_candidates:
+        if len(final_records) >= 216:
+            break
         title = item["title"]
         artist = item["artist"]
         key = f"{artist} - {title}".lower()
@@ -760,6 +803,7 @@ def main():
     status_data = {
         "last_synced_utc": datetime.now(timezone.utc).isoformat(),
         "total_songs": len(final_records),
+        "requested_songs_preserved": len(requested_records),
         "verified_new_releases": len(resolved_candidates),
         "top_release": final_records[0]["title"] if final_records else "",
         "top_artist": final_records[0]["artist"] if final_records else "",

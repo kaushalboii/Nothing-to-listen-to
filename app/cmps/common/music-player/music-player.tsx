@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import {
   ChevronDown,
   ChevronUp,
@@ -45,13 +45,6 @@ export const MusicPlayer = () => {
     : FALLBACK_VIDEO_ID
 
   const iframeRef = useRef<HTMLIFrameElement>(null)
-
-  // Silent automatic fallback: plays 100% ad-free stream directly, falls back silently if ever needed
-  const [useFallback, setUseFallback] = useState(false)
-
-  useEffect(() => {
-    setUseFallback(false)
-  }, [videoId])
 
   // Dual-layer YouTube listener: postMessage + official window.YT API for 100% reliable track completion
   useEffect(() => {
@@ -158,14 +151,8 @@ export const MusicPlayer = () => {
     } catch (_) {}
   }
 
-  // Direct 100% Ad-Free stream (zero ads, zero tracking, zero pre-rolls)
-  const originParam =
-    typeof window !== 'undefined' && window.location.origin
-      ? `&origin=${encodeURIComponent(window.location.origin)}&widget_referrer=${encodeURIComponent(window.location.href)}`
-      : ''
-  const embedUrl = useFallback
-    ? `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1&modestbranding=1&iv_load_policy=3${originParam}`
-    : `https://yewtu.be/embed/${videoId}?autoplay=1&playsinline=1`
+  // Official Native YouTube Player (Zero 3rd-party proxies, zero verification/bot screens)
+  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1&modestbranding=1&iv_load_policy=3`
 
   if (!playerOpen || !activeTrack) return null
 
@@ -283,10 +270,9 @@ export const MusicPlayer = () => {
         })}
       >
         <iframe
-          key={`${videoId}-${playlistIndex}-${useFallback}`}
+          key={`${videoId}-${playlistIndex}`}
           ref={iframeRef}
           src={embedUrl}
-          onError={() => setUseFallback(true)}
           onLoad={handleIframeLoad}
           title={`${activeTrack.artist} - ${activeTrack.title}`}
           allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'

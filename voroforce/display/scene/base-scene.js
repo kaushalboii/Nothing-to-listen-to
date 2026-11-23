@@ -318,7 +318,7 @@ export default class BaseScene {
 
     this.compressedMediaGridTextures = this.getCompressedMediaVersions().map(
       (mediaVersion) => {
-        if (!mediaVersion || !compressedSupported) return new Texture(this.gl, {})
+        if (!mediaVersion) return new Texture(this.gl, {})
         const { width, height, layers } = mediaVersion
         return new CompressedMediaGridArrayTexture(this.gl, {
           width,
@@ -394,19 +394,13 @@ export default class BaseScene {
     return {
       bMediaEnabled: { value: this.globalConfig.media?.enabled ?? false },
       uMediaV0Texture: {
-        value: !compressedSupported
-          ? fallbackTexture
-          : this.compressedMediaGridTextures[0],
+        value: this.compressedMediaGridTextures[0] ?? fallbackTexture,
       },
       uMediaV1Texture: {
-        value: !compressedSupported
-          ? fallbackTexture
-          : this.compressedMediaGridTextures[1],
+        value: this.compressedMediaGridTextures[1] ?? this.compressedMediaGridTextures[0] ?? fallbackTexture,
       },
       uMediaV2Texture: {
-        value: !compressedSupported
-          ? fallbackTexture
-          : this.compressedMediaGridTextures[2],
+        value: this.compressedMediaGridTextures[2] ?? this.compressedMediaGridTextures[0] ?? fallbackTexture,
       },
       uMediaV3Texture: {
         value: fallbackTexture,

@@ -152,8 +152,7 @@ export const MusicPlayer = () => {
   }
 
   // Official Native YouTube Player (Zero 3rd-party proxies, strictly matched to activeTrack)
-  const originParam = typeof window !== 'undefined' && window.location.origin ? `&origin=${encodeURIComponent(window.location.origin)}` : ''
-  const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1&modestbranding=1&iv_load_policy=3${originParam}`
+  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&controls=1&modestbranding=1&iv_load_policy=3`
 
   if (!playerOpen || !activeTrack) return null
 
@@ -173,8 +172,8 @@ export const MusicPlayer = () => {
       className={cn(
         'pointer-events-auto fixed z-70 transition-all duration-300 ease-out shadow-2xl overflow-hidden',
         isMinimized
-          ? 'bottom-4 left-4 right-4 md:left-auto md:right-8 md:w-[480px] rounded-2xl bg-background/95 border border-border backdrop-blur-xl p-3.5'
-          : 'bottom-4 left-4 right-4 md:left-auto md:right-8 md:w-[480px] rounded-2xl bg-background/95 border border-border backdrop-blur-xl p-4',
+          ? 'bottom-2 sm:bottom-4 left-2 right-2 sm:left-4 sm:right-4 md:left-auto md:right-8 md:w-[480px] rounded-2xl bg-background/95 border border-border backdrop-blur-xl p-3'
+          : 'bottom-2 sm:bottom-4 left-2 right-2 sm:left-4 sm:right-4 md:left-auto md:right-8 md:w-[480px] rounded-2xl bg-background/95 border border-border backdrop-blur-xl p-3 sm:p-4',
       )}
     >
       {/* Player Header / Controls Bar */}
@@ -266,7 +265,7 @@ export const MusicPlayer = () => {
       {/* Official YouTube Embed Player */}
       <div
         className={cn('relative mt-3 overflow-hidden rounded-xl bg-black transition-all duration-300', {
-          'h-56 md:h-64 opacity-100': !isMinimized,
+          'h-48 sm:h-56 md:h-64 opacity-100': !isMinimized,
           'h-0 opacity-0 pointer-events-none mt-0': isMinimized,
         })}
       >
@@ -276,7 +275,7 @@ export const MusicPlayer = () => {
           src={embedUrl}
           onLoad={handleIframeLoad}
           title={`${activeTrack.artist} - ${activeTrack.title}`}
-          allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+          allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
           allowFullScreen
           className='absolute inset-0 h-full w-full border-0'
         />

@@ -91,11 +91,13 @@ export const getCellFilm = async (
   filmBatches: FilmBatches,
 ) => {
   if (!cell) return
-  const subgrid = cell.subgrid ?? 0
-  const subgridIndex =
+  // In Nothing to Listen to, all 216 curated songs are stored in batch 0
+  const subgrid = 0
+  const rawIndex =
     cell.subgridIndex ??
     (typeof cell.id === 'number' ? cell.id : cell.index) ??
     0
+  const subgridIndex = Math.abs(rawIndex) % 216
 
   let filmBatch = filmBatches.get(subgrid)
   if (!filmBatch || filmBatch.length === 0) {

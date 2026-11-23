@@ -1,6 +1,6 @@
-import { HeartOff, HeartPlus, Plus } from 'lucide-react'
+import { HeartOff, HeartPlus, Play, Plus } from 'lucide-react'
 import type { DialogProps } from 'vaul'
-import { useShallowState } from '../../../../../store'
+import { store, useShallowState } from '../../../../../store'
 import { cn } from '../../../../../utils/tw'
 import type { Film, VoroforceCell } from '../../../../../vf'
 import { CustomLinks } from '../../../../common/custom-links'
@@ -105,6 +105,23 @@ export const FilmViewFooter = ({
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
+
+        <Button
+          size='sm'
+          onClick={() => {
+            const firstTrack = film.tracks?.[0]?.title ?? film.title
+            store.getState().playTrack({
+              title: firstTrack,
+              artist: film.artist,
+              albumTitle: film.title,
+              videoId: film.youtubeId,
+              query: `${film.artist} ${firstTrack}`,
+            })
+          }}
+          className='pointer-events-auto rounded-lg bg-red-600 hover:bg-red-700 text-white px-3.5 h-8 text-xs font-bold flex items-center gap-1.5 shadow-md cursor-pointer'
+        >
+          <Play className='size-3.5 fill-white' /> Play
+        </Button>
 
         <Button
           variant='outline'

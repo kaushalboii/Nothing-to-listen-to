@@ -853,6 +853,20 @@ def main():
             f.write(dds_data)
         log(f"Wrote {dds_path} ({len(dds_data):,} bytes)")
 
+    # Also save mobile JPEG atlas for devices without DDS (iOS/Android WebGL)
+    if HAS_PIL:
+        try:
+            from PIL import Image
+            img = Image.frombytes("RGB", (ATLAS_W, ATLAS_H), bytes(atlas_pixels))
+            for d in ["high", "mid", "low"]:
+                jpg_dir = os.path.join(PROJECT_DIR, "public", "media", d, "jpg")
+                os.makedirs(jpg_dir, exist_ok=True)
+                jpg_path = os.path.join(jpg_dir, "0.jpg")
+                img.save(jpg_path, "JPEG", quality=85)
+                log(f"Wrote mobile JPEG atlas: {jpg_path}")
+        except Exception as e:
+            log(f"Notice saving mobile JPEG atlas: {e}")
+
     log("=========================================================================")
     log("✅ Broad YouTube Ingestion & Streaming Platform Validation Succeeded!")
     log("=========================================================================")

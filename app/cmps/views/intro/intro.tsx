@@ -3,11 +3,11 @@ import { store, useShallowState } from '../../../store'
 import { isDefined } from '../../../utils/misc'
 import { cn } from '../../../utils/tw'
 import { VOROFORCE_MODE } from '../../../vf'
-import { OBSCURE_VISUAL_DEFECTS } from '../../../vf/consts'
+import { CELL_LIMIT, DEVICE_CLASS, OBSCURE_VISUAL_DEFECTS, VOROFORCE_PRESET } from '../../../vf/consts'
+import { Button } from '../../ui/button'
 import { CoreSettingsWidget } from '../../common/core-settings/core-settings-widget'
 import { DeviceClassWidget } from '../../common/device-class/device-class-widget'
 import { FadeTransition } from '../../common/fade-transition'
-import { SmallScreenWarning } from '../../common/small-screen-warning'
 
 export const Intro = () => {
   const { preset, hasDeviceClass } = useShallowState((state) => ({
@@ -16,6 +16,21 @@ export const Intro = () => {
   }))
 
   const [initialPreset] = useState(preset)
+
+  useEffect(() => {
+    if (isMobileDevice) {
+      const state = store.getState()
+      if (!isDefined(state.deviceClass)) {
+        state.setDeviceClass(DEVICE_CLASS.mobile)
+      }
+      if (!state.preset) {
+        state.setPreset(VOROFORCE_PRESET.mobile)
+      }
+      if (!state.cellLimit) {
+        state.setCellLimit(CELL_LIMIT.min)
+      }
+    }
+  }, [])
 
   const visible = useIntroVisible()
 
@@ -70,6 +85,25 @@ export const Intro = () => {
             },
           )}
         >
+          {/* Mobile Instant Start Action */}
+          <div className='md:hidden flex flex-col items-center gap-2.5 w-full max-w-xs mx-auto pb-6 animate-in fade-in duration-500'>
+            <Button
+              size='lg'
+              onClick={() => {
+                store.getState().setDeviceClass(DEVICE_CLASS.mobile)
+                store.getState().setPreset(VOROFORCE_PRESET.mobile)
+                store.getState().setCellLimit(CELL_LIMIT.min)
+                store.getState().setPlayedIntro(true)
+              }}
+              className='w-full h-12 rounded-xl text-sm font-bold bg-primary text-primary-foreground shadow-lg shadow-primary/20 cursor-pointer active:scale-95 transition-transform'
+            >
+              Start Listening
+            </Button>
+            <span className='text-[11px] text-muted-foreground text-center font-medium'>
+              Tap any vinyl album to stream music
+            </span>
+          </div>
+
           <FadeTransition
             visible={!hasDeviceClass}
             className='absolute inset-x-0 bottom-12 w-full duration-1000 max-md:hidden max-lg:landscape:bottom-6'
@@ -82,14 +116,12 @@ export const Intro = () => {
           </FadeTransition>
           <FadeTransition
             visible={hasDeviceClass && !preset}
-            className='absolute inset-x-0 bottom-12 w-full duration-1000 max-lg:landscape:bottom-6'
+            className='absolute inset-x-0 bottom-12 w-full duration-1000 max-md:hidden max-lg:landscape:bottom-6'
             transitionOptions={{
               timeout: 500,
             }}
           >
-            <SmallScreenWarning />
             <CoreSettingsWidget
-              hideSelectorsOnMobile
               submitLabel='Continue'
               submitVisibility='always'
             />

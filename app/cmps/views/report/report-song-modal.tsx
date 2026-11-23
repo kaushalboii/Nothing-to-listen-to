@@ -5,20 +5,6 @@ import { Button } from '../../ui/button'
 import { Input } from '../../ui/input'
 import { Label } from '../../ui/label'
 
-const LANGUAGES = [
-  'Auto-Detect',
-  'Tamil',
-  'Telugu',
-  'Hindi',
-  'Malayalam',
-  'Punjabi',
-  'English',
-  'K-Pop',
-  'Latin',
-  'Japanese',
-  'Other',
-]
-
 export const ReportSongModal = () => {
   const { reportOpen, setReportOpen, reportInitialQuery } = useShallowState((state) => ({
     reportOpen: state.reportOpen,
@@ -26,10 +12,7 @@ export const ReportSongModal = () => {
     reportInitialQuery: state.reportInitialQuery,
   }))
 
-  const [title, setTitle] = useState('')
-  const [artist, setArtist] = useState('')
-  const [language, setLanguage] = useState('Auto-Detect')
-  const [link, setLink] = useState('')
+  const [query, setQuery] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [copied, setCopied] = useState(false)
 
@@ -37,7 +20,7 @@ export const ReportSongModal = () => {
   useEffect(() => {
     if (reportOpen) {
       if (reportInitialQuery) {
-        setTitle(reportInitialQuery)
+        setQuery(reportInitialQuery)
       }
       setSubmitted(false)
       setCopied(false)
@@ -48,16 +31,15 @@ export const ReportSongModal = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const isUrlInTitle = title.includes('youtube.com') || title.includes('youtu.be')
-    const effectiveLink = isUrlInTitle ? title.trim() : link.trim()
-    const effectiveTitle = isUrlInTitle
-      ? 'Auto-Extract from YouTube Link'
-      : (title.trim() || (effectiveLink ? 'Auto-Extract from YouTube Link' : ''))
+    const trimmed = query.trim()
+    if (!trimmed) return
 
-    if (!effectiveTitle && !effectiveLink) return
+    const isUrl = trimmed.includes('youtube.com') || trimmed.includes('youtu.be')
+    const effectiveLink = isUrl ? trimmed : ''
+    const effectiveTitle = isUrl ? 'Auto-Extract from YouTube Link' : trimmed
 
     const issueTitle = `[Song Request]: ${effectiveTitle}`
-    const issueBody = `### Song Title\n\n${effectiveTitle}\n\n### Artist, Singer, Composer, or Movie\n\n${artist.trim() || '_No response_'}\n\n### Primary Language / Genre\n\n${language}\n\n### YouTube, Spotify, or Apple Music Link\n\n${effectiveLink || '_No response_'}\n\n---\n*Submitted via Nothing to Listen To Web App*`
+    const issueBody = `### Song Title\n\n${effectiveTitle}\n\n### Artist, Singer, Composer, or Movie\n\n_No response_\n\n### Primary Language / Genre\n\nAuto-Detect\n\n### YouTube, Spotify, or Apple Music Link\n\n${effectiveLink || '_No response_'}\n\n---\n*Submitted via Nothing to Listen To Web App*`
 
     const issueUrl = `https://github.com/kaushalboii/Nothing-to-listen-to/issues/new?title=${encodeURIComponent(
       issueTitle
@@ -68,7 +50,7 @@ export const ReportSongModal = () => {
   }
 
   const handleCopyDetails = () => {
-    const text = `Song Request:\nTitle: ${title}\nArtist/Movie: ${artist}\nLanguage: ${language}\nLink: ${link}`
+    const text = `Song Request:\nSong / YouTube Link: ${query}`
     navigator.clipboard.writeText(text).then(() => {
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
@@ -100,7 +82,7 @@ export const ReportSongModal = () => {
           </div>
           <div>
             <h2 className='text-base sm:text-lg font-bold tracking-tight'>
-              Request / Report Missing Song
+              Request / Add Song
             </h2>
             <p className='text-xs text-muted-foreground'>
               Automated ingestion pipeline verifies &amp; adds tracks live
@@ -113,10 +95,9 @@ export const ReportSongModal = () => {
           <Sparkles className='size-4 shrink-0 text-primary mt-0.5' />
           <div>
             <span className='font-semibold text-foreground'>
-              Automated Verification Engine:
+              Instant Auto-Detection:
             </span>{' '}
-            Our GitHub Actions bot automatically cross-references Spotify &amp; Apple Music,
-            downloads official artwork, updates the 3D Voronoi galaxy, and deploys it live.
+            Just enter any song title or YouTube video link. Our bot will automatically verify official streaming on Spotify &amp; Apple Music, download artwork, and deploy it to the 3D galaxy.
           </div>
         </div>
 
@@ -135,9 +116,7 @@ export const ReportSongModal = () => {
                 size='sm'
                 onClick={() => {
                   setSubmitted(false)
-                  setTitle('')
-                  setArtist('')
-                  setLink('')
+                  setQuery('')
                 }}
                 className='text-xs cursor-pointer'
               >
@@ -153,69 +132,23 @@ export const ReportSongModal = () => {
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className='flex flex-col gap-3.5'>
-            {/* Song Title Input */}
+          <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+            {/* Single Input Field: Song Title or YouTube Video Link */}
             <div className='flex flex-col gap-1.5'>
-              <Label htmlFor='song-title' className='text-xs font-semibold'>
+              <Label htmlFor='song-query' className='text-xs font-semibold'>
                 Song Title or YouTube Video Link <span className='text-primary'>*</span>
               </Label>
               <Input
-                id='song-title'
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder='e.g. Annakiliye OR paste https://www.youtube.com/watch?v=...'
+                id='song-query'
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder='e.g. Shape of You OR https://www.youtube.com/watch?v=...'
                 autoFocus
-                className='h-9 text-xs rounded-lg bg-background/50 border-border/80'
+                className='h-10 text-xs sm:text-sm rounded-lg bg-background/50 border-border/80 px-3'
               />
-            </div>
-
-            {/* Artist / Movie Input */}
-            <div className='flex flex-col gap-1.5'>
-              <Label htmlFor='song-artist' className='text-xs font-semibold'>
-                Movie, Artist, Singer, or Composer <span className='text-muted-foreground font-normal'>(Recommended)</span>
-              </Label>
-              <Input
-                id='song-artist'
-                value={artist}
-                onChange={(e) => setArtist(e.target.value)}
-                placeholder='e.g. OM, Kanguva, Sai Abhyankkar, Anirudh, Smith Asher'
-                className='h-9 text-xs rounded-lg bg-background/50 border-border/80'
-              />
-            </div>
-
-            {/* Language Selection */}
-            <div className='flex flex-col gap-1.5'>
-              <Label className='text-xs font-semibold'>Primary Language / Region</Label>
-              <div className='flex flex-wrap gap-1.5'>
-                {LANGUAGES.map((lang) => (
-                  <button
-                    key={lang}
-                    type='button'
-                    onClick={() => setLanguage(lang)}
-                    className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-colors cursor-pointer border ${
-                      language === lang
-                        ? 'border-primary bg-primary/10 text-primary font-bold'
-                        : 'border-border/60 bg-muted/30 text-muted-foreground hover:bg-muted/70'
-                    }`}
-                  >
-                    {lang}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Optional YouTube / Spotify Link */}
-            <div className='flex flex-col gap-1.5'>
-              <Label htmlFor='song-link' className='text-xs font-semibold'>
-                YouTube or Spotify Link <span className='text-muted-foreground font-normal'>(Optional)</span>
-              </Label>
-              <Input
-                id='song-link'
-                value={link}
-                onChange={(e) => setLink(e.target.value)}
-                placeholder='https://www.youtube.com/watch?v=... or https://open.spotify.com/track/...'
-                className='h-9 text-xs rounded-lg bg-background/50 border-border/80'
-              />
+              <p className='text-[11px] text-muted-foreground'>
+                Enter any song title or paste a direct YouTube video link.
+              </p>
             </div>
 
             {/* Action Buttons */}
@@ -241,9 +174,9 @@ export const ReportSongModal = () => {
                 </Button>
                 <a
                   href={`mailto:contact.nothingtolisten@gmail.com?subject=${encodeURIComponent(
-                    `Song Request: ${title || 'New Song'}`
+                    `Song Request: ${query || 'New Song'}`
                   )}&body=${encodeURIComponent(
-                    `Song Title: ${title}\nArtist/Movie: ${artist}\nLanguage: ${language}\nLink: ${link}`
+                    `Song / YouTube Link: ${query}`
                   )}`}
                   className='inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors'
                   title='Email request directly'
@@ -265,7 +198,7 @@ export const ReportSongModal = () => {
                 <Button
                   type='submit'
                   size='sm'
-                  disabled={!title.trim()}
+                  disabled={!query.trim()}
                   className='flex items-center gap-1.5 text-xs h-8 px-3.5 bg-primary text-primary-foreground font-semibold shadow-sm cursor-pointer'
                 >
                   <span>Submit Song Request</span>

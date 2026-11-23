@@ -67,7 +67,9 @@ export function CoreSettingsWidget({
     isSmallScreen ||
     deviceClass === DEVICE_CLASS.mobile ||
     (typeof window !== 'undefined' &&
-      ('ontouchstart' in window || window.innerWidth < 768))
+      ('ontouchstart' in window ||
+        (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0) ||
+        window.innerWidth < 768))
 
   const isMobileDesktopView =
     typeof window !== 'undefined' && window.innerWidth >= 768

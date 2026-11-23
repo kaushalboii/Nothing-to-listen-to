@@ -9,6 +9,12 @@ import { CoreSettingsWidget } from '../../common/core-settings/core-settings-wid
 import { DeviceClassWidget } from '../../common/device-class/device-class-widget'
 import { FadeTransition } from '../../common/fade-transition'
 
+const isMobileDevice =
+  typeof window !== 'undefined' &&
+  ('ontouchstart' in window ||
+    (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0) ||
+    window.innerWidth < 768)
+
 export const Intro = () => {
   const { preset, hasDeviceClass } = useShallowState((state) => ({
     preset: state.preset,
@@ -20,6 +26,8 @@ export const Intro = () => {
   useEffect(() => {
     if (isMobileDevice) {
       const state = store.getState()
+      const isMobileDesktopView =
+        typeof window !== 'undefined' && window.innerWidth >= 768
       if (!isDefined(state.deviceClass)) {
         state.setDeviceClass(DEVICE_CLASS.mobile)
       }
@@ -27,7 +35,9 @@ export const Intro = () => {
         state.setPreset(VOROFORCE_PRESET.mobile)
       }
       if (!state.cellLimit) {
-        state.setCellLimit(CELL_LIMIT.min)
+        state.setCellLimit(
+          isMobileDesktopView ? CELL_LIMIT.xxs : CELL_LIMIT.min,
+        )
       }
     }
   }, [])
@@ -86,14 +96,24 @@ export const Intro = () => {
           )}
         >
           {/* Mobile Instant Start Action */}
-          <div className='md:hidden flex flex-col items-center gap-2.5 w-full max-w-xs mx-auto pb-6 animate-in fade-in duration-500'>
+          <div
+            className={cn(
+              'flex flex-col items-center gap-2.5 w-full max-w-xs mx-auto pb-6 animate-in fade-in duration-500',
+              !isMobileDevice && 'md:hidden',
+            )}
+          >
             <Button
               size='lg'
               onClick={() => {
-                store.getState().setDeviceClass(DEVICE_CLASS.mobile)
-                store.getState().setPreset(VOROFORCE_PRESET.mobile)
-                store.getState().setCellLimit(CELL_LIMIT.min)
-                store.getState().setPlayedIntro(true)
+                const state = store.getState()
+                const isMobileDesktopView =
+                  typeof window !== 'undefined' && window.innerWidth >= 768
+                state.setDeviceClass(DEVICE_CLASS.mobile)
+                state.setPreset(VOROFORCE_PRESET.mobile)
+                state.setCellLimit(
+                  isMobileDesktopView ? CELL_LIMIT.xxs : CELL_LIMIT.min,
+                )
+                state.setPlayedIntro(true)
               }}
               className='w-full h-12 rounded-xl text-sm font-bold bg-primary text-primary-foreground shadow-lg shadow-primary/20 cursor-pointer active:scale-95 transition-transform'
             >
@@ -105,7 +125,7 @@ export const Intro = () => {
           </div>
 
           <FadeTransition
-            visible={!hasDeviceClass}
+            visible={!isMobileDevice && !hasDeviceClass}
             className='absolute inset-x-0 bottom-12 w-full duration-1000 max-md:hidden max-lg:landscape:bottom-6'
             transitionOptions={{
               timeout: 500,
@@ -115,7 +135,7 @@ export const Intro = () => {
             <MoviesDatasetLicenseInfo />
           </FadeTransition>
           <FadeTransition
-            visible={hasDeviceClass && !preset}
+            visible={!isMobileDevice && hasDeviceClass && !preset}
             className='absolute inset-x-0 bottom-12 w-full duration-1000 max-md:hidden max-lg:landscape:bottom-6'
             transitionOptions={{
               timeout: 500,
@@ -141,11 +161,6 @@ const MoviesDatasetLicenseInfo = () => (
 
 const DEFAULT_REVEAL_SCREEN_DELAY = 1200
 const DEFAULT_PREVIEW_MODE_REVEAL_SCREEN_DELAY = 600
-const isMobileDevice =
-  typeof window !== 'undefined' &&
-  ('ontouchstart' in window ||
-    navigator.maxTouchPoints > 0 ||
-    window.innerWidth < 768)
 
 let hideScreen =
   OBSCURE_VISUAL_DEFECTS &&

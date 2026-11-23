@@ -72,7 +72,9 @@ export const getVoroforceConfig = (state: StoreState) => {
     state.ua.getDevice().is('mobile') ||
     state.deviceClass === DEVICE_CLASS.mobile ||
     (typeof window !== 'undefined' &&
-      ('ontouchstart' in window || window.innerWidth < 768))
+      ('ontouchstart' in window ||
+        (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0) ||
+        window.innerWidth < 768))
 
   let preset = initialPreset
   if (presetOverrideParam && VOROFORCE_PRESET[presetOverrideParam]) {
@@ -102,7 +104,9 @@ export const getVoroforceConfig = (state: StoreState) => {
   if (isMobile) {
     const isMobileDesktopView =
       typeof window !== 'undefined' && window.innerWidth >= 768
-    config.cells = isMobileDesktopView ? 216 : 216
+    config.cells = cellsOverrideParam
+      ? Number.parseInt(cellsOverrideParam)
+      : (cellLimit ?? (isMobileDesktopView ? CELL_LIMIT.xxs : CELL_LIMIT.min))
     if (config.multiThreading) {
       config.multiThreading.enabled = false
     }

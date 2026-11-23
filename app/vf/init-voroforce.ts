@@ -22,7 +22,9 @@ export const initVoroforce = ({
       state.ua?.getDevice()?.is('mobile') ||
       state.deviceClass === DEVICE_CLASS.mobile ||
       (typeof window !== 'undefined' &&
-        ('ontouchstart' in window || window.innerWidth < 768))
+        ('ontouchstart' in window ||
+          (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0) ||
+          window.innerWidth < 768))
     if (isMobile) {
       state.setPreset(VOROFORCE_PRESET.mobile)
       const isMobileDesktopView =

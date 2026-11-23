@@ -37,30 +37,20 @@ export default class Display {
     const media = this.globalConfig.media
     if (!media?.enabled) return
 
-    const compressionFormats = {
-      dds: 'WEBGL_compressed_texture_s3tc',
-      ktx: 'WEBGL_compressed_texture_etc',
+    // S3TC (DDS) is supported on desktop GPUs (Nvidia / AMD / Intel).
+    // On mobile devices (Android / iOS) where S3TC is not available, we use
+    // the universal JPEG texture atlas (/media/low/jpg/0.jpg) which is supported
+    // everywhere without requiring proprietary compressed texture extensions.
+    // Note: KTX (ETC) is excluded because .ktx files are not distributed in media assets.
+    if (!this.gl.getExtension('WEBGL_compressed_texture_s3tc')) {
+      media.compressedFormatsSupported = false
+      media.compressionFormat = 'jpg'
+      console.log('[Voroforce] S3TC not supported on this device/browser. Using JPEG media grid atlas.')
+      return
     }
 
-    const compressionFormatKeys = Object.keys(compressionFormats)
-
-    const index = compressionFormatKeys.indexOf(media.compressionFormat)
-    if (index === -1) {
-      throw new Error('Media compression format must be either dds or ktx.')
-    }
-
-    if (!this.gl.getExtension(compressionFormats[media.compressionFormat])) {
-      media.compressionFormat =
-        compressionFormatKeys[(index + 1) % compressionFormatKeys.length]
-      if (!this.gl.getExtension(compressionFormats[media.compressionFormat])) {
-        media.compressedFormatsSupported = false
-        // Fall back to JPEG grid atlas for devices without DDS/KTX support
-        media.compressionFormat = 'jpg'
-        console.warn('Compressed texture formats (DDS/KTX) are not supported on this device/browser. Falling back to JPEG media grid.')
-        return
-      }
-    }
     media.compressedFormatsSupported = true
+    media.compressionFormat = 'dds'
   }
 
   initScene() {

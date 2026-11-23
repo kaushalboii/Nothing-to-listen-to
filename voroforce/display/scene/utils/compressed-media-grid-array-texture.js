@@ -40,6 +40,10 @@ export class CompressedMediaGridArrayTexture extends Texture {
       this.compressedTexExt = null
       this.internalFormat = gl.RGBA8
       this.bind()
+      gl.texParameteri(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+      gl.texParameteri(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+      gl.texParameteri(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+      gl.texParameteri(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
       let allocated = false
       try {
         gl.texStorage3D(
@@ -213,55 +217,63 @@ export class CompressedMediaGridArrayTexture extends Texture {
         )
       } else {
         // Standard WebGL 2 texSubImage3D for uncompressed JPEG atlas (mobile fallback)
-        // ImageBitmap from createImageBitmap() is natively accepted on all mobile WebGL2 browsers.
-        // HTMLImageElement fallback also handled below.
         const w = bytes.naturalWidth || bytes.width || this.width || 1980
         const h = bytes.naturalHeight || bytes.height || this.height || 1980
+        const gl = this.gl
 
-        const uploadAttempt = (source) => {
-          this.gl.texSubImage3D(
-            this.gl.TEXTURE_2D_ARRAY,
-            0,
-            0,
-            0,
-            index,
-            w,
-            h,
-            1,
-            this.gl.RGBA,
-            this.gl.UNSIGNED_BYTE,
-            source,
-          )
-        }
+        // Explicitly bind this texture to TEXTURE_2D_ARRAY to ensure gl operations hit it
+        gl.bindTexture(gl.TEXTURE_2D_ARRAY, this.texture)
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false)
+        gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false)
+        gl.pixelStorei(gl.UNPACK_ALIGNMENT, 4)
 
-        const uploadViaCanvas = () => {
-          const canvas = document.createElement('canvas')
-          canvas.width = w
-          canvas.height = h
-          const ctx = canvas.getContext('2d')
-          ctx.drawImage(bytes, 0, 0, w, h)
-          // Try canvas object first (most mobile browsers accept this)
-          try {
-            uploadAttempt(canvas)
-            return
-          } catch (_) {}
-          // Last resort: raw pixel buffer
-          const imgData = ctx.getImageData(0, 0, w, h)
-          uploadAttempt(new Uint8Array(imgData.data.buffer))
-        }
-
+        let success = false
         try {
-          // ImageBitmap is the most reliable source for texSubImage3D on mobile
           if (typeof ImageBitmap !== 'undefined' && bytes instanceof ImageBitmap) {
-            uploadAttempt(bytes)
-          } else {
-            // HTMLImageElement or unknown: use offscreen canvas for reliable upload
-            uploadViaCanvas()
+            gl.texSubImage3D(
+              gl.TEXTURE_2D_ARRAY,
+              0,
+              0,
+              0,
+              index,
+              w,
+              h,
+              1,
+              gl.RGBA,
+              gl.UNSIGNED_BYTE,
+              bytes,
+            )
+            if (gl.getError() === gl.NO_ERROR) {
+              success = true
+            }
           }
         } catch (err) {
-          console.warn('[CompressedMediaGridArrayTexture] texSubImage3D failed:', err)
-          // Final fallback: canvas approach
-          try { uploadViaCanvas() } catch (e2) {
+          console.warn('[CompressedMediaGridArrayTexture] Direct ImageBitmap upload failed:', err)
+        }
+
+        if (!success) {
+          try {
+            const canvas = document.createElement('canvas')
+            canvas.width = w
+            canvas.height = h
+            const ctx = canvas.getContext('2d')
+            ctx.drawImage(bytes, 0, 0, w, h)
+            const imgData = ctx.getImageData(0, 0, w, h)
+            gl.texSubImage3D(
+              gl.TEXTURE_2D_ARRAY,
+              0,
+              0,
+              0,
+              index,
+              w,
+              h,
+              1,
+              gl.RGBA,
+              gl.UNSIGNED_BYTE,
+              new Uint8Array(imgData.data.buffer),
+            )
+            console.log('[CompressedMediaGridArrayTexture] Uploaded via canvas pixel buffer')
+          } catch (e2) {
             console.error('[CompressedMediaGridArrayTexture] All upload methods failed:', e2)
           }
         }

@@ -189,7 +189,15 @@ export class Loader extends CustomEventTarget {
             const resp = await fetch(url, { mode: 'cors' })
             if (resp.ok) {
               const blob = await resp.blob()
-              const bitmap = await createImageBitmap(blob)
+              let bitmap
+              try {
+                bitmap = await createImageBitmap(blob, {
+                  colorSpaceConversion: 'none',
+                  premultiplyAlpha: 'none',
+                })
+              } catch (_) {
+                bitmap = await createImageBitmap(blob)
+              }
               return bitmap
             }
           } catch (_fetchErr) {}

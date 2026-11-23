@@ -403,7 +403,7 @@ export default class BaseScene {
         value: this.compressedMediaGridTextures[2] ?? this.compressedMediaGridTextures[0] ?? fallbackTexture,
       },
       uMediaV3Texture: {
-        value: fallbackTexture,
+        value: this.compressedMediaGridTextures[0] ?? fallbackTexture,
       },
       iStdMediaVersionNumCols: {
         value: !compressedSupported

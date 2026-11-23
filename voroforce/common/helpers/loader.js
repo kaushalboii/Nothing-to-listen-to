@@ -60,37 +60,8 @@ export class Loader extends CustomEventTarget {
   }
 
   _preloadFirstUncompressedLayer(onLoad) {
-    // Find the first uncompressed-single version index
-    const versionIndex = this.config.versions.findIndex(
-      ({ type }) => type && type !== 'compressed-grid',
-    )
-    if (versionIndex === -1) {
-      // No uncompressed version available — just unblock the preloaded gate
-      this.dispatchEvent(new LoaderEvent('preloaded'))
-      onLoad?.()
-      return
-    }
-
-    // Fire reveal immediately so the user sees the canvas right away,
-    // then kick off a parallel burst to preload the first N images.
     this.dispatchEvent(new LoaderEvent('preloaded'))
     onLoad?.()
-
-    // Preload ALL layers in staggered batches so the full galaxy fills
-    // in immediately without needing the user to scroll.
-    const BATCH_SIZE = 8
-    const BATCH_DELAY_MS = 25 // fast staggered dispatch for smooth loading
-    const totalLayers = this.config.versions[versionIndex].layers ?? 216
-    const loadBatch = (startIndex) => {
-      const end = Math.min(startIndex + BATCH_SIZE, totalLayers)
-      for (let i = startIndex; i < end; i++) {
-        void this.loadMediaLayer(versionIndex, i, null)
-      }
-      if (end < totalLayers) {
-        setTimeout(() => loadBatch(end), BATCH_DELAY_MS)
-      }
-    }
-    loadBatch(0)
   }
 
   async loadMediaLayer(versionIndex, layerIndex, onLoad) {

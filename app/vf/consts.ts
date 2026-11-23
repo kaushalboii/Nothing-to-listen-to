@@ -71,9 +71,9 @@ export const PRESET_ITEMS: PresetItems = [
 ]
 
 export enum CELL_LIMIT {
-  min = 1000,
-  xxs = 5000,
-  xs = 10000,
+  min = 216,
+  xxs = 1000,
+  xs = 5000,
   sm = 25000,
   md = 50000,
   lg = 100000,
@@ -82,16 +82,16 @@ export enum CELL_LIMIT {
 export const CELL_LIMIT_ITEMS = [
   {
     value: CELL_LIMIT.min,
-    label: '1,000',
+    label: '216',
     recommendedDeviceClass: DEVICE_CLASS.mobile,
   },
   {
     value: CELL_LIMIT.xxs,
-    label: '5,000',
+    label: '1,000',
   },
   {
     value: CELL_LIMIT.xs,
-    label: '10,000',
+    label: '5,000',
     recommendedDeviceClass: DEVICE_CLASS.low,
   },
   {

@@ -102,7 +102,7 @@ export const getVoroforceConfig = (state: StoreState) => {
   if (isMobile) {
     const isMobileDesktopView =
       typeof window !== 'undefined' && window.innerWidth >= 768
-    config.cells = isMobileDesktopView ? 5000 : 1000
+    config.cells = isMobileDesktopView ? 216 : 216
     if (config.multiThreading) {
       config.multiThreading.enabled = false
     }
@@ -110,7 +110,7 @@ export const getVoroforceConfig = (state: StoreState) => {
     config.display.renderer = config.display.renderer || {}
     config.display.renderer.pixelRatio = Math.min(
       typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1,
-      1.25,
+      1.0,
     )
   }
 

@@ -1,4 +1,4 @@
-import { mediaConfigWithUncompressedSingleVersion } from '../config/media'
+import mediaConfig from '../config/media'
 import { VOROFORCE_MODE } from '../consts'
 import type { VoroforceInstance } from '../types'
 
@@ -54,13 +54,13 @@ const controlsConfig = Object.assign(
 )
 
 export default {
-  cells: 1000,
+  cells: 216,
   multiThreading: {
     enabled: false,
-    renderInParallel: true,
+    renderInParallel: false,
   },
   media: {
-    ...mediaConfigWithUncompressedSingleVersion,
+    ...mediaConfig,
     preload: 'first',
   },
   controls: controlsConfig,
@@ -74,7 +74,7 @@ export default {
   },
   display: {
     renderer: {
-      pixelRatio: 1.25,
+      pixelRatio: 1.0,
     },
     scene: {
       main: {

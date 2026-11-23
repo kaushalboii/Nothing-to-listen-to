@@ -159,7 +159,7 @@ export default class ForcesSimulationStep extends BaseSimulationStep {
     if (!this.mediaConfig.enabled) return
 
     if (this.mediaConfig.compressedFormatsSupported === false) {
-      cell.targetMediaVersion = 3
+      cell.targetMediaVersion = 0
     }
 
     if (cell.targetMediaVersion !== cell.mediaVersion) {

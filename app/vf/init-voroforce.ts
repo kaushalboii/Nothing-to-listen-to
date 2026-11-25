@@ -26,10 +26,26 @@ export const initVoroforce = ({
           (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0) ||
           window.innerWidth < 768))
     if (isMobile) {
-      state.setPreset(VOROFORCE_PRESET.minimal)
-      state.setCellLimit(CELL_LIMIT.lg)
+      state.setPreset(VOROFORCE_PRESET.mobile)
+      state.setCellLimit(CELL_LIMIT.xs)
     } else {
       return
+    }
+  } else if (
+    !force &&
+    state.cellLimit &&
+    state.cellLimit > CELL_LIMIT.xs
+  ) {
+    const isMobile =
+      state.ua?.getDevice()?.is('mobile') ||
+      state.deviceClass === DEVICE_CLASS.mobile ||
+      (typeof window !== 'undefined' &&
+        ('ontouchstart' in window ||
+          (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0) ||
+          window.innerWidth < 768))
+    if (isMobile) {
+      state.setPreset(VOROFORCE_PRESET.mobile)
+      state.setCellLimit(CELL_LIMIT.xs)
     }
   }
 

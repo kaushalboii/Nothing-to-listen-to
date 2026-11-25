@@ -4,7 +4,7 @@ import mediaConfig from '../config/media'
 import { VOROFORCE_MODE } from '../consts'
 
 export default {
-  cells: 10000,
+  cells: 5000,
   multiThreading: {
     enabled: false,
     renderInParallel: false,

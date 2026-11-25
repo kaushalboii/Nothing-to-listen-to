@@ -114,7 +114,15 @@ export const handleMode = () => {
   // Safety net: Guarantee the loading veil lifts even on slow or constrained mobile devices
   const safetyTimeout = setTimeout(() => {
     revealVoroforceContainer()
-    const { playedIntro, setPlayedIntro } = store.getState()
+    const { playedIntro, setPlayedIntro, voroforce: vf } = store.getState()
+    if (vf?.config?.lattice?.targetCellSizeViewportPercentage) {
+      vf.config.lattice = {
+        ...baseLatticeConfig,
+        rows: vf.config.lattice.rows,
+        cols: vf.config.lattice.cols,
+      }
+      vf.resize()
+    }
     if (!playedIntro) {
       setPlayedIntro(true)
       handleModeChange(VOROFORCE_MODE.preview)

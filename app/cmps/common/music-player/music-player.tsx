@@ -1,9 +1,12 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   ChevronDown,
   ChevronUp,
   Disc3,
   ExternalLink,
+  Loader2,
+  Pause,
+  Play,
   SkipBack,
   SkipForward,
   Volume2,
@@ -14,8 +17,18 @@ import config from '../../../config'
 import { useShallowState } from '../../../store'
 import { cn } from '../../../utils/tw'
 import { Button } from '../../ui/button'
+import { resolveAdFreeAudioStream } from './audio-stream'
 
 const FALLBACK_VIDEO_ID = 'ZdMZ40GSVmc' // Anirudh - Badass (Leo)
+
+type StreamMode = 'resolving' | 'audio' | 'youtube'
+
+function formatTime(seconds: number): string {
+  if (!Number.isFinite(seconds) || seconds < 0) return '0:00'
+  const mins = Math.floor(seconds / 60)
+  const secs = Math.floor(seconds % 60)
+  return `${mins}:${secs.toString().padStart(2, '0')}`
+}
 
 export const MusicPlayer = () => {
   const {
@@ -40,14 +53,102 @@ export const MusicPlayer = () => {
     prevTrack: state.prevTrack,
   }))
 
-  const videoId = activeTrack?.videoId && activeTrack.videoId.length === 11
-    ? activeTrack.videoId
-    : FALLBACK_VIDEO_ID
+  const videoId =
+    activeTrack?.videoId && activeTrack.videoId.length === 11
+      ? activeTrack.videoId
+      : FALLBACK_VIDEO_ID
 
   const iframeRef = useRef<HTMLIFrameElement>(null)
+  const audioRef = useRef<HTMLAudioElement>(null)
 
-  // Dual-layer YouTube listener: postMessage + official window.YT API for 100% reliable track completion
+  const [streamMode, setStreamMode] = useState<StreamMode>('resolving')
+  const [audioUrl, setAudioUrl] = useState<string | null>(null)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
+
+  // Resolve 100% ad-free direct audio stream first; fall back silently to YouTube only if unavailable
   useEffect(() => {
+    if (!playerOpen || !activeTrack) {
+      setStreamMode('resolving')
+      setAudioUrl(null)
+      setIsPlaying(false)
+      setCurrentTime(0)
+      setDuration(0)
+      return
+    }
+
+    const controller = new AbortController()
+    setStreamMode('resolving')
+    setAudioUrl(null)
+    setIsPlaying(false)
+    setCurrentTime(0)
+    setDuration(0)
+
+    void resolveAdFreeAudioStream(activeTrack, controller.signal).then(
+      (resolvedUrl) => {
+        if (controller.signal.aborted) return
+        if (resolvedUrl) {
+          setAudioUrl(resolvedUrl)
+          setStreamMode('audio')
+        } else {
+          setStreamMode('youtube')
+        }
+      },
+    )
+
+    return () => {
+      controller.abort()
+    }
+  }, [
+    playerOpen,
+    activeTrack?.title,
+    activeTrack?.artist,
+    activeTrack?.videoId,
+    playlistIndex,
+  ])
+
+  // Start native audio playback & register mobile lock-screen Media Session controls
+  useEffect(() => {
+    const audio = audioRef.current
+    if (streamMode !== 'audio' || !audioUrl || !audio) return
+
+    audio.currentTime = 0
+    const playPromise = audio.play()
+    if (playPromise) {
+      playPromise
+        .then(() => setIsPlaying(true))
+        .catch(() => setIsPlaying(false))
+    }
+
+    if (typeof navigator !== 'undefined' && 'mediaSession' in navigator && activeTrack) {
+      try {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: activeTrack.title,
+          artist: activeTrack.artist,
+          album: activeTrack.albumTitle,
+          artwork: activeTrack.cover
+            ? [{ src: activeTrack.cover, sizes: '600x600', type: 'image/jpeg' }]
+            : undefined,
+        })
+        navigator.mediaSession.setActionHandler('play', () => void audio.play())
+        navigator.mediaSession.setActionHandler('pause', () => audio.pause())
+        navigator.mediaSession.setActionHandler(
+          'previoustrack',
+          playlist.length > 1 ? prevTrack : null,
+        )
+        navigator.mediaSession.setActionHandler(
+          'nexttrack',
+          playlist.length > 1 ? nextTrack : null,
+        )
+      } catch (_) {}
+    }
+  }, [streamMode, audioUrl, activeTrack, playlist.length, nextTrack, prevTrack])
+
+  // Dual-layer YouTube listener (active only when falling back to YouTube embed)
+  useEffect(() => {
+    if (streamMode !== 'youtube') return
+
     const handleMessage = (event: MessageEvent) => {
       if (
         event.origin !== 'https://www.youtube-nocookie.com' &&
@@ -82,10 +183,10 @@ export const MusicPlayer = () => {
     return () => {
       window.removeEventListener('message', handleMessage)
     }
-  }, [nextTrack])
+  }, [streamMode, nextTrack])
 
-  // Official window.YT.Player bridge for track transitions
   useEffect(() => {
+    if (streamMode !== 'youtube') return
     let player: any = null
 
     const initPlayer = () => {
@@ -94,7 +195,6 @@ export const MusicPlayer = () => {
           player = new (window as any).YT.Player(iframeRef.current, {
             events: {
               onStateChange: (event: any) => {
-                // 0 = YT.PlayerState.ENDED
                 if (event?.data === 0) {
                   nextTrack()
                 }
@@ -131,9 +231,8 @@ export const MusicPlayer = () => {
         } catch (_) {}
       }
     }
-  }, [videoId, playlistIndex, nextTrack])
+  }, [streamMode, videoId, playlistIndex, nextTrack])
 
-  // When iframe loads, notify YouTube embed to start listening for state change events
   const handleIframeLoad = () => {
     try {
       const win = iframeRef.current?.contentWindow
@@ -151,7 +250,6 @@ export const MusicPlayer = () => {
     } catch (_) {}
   }
 
-  // Privacy-Enhanced Ad-Shielded YouTube Player (Zero 3rd-party proxies, cookies stripped to prevent mobile ad tracking)
   const originParam =
     typeof window !== 'undefined' && window.location.origin
       ? `&origin=${encodeURIComponent(window.location.origin)}&widget_referrer=${encodeURIComponent(window.location.href)}`
@@ -162,14 +260,25 @@ export const MusicPlayer = () => {
 
   const query = encodeURIComponent(`${activeTrack.artist} ${activeTrack.title}`.trim())
 
-  const directYtWatchUrl = activeTrack.videoId && activeTrack.videoId.length === 11
-    ? `https://www.youtube.com/watch?v=${activeTrack.videoId}`
-    : `https://www.youtube.com/results?search_query=${query}`
+  const directYtWatchUrl =
+    activeTrack.videoId && activeTrack.videoId.length === 11
+      ? `https://www.youtube.com/watch?v=${activeTrack.videoId}`
+      : `https://www.youtube.com/results?search_query=${query}`
 
   const spotifyUrl = `${config.spotifySearchUrl}${query}`
   const appleMusicUrl = `${config.appleMusicSearchUrl}${query}`
   const ytMusicUrl = `${config.youtubeMusicSearchUrl}${query}`
   const jiosaavnUrl = `${config.jiosaavnSearchUrl}${query}`
+
+  const togglePlayPause = () => {
+    const audio = audioRef.current
+    if (!audio) return
+    if (audio.paused) {
+      void audio.play()
+    } else {
+      audio.pause()
+    }
+  }
 
   return (
     <div
@@ -180,12 +289,54 @@ export const MusicPlayer = () => {
           : 'bottom-2 sm:bottom-4 left-2 right-2 sm:left-4 sm:right-4 md:left-auto md:right-8 md:w-[480px] rounded-2xl bg-background/95 border border-border backdrop-blur-xl p-3 sm:p-4',
       )}
     >
+      {/* Hidden native HTML5 audio element for seamless background & lockscreen playback */}
+      {streamMode === 'audio' && audioUrl && (
+        <audio
+          ref={audioRef}
+          src={audioUrl}
+          autoPlay
+          playsInline
+          preload='auto'
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+          onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
+          onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
+          onEnded={() => {
+            if (playlist.length > 1) {
+              nextTrack()
+            } else {
+              setIsPlaying(false)
+            }
+          }}
+          onError={() => {
+            setStreamMode('youtube')
+          }}
+        />
+      )}
+
       {/* Player Header / Controls Bar */}
       <div className='flex items-center justify-between gap-3'>
         <div className='flex items-center gap-3 min-w-0'>
-          {/* Animated Vinyl Disc Icon */}
-          <div className='relative flex size-10 shrink-0 items-center justify-center rounded-full bg-neutral-900 border border-neutral-700 text-amber-500 shadow-md'>
-            <Disc3 className='size-6 animate-[spin_4s_linear_infinite]' />
+          <div className='relative flex size-10 shrink-0 items-center justify-center rounded-full bg-neutral-900 border border-neutral-700 text-amber-500 shadow-md overflow-hidden'>
+            {activeTrack.cover ? (
+              <img
+                src={activeTrack.cover}
+                alt={activeTrack.title}
+                className={cn(
+                  'size-full object-cover',
+                  (streamMode === 'youtube' || isPlaying) &&
+                    'animate-[spin_8s_linear_infinite]',
+                )}
+              />
+            ) : (
+              <Disc3
+                className={cn(
+                  'size-6',
+                  (streamMode === 'youtube' || isPlaying) &&
+                    'animate-[spin_4s_linear_infinite]',
+                )}
+              />
+            )}
           </div>
 
           <div className='min-w-0 flex flex-col'>
@@ -207,6 +358,22 @@ export const MusicPlayer = () => {
 
         {/* Action Controls */}
         <div className='flex items-center gap-1 shrink-0'>
+          {streamMode === 'audio' && (
+            <Button
+              size='icon'
+              variant='ghost'
+              className='size-8 rounded-full cursor-pointer bg-primary text-primary-foreground hover:bg-primary/90'
+              onClick={togglePlayPause}
+              title={isPlaying ? 'Pause' : 'Play'}
+            >
+              {isPlaying ? (
+                <Pause className='size-4' />
+              ) : (
+                <Play className='size-4 ml-0.5' />
+              )}
+            </Button>
+          )}
+
           {playlist && playlist.length > 1 && (
             <>
               <Button
@@ -240,19 +407,21 @@ export const MusicPlayer = () => {
             <Youtube className='size-4' />
           </a>
 
-          <Button
-            size='icon'
-            variant='ghost'
-            className='size-7 rounded-full cursor-pointer'
-            onClick={() => setIsMinimized(!isMinimized)}
-            title={isMinimized ? 'Expand Video' : 'Minimize Player'}
-          >
-            {isMinimized ? (
-              <ChevronUp className='size-4' />
-            ) : (
-              <ChevronDown className='size-4' />
-            )}
-          </Button>
+          {streamMode === 'youtube' && (
+            <Button
+              size='icon'
+              variant='ghost'
+              className='size-7 rounded-full cursor-pointer'
+              onClick={() => setIsMinimized(!isMinimized)}
+              title={isMinimized ? 'Expand Video' : 'Minimize Player'}
+            >
+              {isMinimized ? (
+                <ChevronUp className='size-4' />
+              ) : (
+                <ChevronDown className='size-4' />
+              )}
+            </Button>
+          )}
 
           <Button
             size='icon'
@@ -266,27 +435,67 @@ export const MusicPlayer = () => {
         </div>
       </div>
 
-      {/* Official YouTube Embed Player */}
-      <div
-        className={cn('relative mt-3 overflow-hidden rounded-xl bg-black transition-all duration-300', {
-          'h-48 sm:h-56 md:h-64 opacity-100': !isMinimized,
-          'h-0 opacity-0 pointer-events-none mt-0': isMinimized,
-        })}
-      >
-        <iframe
-          key={`${videoId}-${playlistIndex}`}
-          ref={iframeRef}
-          src={embedUrl}
-          onLoad={handleIframeLoad}
-          title={`${activeTrack.artist} - ${activeTrack.title}`}
-          referrerPolicy='strict-origin-when-cross-origin'
-          allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-          allowFullScreen
-          className='absolute inset-0 h-full w-full border-0'
-        />
-      </div>
+      {/* Loading Indicator while resolving direct stream */}
+      {streamMode === 'resolving' && (
+        <div className='mt-3 flex items-center justify-center gap-2 rounded-xl bg-muted/40 py-3 text-xs text-muted-foreground'>
+          <Loader2 className='size-4 animate-spin text-primary' />
+          <span>Starting audio stream...</span>
+        </div>
+      )}
 
-      {/* Cross-platform Listen Links (Clean responsive layout with zero overflow) */}
+      {/* Scrubbable Audio Seek Bar (100% Ad-Free Direct Audio) */}
+      {streamMode === 'audio' && (
+        <div className='mt-3 flex items-center gap-2.5'>
+          <span className='w-9 text-[11px] font-medium tabular-nums text-muted-foreground'>
+            {formatTime(currentTime)}
+          </span>
+          <input
+            type='range'
+            min={0}
+            max={duration || 100}
+            value={Math.min(currentTime, duration || 100)}
+            onChange={(e) => {
+              const nextTime = Number(e.target.value)
+              setCurrentTime(nextTime)
+              if (audioRef.current) {
+                audioRef.current.currentTime = nextTime
+              }
+            }}
+            aria-label='Seek audio position'
+            className='h-1.5 flex-1 cursor-pointer appearance-none rounded-full bg-muted accent-primary'
+          />
+          <span className='w-9 text-right text-[11px] font-medium tabular-nums text-muted-foreground'>
+            {formatTime(duration)}
+          </span>
+        </div>
+      )}
+
+      {/* YouTube Fallback Embed (only used automatically if track isn't in audio catalog) */}
+      {streamMode === 'youtube' && (
+        <div
+          className={cn(
+            'relative mt-3 overflow-hidden rounded-xl bg-black transition-all duration-300',
+            {
+              'h-48 sm:h-56 md:h-64 opacity-100': !isMinimized,
+              'h-0 opacity-0 pointer-events-none mt-0': isMinimized,
+            },
+          )}
+        >
+          <iframe
+            key={`${videoId}-${playlistIndex}`}
+            ref={iframeRef}
+            src={embedUrl}
+            onLoad={handleIframeLoad}
+            title={`${activeTrack.artist} - ${activeTrack.title}`}
+            referrerPolicy='strict-origin-when-cross-origin'
+            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+            allowFullScreen
+            className='absolute inset-0 h-full w-full border-0'
+          />
+        </div>
+      )}
+
+      {/* Cross-platform Listen Links */}
       <div className='mt-2.5 pt-2 border-t border-border/40 flex flex-wrap items-center justify-between gap-1.5 text-xs'>
         <span className='text-[0.7rem] font-semibold text-muted-foreground flex items-center gap-1 shrink-0'>
           <Volume2 className='size-3 text-emerald-500 animate-pulse' />

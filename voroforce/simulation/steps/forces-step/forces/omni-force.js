@@ -511,7 +511,7 @@ export const omniForce = () => {
       centerX ??= primaryCellX
       centerY ??= primaryCellY
       pointerX = pointer?.x ?? primaryCellX
-      pointerY = pointer?.y ?? primaryCellX
+      pointerY = pointer?.y ?? primaryCellY
 
       if (handlePointerSpeedScale) {
         easedIdlePointerMod = minLerp(
@@ -805,14 +805,16 @@ export const omniForce = () => {
       y = target.localY + target.initialVy - cell.localY - cell.initialVy
 
       l = sqrt(x * x + y * y)
-      l = ((l - size) / l) * alpha * cell.latticeStrengthMod
-      x *= l * latticeXFactor
-      y *= l * latticeYFactor
+      if (l > 0) {
+        l = ((l - size) / l) * alpha * cell.latticeStrengthMod
+        x *= l * latticeXFactor
+        y *= l * latticeYFactor
 
-      target.vx -= x
-      target.vy -= y
-      cell.vx += x
-      cell.vy += y
+        target.vx -= x
+        target.vy -= y
+        cell.vx += x
+        cell.vy += y
+      }
     }
 
     return force

@@ -1090,7 +1090,7 @@ void processNeighborEdge(in uint neighborIndex, in vec2 cellCoords, in vec2 p, i
             cellOffsetsDifference.x *= scaleX;
         #endif
 
-        float baseDist = dot2(cellOffsetsDifference);
+        float baseDist = max(dot2(cellOffsetsDifference), 1e-8);
         float distFactor = 0.5;
 
         #if WEIGHTED_DIST == 1
@@ -1246,8 +1246,8 @@ Plot init(vec2 p) {
     uint col = uint(round(vUv.x * float(iLatticeCols)));
 
     indices.x = row * uint(iLatticeCols) + col;
-    if (int(indices.x) > iNumCells) {
-        indices.x = (row-1u) * uint(iLatticeCols) + col;
+    if (int(indices.x) >= iNumCells && row > 0u) {
+        indices.x = min((row - 1u) * uint(iLatticeCols) + col, uint(max(iNumCells - 1, 0)));
     }
 
     return Plot(indices, uvec4(uint(-1)), vec2(0.), 0., vec2(0.), 0., 0., 1., 1., false);

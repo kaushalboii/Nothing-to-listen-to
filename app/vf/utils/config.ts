@@ -5,6 +5,7 @@ import presets from '../presets'
 import type { THEME } from '../../consts'
 import type { StoreState } from '../../store'
 import {
+  CELL_LIMIT,
   DEFAULT_VOROFORCE_PRESET,
   DEVICE_CLASS,
   type VOROFORCE_MODE,
@@ -102,9 +103,13 @@ export const getVoroforceConfig = (state: StoreState) => {
     : (cellLimit ?? config.cells)
 
   if (isMobile) {
-    config.cells = cellsOverrideParam
+    const requestedCells = cellsOverrideParam
       ? Number.parseInt(cellsOverrideParam)
       : (cellLimit ?? config.cells)
+    // Cap mobile cells at 5,000 (CELL_LIMIT.xs) to preserve dense 3D sphere visuals without GPU/CPU stalling
+    config.cells = cellsOverrideParam
+      ? requestedCells
+      : Math.min(requestedCells, CELL_LIMIT.xs)
     if (config.multiThreading) {
       config.multiThreading.enabled = false
     }

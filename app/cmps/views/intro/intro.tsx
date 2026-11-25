@@ -29,11 +29,15 @@ export const Intro = () => {
       if (!isDefined(state.deviceClass)) {
         state.setDeviceClass(DEVICE_CLASS.mobile)
       }
-      if (!state.preset || state.preset === VOROFORCE_PRESET.mobile) {
-        state.setPreset(VOROFORCE_PRESET.minimal)
+      if (!state.preset || state.preset === VOROFORCE_PRESET.minimal) {
+        state.setPreset(VOROFORCE_PRESET.mobile)
       }
-      if (!state.cellLimit || state.cellLimit === CELL_LIMIT.min) {
-        state.setCellLimit(CELL_LIMIT.lg)
+      if (
+        !state.cellLimit ||
+        state.cellLimit === CELL_LIMIT.min ||
+        state.cellLimit > CELL_LIMIT.xs
+      ) {
+        state.setCellLimit(CELL_LIMIT.xs)
       }
     }
   }, [])
@@ -103,8 +107,8 @@ export const Intro = () => {
               onClick={() => {
                 const state = store.getState()
                 state.setDeviceClass(DEVICE_CLASS.mobile)
-                state.setPreset(VOROFORCE_PRESET.minimal)
-                state.setCellLimit(CELL_LIMIT.lg)
+                state.setPreset(VOROFORCE_PRESET.mobile)
+                state.setCellLimit(CELL_LIMIT.xs)
                 state.setPlayedIntro(true)
               }}
               className='w-full h-12 rounded-xl text-sm font-bold bg-primary text-primary-foreground shadow-lg shadow-primary/20 cursor-pointer active:scale-95 transition-transform'

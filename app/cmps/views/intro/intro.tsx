@@ -3,6 +3,7 @@ import { store, useShallowState } from '../../../store'
 import { isDefined } from '../../../utils/misc'
 import { cn } from '../../../utils/tw'
 import { VOROFORCE_MODE } from '../../../vf'
+import { handleModeChange } from '../../../vf/integrations/mode'
 import { CELL_LIMIT, DEVICE_CLASS, OBSCURE_VISUAL_DEFECTS, VOROFORCE_PRESET } from '../../../vf/consts'
 import { Button } from '../../ui/button'
 import { CoreSettingsWidget } from '../../common/core-settings/core-settings-widget'
@@ -111,6 +112,7 @@ export const Intro = () => {
                 state.setPreset(VOROFORCE_PRESET.mobile)
                 state.setCellLimit(CELL_LIMIT.xs)
                 state.setPlayedIntro(true)
+                handleModeChange(VOROFORCE_MODE.preview)
               }}
               className='w-full h-12 rounded-xl text-sm font-bold bg-primary text-primary-foreground shadow-lg shadow-primary/20 cursor-pointer active:scale-95 transition-transform'
             >

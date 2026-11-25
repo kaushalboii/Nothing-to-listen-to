@@ -316,16 +316,21 @@ export default class BaseScene {
 
     const compressedSupported = this.globalConfig.media.compressedFormatsSupported !== false
 
+    let primaryTexture = null
     this.compressedMediaGridTextures = this.getCompressedMediaVersions().map(
-      (mediaVersion) => {
-        if (!mediaVersion) return new Texture(this.gl, {})
+      (mediaVersion, index) => {
+        if (!mediaVersion || (!compressedSupported && index > 0)) {
+          return primaryTexture
+        }
         const { width, height, layers } = mediaVersion
-        return new CompressedMediaGridArrayTexture(this.gl, {
+        const tex = new CompressedMediaGridArrayTexture(this.gl, {
           width,
           height,
           length: layers,
           compressionFormat: this.globalConfig.media.compressionFormat,
         })
+        if (!primaryTexture) primaryTexture = tex
+        return tex
       },
     )
 
@@ -380,8 +385,14 @@ export default class BaseScene {
 
   updateMedia() {
     if (!this.globalConfig.media?.enabled) return
+    const updatedCompressed = new Set()
     this.compressedMediaGridTextures?.forEach((tex, i) => {
-      if (tex && (tex.needsUpdate || tex.pendingLayerUpdates?.length > 0)) {
+      if (
+        tex &&
+        !updatedCompressed.has(tex) &&
+        (tex.needsUpdate || tex.pendingLayerUpdates?.length > 0)
+      ) {
+        updatedCompressed.add(tex)
         tex.update?.(i)
       }
     })
@@ -683,11 +694,22 @@ export default class BaseScene {
           this.getPositionRenderTargetColorTexture(rt),
       )
     }
-    const data = new Uint32Array(4) // Float32Array texture but packed as uint
+    const px = Math.min(
+      Math.max(Math.floor(position.x * (rt.width / this.dimensions.width)), 0),
+      Math.max(rt.width - 1, 0),
+    )
+    const py = Math.min(
+      Math.max(
+        Math.floor(rt.height - position.y * (rt.height / this.dimensions.height)),
+        0,
+      ),
+      Math.max(rt.height - 1, 0),
+    )
+    const data = new Uint32Array(4) // Float32Array texture with normalized bit-packed cell indices
     await readPixelsAsync(
       this.gl,
-      position.x * (rt.width / this.dimensions.width),
-      rt.height - position.y * (rt.height / this.dimensions.height),
+      px,
+      py,
       1,
       1,
       data,
@@ -695,10 +717,11 @@ export default class BaseScene {
       this.gl.FLOAT,
     )
 
-    const index = data[0] - 1
-    const index2 = data[1] - 1
-    const index3 = data[2] - 1
-    const index4 = data[3] - 1
+    const decodeIndex = (raw) => (!raw ? -1 : (raw & 0x007fffff) - 1)
+    const index = decodeIndex(data[0])
+    const index2 = decodeIndex(data[1])
+    const index3 = decodeIndex(data[2])
+    const index4 = decodeIndex(data[3])
     if (index >= 0) {
       return [index, index2, index3, index4]
     }

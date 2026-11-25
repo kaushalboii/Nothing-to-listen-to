@@ -391,7 +391,7 @@ float nextFloat() {
 #endif
 
 float cheapSqrt(float a) {
-    return 1./inversesqrt(a);
+    return sqrt(max(a, 0.0));
 }
 
 // commutative smoothmin
@@ -1022,7 +1022,7 @@ vec4 calcMediaBbox(in uint index, in vec4 cellCoords, in float bulgeFactor, inou
         mediaBbox.zw = max(mediaBbox.zw, mid);
     }
 
-    vec2 avgCenter = midSum / float(neighborsLength);
+    vec2 avgCenter = midSum / float(max(neighborsLength, 1u));
 //    avgCenter = (avgCenter - centerForceNCoords) * mediaBulgeFactor + centerForceNCoords;
 //    vec2 avgCenterDiff = (avgCenter - cellCoords.zw);
 //    mediaBbox.xy = min(mediaBbox.xy, mediaBbox.xy + avgCenterDiff);
@@ -1044,6 +1044,8 @@ vec4 calcMediaBbox(in uint index, in vec4 cellCoords, in float bulgeFactor, inou
     bbX -= edgeBorder;
     bbY -= edgeBorder;
     #endif
+    bbX = max(bbX, 1e-4);
+    bbY = max(bbY, 1e-4);
 
     vec2 offset = vec2(0.5 * fMediaBboxScale);
     bool lockedAspect = MEDIA_LOCKED_ASPECT == 1 && !bMediaDistortion;
@@ -1169,7 +1171,7 @@ void sortClosest(
     float weightOffsetScale,
     float prevMaxWeight
 ) {
-    if (indexIsUndefined(index) || any(equal(indices, uvec4(index)))) return;
+    if (index >= uint(iNumCells) || indexIsUndefined(index) || any(equal(indices, uvec4(index)))) return;
 
     #if DOUBLE_INDEX_POOL == 1
         if (any(equal(indices2, uvec4(index)))) return;
@@ -1216,12 +1218,38 @@ void sortClosest(
     #endif
 }
 
+// Pack cell indices as normalized [1.0, 2.0) IEEE-754 floats (exponent 0x3f800000) so mobile
+// GPUs with subnormal flush-to-zero never clobber cached Voronoi IDs to 0.0.
+vec4 packIndices(uvec4 idx) {
+    uvec4 valid = uvec4(
+        idx.x != uint(-1) && idx.x < 0x007ffffeu ? (0x3f800000u | (idx.x + 1u)) : 0u,
+        idx.y != uint(-1) && idx.y < 0x007ffffeu ? (0x3f800000u | (idx.y + 1u)) : 0u,
+        idx.z != uint(-1) && idx.z < 0x007ffffeu ? (0x3f800000u | (idx.z + 1u)) : 0u,
+        idx.w != uint(-1) && idx.w < 0x007ffffeu ? (0x3f800000u | (idx.w + 1u)) : 0u
+    );
+    return uintBitsToFloat(valid);
+}
+
+uvec4 unpackIndices(vec4 v) {
+    uvec4 raw = floatBitsToUint(v);
+    return uvec4(
+        raw.x == 0u ? uint(-1) : ((raw.x & 0x007fffffu) - 1u),
+        raw.y == 0u ? uint(-1) : ((raw.y & 0x007fffffu) - 1u),
+        raw.z == 0u ? uint(-1) : ((raw.z & 0x007fffffu) - 1u),
+        raw.w == 0u ? uint(-1) : ((raw.w & 0x007fffffu) - 1u)
+    );
+}
+
 uvec4 fetchIndices(vec2 position) {
-    return floatBitsToUint(texelFetch(uVoroIndexBufferTexture, ivec2(position), 0)) - 1u;
+    ivec2 maxCoord = max(textureSize(uVoroIndexBufferTexture, 0) - 1, ivec2(0));
+    ivec2 coord = clamp(ivec2(position), ivec2(0), maxCoord);
+    return unpackIndices(texelFetch(uVoroIndexBufferTexture, coord, 0));
 }
 
 uvec4 fetchIndices2(vec2 position) {
-    return floatBitsToUint(texelFetch(uVoroIndexBuffer2Texture, ivec2(position), 0)) - 1u;
+    ivec2 maxCoord = max(textureSize(uVoroIndexBuffer2Texture, 0) - 1, ivec2(0));
+    ivec2 coord = clamp(ivec2(position), ivec2(0), maxCoord);
+    return unpackIndices(texelFetch(uVoroIndexBuffer2Texture, coord, 0));
 }
 
 void fetchAndSortIndices( inout vec4 distances, inout vec4 distances2, inout uvec4 prevIndices, inout uvec4 prevIndices2, in vec2 samplePoint, in vec2 p, in float weightOffsetScale, in float prevMaxWeight ) {
@@ -1348,8 +1376,11 @@ Plot plot() {
     float borderRoundnessScale = 0.1;
     #if EDGE_CELL_SCALING == 1 && (MEDIA_ENABLED == 0 || EDGE_CELL_SCALING_MODE != 1)
         // this only works well for vertically elongated cells
-        float neighborXAvgOffset = (abs(cellCoords.x - fetchAspectCellCoords(neighborsTexData(neighborsPosition + 3u)).x) + abs(cellCoords.x - fetchAspectCellCoords(neighborsTexData(neighborsPosition + 4u)).x)) * 0.5;
-        cellScale = neighborXAvgOffset / 2.;
+        uint plotNeighborsLength = neighborsTexData(index * 2u + 1u);
+        if (plotNeighborsLength >= 5u) {
+            float neighborXAvgOffset = (abs(cellCoords.x - fetchAspectCellCoords(neighborsTexData(neighborsPosition + 3u)).x) + abs(cellCoords.x - fetchAspectCellCoords(neighborsTexData(neighborsPosition + 4u)).x)) * 0.5;
+            cellScale = neighborXAvgOffset / 2.;
+        }
         #if EDGE_CELL_SCALING_BORDER_THICKNESS == 1
             borderThicknessScale = cellScale;
         #endif
@@ -1423,9 +1454,9 @@ void postEffectsColor(inout vec3 c, inout float a, in Plot plot) {
 }
 
 void colorOutput(in vec3 c, in float a, in Plot plot) {
-    voroIndexBufferColor = uintBitsToFloat(plot.indices + 1u);
+    voroIndexBufferColor = packIndices(plot.indices);
     #if DOUBLE_INDEX_POOL == 1 && DOUBLE_INDEX_POOL_BUFFER == 1
-        voroIndexBuffer2Color = uintBitsToFloat(plot.indices2 + 1u);
+        voroIndexBuffer2Color = packIndices(plot.indices2);
     #endif
     outputColor = vec4(c, a);
     if (bVoroEdgeBufferOutput) {

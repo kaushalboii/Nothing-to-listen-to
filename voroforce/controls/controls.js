@@ -375,8 +375,10 @@ export default class Controls extends BaseControls {
         index,
         indices,
       })
+      const rawIsFocused = this.rawPosition.index === this.cells.focusedIndex
       if (
         !this.isTouching &&
+        !rawIsFocused &&
         (this.frozenPosition || (this.pinnedPosition && !this.rawIsPinned()))
       ) {
         this.navigateToCell(this.rawPosition.index)
@@ -467,7 +469,7 @@ export default class Controls extends BaseControls {
       }
     }
 
-    if (selectCellIndex) {
+    if (selectCellIndex !== undefined) {
       this.selectCell(selectCellIndex)
       if (hasPreviousSelection) {
         this.pinPointer(this.cells.selected)

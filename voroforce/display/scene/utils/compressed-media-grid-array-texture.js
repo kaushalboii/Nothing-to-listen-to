@@ -226,6 +226,9 @@ export class CompressedMediaGridArrayTexture extends Texture {
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false)
         gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false)
         gl.pixelStorei(gl.UNPACK_ALIGNMENT, 4)
+        this.glState.flipY = false
+        this.glState.premultiplyAlpha = false
+        this.glState.unpackAlignment = 4
 
         let success = false
         try {

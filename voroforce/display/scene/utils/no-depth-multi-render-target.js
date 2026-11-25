@@ -73,6 +73,11 @@ export class NoDepthMultiRenderTarget {
     // For multi-render targets shader access
     if (drawBuffers.length > 1) this.gl.renderer.drawBuffers(drawBuffers)
 
+    const status = this.gl.checkFramebufferStatus(this.target)
+    if (status !== this.gl.FRAMEBUFFER_COMPLETE) {
+      console.warn('[Voroforce] Framebuffer incomplete:', status)
+    }
+
     this.gl.renderer.bindFramebuffer({ target: this.target })
   }
 

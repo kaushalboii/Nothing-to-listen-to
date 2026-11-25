@@ -31,7 +31,12 @@ export const readPixelsAsync = (
   gl.bufferData(gl.PIXEL_PACK_BUFFER, buffer.byteLength, gl.STREAM_READ)
   gl.readPixels(x, y, width, height, format, type, 0)
   const sync = gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0)
-  if (!sync) return null
+  if (!sync) {
+    gl.bindBuffer(gl.PIXEL_PACK_BUFFER, null)
+    gl.deleteBuffer(bufpak)
+    gl.readPixels(x, y, width, height, format, type, buffer)
+    return Promise.resolve(buffer)
+  }
   gl.flush()
   return clientWaitAsync(gl, sync, 0, 10).then(() => {
     gl.deleteSync(sync)

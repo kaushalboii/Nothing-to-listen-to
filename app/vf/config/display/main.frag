@@ -1,6 +1,7 @@
 #version 300 es
 
 precision highp float;
+precision highp int;
 
 #define PI 3.14159265359
 #define TAU 2.0 * PI

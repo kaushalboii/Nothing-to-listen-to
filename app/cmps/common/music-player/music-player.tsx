@@ -78,6 +78,12 @@ export const MusicPlayer = () => {
       return
     }
 
+    if (activeTrack.audioUrl) {
+      setAudioUrl(activeTrack.audioUrl)
+      setStreamMode('audio')
+      return
+    }
+
     const controller = new AbortController()
     setStreamMode('resolving')
     setAudioUrl(null)
@@ -105,6 +111,7 @@ export const MusicPlayer = () => {
     activeTrack?.title,
     activeTrack?.artist,
     activeTrack?.videoId,
+    activeTrack?.audioUrl,
     playlistIndex,
   ])
 

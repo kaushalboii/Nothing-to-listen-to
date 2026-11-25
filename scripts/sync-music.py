@@ -23,6 +23,8 @@ Dynamic Music Ingestion & Streaming Platform Verifier for Nothing to Listen To
 import sys
 import os
 import json
+import base64
+import html
 import urllib.request
 import urllib.parse
 import re
@@ -794,6 +796,102 @@ def main():
         final_records.append(r_copy)
 
     log(f"Total curated catalog size: {len(final_records)} (Exact 216 Voroforce grid)")
+
+    # 7c. Enrich missing direct ad-free CDN audio URLs via official catalog lookup
+    key_hex = b"38346591".hex()
+    noise_words = {"cover", "karaoke", "ringtone", "instrumental", "lofi", "lo-fi", "slowed", "reverb", "8d", "mashup", "remix"}
+
+    def decrypt_jiosaavn_url(enc_b64):
+        if not enc_b64:
+            return None
+        try:
+            raw = base64.b64decode(enc_b64)
+            for extra in (["-provider", "legacy", "-provider", "default"], []):
+                p = subprocess.run(["openssl", "enc", "-des-ecb", "-d", "-K", key_hex, *extra], input=raw, capture_output=True)
+                if p.returncode == 0 and p.stdout:
+                    return p.stdout.decode("utf-8", errors="ignore").strip()
+        except Exception:
+            pass
+        return None
+
+    def clean_song_text(val):
+        val = html.unescape(val or "")
+        val = re.sub(r"\s*\([^)]*\)", " ", val)
+        val = re.sub(r"\s*\[[^\]]*\]", " ", val)
+        val = re.sub(r"\s*[-–|]\s*(telugu|tamil|hindi|malayalam|kannada|punjabi|official).*$", "", val, flags=re.I)
+        return re.sub(r"\s+", " ", val).strip()
+
+    def tokenize_song_text(val):
+        return [w for w in re.sub(r"[^a-z0-9\s]", " ", clean_song_text(val).lower()).split() if len(w) > 1]
+
+    def resolve_record_audio(rec):
+        if rec.get("audio_url"):
+            return rec
+        title = rec.get("title", "")
+        artist = rec.get("artist", "")
+        c_title = clean_song_text(title)
+        p_artist = clean_song_text(re.split(r"[,&]", artist)[0])
+        t_tokens = tokenize_song_text(title)
+        a_tokens = tokenize_song_text(artist)
+        if not t_tokens:
+            return rec
+        for q in [x for x in [f"{c_title} {p_artist}".strip(), c_title] if x]:
+            try:
+                api_url = "https://www.jiosaavn.com/api.php?__call=search.getResults&_format=json&_marker=0&api_version=4&ctx=web6dot0&n=8&p=1&q=" + urllib.parse.quote(q)
+                req = urllib.request.Request(api_url, headers={"User-Agent": HEADERS["User-Agent"]})
+                with urllib.request.urlopen(req, timeout=6) as resp:
+                    results = json.loads(resp.read().decode()).get("results", [])
+            except Exception:
+                results = []
+            if not results:
+                continue
+            best_score, best_url = -1, None
+            for item in results:
+                mi = item.get("more_info") or {}
+                enc = mi.get("encrypted_media_url")
+                if not enc:
+                    continue
+                cand_raw = html.unescape(item.get("title", ""))
+                cand_clean = clean_song_text(cand_raw).lower()
+                cand_t = tokenize_song_text(cand_raw)
+                t_overlap = sum(1 for t in t_tokens if t in cand_t)
+                if t_overlap == 0:
+                    continue
+                artist_map = mi.get("artistMap") or {}
+                cand_artists = " ".join(a.get("name", "") for a in (artist_map.get("primary_artists") or []) + (artist_map.get("artists") or []))
+                cand_a = tokenize_song_text(cand_artists)
+                a_overlap = sum(1 for a in a_tokens if a in cand_a)
+                if len(t_tokens) == 1 and a_tokens and a_overlap == 0:
+                    continue
+                score = t_overlap * 2 + a_overlap * 3
+                if cand_clean == c_title.lower():
+                    score += 5
+                elif c_title.lower() in cand_clean or cand_clean in c_title.lower():
+                    score += 2
+                for nw in noise_words:
+                    if nw in cand_clean and nw not in c_title.lower():
+                        score -= 4
+                if score < (4 if (a_tokens and a_overlap == 0) else 2):
+                    continue
+                dec = decrypt_jiosaavn_url(enc)
+                if not dec or not dec.startswith("http"):
+                    continue
+                dec = dec.replace("http://", "https://")
+                dec = dec.replace("_96.mp4", "_320.mp4" if str(mi.get("320kbps")).lower() == "true" else "_160.mp4")
+                if score > best_score:
+                    best_score, best_url = score, dec
+            if best_url:
+                rec["audio_url"] = best_url
+                for tr in rec.get("tracks", []):
+                    if not tr.get("audioUrl"):
+                        tr["audioUrl"] = best_url
+                break
+        return rec
+
+    with ThreadPoolExecutor(max_workers=10) as audio_ex:
+        final_records = list(audio_ex.map(resolve_record_audio, final_records))
+    enriched_count = sum(1 for r in final_records if r.get("audio_url"))
+    log(f"Enriched {enriched_count}/{len(final_records)} songs with direct ad-free CDN audio URLs")
 
     # 8. Save JSON file & Sync Status
     with open(JSON_OUTPUT, "w", encoding="utf-8") as f:

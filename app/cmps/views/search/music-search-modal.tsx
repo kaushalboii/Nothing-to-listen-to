@@ -210,13 +210,16 @@ export const MusicSearchModal = () => {
 
   const handlePlayDirect = (e: React.MouseEvent, record: any) => {
     e.stopPropagation()
-    const firstTrack = record.tracks?.[0]?.title ?? record.title
+    const firstTrack = record.tracks?.[0]
+    const firstTitle = firstTrack?.title ?? record.title
     playTrack({
-      title: firstTrack,
+      title: firstTitle,
       artist: record.artist,
       albumTitle: record.title,
-      videoId: record.youtube_id,
-      query: `${record.artist} ${firstTrack}`,
+      cover: record.artwork || record.poster_path,
+      videoId: firstTrack?.videoId || record.youtube_id,
+      audioUrl: firstTrack?.audioUrl || record.audio_url,
+      query: `${record.artist} ${firstTitle}`,
     })
     handleSelectRecord(record)
   }

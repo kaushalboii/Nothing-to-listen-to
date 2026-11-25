@@ -104,7 +104,8 @@ export const Intro = () => {
           >
             <Button
               size='lg'
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation()
                 const state = store.getState()
                 state.setDeviceClass(DEVICE_CLASS.mobile)
                 state.setPreset(VOROFORCE_PRESET.mobile)

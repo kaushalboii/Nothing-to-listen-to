@@ -4,6 +4,8 @@ export interface TrackItem {
   number: number
   title: string
   duration: string
+  videoId?: string
+  audioUrl?: string
 }
 
 export type FilmData = Record<string, any>
@@ -27,6 +29,7 @@ export class Film {
   spotifyId?: string
   appleMusicId?: string
   youtubeId?: string
+  audioUrl?: string
   language?: string
   era?: string
 
@@ -56,6 +59,7 @@ export class Film {
     this.spotifyId = data.spotify_id ? String(data.spotify_id) : undefined
     this.appleMusicId = data.apple_music_id ? String(data.apple_music_id) : undefined
     this.youtubeId = data.youtube_id ? String(data.youtube_id) : undefined
+    this.audioUrl = data.audio_url ? String(data.audio_url) : undefined
     this.language = data.language ? String(data.language) : undefined
     this.era = data.era ? String(data.era) : undefined
   }

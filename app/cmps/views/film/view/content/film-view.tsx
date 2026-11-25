@@ -187,18 +187,21 @@ export const FilmView = ({
                 <Button
                   size='sm'
                   onClick={() => {
-                    const firstTrack = film.tracks?.[0]?.title ?? film.title
+                    const firstTrack = film.tracks?.[0]
+                    const firstTitle = firstTrack?.title ?? film.title
                     store.getState().playTrack({
-                      title: firstTrack,
+                      title: firstTitle,
                       artist: film.artist,
                       albumTitle: film.title,
-                      videoId: film.youtubeId,
-                      query: `${film.artist} ${firstTrack}`,
+                      cover: film.poster,
+                      videoId: firstTrack?.videoId || film.youtubeId,
+                      audioUrl: firstTrack?.audioUrl || film.audioUrl,
+                      query: `${film.artist} ${firstTitle}`,
                     })
                   }}
                   className='cursor-pointer gap-2 font-bold transition-all shadow-md bg-red-600 hover:bg-red-700 text-white'
                 >
-                  <Play className='size-4 fill-white' /> Stream on YouTube
+                  <Play className='size-4 fill-white' /> Play Song
                 </Button>
               </div>
             </div>
@@ -237,7 +240,9 @@ export const FilmView = ({
                           title: track.title,
                           artist: film.artist,
                           albumTitle: film.title,
-                          videoId: (track as any).videoId || film.youtubeId,
+                          cover: film.poster,
+                          videoId: track.videoId || film.youtubeId,
+                          audioUrl: track.audioUrl || film.audioUrl,
                           query: `${film.artist} ${track.title}`,
                         })
                       }}

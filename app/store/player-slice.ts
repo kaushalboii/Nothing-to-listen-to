@@ -7,6 +7,7 @@ export interface ActiveTrack {
   albumTitle: string
   cover?: string
   videoId?: string
+  audioUrl?: string
   query: string
 }
 

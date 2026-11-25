@@ -94,6 +94,12 @@ export const Favorites = () => {
         record?.tracks?.[0]?.videoId ||
         undefined
 
+      const audioUrl =
+        (film as any).audioUrl ||
+        record?.audio_url ||
+        record?.tracks?.[0]?.audioUrl ||
+        undefined
+
       return {
         key,
         film: {
@@ -101,32 +107,35 @@ export const Favorites = () => {
           artist: (film as any).artist || record?.artist,
         },
         videoId,
+        audioUrl,
       }
     })
   }, [favorites, localRecords])
 
   const handlePlayAll = () => {
     if (favoriteEntries.length === 0) return
-    const tracks: ActiveTrack[] = favoriteEntries.map(({ film, videoId }) => ({
+    const tracks: ActiveTrack[] = favoriteEntries.map(({ film, videoId, audioUrl }) => ({
       id: film.tmdbId,
       title: film.title,
       artist: (film as any).artist ?? 'Various Artists',
       albumTitle: film.title,
       cover: film.poster,
       videoId,
+      audioUrl,
       query: `${(film as any).artist ?? ''} ${film.title}`.trim(),
     }))
     playPlaylist(tracks, 0)
   }
 
   const handlePlayOne = (index: number) => {
-    const tracks: ActiveTrack[] = favoriteEntries.map(({ film, videoId }) => ({
+    const tracks: ActiveTrack[] = favoriteEntries.map(({ film, videoId, audioUrl }) => ({
       id: film.tmdbId,
       title: film.title,
       artist: (film as any).artist ?? 'Various Artists',
       albumTitle: film.title,
       cover: film.poster,
       videoId,
+      audioUrl,
       query: `${(film as any).artist ?? ''} ${film.title}`.trim(),
     }))
     playPlaylist(tracks, index)

@@ -86,29 +86,16 @@ export interface JamCallbacks {
 const PEER_PREFIX = 'ntlt-v1-'
 
 /**
- * Multi-region STUN + Free Public TURN Relays.
- * Without TURN, WebRTC peer connections fail on mobile LTE/5G and symmetric NATs.
- * Port 80, 443, and 443 TCP bypass restrictive mobile carrier firewalls.
+ * High-reliability STUN servers for WebRTC NAT traversal.
+ * Twilio and Cloudflare STUN reliably generate srflx (server-reflexive) public candidates
+ * across cellular mobile data (Jio, Airtel, Vodafone, T-Mobile) and symmetric NATs.
  */
 export const RTC_ICE_SERVERS: RTCIceServer[] = [
-  // Google Public STUN
+  { urls: 'stun:global.stun.twilio.com:3478' },
+  { urls: 'stun:stun.cloudflare.com:3478' },
   { urls: 'stun:stun.l.google.com:19302' },
   { urls: 'stun:stun1.l.google.com:19302' },
   { urls: 'stun:stun2.l.google.com:19302' },
-  { urls: 'stun:stun3.l.google.com:19302' },
-  { urls: 'stun:stun4.l.google.com:19302' },
-  // Cloudflare Public STUN
-  { urls: 'stun:stun.cloudflare.com:3478' },
-  // Metered Free Public TURN Relays (UDP + TCP)
-  {
-    urls: [
-      'turn:relay.metered.ca:80',
-      'turn:relay.metered.ca:443',
-      'turn:relay.metered.ca:443?transport=tcp',
-    ],
-    username: 'openrelayproject',
-    credential: 'openrelayproject',
-  },
 ]
 
 const PEER_BROKER_CONFIG = {
@@ -337,16 +324,16 @@ export class JamSessionService {
     return new Promise<void>((resolve, reject) => {
       let isSettled = false
 
-      // 15-second timeout to prevent indefinite hanging
+      // 25-second timeout to allow full ICE candidate gathering across cellular networks
       const timeoutTimer = setTimeout(() => {
         if (!isSettled) {
           isSettled = true
           this.cleanup()
-          const errMsg = `Could not connect to room "${code}" (timed out after 15s). Please check that your friend has the room open and try again.`
+          const errMsg = `Could not connect to room "${code}". Make sure your friend has the room open with a new code and both of you have refreshed to the latest version.`
           this.emitStatus(errMsg)
           reject(new Error(errMsg))
         }
-      }, 15000)
+      }, 25000)
 
       const safeResolve = () => {
         if (!isSettled) {

@@ -1,4 +1,6 @@
 import type { StateCreator } from 'zustand'
+import { jamService } from '../services/jam-session'
+import { isRemoteTrackSyncActive } from './jam-slice'
 
 export interface ActiveTrack {
   id?: number
@@ -9,6 +11,19 @@ export interface ActiveTrack {
   videoId?: string
   audioUrl?: string
   query: string
+}
+
+function maybeBroadcastTrack(
+  track: ActiveTrack,
+  playlist?: ActiveTrack[],
+  playlistIndex?: number,
+) {
+  if (jamService.isConnected() && !isRemoteTrackSyncActive()) {
+    const role = jamService.getRole()
+    if (role === 'host' || jamService.getAllowGuestControl()) {
+      jamService.broadcastTrack(track, playlist, playlistIndex)
+    }
+  }
 }
 
 export interface PlayerSlice {
@@ -41,21 +56,25 @@ export const createPlayerSlice: StateCreator<
   setActiveTrack: (activeTrack) => set({ activeTrack }),
   setPlayerOpen: (playerOpen) => set({ playerOpen }),
   setIsMinimized: (isMinimized) => set({ isMinimized }),
-  playTrack: (track) =>
+  playTrack: (track) => {
+    maybeBroadcastTrack(track, [track], 0)
     set({
       activeTrack: track,
       playerOpen: true,
       isMinimized: false,
       playlist: [track],
       playlistIndex: 0,
-    }),
+    })
+  },
   playPlaylist: (tracks, startIndex = 0) => {
     if (!tracks || tracks.length === 0) return
     const validIndex = Math.max(0, Math.min(startIndex, tracks.length - 1))
+    const currentTrack = tracks[validIndex]
+    maybeBroadcastTrack(currentTrack, tracks, validIndex)
     set({
       playlist: tracks,
       playlistIndex: validIndex,
-      activeTrack: tracks[validIndex],
+      activeTrack: currentTrack,
       playerOpen: true,
       isMinimized: false,
     })
@@ -64,26 +83,37 @@ export const createPlayerSlice: StateCreator<
     const { playlist, playlistIndex } = get()
     if (!playlist || playlist.length <= 1) return
     const nextIdx = (playlistIndex + 1) % playlist.length
+    const nextItem = playlist[nextIdx]
+    maybeBroadcastTrack(nextItem, playlist, nextIdx)
     set({
       playlistIndex: nextIdx,
-      activeTrack: playlist[nextIdx],
+      activeTrack: nextItem,
     })
   },
   prevTrack: () => {
     const { playlist, playlistIndex } = get()
     if (!playlist || playlist.length <= 1) return
     const prevIdx = (playlistIndex - 1 + playlist.length) % playlist.length
+    const prevItem = playlist[prevIdx]
+    maybeBroadcastTrack(prevItem, playlist, prevIdx)
     set({
       playlistIndex: prevIdx,
-      activeTrack: playlist[prevIdx],
+      activeTrack: prevItem,
     })
   },
-  stopTrack: () =>
+  stopTrack: () => {
+    if (jamService.isConnected() && !isRemoteTrackSyncActive()) {
+      const role = jamService.getRole()
+      if (role === 'host' || jamService.getAllowGuestControl()) {
+        jamService.broadcastPause(0)
+      }
+    }
     set({
       activeTrack: null,
       playerOpen: false,
       playlist: [],
       playlistIndex: 0,
-    }),
+    })
+  },
 })
 

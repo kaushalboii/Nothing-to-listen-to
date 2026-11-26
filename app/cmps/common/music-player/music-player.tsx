@@ -7,6 +7,7 @@ import {
   Loader2,
   Pause,
   Play,
+  Radio,
   SkipBack,
   SkipForward,
   Volume2,
@@ -14,6 +15,7 @@ import {
   Youtube,
 } from 'lucide-react'
 import config from '../../../config'
+import { jamService } from '../../../services/jam-session'
 import { useShallowState } from '../../../store'
 import { cn } from '../../../utils/tw'
 import { Button } from '../../ui/button'
@@ -41,6 +43,14 @@ export const MusicPlayer = () => {
     playlistIndex,
     nextTrack,
     prevTrack,
+    isJamConnected,
+    jamRoomCode,
+    jamRole,
+    allowGuestControl,
+    jamLatency,
+    toggleJamModalOpen,
+    remoteReaction,
+    clearRemoteReaction,
   } = useShallowState((state) => ({
     activeTrack: state.activeTrack,
     playerOpen: state.playerOpen,
@@ -51,6 +61,14 @@ export const MusicPlayer = () => {
     playlistIndex: state.playlistIndex,
     nextTrack: state.nextTrack,
     prevTrack: state.prevTrack,
+    isJamConnected: state.isJamConnected,
+    jamRoomCode: state.jamRoomCode,
+    jamRole: state.jamRole,
+    allowGuestControl: state.allowGuestControl,
+    jamLatency: state.jamLatency,
+    toggleJamModalOpen: state.toggleJamModalOpen,
+    remoteReaction: state.remoteReaction,
+    clearRemoteReaction: state.clearRemoteReaction,
   }))
 
   const videoId =
@@ -66,6 +84,116 @@ export const MusicPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
+
+  // Listen Together (Jam) remote playback synchronization
+  useEffect(() => {
+    const handleRemotePlay = (e: Event) => {
+      const { currentTime: remoteTime, sentAt } = (e as CustomEvent).detail
+      const latencySec = sentAt ? Math.max(0, (Date.now() - sentAt) / 1000) : 0
+      const targetTime = remoteTime + latencySec
+
+      if (audioRef.current) {
+        if (Math.abs(audioRef.current.currentTime - targetTime) > 0.3) {
+          audioRef.current.currentTime = targetTime
+        }
+        void audioRef.current.play()
+      } else if (iframeRef.current?.contentWindow) {
+        try {
+          iframeRef.current.contentWindow.postMessage(
+            JSON.stringify({ event: 'command', func: 'seekTo', args: [targetTime, true] }),
+            '*',
+          )
+          iframeRef.current.contentWindow.postMessage(
+            JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
+            '*',
+          )
+        } catch (_) {}
+      }
+    }
+
+    const handleRemotePause = (e: Event) => {
+      const { currentTime: remoteTime } = (e as CustomEvent).detail
+      if (audioRef.current) {
+        audioRef.current.pause()
+        if (remoteTime !== undefined) {
+          audioRef.current.currentTime = remoteTime
+        }
+      } else if (iframeRef.current?.contentWindow) {
+        try {
+          iframeRef.current.contentWindow.postMessage(
+            JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }),
+            '*',
+          )
+        } catch (_) {}
+      }
+    }
+
+    const handleRemoteSeek = (e: Event) => {
+      const { currentTime: remoteTime } = (e as CustomEvent).detail
+      if (audioRef.current) {
+        audioRef.current.currentTime = remoteTime
+      }
+      setCurrentTime(remoteTime)
+      if (iframeRef.current?.contentWindow) {
+        try {
+          iframeRef.current.contentWindow.postMessage(
+            JSON.stringify({ event: 'command', func: 'seekTo', args: [remoteTime, true] }),
+            '*',
+          )
+        } catch (_) {}
+      }
+    }
+
+    const handleRemoteHeartbeat = (e: Event) => {
+      const { currentTime: remoteTime, isPlaying: remoteIsPlaying, sentAt } = (e as CustomEvent).detail
+      const latencySec = sentAt ? Math.max(0, (Date.now() - sentAt) / 1000) : 0
+      const expectedTime = remoteTime + (remoteIsPlaying ? latencySec : 0)
+
+      if (audioRef.current) {
+        const diff = Math.abs(audioRef.current.currentTime - expectedTime)
+        if (diff > 0.4) {
+          audioRef.current.currentTime = expectedTime
+        }
+        if (remoteIsPlaying && audioRef.current.paused) {
+          void audioRef.current.play()
+        } else if (!remoteIsPlaying && !audioRef.current.paused) {
+          audioRef.current.pause()
+        }
+      }
+    }
+
+    window.addEventListener('jam:play', handleRemotePlay)
+    window.addEventListener('jam:pause', handleRemotePause)
+    window.addEventListener('jam:seek', handleRemoteSeek)
+    window.addEventListener('jam:heartbeat', handleRemoteHeartbeat)
+
+    return () => {
+      window.removeEventListener('jam:play', handleRemotePlay)
+      window.removeEventListener('jam:pause', handleRemotePause)
+      window.removeEventListener('jam:seek', handleRemoteSeek)
+      window.removeEventListener('jam:heartbeat', handleRemoteHeartbeat)
+    }
+  }, [])
+
+  // Auto-clear reaction bubbles after 3s
+  useEffect(() => {
+    if (remoteReaction) {
+      const timer = setTimeout(() => {
+        clearRemoteReaction()
+      }, 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [remoteReaction, clearRemoteReaction])
+
+  // Broadcast host heartbeat every 2.5s while playing to keep listeners in sync
+  useEffect(() => {
+    if (!isJamConnected || jamRole !== 'host' || !isPlaying) return
+    const interval = setInterval(() => {
+      const time = audioRef.current?.currentTime ?? currentTime
+      jamService.broadcastHeartbeat(time, isPlaying)
+    }, 2500)
+    return () => clearInterval(interval)
+  }, [isJamConnected, jamRole, isPlaying, currentTime])
 
   // Resolve 100% ad-free direct audio stream first; fall back silently to YouTube only if unavailable
   useEffect(() => {
@@ -277,13 +405,21 @@ export const MusicPlayer = () => {
   const ytMusicUrl = `${config.youtubeMusicSearchUrl}${query}`
   const jiosaavnUrl = `${config.jiosaavnSearchUrl}${query}`
 
+  const canControlJam = !isJamConnected || jamRole === 'host' || allowGuestControl
+
   const togglePlayPause = () => {
     const audio = audioRef.current
     if (!audio) return
     if (audio.paused) {
       void audio.play()
+      if (isJamConnected && canControlJam) {
+        jamService.broadcastPlay(audio.currentTime)
+      }
     } else {
       audio.pause()
+      if (isJamConnected && canControlJam) {
+        jamService.broadcastPause(audio.currentTime)
+      }
     }
   }
 
@@ -296,6 +432,17 @@ export const MusicPlayer = () => {
           : 'bottom-2 sm:bottom-4 left-2 right-2 sm:left-4 sm:right-4 md:left-auto md:right-8 md:w-[480px] rounded-2xl bg-background/95 border border-border backdrop-blur-xl p-3 sm:p-4',
       )}
     >
+      {/* Partner Floating Reaction Notification */}
+      {remoteReaction && (
+        <div
+          key={remoteReaction.id}
+          className='pointer-events-none absolute -top-10 right-6 z-50 flex items-center gap-1.5 rounded-full border border-amber-500/40 bg-background/95 px-3 py-1 shadow-xl backdrop-blur-md animate-bounce'
+        >
+          <span className='text-lg leading-none'>{remoteReaction.emoji}</span>
+          <span className='text-[10px] font-bold text-amber-500'>Partner</span>
+        </div>
+      )}
+
       {/* Hidden native HTML5 audio element for seamless background & lockscreen playback */}
       {streamMode === 'audio' && audioUrl && (
         <audio
@@ -365,6 +512,19 @@ export const MusicPlayer = () => {
 
         {/* Action Controls */}
         <div className='flex items-center gap-1 shrink-0'>
+          {isJamConnected && (
+            <button
+              type='button'
+              onClick={toggleJamModalOpen}
+              className='flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-500 text-[10px] font-bold transition-colors cursor-pointer mr-1'
+              title={`In Jam Session (${jamRoomCode})${jamLatency ? ` • ${jamLatency}ms` : ''}`}
+            >
+              <Radio className='size-3 animate-pulse text-emerald-400' />
+              <span className='hidden sm:inline'>Synced</span>
+              <span>2/2</span>
+            </button>
+          )}
+
           {streamMode === 'audio' && (
             <Button
               size='icon'
@@ -466,6 +626,9 @@ export const MusicPlayer = () => {
               setCurrentTime(nextTime)
               if (audioRef.current) {
                 audioRef.current.currentTime = nextTime
+              }
+              if (isJamConnected && canControlJam) {
+                jamService.broadcastSeek(nextTime)
               }
             }}
             aria-label='Seek audio position'

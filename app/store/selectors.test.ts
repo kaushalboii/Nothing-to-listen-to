@@ -88,6 +88,26 @@ const createMockState = (overrides: Partial<StoreState> = {}): StoreState => ({
   prevTrack: () => {},
   stopTrack: () => {},
 
+  // Jam Slice defaults
+  jamModalOpen: false,
+  setJamModalOpen: () => {},
+  toggleJamModalOpen: () => {},
+  isJamConnected: false,
+  isJamConnecting: false,
+  jamRoomCode: null,
+  jamRole: null,
+  jamError: null,
+  setJamError: () => {},
+  jamLatency: null,
+  allowGuestControl: false,
+  setAllowGuestControl: () => {},
+  remoteReaction: null,
+  clearRemoteReaction: () => {},
+  createJamRoom: async () => '',
+  joinJamRoom: async () => {},
+  leaveJamRoom: () => {},
+  sendJamReaction: () => {},
+
   // Apply overrides
   ...overrides,
 })

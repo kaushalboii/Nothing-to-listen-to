@@ -1,4 +1,4 @@
-import { Disc3, GithubIcon, Heart, Info, Search, Settings } from 'lucide-react'
+import { Disc3, GithubIcon, Heart, Info, Radio, Search, Settings } from 'lucide-react'
 
 import { useShallowState } from '@/store'
 import config from '../../config'
@@ -17,6 +17,11 @@ export const Navbar = () => {
     toggleSearchOpen,
     favoritesOpen,
     toggleFavoritesOpen,
+    jamModalOpen,
+    toggleJamModalOpen,
+    isJamConnected,
+    isJamConnecting,
+    jamRoomCode,
     hasFavorites,
     canChangeTheme,
   } = useShallowState((state) => ({
@@ -28,6 +33,11 @@ export const Navbar = () => {
     toggleSearchOpen: state.toggleSearchOpen,
     favoritesOpen: state.favoritesOpen,
     toggleFavoritesOpen: state.toggleFavoritesOpen,
+    jamModalOpen: state.jamModalOpen,
+    toggleJamModalOpen: state.toggleJamModalOpen,
+    isJamConnected: state.isJamConnected,
+    isJamConnecting: state.isJamConnecting,
+    jamRoomCode: state.jamRoomCode,
     hasFavorites:
       state.userConfig.favorites &&
       Object.keys(state.userConfig.favorites).length > 0,
@@ -61,6 +71,38 @@ export const Navbar = () => {
       >
         <Search />
       </Button>
+
+      {/* Listen Together (Jam) Button */}
+      <Button
+        variant='ghost'
+        size='icon'
+        onClick={toggleJamModalOpen}
+        title={
+          isJamConnected
+            ? `In Jam Session (${jamRoomCode}) - 2/2 Synced`
+            : 'Listen Together with a Friend (Jam)'
+        }
+        className={cn(buttonClassnames, 'relative', {
+          'border border-emerald-500 bg-emerald-500/20 text-emerald-400': isJamConnected,
+          'border border-amber-500/70 bg-amber-500/10 text-amber-500':
+            isJamConnecting && !isJamConnected,
+          'border border-foreground': jamModalOpen && !isJamConnected,
+        })}
+      >
+        <Radio className={cn(isJamConnected && 'animate-pulse text-emerald-400')} />
+        {isJamConnected && (
+          <span className='absolute -top-0.5 -right-0.5 flex size-2'>
+            <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75' />
+            <span className='relative inline-flex size-2 rounded-full bg-emerald-500' />
+          </span>
+        )}
+        {isJamConnecting && !isJamConnected && (
+          <span className='absolute -top-0.5 -right-0.5 flex size-2'>
+            <span className='relative inline-flex size-2 rounded-full bg-amber-500 animate-pulse' />
+          </span>
+        )}
+      </Button>
+
       <Button
         variant='ghost'
         size='icon'

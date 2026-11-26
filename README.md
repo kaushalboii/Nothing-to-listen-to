@@ -29,6 +29,13 @@ Whether you are looking for classic rock legends, viral Bollywood melodies, expl
   - **K-Pop & Asian Hits**: BTS (*Dynamite*, *Butter*), BLACKPINK (*DDU-DU DDU-DU*, *How You Like That*), NewJeans (*Super Shy*, *OMG*, *Ditto*), Stray Kids, Jung Kook, YOASOBI (*Idol*), LiSA (*Gurenge*).
   - **Spanish & Latin**: Luis Fonsi (*Despacito*), Bad Bunny (*Tití Me Preguntó*, *Dákiti*), Shakira (*Waka Waka*, *Hips Don't Lie*, *Bzrp 53*), Rosalía, J Balvin.
 
+- **👥 Listen Together (Private Jam Session)**:
+  - Stream music simultaneously with a friend anywhere in the world in real-time sync via peer-to-peer WebRTC.
+  - **Zero Server Setup**: Works 100% client-side over mobile data or Wi-Fi across different networks.
+  - **Strict 2-User Capacity & Private Room Lock**: Generate a unique room code or 1-tap invite link; locks to 2 users max so unauthorized users cannot enter.
+  - **High-Precision Playback Sync**: Real-time play, pause, seek, and auto-drift compensation across native audio and YouTube playback.
+  - **Collaborative DJ & Live Reactions**: Host can enable shared song control and send instant live emoji reactions (❤️, 🔥, 🎵, ⚡).
+
 - **🎥 Ad-Free In-App YouTube Streaming**:
   - Embedded privacy-enhanced player (`youtube-nocookie.com`) with verified, active official music videos.
   - No broken "Video unavailable" errors.

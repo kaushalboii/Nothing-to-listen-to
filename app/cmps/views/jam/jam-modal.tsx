@@ -9,6 +9,7 @@ import {
   Lock,
   LogOut,
   Radio,
+  RefreshCw,
   Share2,
   Sparkles,
   Volume2,
@@ -376,6 +377,9 @@ export const JamModal = () => {
                         <Loader2 className='size-3.5 animate-spin text-amber-500' />
                         <span>Waiting for partner to join (1/2)...</span>
                       </div>
+                      <span className='text-[10px] text-muted-foreground/75'>
+                        Keep this tab open while your friend connects.
+                      </span>
                     </div>
 
                     {/* Share Action Buttons */}
@@ -497,9 +501,35 @@ export const JamModal = () => {
                   )}
                 </Button>
 
+                {/* Cancel Connecting Button */}
+                {isJamConnecting && (
+                  <Button
+                    type='button'
+                    variant='ghost'
+                    size='sm'
+                    onClick={leaveJamRoom}
+                    className='cursor-pointer text-muted-foreground text-xs hover:text-foreground'
+                  >
+                    Cancel Connection
+                  </Button>
+                )}
+
+                {/* Retry Button if an error occurred */}
+                {jamError && !isJamConnecting && (
+                  <Button
+                    type='button'
+                    variant='outline'
+                    size='sm'
+                    onClick={handleJoin}
+                    className='flex cursor-pointer items-center justify-center gap-2 border-amber-500/40 text-amber-500 text-xs hover:bg-amber-500/10'
+                  >
+                    <RefreshCw className='size-3.5' /> Retry Connection
+                  </Button>
+                )}
+
                 <p className='text-center text-[11px] text-muted-foreground'>
                   If your friend sent you an invite link, opening it will
-                  auto-connect you.
+                  auto-fill the room code.
                 </p>
               </form>
             )}

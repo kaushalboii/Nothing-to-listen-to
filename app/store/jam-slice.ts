@@ -45,6 +45,22 @@ export const createJamSlice: StateCreator<
         jamLatency: status.latency,
       })
     },
+    onPartnerConnected: () => {
+      const state = get()
+      // If host has an active track when partner joins, broadcast it immediately so both are in sync
+      if (state.jamRole === 'host' && state.activeTrack) {
+        const audioEl = document.querySelector('audio')
+        const currentTime = audioEl ? audioEl.currentTime : 0
+        const isPlaying = audioEl ? !audioEl.paused : false
+        jamService.broadcastTrack(
+          state.activeTrack,
+          state.playlist,
+          state.playlistIndex,
+          currentTime,
+          isPlaying,
+        )
+      }
+    },
     onRemoteTrack: (track, playlist, playlistIndex = 0) => {
       isApplyingRemoteTrack = true
       try {

@@ -100,18 +100,21 @@ const handleIntro = () => {
           dimensions.get('height') / 2 +
           (0.5 - Math.random()) * 0.05 * dimensions.get('height'),
       }
-    }, 3000)
-  }, 1000)
+    }, 200)
+  }, 100)
 }
 
 export const handleMode = () => {
   const { mode: initialMode, voroforce, config } = store.getState()
 
-  if (!voroforce?.loader || !voroforce?.ticker) return
+  if (!voroforce?.loader || !voroforce?.ticker) {
+    revealVoroforceContainer()
+    return
+  }
 
   const { loader, ticker } = voroforce
 
-  // Safety net: Guarantee the loading veil lifts even on slow or constrained mobile devices
+  // Fast safety net: Guarantee the loading veil lifts even on slow or constrained mobile devices
   const safetyTimeout = setTimeout(() => {
     revealVoroforceContainer()
     const { playedIntro, setPlayedIntro, voroforce: vf } = store.getState()
@@ -127,7 +130,7 @@ export const handleMode = () => {
       setPlayedIntro(true)
       handleModeChange(VOROFORCE_MODE.preview)
     }
-  }, 2500)
+  }, 500)
 
   if (initialMode === VOROFORCE_MODE.intro) {
     if (config.media.enabled && loader.loadingMediaLayers !== 0) {

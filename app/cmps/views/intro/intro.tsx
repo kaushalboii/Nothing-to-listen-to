@@ -3,12 +3,20 @@ import { store, useShallowState } from '../../../store'
 import { isDefined } from '../../../utils/misc'
 import { cn } from '../../../utils/tw'
 import { VOROFORCE_MODE } from '../../../vf'
-import { handleModeChange } from '../../../vf/integrations/mode'
-import { CELL_LIMIT, DEVICE_CLASS, OBSCURE_VISUAL_DEFECTS, VOROFORCE_PRESET } from '../../../vf/consts'
-import { Button } from '../../ui/button'
+import {
+  CELL_LIMIT,
+  DEVICE_CLASS,
+  OBSCURE_VISUAL_DEFECTS,
+  VOROFORCE_PRESET,
+} from '../../../vf/consts'
+import {
+  handleModeChange,
+  revealVoroforceContainer,
+} from '../../../vf/integrations/mode'
 import { CoreSettingsWidget } from '../../common/core-settings/core-settings-widget'
 import { DeviceClassWidget } from '../../common/device-class/device-class-widget'
 import { FadeTransition } from '../../common/fade-transition'
+import { Button } from '../../ui/button'
 
 const isMobileDevice =
   typeof window !== 'undefined' &&
@@ -25,22 +33,38 @@ export const Intro = () => {
   const [initialPreset] = useState(preset)
 
   useEffect(() => {
-    if (isMobileDevice) {
-      const state = store.getState()
-      if (!isDefined(state.deviceClass)) {
-        state.setDeviceClass(DEVICE_CLASS.mobile)
-      }
-      if (!state.preset || state.preset === VOROFORCE_PRESET.minimal) {
-        state.setPreset(VOROFORCE_PRESET.mobile)
-      }
-      if (
-        !state.cellLimit ||
-        state.cellLimit === CELL_LIMIT.min ||
-        state.cellLimit > CELL_LIMIT.xs
-      ) {
-        state.setCellLimit(CELL_LIMIT.xs)
-      }
+    const state = store.getState()
+    if (!isDefined(state.deviceClass)) {
+      state.setDeviceClass(
+        isMobileDevice ? DEVICE_CLASS.mobile : DEVICE_CLASS.mid,
+      )
     }
+    if (!state.preset || state.preset === VOROFORCE_PRESET.minimal) {
+      state.setPreset(
+        isMobileDevice ? VOROFORCE_PRESET.mobile : VOROFORCE_PRESET.minimal,
+      )
+    }
+    if (
+      !state.cellLimit ||
+      state.cellLimit === CELL_LIMIT.min ||
+      (isMobileDevice && state.cellLimit > CELL_LIMIT.xs)
+    ) {
+      state.setCellLimit(isMobileDevice ? CELL_LIMIT.xs : CELL_LIMIT.sm)
+    }
+
+    // Auto-advance within 500ms so visitors never experience a stalled black screen
+    const timer = setTimeout(
+      () => {
+        revealVoroforceContainer()
+        if (!store.getState().playedIntro) {
+          store.getState().setPlayedIntro(true)
+          handleModeChange(VOROFORCE_MODE.preview)
+        }
+      },
+      isMobileDevice ? 300 : 500,
+    )
+
+    return () => clearTimeout(timer)
   }, [])
 
   const visible = useIntroVisible()
@@ -48,15 +72,17 @@ export const Intro = () => {
   return (
     <FadeTransition
       className={cn(
-        'fixed inset-x-0 top-0 z-60 flex h-dvh w-full justify-center bg-background px-12 duration-700',
+        'fixed inset-x-0 top-0 z-60 flex h-dvh w-full justify-center bg-background px-12 duration-500',
         {
           '!duration-0': visible,
+          'pointer-events-none invisible opacity-0': !visible,
         },
       )}
+      notEnteredClassName='pointer-events-none'
       visible={visible}
       transitionOptions={{
         initialEntered: visible,
-        timeout: visible ? 0 : 700,
+        timeout: visible ? 0 : 500,
       }}
     >
       <div className='flex h-full flex-col items-stretch'>
@@ -83,7 +109,7 @@ export const Intro = () => {
               <span className='absolute bottom-0 left-full after:animate-ellipsis' />
             </span>
           </h1>
-          <p className='mt-3 text-sm text-muted-foreground font-medium'>
+          <p className='mt-3 font-medium text-muted-foreground text-sm'>
             Spin through the timeless albums that defined generations.
           </p>
         </div>
@@ -99,7 +125,7 @@ export const Intro = () => {
           {/* Mobile Instant Start Action */}
           <div
             className={cn(
-              'flex flex-col items-center gap-2.5 w-full max-w-xs mx-auto pb-6 animate-in fade-in duration-500',
+              'fade-in mx-auto flex w-full max-w-xs animate-in flex-col items-center gap-2.5 pb-6 duration-500',
               !isMobileDevice && 'md:hidden',
             )}
           >
@@ -114,11 +140,11 @@ export const Intro = () => {
                 state.setPlayedIntro(true)
                 handleModeChange(VOROFORCE_MODE.preview)
               }}
-              className='w-full h-12 rounded-xl text-sm font-bold bg-primary text-primary-foreground shadow-lg shadow-primary/20 cursor-pointer active:scale-95 transition-transform'
+              className='h-12 w-full cursor-pointer rounded-xl bg-primary font-bold text-primary-foreground text-sm shadow-lg shadow-primary/20 transition-transform active:scale-95'
             >
               Start Listening
             </Button>
-            <span className='text-[11px] text-muted-foreground text-center font-medium'>
+            <span className='text-center font-medium text-[11px] text-muted-foreground'>
               Tap any vinyl album to stream music
             </span>
           </div>
@@ -154,21 +180,21 @@ export const Intro = () => {
 
 const MoviesDatasetLicenseInfo = () => (
   <span className='inline-flex text-xxs text-zinc-600 leading-none dark:text-zinc-300'>
-    An interactive WebGL galaxy celebrating 60+ years of legendary vinyl & recorded music.
+    An interactive WebGL galaxy celebrating 60+ years of legendary vinyl &
+    recorded music.
   </span>
 )
 
 const DEFAULT_REVEAL_SCREEN_DELAY = 1200
 const DEFAULT_PREVIEW_MODE_REVEAL_SCREEN_DELAY = 600
 
-let hideScreen =
-  OBSCURE_VISUAL_DEFECTS &&
-  (!isMobileDevice || !store.getState().playedIntro || !store.getState().preset)
+let hideScreen = false
 
 function useIntroVisible() {
-  const { introRequired, voroforceMediaPreloaded, revealScreenDelay } =
+  const { playedIntro, preset, voroforceMediaPreloaded, revealScreenDelay } =
     useShallowState((state) => ({
-      introRequired: !state.playedIntro || !state.preset,
+      playedIntro: state.playedIntro,
+      preset: state.preset,
       voroforceMediaPreloaded: state.voroforceMediaPreloaded,
       revealScreenDelay: state.config?.revealScreenDelay
         ? (state.config.revealScreenDelay.modes?.[state.mode] ??
@@ -178,13 +204,28 @@ function useIntroVisible() {
           : DEFAULT_REVEAL_SCREEN_DELAY,
     }))
 
+  const [, forceUpdate] = useReducer((x) => x + 1, 0)
+
+  // Fail-safe: Ensure screen is revealed within 500ms max under all conditions
+  useEffect(() => {
+    const safetyTimer = setTimeout(
+      () => {
+        hideScreen = false
+        if (!store.getState().voroforceMediaPreloaded) {
+          revealVoroforceContainer()
+        }
+        forceUpdate()
+      },
+      isMobileDevice ? 250 : 500,
+    )
+    return () => clearTimeout(safetyTimer)
+  }, [])
+
   if (OBSCURE_VISUAL_DEFECTS) {
-    const [, forceUpdate] = useReducer((x) => x + 1, 0)
-    // biome-ignore lint/correctness/useExhaustiveDependencies: intentional
     useEffect(() => {
       const initialDelay = isMobileDevice
-        ? Math.min(revealScreenDelay, 250)
-        : revealScreenDelay
+        ? Math.min(revealScreenDelay, 150)
+        : Math.min(revealScreenDelay, 300)
       const timeoutId = setTimeout(() => {
         hideScreen = false
         forceUpdate()
@@ -193,23 +234,11 @@ function useIntroVisible() {
     }, [revealScreenDelay])
 
     useEffect(() => {
-      if (isMobileDevice) {
-        const mobileSafetyTimer = setTimeout(() => {
-          hideScreen = false
-          forceUpdate()
-        }, 1500)
-        return () => clearTimeout(mobileSafetyTimer)
-      }
-    }, [])
-
-    useEffect(() => {
       let timeout: NodeJS.Timeout
       let lastWidth = typeof window !== 'undefined' ? window.innerWidth : 0
 
       const onResize = () => {
         const currentWidth = window.innerWidth
-        // On mobile and touch devices, scrolling triggers window resize due to dynamic address bar expand/collapse.
-        // Never obscure the screen on mobile or when width hasn't significantly changed (>= 50px).
         if (isMobileDevice || Math.abs(currentWidth - lastWidth) < 50) {
           lastWidth = currentWidth
           return
@@ -221,14 +250,20 @@ function useIntroVisible() {
         timeout = setTimeout(() => {
           hideScreen = false
           forceUpdate()
-        }, Math.min(revealScreenDelay, 300))
+        }, 150)
       }
       window.addEventListener('resize', onResize)
       return () => {
         window.removeEventListener('resize', onResize)
       }
-    }, [revealScreenDelay])
+    }, [])
   }
 
+  // If intro has already been played or preset exists, intro is not visible
+  if (playedIntro && preset) {
+    return hideScreen
+  }
+
+  const introRequired = !playedIntro || !preset
   return introRequired || hideScreen || !voroforceMediaPreloaded
 }

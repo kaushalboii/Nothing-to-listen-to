@@ -65,6 +65,7 @@ export interface JamCallbacks {
     error: string | null
     latency: number | null
   }) => void
+  onPartnerConnected?: () => void
   onRemoteTrack?: (
     track: ActiveTrack,
     playlist?: ActiveTrack[],
@@ -83,12 +84,52 @@ export interface JamCallbacks {
 }
 
 const PEER_PREFIX = 'ntlt-v1-'
-const STUN_CONFIG = {
-  iceServers: [
-    { urls: 'stun:stun.l.google.com:19302' },
-    { urls: 'stun:stun1.l.google.com:19302' },
-    { urls: 'stun:stun2.l.google.com:19302' },
-  ],
+
+/**
+ * Multi-region STUN + Free Public TURN Relays.
+ * Without TURN, WebRTC peer connections fail on mobile LTE/5G and symmetric NATs.
+ * Port 80, 443, and 443 TCP bypass restrictive mobile carrier firewalls.
+ */
+export const RTC_ICE_SERVERS: RTCIceServer[] = [
+  // Google Public STUN
+  { urls: 'stun:stun.l.google.com:19302' },
+  { urls: 'stun:stun1.l.google.com:19302' },
+  { urls: 'stun:stun2.l.google.com:19302' },
+  { urls: 'stun:stun3.l.google.com:19302' },
+  { urls: 'stun:stun4.l.google.com:19302' },
+  // Cloudflare Public STUN
+  { urls: 'stun:stun.cloudflare.com:3478' },
+  // Metered Free Public TURN Relays (UDP + TCP)
+  {
+    urls: [
+      'turn:relay.metered.ca:80',
+      'turn:relay.metered.ca:443',
+      'turn:relay.metered.ca:443?transport=tcp',
+    ],
+    username: 'openrelayproject',
+    credential: 'openrelayproject',
+  },
+]
+
+const PEER_BROKER_CONFIG = {
+  host: '0.peerjs.com',
+  port: 443,
+  path: '/',
+  secure: true,
+  pingInterval: 5000,
+  config: {
+    iceServers: RTC_ICE_SERVERS,
+    sdpSemantics: 'unified-plan',
+  },
+  debug: 1,
+}
+
+function resolvePeerConstructor(): typeof Peer {
+  const mod = Peer as unknown as { default?: typeof Peer; Peer?: typeof Peer }
+  if (typeof Peer === 'function') return Peer
+  if (typeof mod.default === 'function') return mod.default
+  if (typeof mod.Peer === 'function') return mod.Peer
+  return Peer
 }
 
 export class JamSessionService {
@@ -101,6 +142,33 @@ export class JamSessionService {
   private isConnecting = false
   private latency: number | null = null
   private allowGuestControl = false
+  private visibilityListenerAttached = false
+
+  constructor() {
+    this.setupVisibilityListeners()
+  }
+
+  private setupVisibilityListeners() {
+    if (typeof document === 'undefined' || this.visibilityListenerAttached)
+      return
+    this.visibilityListenerAttached = true
+
+    const handleReconnectOnVisible = () => {
+      if (document.visibilityState === 'visible') {
+        const activePeer = this.peer
+        if (activePeer?.disconnected && !activePeer.destroyed) {
+          try {
+            activePeer.reconnect()
+          } catch (_) {}
+        }
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleReconnectOnVisible)
+    if (typeof window !== 'undefined') {
+      window.addEventListener('focus', handleReconnectOnVisible)
+    }
+  }
 
   public setCallbacks(callbacks: JamCallbacks) {
     this.callbacks = { ...this.callbacks, ...callbacks }
@@ -176,19 +244,32 @@ export class JamSessionService {
     this.emitStatus()
 
     const hostPeerId = this.getPeerIdFromCode(code)
+    const PeerClass = resolvePeerConstructor()
 
     return new Promise<string>((resolve, reject) => {
+      let isSettled = false
+
       try {
-        const peer = new Peer(hostPeerId, {
-          config: STUN_CONFIG,
-          debug: 1,
-        })
+        const peer = new PeerClass(hostPeerId, PEER_BROKER_CONFIG)
         this.peer = peer
 
         peer.on('open', () => {
-          this.isConnecting = true
+          if (isSettled) return
+          isSettled = true
+          // Host is created and now waiting for partner; not "connecting"
+          this.isConnecting = false
           this.emitStatus()
           resolve(code)
+        })
+
+        peer.on('disconnected', () => {
+          // Auto-reconnect if signaling connection was briefly lost
+          const activePeer = this.peer
+          if (activePeer && !activePeer.destroyed) {
+            try {
+              activePeer.reconnect()
+            } catch (_) {}
+          }
         })
 
         // Incoming connection from guest
@@ -210,22 +291,29 @@ export class JamSessionService {
         })
 
         peer.on('error', (err: { type?: string; message?: string }) => {
-          // If peer ID is already taken, try with another code
-          if (err.type === 'unavailable-id') {
+          if (!isSettled) {
+            isSettled = true
             this.cleanup()
-            reject(
-              new Error(
-                `Room code ${code} is already in use. Please try a different code.`,
-              ),
-            )
+            if (err.type === 'unavailable-id') {
+              reject(
+                new Error(
+                  `Room code ${code} is currently in use or closing. Please try a different code or wait 10 seconds.`,
+                ),
+              )
+            } else {
+              this.emitStatus(err.message || 'Connection error')
+              reject(err)
+            }
           } else {
-            this.emitStatus(err.message || 'Connection error')
-            reject(err)
+            this.emitStatus(err.message || 'Broker connection warning')
           }
         })
       } catch (err: unknown) {
-        this.cleanup()
-        reject(err)
+        if (!isSettled) {
+          isSettled = true
+          this.cleanup()
+          reject(err)
+        }
       }
     })
   }
@@ -244,13 +332,42 @@ export class JamSessionService {
 
     const hostPeerId = this.getPeerIdFromCode(code)
     const guestPeerId = `${PEER_PREFIX}guest-${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 6)}`
+    const PeerClass = resolvePeerConstructor()
 
     return new Promise<void>((resolve, reject) => {
+      let isSettled = false
+
+      // 15-second timeout to prevent indefinite hanging
+      const timeoutTimer = setTimeout(() => {
+        if (!isSettled) {
+          isSettled = true
+          this.cleanup()
+          const errMsg = `Could not connect to room "${code}" (timed out after 15s). Please check that your friend has the room open and try again.`
+          this.emitStatus(errMsg)
+          reject(new Error(errMsg))
+        }
+      }, 15000)
+
+      const safeResolve = () => {
+        if (!isSettled) {
+          isSettled = true
+          clearTimeout(timeoutTimer)
+          resolve()
+        }
+      }
+
+      const safeReject = (err: Error) => {
+        if (!isSettled) {
+          isSettled = true
+          clearTimeout(timeoutTimer)
+          this.cleanup()
+          this.emitStatus(err.message)
+          reject(err)
+        }
+      }
+
       try {
-        const peer = new Peer(guestPeerId, {
-          config: STUN_CONFIG,
-          debug: 1,
-        })
+        const peer = new PeerClass(guestPeerId, PEER_BROKER_CONFIG)
         this.peer = peer
 
         peer.on('open', () => {
@@ -258,29 +375,59 @@ export class JamSessionService {
             reliable: true,
           })
 
-          this.setupConnection(conn, () => {
-            resolve()
-          })
+          this.setupConnection(conn, safeResolve, safeReject)
+        })
+
+        peer.on('disconnected', () => {
+          const activePeer = this.peer
+          if (activePeer && !activePeer.destroyed) {
+            try {
+              activePeer.reconnect()
+            } catch (_) {}
+          }
         })
 
         peer.on('error', (err: { type?: string; message?: string }) => {
-          this.cleanup()
           const errMsg =
             err.type === 'peer-unavailable'
-              ? `Room ${code} was not found. Please check the code and make sure the host has the room open.`
+              ? `Room ${code} was not found. Please verify the code and make sure the host has the room open on their screen.`
               : err.message || 'Failed to connect to room'
-          this.emitStatus(errMsg)
-          reject(new Error(errMsg))
+          safeReject(new Error(errMsg))
         })
       } catch (err: unknown) {
-        this.cleanup()
-        reject(err)
+        safeReject(
+          err instanceof Error
+            ? err
+            : new Error('Failed to initialize connection service'),
+        )
       }
     })
   }
 
-  private setupConnection(conn: DataConnection, onReady?: () => void) {
+  private setupConnection(
+    conn: DataConnection,
+    onReady?: () => void,
+    onError?: (err: Error) => void,
+  ) {
     this.partnerConn = conn
+
+    // Monitor underlying RTCPeerConnection states
+    const pc = conn.peerConnection
+    if (pc) {
+      pc.addEventListener('iceconnectionstatechange', () => {
+        if (pc.iceConnectionState === 'failed') {
+          this.emitStatus('Network connection failed. Retrying...')
+          onError?.(
+            new Error('WebRTC connection failed (firewall or NAT block).'),
+          )
+        }
+      })
+      pc.addEventListener('connectionstatechange', () => {
+        if (pc.connectionState === 'failed') {
+          onError?.(new Error('Connection dropped.'))
+        }
+      })
+    }
 
     conn.on('open', () => {
       this.isConnecting = false
@@ -293,8 +440,12 @@ export class JamSessionService {
           type: 'PERMISSIONS',
           allowGuestControl: this.allowGuestControl,
         })
+      } else {
+        // Guest sends immediate ping to calculate latency
+        this.send({ type: 'PING', sentAt: Date.now() })
       }
 
+      this.callbacks.onPartnerConnected?.()
       onReady?.()
     })
 
@@ -310,7 +461,9 @@ export class JamSessionService {
     })
 
     conn.on('error', (err) => {
-      this.emitStatus(err.message || 'Connection error')
+      const errMsg = err?.message || 'Connection error'
+      this.emitStatus(errMsg)
+      onError?.(new Error(errMsg))
     })
   }
 

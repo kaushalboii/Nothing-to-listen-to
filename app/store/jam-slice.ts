@@ -27,6 +27,7 @@ export interface JamSlice {
 }
 
 let reactionCounter = 0
+let clearReactionTimer: ReturnType<typeof setTimeout> | null = null
 let isApplyingRemoteTrack = false
 
 export const createJamSlice: StateCreator<
@@ -136,9 +137,13 @@ export const createJamSlice: StateCreator<
     },
     onRemoteReaction: (emoji) => {
       reactionCounter++
+      if (clearReactionTimer) clearTimeout(clearReactionTimer)
       set({
         remoteReaction: { emoji, id: reactionCounter },
       })
+      clearReactionTimer = setTimeout(() => {
+        set({ remoteReaction: null })
+      }, 2500)
     },
     onPermissionsChange: (allowGuestControl) => {
       set({ allowGuestControl })
@@ -199,6 +204,7 @@ export const createJamSlice: StateCreator<
 
     leaveJamRoom: () => {
       jamService.cleanup()
+      if (clearReactionTimer) clearTimeout(clearReactionTimer)
       set({
         isJamConnected: false,
         isJamConnecting: false,
@@ -216,9 +222,13 @@ export const createJamSlice: StateCreator<
       jamService.broadcastReaction(emoji)
       // Also show locally
       reactionCounter++
+      if (clearReactionTimer) clearTimeout(clearReactionTimer)
       set({
         remoteReaction: { emoji, id: reactionCounter },
       })
+      clearReactionTimer = setTimeout(() => {
+        set({ remoteReaction: null })
+      }, 2500)
     },
   }
 }

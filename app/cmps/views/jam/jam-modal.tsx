@@ -71,6 +71,13 @@ export const JamModal = () => {
   const [inputCode, setInputCode] = useState('')
   const [copiedLink, setCopiedLink] = useState(false)
   const [copiedCode, setCopiedCode] = useState(false)
+  const [sentEmoji, setSentEmoji] = useState<string | null>(null)
+
+  const handleSendEmoji = (emoji: string) => {
+    sendJamReaction(emoji)
+    setSentEmoji(emoji)
+    setTimeout(() => setSentEmoji(null), 1200)
+  }
 
   // Session restoration on initial app mount (runs once)
   useEffect(() => {
@@ -303,16 +310,27 @@ export const JamModal = () => {
 
             {/* Quick Vibes / Reactions Bar */}
             <div className='flex flex-col gap-1.5'>
-              <span className='font-semibold text-[11px] text-muted-foreground'>
-                Send Live Vibe to Everyone:
-              </span>
+              <div className='flex items-center justify-between'>
+                <span className='font-semibold text-[11px] text-muted-foreground'>
+                  Send Live Vibe to Everyone:
+                </span>
+                {sentEmoji && (
+                  <span className='fade-in font-bold text-[10px] text-emerald-400 animate-in'>
+                    Sent {sentEmoji}! ✨
+                  </span>
+                )}
+              </div>
               <div className='flex items-center justify-between gap-1'>
                 {VIBE_EMOJIS.map((emoji) => (
                   <button
                     key={emoji}
                     type='button'
-                    onClick={() => sendJamReaction(emoji)}
-                    className='flex size-9 cursor-pointer items-center justify-center rounded-xl bg-muted/40 text-lg transition-transform hover:border hover:border-amber-500/40 hover:bg-muted active:scale-125'
+                    onClick={() => handleSendEmoji(emoji)}
+                    className={cn(
+                      'flex size-9 cursor-pointer items-center justify-center rounded-xl bg-muted/40 text-lg transition-all hover:border hover:border-amber-500/40 hover:bg-muted active:scale-125',
+                      sentEmoji === emoji &&
+                        'border border-amber-500 bg-amber-500/20 scale-110',
+                    )}
                     title={`Send ${emoji}`}
                   >
                     {emoji}

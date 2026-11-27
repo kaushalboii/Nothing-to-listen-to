@@ -42,6 +42,7 @@ export const Navbar = () => {
     isJamReconnecting,
     jamRoomCode,
     jamParticipantCount,
+    remoteReaction,
     hasFavorites,
     canChangeTheme,
   } = useShallowState((state) => ({
@@ -69,6 +70,7 @@ export const Navbar = () => {
     isJamReconnecting: state.isJamReconnecting,
     jamRoomCode: state.jamRoomCode,
     jamParticipantCount: state.jamParticipantCount,
+    remoteReaction: state.remoteReaction,
     hasFavorites:
       state.userConfig.favorites &&
       Object.keys(state.userConfig.favorites).length > 0,
@@ -351,6 +353,17 @@ export const Navbar = () => {
           <GithubIcon />
         </a>
       </div>
+
+      {/* Live Vibe Floating Reaction Bubble */}
+      {remoteReaction && (
+        <div
+          key={remoteReaction.id}
+          className='pointer-events-none fixed right-4 bottom-16 z-90 flex animate-bounce items-center gap-2 rounded-full border border-amber-500/40 bg-neutral-900/95 px-3.5 py-1.5 shadow-2xl backdrop-blur-md md:right-8 md:bottom-20'
+        >
+          <span className='text-2xl leading-none'>{remoteReaction.emoji}</span>
+          <span className='font-bold text-[11px] text-amber-400'>Live Vibe</span>
+        </div>
+      )}
     </div>
   )
 }

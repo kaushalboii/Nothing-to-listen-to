@@ -54,8 +54,6 @@ export const MusicPlayer = () => {
     jamLatency,
     jamParticipantCount,
     toggleJamModalOpen,
-    remoteReaction,
-    clearRemoteReaction,
   } = useShallowState((state) => ({
     activeTrack: state.activeTrack,
     playerOpen: state.playerOpen,
@@ -76,8 +74,6 @@ export const MusicPlayer = () => {
     jamLatency: state.jamLatency,
     jamParticipantCount: state.jamParticipantCount,
     toggleJamModalOpen: state.toggleJamModalOpen,
-    remoteReaction: state.remoteReaction,
-    clearRemoteReaction: state.clearRemoteReaction,
   }))
 
   const videoId =
@@ -281,16 +277,6 @@ export const MusicPlayer = () => {
       window.removeEventListener('jam:heartbeat', handleRemoteHeartbeat)
     }
   }, [])
-
-  // Auto-clear reaction bubbles after 3s
-  useEffect(() => {
-    if (remoteReaction) {
-      const timer = setTimeout(() => {
-        clearRemoteReaction()
-      }, 3000)
-      return () => clearTimeout(timer)
-    }
-  }, [remoteReaction, clearRemoteReaction])
 
   // Broadcast host heartbeat every 2.5s while playing to keep listeners in sync
   useEffect(() => {
@@ -693,17 +679,6 @@ export const MusicPlayer = () => {
           >
             <div className='h-1 w-10 rounded-full bg-muted-foreground/30 hover:bg-muted-foreground/50 transition-colors' />
           </div>
-
-          {/* Partner Floating Reaction Notification */}
-          {remoteReaction && (
-            <div
-              key={remoteReaction.id}
-              className='-top-10 pointer-events-none absolute right-6 z-50 flex animate-bounce items-center gap-1.5 rounded-full border border-amber-500/40 bg-background/95 px-3 py-1 shadow-xl backdrop-blur-md'
-            >
-              <span className='text-lg leading-none'>{remoteReaction.emoji}</span>
-              <span className='font-bold text-[10px] text-amber-500'>Vibe</span>
-            </div>
-          )}
 
           {/* Player Header / Controls Bar */}
           <div className='flex items-center justify-between gap-3'>

@@ -37,7 +37,7 @@ export const LowFpsAlert = () => {
     setEstimatedDeviceClass: state.setEstimatedDeviceClass,
     setAboutOpen: state.setAboutOpen,
     setSettingsOpen: state.setSettingsOpen,
-    cellLimit: state.userConfig.cells,
+    cellLimit: state.cellLimit ?? state.userConfig.cells,
   }))
 
   const canLowerQuality = preset
@@ -57,7 +57,33 @@ export const LowFpsAlert = () => {
   const [alignContentToBottom, setAlignContentToBottom] = useState(false)
   const [cooldown, setCooldown] = useState(true)
 
-  const cooldownTimeoutRef = useRef<NodeJS.Timeout>(null)
+  const cooldownTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  // Initial 30s warmup cooldown on mount to allow canvas/textures to settle before any FPS alert
+  useEffect(() => {
+    cooldownTimeoutRef.current = setTimeout(() => {
+      setCooldown(false)
+      cooldownTimeoutRef.current = null
+    }, 30000)
+
+    return () => {
+      if (cooldownTimeoutRef.current) {
+        clearTimeout(cooldownTimeoutRef.current)
+        cooldownTimeoutRef.current = null
+      }
+    }
+  }, [])
+
+  const startCooldown = useCallback((durationMs = 30000) => {
+    setCooldown(true)
+    if (cooldownTimeoutRef.current) {
+      clearTimeout(cooldownTimeoutRef.current)
+    }
+    cooldownTimeoutRef.current = setTimeout(() => {
+      setCooldown(false)
+      cooldownTimeoutRef.current = null
+    }, durationMs)
+  }, [])
 
   const open = useCallback(() => {
     if (!ticker) return
@@ -68,12 +94,6 @@ export const LowFpsAlert = () => {
     if (isMobile) return // Never freeze or interrupt mobile users with low fps alerts
 
     if (cooldown) {
-      if (!cooldownTimeoutRef.current) {
-        setTimeout(() => {
-          setCooldown(false)
-          cooldownTimeoutRef.current = null
-        }, 30000)
-      }
       return
     }
     if (!isLgScreen) {
@@ -93,7 +113,7 @@ export const LowFpsAlert = () => {
     ticker.freeze()
     setIsOpen(true)
     setOpenedCount((opened) => opened + 1)
-    setCooldown(true)
+    startCooldown(30000)
   }, [
     ticker,
     deviceClass,
@@ -104,6 +124,7 @@ export const LowFpsAlert = () => {
     setAboutOpen,
     setSettingsOpen,
     cooldown,
+    startCooldown,
   ])
 
   const close = useCallback(() => {
@@ -157,19 +178,10 @@ export const LowFpsAlert = () => {
               This page is best viewed on a larger device like a desktop or
               laptop.
             </span>
-            <span
-              className={cn('max-md:hidden', {
-                hidden: canLowerQuality,
-              })}
-            >
-              Lower the settings?
-            </span>
-            <span
-              className={cn('max-md:hidden', {
-                hidden: !canLowerQuality,
-              })}
-            >
-              You're already using the lowest settings.
+            <span className='max-md:hidden'>
+              {canLowerQuality
+                ? 'Lower the settings?'
+                : "You're already using the lowest settings."}
             </span>
           </p>
         </div>

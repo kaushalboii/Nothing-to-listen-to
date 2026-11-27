@@ -10,7 +10,7 @@ import Controls from './controls'
 import { defaultConfig } from './default-config'
 import Display from './display'
 import { MultiThreadedSimulation, Simulation } from './simulation'
-import { isTouchDevice, mergeConfigs, setStyles } from './utils'
+import { mergeConfigs, setStyles } from './utils'
 import { CustomEventTarget } from './utils/custom-event-target'
 import { initVisibilityEventHandlers } from './utils/visibility'
 

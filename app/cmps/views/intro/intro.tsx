@@ -31,12 +31,18 @@ export const Intro = () => {
     const state = store.getState()
     const isMobile = isMobileDevice()
 
-    if (!isDefined(state.deviceClass)) {
+    if (
+      !isDefined(state.deviceClass) ||
+      (isMobile && state.deviceClass !== DEVICE_CLASS.mobile)
+    ) {
       state.setDeviceClass(
         isMobile ? DEVICE_CLASS.mobile : DEVICE_CLASS.mid,
       )
     }
-    if (!state.preset || state.preset === VOROFORCE_PRESET.minimal) {
+    if (
+      !state.preset ||
+      (isMobile && state.preset !== VOROFORCE_PRESET.mobile)
+    ) {
       state.setPreset(
         isMobile ? VOROFORCE_PRESET.mobile : VOROFORCE_PRESET.minimal,
       )
@@ -46,7 +52,7 @@ export const Intro = () => {
       state.cellLimit === CELL_LIMIT.min ||
       (isMobile && state.cellLimit > CELL_LIMIT.xs)
     ) {
-      state.setCellLimit(isMobile ? CELL_LIMIT.xs : CELL_LIMIT.sm)
+      state.setCellLimit(CELL_LIMIT.xs)
     }
 
     // Auto-advance within 500ms so visitors never experience a stalled black screen

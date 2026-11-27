@@ -99,7 +99,7 @@ export const getVoroforceConfig = (state: StoreState) => {
   }
 
   // Mobile hardware (including when in "Desktop site" mode) must always use mobile preset
-  if (isMobile && preset === VOROFORCE_PRESET.minimal) {
+  if (isMobile) {
     preset = VOROFORCE_PRESET.mobile
   }
 
@@ -120,13 +120,20 @@ export const getVoroforceConfig = (state: StoreState) => {
     : (cellLimit ?? config.cells)
 
   if (isMobile) {
+    const isDesktopModeOnMobile =
+      typeof window !== 'undefined' && window.innerWidth >= 768
+
+    // In mobile desktop mode (virtual 980px-1024px viewport), clamp to 2,500 cells and 1.0 DPR
+    // so the mobile GPU doesn't have to shade millions of extra fragments in an emulated desktop viewport
+    const maxCells = isDesktopModeOnMobile ? 2500 : CELL_LIMIT.xs
     const requestedCells = cellsOverrideParam
       ? Number.parseInt(cellsOverrideParam)
       : (cellLimit ?? config.cells)
-    // 5,000 cells (CELL_LIMIT.xs) gives the rich, dense 3D galaxy sphere visual on mobile and mobile desktop-mode
+
     config.cells = cellsOverrideParam
       ? requestedCells
-      : Math.min(requestedCells, CELL_LIMIT.xs)
+      : Math.min(requestedCells, maxCells)
+
     if (config.multiThreading) {
       config.multiThreading.enabled = false
       config.multiThreading.renderInParallel = false
@@ -136,12 +143,15 @@ export const getVoroforceConfig = (state: StoreState) => {
     config.adaptiveFPS = true
     config.display = config.display || {}
     config.display.renderer = config.display.renderer || {}
-    // High-DPI mobile screens: clamp to 1.6 DPR for razor-sharp textures without pixelation
+
+    // In desktop mode on mobile, window.innerWidth is ~980px. A DPR of 1.0 already gives a 980px width,
+    // which matches native 1080p mobile screen resolution perfectly without fragment shader overload.
+    // In normal mobile mode (window.innerWidth ~390px), 1.5 DPR gives razor-sharp textures.
+    const mobileDPR = isDesktopModeOnMobile ? 1.0 : 1.5
     config.display.renderer.pixelRatio = Math.min(
       typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1,
-      1.6,
+      mobileDPR,
     )
-    // Avoid 'low-power' which triggers aggressive GPU core throttling and stuttering on mobile Android/iOS
     config.display.renderer.powerPreference = 'default'
   } else {
     config.display = config.display || {}

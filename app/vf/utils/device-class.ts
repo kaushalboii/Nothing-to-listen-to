@@ -3,20 +3,15 @@ import { store } from '../../store'
 import { down, matchMediaQuery } from '../../utils/mq'
 import { DEVICE_CLASS } from '../consts'
 
-let cachedIsMobile: boolean | null = null
-
 export const isMobileDevice = (): boolean => {
   if (typeof window === 'undefined') return false
-  if (cachedIsMobile !== null) return cachedIsMobile
 
   // 1. UA check (standard mobile browser)
   const ua = store.getState().ua?.getDevice()
   if (ua?.is('mobile') || ua?.is('tablet')) {
-    cachedIsMobile = true
     return true
   }
   if (store.getState().deviceClass === DEVICE_CLASS.mobile) {
-    cachedIsMobile = true
     return true
   }
 
@@ -28,17 +23,23 @@ export const isMobileDevice = (): boolean => {
         rawUA,
       )
     ) {
-      cachedIsMobile = true
       return true
     }
     // Chromium navigator.userAgentData
     if ((navigator as any).userAgentData?.mobile) {
-      cachedIsMobile = true
       return true
     }
   }
 
-  // 3. WebGL GPU renderer check - Detects physical mobile GPU (Adreno / Mali / Immortalis / Apple GPU)
+  // 3. Physical Touchscreen check - All smartphones & tablets have touch screens
+  const hasTouch =
+    typeof navigator !== 'undefined' &&
+    (navigator.maxTouchPoints > 0 || 'ontouchstart' in window)
+
+  // Desktops without touchscreens can never be mobile
+  if (!hasTouch) return false
+
+  // 4. WebGL GPU renderer check - Detects physical mobile GPU (Adreno / Mali / Immortalis / Apple GPU)
   // even when mobile browser spoofs desktop User-Agent in "Desktop site" mode!
   try {
     const canvas = document.createElement('canvas')
@@ -54,46 +55,54 @@ export const isMobileDevice = (): boolean => {
             dbg.UNMASKED_RENDERER_WEBGL,
           ) || ''
         ).toLowerCase()
-        if (
-          /adreno|mali|immortalis|xclipse|powervr|apple\s+a\d+/i.test(renderer)
-        ) {
-          cachedIsMobile = true
+        if (/adreno|mali|immortalis|xclipse|powervr/i.test(renderer)) {
+          return true
+        }
+        if (renderer.includes('apple') && hasTouch) {
           return true
         }
       }
     }
   } catch (_) {}
 
-  // 4. Touchscreen & screen ergonomics
-  const hasTouch =
-    'ontouchstart' in window ||
-    (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0)
+  // 5. Mobile orientation properties (window.orientation exists almost exclusively on mobile devices)
+  if (hasTouch && typeof (window as any).orientation !== 'undefined') {
+    return true
+  }
+
+  // 6. Screen dimensions & aspect ratio
+  if (typeof window.screen !== 'undefined') {
+    const minDim = Math.min(window.screen.width, window.screen.height)
+    const maxDim = Math.max(window.screen.width, window.screen.height)
+
+    // Physical smartphone screen is always <= 600px width in portrait
+    if (minDim <= 600) return true
+
+    // Portrait orientation on a touchscreen device is virtually always a phone/tablet
+    if (window.screen.height > window.screen.width && hasTouch) {
+      return true
+    }
+
+    // Phone aspect ratio (taller than 1.7:1)
+    if (maxDim / (minDim || 1) >= 1.7 && hasTouch) {
+      return true
+    }
+  }
+
+  // 7. Small viewport or coarse pointer
   const isCoarsePointer =
     typeof window.matchMedia === 'function' &&
     (window.matchMedia('(pointer: coarse)').matches ||
       window.matchMedia('(any-pointer: coarse)').matches)
-  const hasNoHover =
-    typeof window.matchMedia === 'function' &&
-    window.matchMedia('(hover: none)').matches
 
-  const screenMinDim =
-    typeof window.screen !== 'undefined'
-      ? Math.min(window.screen.width, window.screen.height)
-      : 9999
-
-  // Mobile phone screen dimensions or touch coarse pointer without mouse hover
-  if (hasTouch && (screenMinDim < 768 || (isCoarsePointer && hasNoHover))) {
-    cachedIsMobile = true
+  if (hasTouch && isCoarsePointer && (window.innerWidth <= 1024 || window.screen.width <= 1024)) {
     return true
   }
 
-  // 5. Small viewport fallback
   if (window.innerWidth < 768) {
-    cachedIsMobile = true
     return true
   }
 
-  cachedIsMobile = false
   return false
 }
 

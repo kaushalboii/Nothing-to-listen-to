@@ -1,6 +1,6 @@
 import controls from '../config/controls'
 import display from '../config/display'
-import mediaConfig from '../config/media'
+import { mediaConfigWithUncompressedSingleVersion } from '../config/media'
 import { CELL_LIMIT, VOROFORCE_MODE } from '../consts'
 
 export default {
@@ -13,7 +13,7 @@ export default {
     renderInParallel: false,
   },
   media: {
-    ...mediaConfig,
+    ...mediaConfigWithUncompressedSingleVersion,
     preload: 'first',
   },
   controls,

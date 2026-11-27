@@ -3,6 +3,7 @@ import {
   GithubIcon,
   Heart,
   Info,
+  ListMusic,
   Radio,
   Search,
   Settings,
@@ -31,6 +32,9 @@ export const Navbar = () => {
     toggleSearchOpen,
     favoritesOpen,
     toggleFavoritesOpen,
+    playlistsOpen,
+    togglePlaylistsOpen,
+    playlistsCount,
     jamModalOpen,
     toggleJamModalOpen,
     isJamConnected,
@@ -54,6 +58,9 @@ export const Navbar = () => {
     toggleSearchOpen: state.toggleSearchOpen,
     favoritesOpen: state.favoritesOpen,
     toggleFavoritesOpen: state.toggleFavoritesOpen,
+    playlistsOpen: state.playlistsOpen,
+    togglePlaylistsOpen: state.togglePlaylistsOpen,
+    playlistsCount: state.userConfig.playlists?.length ?? 0,
     jamModalOpen: state.jamModalOpen,
     toggleJamModalOpen: state.toggleJamModalOpen,
     isJamConnected: state.isJamConnected,
@@ -288,6 +295,7 @@ export const Navbar = () => {
                   event.stopPropagation()
                 }
               }}
+              title='Favorites'
               className={cn(buttonClassnames, {
                 'border border-foreground': favoritesOpen,
               })}
@@ -295,6 +303,28 @@ export const Navbar = () => {
               <Heart />
             </Button>
           )}
+          <Button
+            variant='ghost'
+            size='icon'
+            onClick={(e) => {
+              e.currentTarget.blur()
+              togglePlaylistsOpen()
+            }}
+            onPointerDown={(event) => {
+              event.currentTarget.blur()
+              if (playlistsOpen) {
+                event.preventDefault()
+                event.stopPropagation()
+              }
+            }}
+            title={`Playlists (${playlistsCount}/3)`}
+            className={cn(buttonClassnames, {
+              'border border-amber-500 bg-amber-500/10 text-amber-500':
+                playlistsOpen,
+            })}
+          >
+            <ListMusic className={cn(playlistsCount > 0 && 'text-amber-500')} />
+          </Button>
         </div>
 
         <ThemeToggle

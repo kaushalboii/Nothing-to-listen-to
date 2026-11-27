@@ -22,6 +22,23 @@ export type CustomLink = {
   property: 'title' | 'tmdbId' | 'imdbId'
 }
 
+export type PlaylistTrack = {
+  tmdbId: number
+  title: string
+  artist?: string
+  albumTitle?: string
+  poster?: string
+  videoId?: string
+  audioUrl?: string
+}
+
+export type UserPlaylist = {
+  id: string
+  name: string
+  createdAt: number
+  tracks: PlaylistTrack[]
+}
+
 export type UserConfig = {
   cells?: number
   devTools?: boolean
@@ -39,6 +56,7 @@ export type UserConfig = {
       youtubeId?: string
     }
   }
+  playlists?: UserPlaylist[]
 }
 
 const handleCustomLinkParam = (
@@ -118,18 +136,19 @@ export const getVoroforceConfig = (state: StoreState) => {
     config.adaptiveFPS = true
     config.display = config.display || {}
     config.display.renderer = config.display.renderer || {}
-    // High-DPI mobile screens (DPR 2-3) look pin-sharp at 1.0 DPR while cutting GPU fragment fill by >55%
+    // High-DPI mobile screens: clamp to 1.6 DPR for razor-sharp textures without pixelation
     config.display.renderer.pixelRatio = Math.min(
       typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1,
-      1.0,
+      1.6,
     )
-    config.display.renderer.powerPreference = 'low-power'
+    // Avoid 'low-power' which triggers aggressive GPU core throttling and stuttering on mobile Android/iOS
+    config.display.renderer.powerPreference = 'default'
   } else {
     config.display = config.display || {}
     config.display.renderer = config.display.renderer || {}
     config.display.renderer.pixelRatio = Math.min(
       typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1,
-      1.5,
+      1.6,
     )
     config.adaptiveFPS = true
   }

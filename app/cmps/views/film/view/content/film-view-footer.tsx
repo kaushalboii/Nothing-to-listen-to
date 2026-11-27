@@ -1,4 +1,4 @@
-import { HeartOff, HeartPlus, Play, Plus } from 'lucide-react'
+import { HeartOff, HeartPlus, ListPlus, Play, Plus } from 'lucide-react'
 import type { DialogProps } from 'vaul'
 import { store, useShallowState } from '../../../../../store'
 import { cn } from '../../../../../utils/tw'
@@ -95,7 +95,7 @@ export const FilmViewFooter = ({
                         : undefined,
                   })
                 }}
-                className='pointer-events-auto hidden size-7 rounded-lg border-foreground/40 backdrop-blur-lg hover:border-foreground md:inline-flex'
+                className='pointer-events-auto flex size-7 rounded-lg border-foreground/40 backdrop-blur-lg hover:border-foreground'
               >
                 {isFavorite ? (
                   <HeartOff className='size-3.5' />
@@ -106,6 +106,61 @@ export const FilmViewFooter = ({
             </TooltipTrigger>
             <TooltipContent>
               <p>{isFavorite ? 'Remove from favorites' : 'Add to favorites'}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
+        <TooltipProvider delayDuration={0}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                size='icon'
+                variant='outline'
+                onClick={() => {
+                  if (!film) return
+                  const playlists = userConfig.playlists ?? []
+                  if (playlists.length === 0) {
+                    store.getState().setPlaylistsOpen(true)
+                    return
+                  }
+                  const targetPlaylist = playlists[0]
+                  const firstTrack = film.tracks?.[0]
+                  const firstTitle = firstTrack?.title ?? film.title
+                  if (targetPlaylist.tracks.some((t) => t.tmdbId === film.tmdbId)) {
+                    store.getState().setPlaylistsOpen(true)
+                    return
+                  }
+                  const nextPlaylists = playlists.map((p, idx) => {
+                    if (idx !== 0) return p
+                    return {
+                      ...p,
+                      tracks: [
+                        ...p.tracks,
+                        {
+                          tmdbId: film.tmdbId,
+                          title: firstTitle,
+                          artist: film.artist,
+                          albumTitle: film.title,
+                          poster: film.poster,
+                          videoId: firstTrack?.videoId || film.youtubeId,
+                          audioUrl: firstTrack?.audioUrl || film.audioUrl,
+                        },
+                      ],
+                    }
+                  })
+                  setUserConfig({
+                    ...userConfig,
+                    playlists: nextPlaylists,
+                  })
+                  store.getState().setPlaylistsOpen(true)
+                }}
+                className='pointer-events-auto flex size-7 rounded-lg border-foreground/40 text-amber-500 backdrop-blur-lg hover:border-amber-500 hover:bg-amber-500/10'
+              >
+                <ListPlus className='size-3.5' />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Add to playlist</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

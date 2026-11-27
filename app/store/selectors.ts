@@ -57,6 +57,7 @@ export const selectModalsOpen = (state: StoreState) => ({
   about: state.aboutOpen,
   search: state.searchOpen,
   favorites: state.favoritesOpen,
+  playlists: state.playlistsOpen,
   addCustomLinkType: state.addCustomLinkTypeOpen,
 })
 
@@ -65,6 +66,7 @@ export const selectAnyModalOpen = (state: StoreState) =>
   state.aboutOpen ||
   state.searchOpen ||
   state.favoritesOpen ||
+  state.playlistsOpen ||
   !!state.addCustomLinkTypeOpen
 
 // Engine state selectors

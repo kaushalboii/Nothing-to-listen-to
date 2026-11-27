@@ -2,6 +2,7 @@ import {
   ChevronDown,
   Disc3,
   ExternalLink,
+  ListPlus,
   Loader2,
   Pause,
   Play,
@@ -17,7 +18,7 @@ import { useEffect, useRef, useState } from 'react'
 import config from '../../../config'
 import { audioCache } from '../../../services/audio-cache'
 import { jamService } from '../../../services/jam-session'
-import { useShallowState } from '../../../store'
+import { store, useShallowState } from '../../../store'
 import { cn } from '../../../utils/tw'
 import { Button } from '../../ui/button'
 import { preloadNextTrackAudio, resolveAdFreeAudioStream } from './audio-stream'
@@ -768,6 +769,19 @@ export const MusicPlayer = () => {
               >
                 <Youtube className='size-4' />
               </a>
+
+              {/* Add to Playlist Button */}
+              <Button
+                size='icon'
+                variant='ghost'
+                className='size-7 cursor-pointer rounded-full text-amber-500 hover:bg-amber-500/10'
+                onClick={() => {
+                  store.getState().setPlaylistsOpen(true)
+                }}
+                title='Add to Playlist (or view playlists)'
+              >
+                <ListPlus className='size-4' />
+              </Button>
 
               {/* Dedicated Minimize Button (always available for 1-tap minimize on mobile & desktop) */}
               <Button

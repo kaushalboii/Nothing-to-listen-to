@@ -126,6 +126,9 @@ export const createEngineSlice: StateCreator<
         customLinks: userConfig.customLinks
           ? [...userConfig.customLinks]
           : undefined,
+        playlists: userConfig.playlists
+          ? [...userConfig.playlists]
+          : undefined,
       }
       updatePersistentSetting('userConfig', nextConfig)
       set({ userConfig: nextConfig })

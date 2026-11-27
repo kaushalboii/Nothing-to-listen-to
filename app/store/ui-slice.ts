@@ -21,6 +21,9 @@ export interface UiSlice {
   favoritesOpen: boolean
   setFavoritesOpen: (favoritesOpen: boolean) => void
   toggleFavoritesOpen: () => void
+  playlistsOpen: boolean
+  setPlaylistsOpen: (playlistsOpen: boolean) => void
+  togglePlaylistsOpen: () => void
   reportOpen: boolean
   setReportOpen: (reportOpen: boolean) => void
   toggleReportOpen: () => void
@@ -70,6 +73,13 @@ export const createUiSlice: StateCreator<UiSlice, [], [], UiSlice> = (
     },
     toggleFavoritesOpen: () => {
       set({ favoritesOpen: !get().favoritesOpen })
+    },
+    playlistsOpen: false,
+    setPlaylistsOpen: (playlistsOpen: boolean) => {
+      set({ playlistsOpen })
+    },
+    togglePlaylistsOpen: () => {
+      set({ playlistsOpen: !get().playlistsOpen })
     },
     reportOpen: false,
     setReportOpen: (reportOpen: boolean) => {

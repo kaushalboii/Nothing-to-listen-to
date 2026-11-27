@@ -1,6 +1,41 @@
 [
   {
     "id": 0,
+    "title": "Vaa Chellam",
+    "artist": "Udit Narayan",
+    "vote_average": 9.9,
+    "vote_count": 35000,
+    "backdrop_path": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/79/17/45/79174595-3754-c2b0-75ba-7d092f35ccd5/886443236097.jpg/600x600bb.jpg",
+    "poster_path": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/79/17/45/79174595-3754-c2b0-75ba-7d092f35ccd5/886443236097.jpg/600x600bb.jpg",
+    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/79/17/45/79174595-3754-c2b0-75ba-7d092f35ccd5/886443236097.jpg/600x600bb.jpg",
+    "tagline": "🔥 User Requested & Auto-Verified (2009)",
+    "overview": "User-requested official stream for 'Vaa Chellam' by Udit Narayan. Verified available on Spotify, Apple Music, and YouTube.",
+    "genres": "English, Trending, Soundtrack",
+    "language": "English",
+    "release_year": 2009,
+    "era": "New & Trending (2025-2026)",
+    "trending": true,
+    "youtube_id": "npkluExcaAY",
+    "spotify_id": "sp_req_1795796812",
+    "apple_music_id": "am_req_1795796812",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Vaa Chellam",
+        "duration": "3:30",
+        "videoId": "npkluExcaAY"
+      },
+      {
+        "number": 2,
+        "title": "Vaa Chellam (Official)",
+        "duration": "3:45",
+        "videoId": "npkluExcaAY"
+      }
+    ],
+    "popularity": 99.8
+  },
+  {
+    "id": 0,
     "title": "Diviki Diviki (From \"January 12 Vidudala\")",
     "artist": "G.V. Prakash Kumar, Madhupriya, Haripriya & Anantha Sriram",
     "vote_average": 9.9,

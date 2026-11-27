@@ -14,6 +14,12 @@ export class AutoTicker extends CustomEventTarget {
     this.current = this.initialFrameTime = this.lastFrameTime = 0
   }
 
+  setFpsCap(fpsCap) {
+    if (!fpsCap || this.fpsCap === fpsCap) return
+    this.fpsCap = fpsCap
+    this.frameInterval = 1000 / this.fpsCap
+  }
+
   init() {
     this.current =
       this.initialFrameTime =

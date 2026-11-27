@@ -110,6 +110,7 @@ export class Voroforce extends CustomEventTarget {
     this.dimensions = new Dimensions(this.container)
     this.ticker = new (this.tickerMode === 'auto' ? AutoTicker : ManualTicker)(
       this.devTools?.fpsGraph,
+      this.config.fpsCap || 60,
     )
 
     this.loader = new Loader(
@@ -182,9 +183,10 @@ export class Voroforce extends CustomEventTarget {
     this.update = this.update.bind(this)
     this.dimensions.addEventListener('resize', this.resize)
     this.ticker.addEventListener('tick', this.update)
+    this.initAdaptiveFPS()
 
-    // TODO
-    if (this.config.handleVisibilityChange?.enabled && !isTouchDevice) {
+    // Pause rendering when screen is locked or tab is hidden to save battery & stop heating
+    if (this.config.handleVisibilityChange?.enabled) {
       initVisibilityEventHandlers(
         () => {
           this.visible = true
@@ -207,7 +209,7 @@ export class Voroforce extends CustomEventTarget {
           this.tickerFreezeTimeout = setTimeout(() => {
             if (this.visible) return
             this.ticker.stop()
-          }, this.config.handleVisibilityChange.hiddenDelay)
+          }, this.config.handleVisibilityChange.hiddenDelay ?? 1000)
         },
       )
     }
@@ -357,9 +359,43 @@ export class Voroforce extends CustomEventTarget {
     console.log('Display total: ', sTotal)
   }
 
+  initAdaptiveFPS() {
+    if (!this.config.adaptiveFPS || typeof window === 'undefined') return
+    const idleCap = this.config.idleFpsCap || 30
+    const activeCap = this.config.fpsCap || 60
+
+    const onActivity = () => {
+      this.ticker?.setFpsCap?.(activeCap)
+      if (this.idleThrottleTimer) clearTimeout(this.idleThrottleTimer)
+      this.idleThrottleTimer = setTimeout(() => {
+        this.ticker?.setFpsCap?.(idleCap)
+      }, 2500)
+    }
+
+    this.onActivityHandler = onActivity
+    window.addEventListener('touchstart', onActivity, { passive: true })
+    window.addEventListener('touchmove', onActivity, { passive: true })
+    window.addEventListener('pointerdown', onActivity, { passive: true })
+    window.addEventListener('pointermove', onActivity, { passive: true })
+    window.addEventListener('wheel', onActivity, { passive: true })
+
+    this.idleThrottleTimer = setTimeout(() => {
+      this.ticker?.setFpsCap?.(idleCap)
+    }, 3000)
+  }
+
   removeEventListeners() {
     this.ticker.removeEventListener('tick', this.update)
     this.dimensions.removeEventListener('resize', this.resize)
+    if (this.onActivityHandler && typeof window !== 'undefined') {
+      if (this.idleThrottleTimer) clearTimeout(this.idleThrottleTimer)
+      window.removeEventListener('touchstart', this.onActivityHandler)
+      window.removeEventListener('touchmove', this.onActivityHandler)
+      window.removeEventListener('pointerdown', this.onActivityHandler)
+      window.removeEventListener('pointermove', this.onActivityHandler)
+      window.removeEventListener('wheel', this.onActivityHandler)
+      this.onActivityHandler = null
+    }
   }
 
   disposeDevTools() {

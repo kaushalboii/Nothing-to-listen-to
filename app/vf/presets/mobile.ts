@@ -1,10 +1,13 @@
 import controls from '../config/controls'
 import display from '../config/display'
 import mediaConfig from '../config/media'
-import { VOROFORCE_MODE } from '../consts'
+import { CELL_LIMIT, VOROFORCE_MODE } from '../consts'
 
 export default {
-  cells: 5000,
+  cells: CELL_LIMIT.min,
+  fpsCap: 60,
+  idleFpsCap: 30,
+  adaptiveFPS: true,
   multiThreading: {
     enabled: false,
     renderInParallel: false,

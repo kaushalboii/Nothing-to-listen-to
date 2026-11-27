@@ -552,6 +552,88 @@ export class JamSessionService {
       return
     }
 
+    // Host handling of guest handshake with 2-user private lock
+    if (this.role === 'host') {
+      if (msg.type === 'HELLO') {
+        const incomingGuestId = msg.senderId
+        const now = Date.now()
+        const guestTimedOut = now - this.lastGuestActivity > 10000
+
+        // Strict 2-user enforcement logic:
+        // Accept if: no active guest, OR same guest reconnecting, OR previous guest timed out
+        if (
+          !this.activeGuestId ||
+          this.activeGuestId === incomingGuestId ||
+          guestTimedOut
+        ) {
+          this.activeGuestId = incomingGuestId
+          this.lastGuestActivity = now
+          this.partnerConnected = true
+          this.isConnecting = false
+          this.isReconnecting = false
+          this.emitStatus()
+          this.startPingLoop()
+          this.startHeartbeatLoop()
+
+          // Send state to partner
+          const current = this.callbacks.getCurrentTrackState?.()
+          this.send({
+            type: 'WELCOME',
+            senderId: this.clientId,
+            hostTrack: current?.track ?? null,
+            playlist: current?.playlist,
+            playlistIndex: current?.playlistIndex,
+            currentTime: current?.currentTime,
+            isPlaying: current?.isPlaying,
+            allowGuestControl: this.allowGuestControl,
+            sentAt: Date.now(),
+          })
+
+          this.callbacks.onPartnerConnected?.()
+          return
+        } else {
+          // Reject 3rd user
+          this.send({
+            type: 'REJECT',
+            reason: 'ROOM_FULL',
+            message: 'This room is full! Private listening sessions are strictly 2 users.',
+            sentAt: Date.now(),
+          })
+          return
+        }
+      }
+    }
+
+    // Guest handling of host Welcome
+    if (this.role === 'guest' && msg.type === 'WELCOME') {
+      this.partnerConnected = true
+      this.isConnecting = false
+      this.isReconnecting = false
+      this.emitStatus()
+      this.startPingLoop()
+
+      if (msg.allowGuestControl !== undefined) {
+        this.allowGuestControl = msg.allowGuestControl
+        this.callbacks.onPermissionsChange?.(msg.allowGuestControl)
+      }
+
+      if (msg.hostTrack) {
+        this.callbacks.onRemoteTrack?.(
+          msg.hostTrack,
+          msg.playlist,
+          msg.playlistIndex,
+        )
+        if (msg.currentTime !== undefined) {
+          if (msg.isPlaying) {
+            this.callbacks.onRemotePlay?.(msg.currentTime, msg.sentAt)
+          } else {
+            this.callbacks.onRemotePause?.(msg.currentTime)
+          }
+        }
+      }
+      return
+    }
+
     switch (msg.type) {
       case 'REJECT':
       case 'ROOM_FULL':

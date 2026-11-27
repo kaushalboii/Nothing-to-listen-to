@@ -40,6 +40,7 @@ export default class Renderer {
       antialias,
       depth,
       preserveDrawingBuffer,
+      powerPreference: this.config.powerPreference || 'low-power',
       dpr: this.getPixelRatio(),
       width: this.dimensions.width,
       height: this.dimensions.height,

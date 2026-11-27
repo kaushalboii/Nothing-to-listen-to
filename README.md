@@ -21,12 +21,12 @@
 
 <br/><br/>
 
-<!-- Real 3D Universe Showcase -->
+<!-- Hero Desktop Showcase Image -->
 <a href="https://kaushalboii.github.io/Nothing-to-listen-to/">
-  <img src="docs/assets/universe-showcase.png" alt="Nothing to Listen to - 3D WebGL Musical Galaxy" width="100%" style="border-radius: 12px; border: 1px solid #30363d; box-shadow: 0 16px 40px rgba(0,0,0,0.6);" />
+  <img src="docs/assets/desktop-hero.jpg" alt="Nothing to Listen to - 3D WebGL Musical Galaxy with Floating Player" width="100%" style="border-radius: 12px; border: 1px solid #30363d; box-shadow: 0 16px 40px rgba(0,0,0,0.6);" />
 </a>
 
-<p align="center"><em>Interactive, force-directed 3D Voronoi galaxy mapping 216 legendary vinyl albums across time, genres, and cultures.</em></p>
+<p align="center"><em>Interactive, force-directed 3D Voronoi galaxy mapping 216 legendary vinyl albums across time, genres, and cultures with integrated audio player.</em></p>
 
 </div>
 
@@ -35,16 +35,16 @@
 ## 📑 Table of Contents
 
 - [🌟 Overview](#-overview)
-- [✨ Key Features](#-key-features)
-  - [👥 Listen Together (Multi-User Group Jam Sessions)](#-listen-together-multi-user-group-jam-sessions)
-  - [🎶 Custom Playlists (Max 3 with Unlimited Songs)](#-custom-playlists-max-3-with-unlimited-songs)
-  - [💿 Interactive Navbar CD & 1-Tap Minimization](#-interactive-navbar-cd--1-tap-minimization)
-  - [📱 Mobile Ultra-Performance & Desktop-Mode Optimization](#-mobile-ultra-performance--desktop-mode-optimization)
-  - [🔒 Lock-Screen Background Playback & MediaSession](#-lock-screen-background-playback--mediasession-api)
-  - [⚡ Lossless Low-Data Streaming & Smart Offline Caching](#-lossless-low-data-streaming--smart-offline-caching)
-  - [🌐 Global Multi-Lingual Catalog (216 Masterpieces)](#-global-multi-lingual-catalog-216-masterpieces)
-  - [🎧 Universal Multi-Platform Links](#-universal-multi-platform-links)
-  - [🔎 Instant Search & Dual Filter System](#-instant-search--dual-filter-system)
+- [🌌 3D Voronoi Galaxy Experience](#-3d-voronoi-galaxy-experience)
+- [📱 Mobile Experience & Desktop-Mode](#-mobile-experience--desktop-mode)
+- [👥 Listen Together (Multi-User Group Jam Sessions)](#-listen-together-multi-user-group-jam-sessions)
+- [🎶 Custom Playlists (Max 3 with Unlimited Songs)](#-custom-playlists-max-3-with-unlimited-songs)
+- [💿 Interactive Navbar CD & 1-Tap Minimization](#-interactive-navbar-cd--1-tap-minimization)
+- [🔒 Lock-Screen Background Playback & MediaSession](#-lock-screen-background-playback--mediasession-api)
+- [⚡ Lossless Low-Data Streaming & Smart Offline Caching](#-lossless-low-data-streaming--smart-offline-caching)
+- [🌐 Global Multi-Lingual Catalog (216 Masterpieces)](#-global-multi-lingual-catalog-216-masterpieces)
+- [🎧 Universal Multi-Platform Links](#-universal-multi-platform-links)
+- [🔎 Instant Search & Dual Filter System](#-instant-search--dual-filter-system)
 - [⌨️ Keyboard Shortcuts](#️-keyboard-shortcuts)
 - [🏗 Architecture & System Design](#-architecture--system-design)
 - [📂 Project Structure](#-project-structure)
@@ -64,9 +64,61 @@ Whether you're craving classic rock legends, viral Bollywood melodies, explosive
 
 ---
 
-## ✨ Key Features
+## 🌌 3D Voronoi Galaxy Experience
 
-### 👥 Listen Together (Multi-User Group Jam Sessions)
+<div align="center">
+  <table align="center" style="border: none; border-collapse: collapse; width: 100%;">
+    <tr>
+      <td align="center" width="50%" style="border: none; padding: 6px;">
+        <img src="docs/assets/desktop-full-sphere.jpg" alt="Full 5,000 Cell Galaxy Sphere" style="border-radius: 10px; border: 1px solid #30363d;" width="100%" />
+        <br/><sub><b>Full 5,000-Cell Voronoi Galaxy Sphere</b></sub>
+      </td>
+      <td align="center" width="50%" style="border: none; padding: 6px;">
+        <img src="docs/assets/desktop-cell-detail.jpg" alt="Tactile Vinyl Cell Bulge & Song Focus" style="border-radius: 10px; border: 1px solid #30363d;" width="100%" />
+        <br/><sub><b>Tactile Cell Bulge & Real-Time Track Focus</b></sub>
+      </td>
+    </tr>
+  </table>
+</div>
+
+- **5,000 Interactive Voronoi Cells**: Songs are physics-simulated in Web Workers, naturally repelling and clustering by genre, rhythm, and era.
+- **Dynamic 3D Bulge & Pointer Magnetism**: Cells dynamically expand beneath your cursor or touch pointer with smooth GLSL lens distortion.
+- **Zero-Jank Wheel & Trackpad Zooming**: Features non-blocking `{ passive: true }` listeners for smooth compositor-level navigation.
+- **Physics Convergence Sleep**: Automatically puts physics calculations to sleep when the pointer is stationary, eliminating GPU heat and preserving battery.
+
+---
+
+## 📱 Mobile Experience & Desktop-Mode
+
+<div align="center">
+  <table align="center" style="border: none; border-collapse: collapse; width: 100%;">
+    <tr>
+      <td align="center" width="33%" style="border: none; padding: 6px;">
+        <img src="docs/assets/mobile-player.jpg" alt="Mobile 3D Galaxy & Floating Player" style="border-radius: 10px; border: 1px solid #30363d;" width="100%" />
+        <br/><sub><b>Galaxy & Floating Player</b></sub>
+      </td>
+      <td align="center" width="33%" style="border: none; padding: 6px;">
+        <img src="docs/assets/mobile-song-modal.jpg" alt="Mobile Song Detail & Streaming Links" style="border-radius: 10px; border: 1px solid #30363d;" width="100%" />
+        <br/><sub><b>Song Detail & Stream Links</b></sub>
+      </td>
+      <td align="center" width="33%" style="border: none; padding: 6px;">
+        <img src="docs/assets/mobile-navbar-cd.jpg" alt="Minimized Interactive Navbar CD" style="border-radius: 10px; border: 1px solid #30363d;" width="100%" />
+        <br/><sub><b>Minimized Navbar Vinyl CD</b></sub>
+      </td>
+    </tr>
+  </table>
+</div>
+
+- **Dual-Mode Mobile Engine**:
+  - **Standard Mobile View**: Clamped to 216-5,000 cells with 1.5 DPR for razor-sharp textures.
+  - **Mobile "Desktop Site" Mode**: Viewport-adaptive 2,500 cells and 1.0 DPR to prevent fragment shader overload on emulated desktop resolutions.
+- **1-Tap Minimize to Navbar CD**: Swipe down on mobile or click the chevron to tuck the player into the spinning navbar vinyl CD without interrupting playback.
+- **Touch-Friendly Controls**: Large tap targets for Play/Pause, Seek slider, and direct streaming links (Spotify, Apple Music, YouTube, JioSaavn).
+- **Background Battery Sleep**: Drops render loop CPU/GPU consumption to **0%** when your phone screen is locked or the browser is minimized.
+
+---
+
+## 👥 Listen Together (Multi-User Group Jam Sessions)
 
 <div align="center">
   <img src="docs/assets/jam-showcase.png" alt="Listen Together Jam Session Modal" width="85%" style="border-radius: 10px; border: 1px solid #30363d; margin: 12px 0;" />
@@ -82,19 +134,8 @@ Whether you're craving classic rock legends, viral Bollywood melodies, explosive
 
 ---
 
-### 💿 Interactive Navbar CD & 1-Tap Minimization
+## 🎶 Custom Playlists (Max 3 with Unlimited Songs)
 
-<div align="center">
-  <img src="docs/assets/player-preview.png" alt="Interactive Vinyl CD and Music Player" width="60%" style="border-radius: 10px; border: 1px solid #30363d; margin: 12px 0;" />
-</div>
-
-- **Spinning Vinyl CD Widget**: Active tracks show as an animated grooved vinyl record with real-time album artwork and rhythmic glow rings.
-- **Scrolling Song Marquee**: Live ticker displays current title, artist, and playback status directly in the navigation bar.
-- **1-Tap Minimize & Expand**: Swipe down on mobile or click the chevron button to tuck the player into the navbar CD without pausing audio; tap the CD anytime to bring it right back.
-
----
-
-### 🎶 Custom Playlists (Max 3 with Unlimited Songs)
 - **Create up to 3 Custom Playlists**: Organize your favorite songs into curated collections with custom names.
 - **Unlimited Tracks per Playlist**: Add as many songs as you like with 1-tap from the player or galaxy view.
 - **1-Click Play All & Queue Jump**: Play through an entire playlist seamlessly with automatic queue advance, or tap any track to jump right into it.
@@ -102,25 +143,24 @@ Whether you're craving classic rock legends, viral Bollywood melodies, explosive
 
 ---
 
-### 📱 Mobile Ultra-Performance & Desktop-Mode Optimization
-- **Dual Mode Optimization (Normal & Desktop-Mode on Mobile)**:
-  - **Normal Mobile**: Clamped to 216-5,000 cells with 1.5 DPR for razor-sharp textures.
-  - **Mobile in "Desktop Site" Mode**: Viewport-adaptive 2,500 cells and 1.0 DPR to prevent fragment shader overload on emulated desktop resolutions.
-- **Physics Convergence Sleep**: Automatically throttles idle physics calculations when the pointer is stationary, eliminating phone heating and preserving 60 FPS battery life.
-- **Zero-Jank Compositor Scrolling**: Mouse wheel and touch events use `{ passive: true }` listeners for zero scroll-blocking lag.
-- **Automatic Background Sleep**: Drops render loop CPU/GPU consumption to **0%** when the device screen is locked or the tab is hidden.
-- **Rock-Solid WebGL Context Recovery**: Guards against GPU context loss (`webglcontextlost`) so that the 3D galaxy seamlessly resumes upon unlocking your phone.
+## 💿 Interactive Navbar CD & 1-Tap Minimization
+
+- **Spinning Vinyl CD Widget**: Active tracks show as an animated grooved vinyl record with real-time album artwork and rhythmic glow rings.
+- **Scrolling Song Marquee**: Live ticker displays current title, artist, and playback status directly in the navigation bar.
+- **1-Tap Minimize & Expand**: Swipe down on mobile or click the chevron button to tuck the player into the navbar CD without pausing audio; tap the CD anytime to bring it right back.
 
 ---
 
-### 🔒 Lock-Screen Background Playback & MediaSession API
+## 🔒 Lock-Screen Background Playback & MediaSession API
+
 - **Continuous Lock-Screen Audio**: Music continues playing smoothly even when your phone screen is locked or the browser is minimized.
 - **Native OS Media Controls**: Displays track title, artist name, and high-resolution album artwork on your iOS / Android lock screen and notification bar.
 - **Hardware & Headphone Control**: Supports play, pause, previous track, next track, and scrubber seeking directly from headphone buttons and car Bluetooth dashboards.
 
 ---
 
-### ⚡ Lossless Low-Data Streaming & Smart Offline Caching
+## ⚡ Lossless Low-Data Streaming & Smart Offline Caching
+
 - **100% Ad-Free Direct Streams**: Seamless high-fidelity direct audio streaming without pre-roll or mid-roll video ads.
 - **Smart Data Saver Mode**: Automatically chooses 160kbps on 2G/3G/spotty mobile networks for 50% data savings, and 320kbps for audiophile lossless fidelity on broadband.
 - **Zero-Network Instant Replays**: Integrates the native `CacheStorage` API to cache listened songs locally for immediate 0ms offline replays without re-downloading.
@@ -128,7 +168,7 @@ Whether you're craving classic rock legends, viral Bollywood melodies, explosive
 
 ---
 
-### 🌐 Global Multi-Lingual Catalog (216 Masterpieces)
+## 🌐 Global Multi-Lingual Catalog (216 Masterpieces)
 
 <details>
 <summary><b>Click to expand catalog highlights by language & region</b></summary>
@@ -146,12 +186,14 @@ Whether you're craving classic rock legends, viral Bollywood melodies, explosive
 
 ---
 
-### 🎧 Universal Multi-Platform Links
+## 🎧 Universal Multi-Platform Links
+
 - Direct 1-click links for every song to stream on **Spotify**, **Apple Music**, **YouTube Music**, **JioSaavn**, **Amazon Music**, **Wynk Music**, **Gaana**, and **SoundCloud**.
 
 ---
 
-### 🔎 Instant Search & Dual Filter System
+## 🔎 Instant Search & Dual Filter System
+
 - Press `Cmd + K`, `Ctrl + K`, or `/` anywhere to open the instant search modal.
 - Real-time token matching across **Languages**, **Eras** (2020s, 2010s, 2000s, 1990s, Classics), and **Genres** (Pop, Rock, Soundtrack, Hip-Hop, Folk, EDM).
 - Lazy evaluation ensures search filtering runs only while the modal is open, consuming zero idle CPU.

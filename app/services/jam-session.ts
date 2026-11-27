@@ -77,6 +77,7 @@ export type JamMessage =
     type: 'PONG'
     senderId: string
     origSentAt: number
+    recvAt?: number
   }
   | {
     type: 'REACTION'
@@ -151,6 +152,7 @@ export class JamSessionService {
   private isReconnecting = false
   private partnerConnected = false
   private latency: number | null = null
+  private clockOffset = 0
   private allowGuestControl = false
 
   // Host state tracking for 2-user lock
@@ -205,6 +207,14 @@ export class JamSessionService {
 
   public isConnected(): boolean {
     return this.partnerConnected
+  }
+
+  public getLatency(): number {
+    return this.latency ?? 40
+  }
+
+  public getClockOffset(): number {
+    return this.clockOffset
   }
 
   public getAllowGuestControl(): boolean {
@@ -693,12 +703,18 @@ export class JamSessionService {
           type: 'PONG',
           senderId: this.clientId,
           origSentAt: msg.sentAt,
+          recvAt: Date.now(),
         })
         break
 
       case 'PONG': {
-        const rtt = Date.now() - msg.origSentAt
+        const now = Date.now()
+        const rtt = now - msg.origSentAt
         this.latency = Math.max(1, Math.round(rtt / 2))
+        if (msg.recvAt !== undefined) {
+          // Cristian's algorithm clock synchronization offset
+          this.clockOffset = msg.recvAt - (msg.origSentAt + this.latency)
+        }
         this.emitStatus()
         break
       }
@@ -943,6 +959,7 @@ export class JamSessionService {
     this.isConnecting = false
     this.isReconnecting = false
     this.latency = null
+    this.clockOffset = 0
     this.activeGuestId = null
     this.reconnectAttempts = 0
     this.saveSession()

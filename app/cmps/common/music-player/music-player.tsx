@@ -126,60 +126,87 @@ export const MusicPlayer = () => {
     }
   }, [audioUrl])
 
-  // Listen Together (Jam) remote playback synchronization
+  // Listen Together (Jam) ultra-smooth playback synchronization
   useEffect(() => {
     const handleRemotePlay = (e: Event) => {
-      const { currentTime: remoteTime, sentAt } = (e as CustomEvent).detail
-      const latencySec = sentAt ? Math.max(0, (Date.now() - sentAt) / 1000) : 0
-      const targetTime = remoteTime + latencySec
+      const { currentTime: remoteTime } = (e as CustomEvent).detail
+      const audio = audioRef.current
 
-      if (audioRef.current) {
-        if (Math.abs(audioRef.current.currentTime - targetTime) > 0.3) {
-          audioRef.current.currentTime = targetTime
+      if (audio) {
+        // Calibrated one-way network transit time estimate in seconds
+        const oneWaySec = (jamService.getLatency() || 40) / 1000
+        const targetTime =
+          (remoteTime !== undefined ? remoteTime : audio.currentTime) + oneWaySec
+        const drift = Math.abs(audio.currentTime - targetTime)
+
+        // Hard seek only if severely desynced (> 1.2s) to avoid buffer re-decode mute gap
+        if (drift > 1.2) {
+          audio.currentTime = targetTime
         }
-        void audioRef.current.play()
+        void audio.play()
+        setIsPlaying(true)
       } else if (iframeRef.current?.contentWindow) {
         try {
-          iframeRef.current.contentWindow.postMessage(
-            JSON.stringify({
-              event: 'command',
-              func: 'seekTo',
-              args: [targetTime, true],
-            }),
-            '*',
-          )
+          if (remoteTime !== undefined) {
+            iframeRef.current.contentWindow.postMessage(
+              JSON.stringify({
+                event: 'command',
+                func: 'seekTo',
+                args: [remoteTime, true],
+              }),
+              '*',
+            )
+          }
           iframeRef.current.contentWindow.postMessage(
             JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
             '*',
           )
+          setIsPlaying(true)
         } catch (_) {}
       }
     }
 
     const handleRemotePause = (e: Event) => {
       const { currentTime: remoteTime } = (e as CustomEvent).detail
-      if (audioRef.current) {
-        audioRef.current.pause()
+      const audio = audioRef.current
+
+      if (audio) {
+        audio.pause()
+        audio.playbackRate = 1.0 // Reset any micro-nudge rate on pause
         if (remoteTime !== undefined) {
-          audioRef.current.currentTime = remoteTime
+          audio.currentTime = remoteTime
         }
+        setIsPlaying(false)
       } else if (iframeRef.current?.contentWindow) {
         try {
           iframeRef.current.contentWindow.postMessage(
             JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }),
             '*',
           )
+          if (remoteTime !== undefined) {
+            iframeRef.current.contentWindow.postMessage(
+              JSON.stringify({
+                event: 'command',
+                func: 'seekTo',
+                args: [remoteTime, true],
+              }),
+              '*',
+            )
+          }
+          setIsPlaying(false)
         } catch (_) {}
       }
     }
 
     const handleRemoteSeek = (e: Event) => {
       const { currentTime: remoteTime } = (e as CustomEvent).detail
-      if (audioRef.current) {
+      if (audioRef.current && remoteTime !== undefined) {
         audioRef.current.currentTime = remoteTime
       }
-      setCurrentTime(remoteTime)
-      if (iframeRef.current?.contentWindow) {
+      if (remoteTime !== undefined) {
+        setCurrentTime(remoteTime)
+      }
+      if (iframeRef.current?.contentWindow && remoteTime !== undefined) {
         try {
           iframeRef.current.contentWindow.postMessage(
             JSON.stringify({
@@ -187,7 +214,7 @@ export const MusicPlayer = () => {
               func: 'seekTo',
               args: [remoteTime, true],
             }),
-            '*',
+              '*',
           )
         } catch (_) {}
       }
@@ -197,20 +224,45 @@ export const MusicPlayer = () => {
       const {
         currentTime: remoteTime,
         isPlaying: remoteIsPlaying,
-        sentAt,
       } = (e as CustomEvent).detail
-      const latencySec = sentAt ? Math.max(0, (Date.now() - sentAt) / 1000) : 0
-      const expectedTime = remoteTime + (remoteIsPlaying ? latencySec : 0)
+      const audio = audioRef.current
+      if (!audio || remoteTime === undefined) return
 
-      if (audioRef.current) {
-        const diff = Math.abs(audioRef.current.currentTime - expectedTime)
-        if (diff > 0.4) {
-          audioRef.current.currentTime = expectedTime
+      const oneWaySec = (jamService.getLatency() || 40) / 1000
+      const expectedTime = remoteTime + (remoteIsPlaying ? oneWaySec : 0)
+
+      if (remoteIsPlaying) {
+        const drift = audio.currentTime - expectedTime
+
+        // Severe desync (> 1.5s): hard seek back into sync
+        if (Math.abs(drift) > 1.5) {
+          audio.currentTime = expectedTime
+          audio.playbackRate = 1.0
+        } else if (drift < -0.07) {
+          // Behind partner by 70ms-1500ms: micro-speed up by 2.5% to glide into sync without audio pop
+          audio.playbackRate = 1.025
+        } else if (drift > 0.07) {
+          // Ahead of partner by 70ms-1500ms: micro-slow down by 2.5% to let partner catch up
+          audio.playbackRate = 0.975
+        } else {
+          // In sync (< 70ms): return to 1.0x native speed
+          if (audio.playbackRate !== 1.0) {
+            audio.playbackRate = 1.0
+          }
         }
-        if (remoteIsPlaying && audioRef.current.paused) {
-          void audioRef.current.play()
-        } else if (!remoteIsPlaying && !audioRef.current.paused) {
-          audioRef.current.pause()
+
+        if (audio.paused) {
+          void audio.play()
+          setIsPlaying(true)
+        }
+      } else {
+        audio.playbackRate = 1.0
+        if (!audio.paused) {
+          audio.pause()
+          setIsPlaying(false)
+        }
+        if (Math.abs(audio.currentTime - remoteTime) > 0.1) {
+          audio.currentTime = remoteTime
         }
       }
     }
@@ -570,15 +622,23 @@ export const MusicPlayer = () => {
     } else if (streamMode === 'youtube') {
       if (iframeRef.current?.contentWindow) {
         try {
+          const nextPlaying = !isPlaying
           iframeRef.current.contentWindow.postMessage(
             JSON.stringify({
               event: 'command',
-              func: isPlaying ? 'pauseVideo' : 'playVideo',
+              func: nextPlaying ? 'playVideo' : 'pauseVideo',
               args: [],
             }),
             '*',
           )
-          setIsPlaying(!isPlaying)
+          setIsPlaying(nextPlaying)
+          if (isJamConnected && canControlJam) {
+            if (nextPlaying) {
+              jamService.broadcastPlay(currentTime)
+            } else {
+              jamService.broadcastPause(currentTime)
+            }
+          }
         } catch (_) {}
       }
     }

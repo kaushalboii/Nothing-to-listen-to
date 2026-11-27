@@ -64,5 +64,28 @@ describe('JamSessionService', () => {
         roomCode: null,
       }),
     )
+    expect(service.getLatency()).toBe(40)
+    expect(service.getClockOffset()).toBe(0)
+  })
+
+  it('calculates latency and clock offset from PONG message', () => {
+    expect(service.getLatency()).toBe(40)
+    expect(service.getClockOffset()).toBe(0)
+
+    const now = Date.now()
+    const origSentAt = now - 100 // 100ms RTT -> ~50ms one-way latency
+    const recvAt = now - 40 // remote timestamp
+
+    // Simulate incoming PONG message
+    ;(service as any).handleIncomingMessage({
+      type: 'PONG',
+      senderId: 'remote-peer',
+      origSentAt,
+      recvAt,
+    })
+
+    expect(service.getLatency()).toBeGreaterThanOrEqual(45)
+    expect(service.getLatency()).toBeLessThanOrEqual(55)
+    expect(service.getClockOffset()).toBeDefined()
   })
 })

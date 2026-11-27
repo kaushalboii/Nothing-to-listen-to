@@ -27,11 +27,11 @@ export const initVoroforce = ({
           window.innerWidth < 768))
     if (isMobile) {
       state.setPreset(VOROFORCE_PRESET.mobile)
-      state.setCellLimit(CELL_LIMIT.min)
+      state.setCellLimit(CELL_LIMIT.xs)
     } else {
       return
     }
-  } else if (!force && state.cellLimit && state.cellLimit > CELL_LIMIT.xxs) {
+  } else if (!force && state.cellLimit && state.cellLimit > CELL_LIMIT.xs) {
     const isMobile =
       state.ua?.getDevice()?.is('mobile') ||
       state.deviceClass === DEVICE_CLASS.mobile ||
@@ -41,7 +41,7 @@ export const initVoroforce = ({
           window.innerWidth < 768))
     if (isMobile) {
       state.setPreset(VOROFORCE_PRESET.mobile)
-      state.setCellLimit(CELL_LIMIT.min)
+      state.setCellLimit(CELL_LIMIT.xs)
     }
   }
 

@@ -106,6 +106,7 @@ export default class ForcesSimulationStep extends BaseSimulationStep {
   }
 
   refresh() {
+    this.settledCount = 0
     this.handleLattice()
     this.handleForcesConfig()
   }
@@ -136,6 +137,23 @@ export default class ForcesSimulationStep extends BaseSimulationStep {
         this.parameters.velocityDecay === this.targetParameters.velocityDecay
       )
         this.targetParameters = null
+    }
+
+    // Performance optimization for 5,000 cells:
+    // If pointer is stationary and simulation has settled, throttle idle force passes
+    // to preserve 60fps responsiveness, eliminate phone heating, and prevent UI lag.
+    const isPointerActive = (this.pointer?.speedScale ?? 0) > 0.005
+    if (isPointerActive) {
+      this.settledCount = 0
+    }
+
+    if (!isPointerActive && (this.settledCount ?? 0) > 60) {
+      this.idleTick = (this.idleTick || 0) + 1
+      if (this.idleTick % 8 !== 0) {
+        return
+      }
+    } else {
+      this.settledCount = (this.settledCount || 0) + 1
     }
 
     for (let i = 0; i < this.forces.length; i++) {

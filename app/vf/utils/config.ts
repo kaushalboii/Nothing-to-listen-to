@@ -106,11 +106,10 @@ export const getVoroforceConfig = (state: StoreState) => {
     const requestedCells = cellsOverrideParam
       ? Number.parseInt(cellsOverrideParam)
       : (cellLimit ?? config.cells)
-    // On mobile devices, default to CELL_LIMIT.min (216 songs) to match the 216-track atlas grid.
-    // This reduces CPU Voronoi force calculations by 95% and eliminates thermal SoC overheating.
+    // 5,000 cells (CELL_LIMIT.xs) gives the rich, dense 3D galaxy sphere visual on mobile and mobile desktop-mode
     config.cells = cellsOverrideParam
       ? requestedCells
-      : Math.min(requestedCells, CELL_LIMIT.min)
+      : Math.min(requestedCells, CELL_LIMIT.xs)
     if (config.multiThreading) {
       config.multiThreading.enabled = false
     }

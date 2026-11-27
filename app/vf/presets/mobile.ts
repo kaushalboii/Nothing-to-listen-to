@@ -4,7 +4,7 @@ import mediaConfig from '../config/media'
 import { CELL_LIMIT, VOROFORCE_MODE } from '../consts'
 
 export default {
-  cells: CELL_LIMIT.min,
+  cells: CELL_LIMIT.xs,
   fpsCap: 60,
   idleFpsCap: 30,
   adaptiveFPS: true,

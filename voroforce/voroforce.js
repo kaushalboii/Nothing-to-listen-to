@@ -367,6 +367,9 @@ export class Voroforce extends CustomEventTarget {
 
     const onActivity = () => {
       this.ticker?.setFpsCap?.(activeCap)
+      if (this.simulation?.forceStep) {
+        this.simulation.forceStep.settledCount = 0
+      }
       if (this.idleThrottleTimer) clearTimeout(this.idleThrottleTimer)
       this.idleThrottleTimer = setTimeout(() => {
         this.ticker?.setFpsCap?.(idleCap)

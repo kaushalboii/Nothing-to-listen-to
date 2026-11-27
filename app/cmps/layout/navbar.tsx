@@ -68,7 +68,10 @@ export const Navbar = () => {
       state.preset === VOROFORCE_PRESET.mobile,
   }))
 
-  const handleDiscClick = () => {
+  const handleDiscClick = (e?: React.MouseEvent<HTMLButtonElement>) => {
+    if (e?.currentTarget) {
+      e.currentTarget.blur()
+    }
     if (!activeTrack) return
     if (!playerOpen) {
       setPlayerOpen(true)
@@ -178,7 +181,10 @@ export const Navbar = () => {
         <Button
           variant='ghost'
           size='icon'
-          onClick={toggleSearchOpen}
+          onClick={(e) => {
+            e.currentTarget.blur()
+            toggleSearchOpen()
+          }}
           title='Search songs (Cmd+K)'
           className={cn(buttonClassnames, {
             'border border-foreground bg-primary/20': searchOpen,
@@ -191,7 +197,10 @@ export const Navbar = () => {
         <Button
           variant='ghost'
           size='icon'
-          onClick={toggleJamModalOpen}
+          onClick={(e) => {
+            e.currentTarget.blur()
+            toggleJamModalOpen()
+          }}
           title={
             isJamConnected
               ? `In Jam Session (${jamRoomCode}) - 2/2 Synced`
@@ -226,8 +235,12 @@ export const Navbar = () => {
         <Button
           variant='ghost'
           size='icon'
-          onClick={toggleAboutOpen}
+          onClick={(e) => {
+            e.currentTarget.blur()
+            toggleAboutOpen()
+          }}
           onPointerDown={(event) => {
+            event.currentTarget.blur()
             if (aboutOpen) {
               event.preventDefault()
               event.stopPropagation()
@@ -243,8 +256,12 @@ export const Navbar = () => {
           <Button
             variant='ghost'
             size='icon'
-            onClick={toggleSettingsOpen}
+            onClick={(e) => {
+              e.currentTarget.blur()
+              toggleSettingsOpen()
+            }}
             onPointerDown={(event) => {
+              event.currentTarget.blur()
               if (settingsOpen) {
                 event.preventDefault()
                 event.stopPropagation()
@@ -260,8 +277,12 @@ export const Navbar = () => {
             <Button
               variant='ghost'
               size='icon'
-              onClick={toggleFavoritesOpen}
+              onClick={(e) => {
+                e.currentTarget.blur()
+                toggleFavoritesOpen()
+              }}
               onPointerDown={(event) => {
+                event.currentTarget.blur()
                 if (favoritesOpen) {
                   event.preventDefault()
                   event.stopPropagation()
@@ -285,24 +306,18 @@ export const Navbar = () => {
             event.stopPropagation()
           }}
         />
-        <Button
-          variant='ghost'
-          size='icon'
-          onClick={toggleSettingsOpen}
-          onPointerDown={(event) => {
-            event.preventDefault()
-            event.stopPropagation()
-          }}
-          className={cn(buttonClassnames, 'hidden md:inline-flex')}
+        <a
+          href={config.sourceCodeUrl}
+          target='_blank'
+          rel='noreferrer noopener'
+          title='Source code on GitHub'
+          className={cn(
+            buttonClassnames,
+            'hidden md:inline-flex items-center justify-center hover:bg-accent hover:text-accent-foreground text-foreground transition-colors',
+          )}
         >
-          <a
-            href={config.sourceCodeUrl}
-            target='_blank'
-            rel='noreferrer noopener noreferer'
-          >
-            <GithubIcon />
-          </a>
-        </Button>
+          <GithubIcon />
+        </a>
       </div>
     </div>
   )

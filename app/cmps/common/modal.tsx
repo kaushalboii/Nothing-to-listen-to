@@ -152,6 +152,20 @@ export const Modal = ({
   const OptionalDrawerPortal = portal ? DrawerPortal : Fragment
 
   useEffect(() => {
+    if (rootProps?.open) {
+      // Prevent Chromium "Blocked aria-hidden on an element because its descendant retained focus" warning
+      // When the drawer portal mounts and Radix sets aria-hidden on #root, active focus inside #root must be released
+      if (
+        typeof document !== 'undefined' &&
+        document.activeElement instanceof HTMLElement &&
+        document.getElementById('root')?.contains(document.activeElement)
+      ) {
+        document.activeElement.blur()
+      }
+    }
+  }, [rootProps?.open])
+
+  useEffect(() => {
     if (
       !disableVoroforceKeyboardControls ||
       !voroforceControls ||

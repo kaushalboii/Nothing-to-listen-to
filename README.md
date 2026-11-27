@@ -130,37 +130,23 @@ Whether you're craving classic rock legends, viral Bollywood melodies, explosive
 
 ## 🏗 Architecture & System Design
 
-```mermaid
-flowchart TD
-    subgraph UI ["User Interface Layer"]
-        A[React 19 + Tailwind CSS] --> B[Zustand Store]
-        B --> C[3D Canvas Viewport]
-        B --> D[Music Player & Mini CD]
-        B --> E[Jam Session Modal]
-        B --> F[Playlists & Search]
-    end
-
-    subgraph Graphics ["3D Graphics Engine"]
-        C --> G[Voroforce WebGL 2.0]
-        G --> H[Multi-Threaded Worker Simulation]
-        G --> I[OGL Shaders & Texture Atlas]
-        G --> J[Physics Convergence Idle Sleep]
-    end
-
-    subgraph Audio ["Audio Streaming Engine"]
-        D --> K[Audio Stream Resolver]
-        K --> L[CacheStorage Local Cache]
-        K --> M[High-Fidelity Stream Endpoint]
-        D --> N[HTML5 Audio Element]
-        N --> O[W3C MediaSession API]
-    end
-
-    subgraph RealTime ["Real-Time Jam Sync"]
-        E --> P[JamSession Service]
-        P --> Q[WebSocket Relay Server]
-        Q --> R[Peer Listeners 4+ Users]
-        P --> S[Phase-Lock Microsecond Sync]
-    end
+```text
+┌────────────────────────────────────────────────────────────────────────┐
+│                          User Interface Layer                          │
+│   React 19  •  Tailwind CSS  •  Radix UI Primitives  •  Lucide Icons   │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                         [ Zustand State Store ]
+           (Active Track, Playlists, Jam Session, Visual Settings)
+            │                       │                       │
+            ▼                       ▼                       ▼
+┌───────────────────────┐ ┌───────────────────┐ ┌────────────────────────┐
+│  3D Graphics Engine   │ │  Audio Streaming  │ │  Real-Time Jam Sync    │
+│  Voroforce (WebGL2)   │ │  Direct HTML5     │ │  WebSocket Relay       │
+│  OGL 2.0 Shaders      │ │  Lossless Quality │ │  Microsecond Phase-Lock│
+│  Worker Physics Forces│ │  CacheStorage 0ms │ │  Collaborative DJ Mode │
+│  Idle Convergence     │ │  W3C MediaSession │ │  Live Floating Emojis  │
+└───────────────────────┘ └───────────────────┘ └────────────────────────┘
 ```
 
 ---

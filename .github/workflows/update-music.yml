@@ -76,6 +76,8 @@ jobs:
         run: |
           git config --global user.name "kaushalboii"
           git config --global user.email "124547139+kaushalboii@users.noreply.github.com"
+          mkdir -p public/json
+          echo "{\"lastSync\": \"$(date -u +'%Y-%m-%dT%H:%M:%SZ')\", \"status\": \"synced\"}" > public/json/sync-heartbeat.json
           git add public/json/ public/media/
           git add data/ 2>/dev/null || true
           if git diff --staged --quiet; then

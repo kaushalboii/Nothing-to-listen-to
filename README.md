@@ -4,21 +4,20 @@
 
 **An immersive, ad-free WebGL 3D musical universe with real-time multi-user Jam sessions, custom playlists, lossless low-data streaming, and mobile lock-screen background playback.**
 
+<br/>
+
 [![Live Site](https://img.shields.io/badge/Live_Site-GitHub_Pages-2ea44f?style=for-the-badge&logo=githubpages&logoColor=white)](https://kaushalboii.github.io/Nothing-to-listen-to/)
 [![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4_kaushalboii-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/kaushalboii)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178c6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-19.1-61dafb?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![WebGL 2.0](https://img.shields.io/badge/WebGL-2.0_Enabled-00599c?style=for-the-badge&logo=webgl&logoColor=white)](https://www.khronos.org/webgl/)
 [![Tests Passing](https://img.shields.io/badge/Tests-81%2F81_Passing-success?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
+[![Daily Sync](https://img.shields.io/badge/Daily_Sync-Automated_Cron-blueviolet?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/kaushalboii/Nothing-to-listen-to/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-f1e05a?style=for-the-badge)](LICENSE)
 
 <br/>
 
-<iframe src="https://github.com/sponsors/kaushalboii/button" title="Sponsor kaushalboii" height="32" width="114" style="border: 0; border-radius: 6px;"></iframe>
-
-<br/>
-
-[**Explore Live Universe »**](https://kaushalboii.github.io/Nothing-to-listen-to/) · [**Start a Jam Session**](https://kaushalboii.github.io/Nothing-to-listen-to/) · [**Sponsor Developer**](https://github.com/sponsors/kaushalboii)
+[**🚀 Explore Live Universe**](https://kaushalboii.github.io/Nothing-to-listen-to/) &nbsp;•&nbsp; [**👥 Start a Jam Session**](https://kaushalboii.github.io/Nothing-to-listen-to/) &nbsp;•&nbsp; [**💖 Sponsor on GitHub**](https://github.com/sponsors/kaushalboii)
 
 </div>
 
@@ -38,10 +37,11 @@
   - [🎧 Universal Multi-Platform Links](#-universal-multi-platform-links)
   - [🔎 Instant Search & Dual Filter System](#-instant-search--dual-filter-system)
 - [⌨️ Keyboard Shortcuts](#️-keyboard-shortcuts)
-- [💖 Support & Sponsor](#-support--sponsor)
+- [🏗 Architecture & System Design](#-architecture--system-design)
+- [📂 Project Structure](#-project-structure)
 - [🚀 Quick Start](#-quick-start)
 - [🔄 Automated Daily Releases Pipeline](#-automated-daily-releases--auto-deployment-pipeline)
-- [🏗 Architecture & Tech Stack](#-architecture--tech-stack)
+- [💖 Support & Sponsor](#-support--sponsor)
 - [🤝 Attribution & Credits](#-attribution--open-source-credits)
 - [⚖️ License & Legal Disclaimer](#-license--legal-disclaimer)
 
@@ -62,7 +62,7 @@ Whether you're craving classic rock legends, viral Bollywood melodies, explosive
 - **Microsecond Precision Audio Phase-Lock**: Real-time WebSocket relay keeps everyone in exact synchrony with automatic network latency and drift compensation.
 - **Collaborative DJ Mode with Smart Lock**: Host can toggle Collaborative DJ Mode ON/OFF:
   - When **ON**: Guests can freely play, pause, seek, and switch tracks.
-  - When **OFF**: Guest controls lock cleanly with informative tooltips while host authority prevents desync.
+  - When **OFF**: Guest controls lock cleanly with informative tooltips while host authority prevents accidental desync.
 - **Floating Live Emoji Reactions**: Send animated floating reaction bubbles (❤️, 🔥, 🎵, ⚡, 💃, 🙌, ✨, 🎸) that burst across all connected screens with soundwave feedback.
 - **Auto-Reconnection Watchdog**: Silent heartbeat checks automatically restore dropped mobile connections in the background without user intervention.
 
@@ -79,8 +79,8 @@ Whether you're craving classic rock legends, viral Bollywood melodies, explosive
 
 ### 📱 Mobile Ultra-Performance & Desktop-Mode Optimization
 - **Dual Mode Optimization (Normal & Desktop-Mode on Mobile)**:
-  - Normal Mobile: Clamped to 216-5,000 cells with 1.5 DPR for razor-sharp textures.
-  - Mobile in "Desktop Site" Mode: Viewport-adaptive 2,500 cells and 1.0 DPR to prevent fragment shader overload on emulated desktop resolutions.
+  - **Normal Mobile**: Clamped to 216-5,000 cells with 1.5 DPR for razor-sharp textures.
+  - **Mobile in "Desktop Site" Mode**: Viewport-adaptive 2,500 cells and 1.0 DPR to prevent fragment shader overload on emulated desktop resolutions.
 - **Physics Convergence Sleep**: Automatically throttles idle physics calculations when the pointer is stationary, eliminating phone heating and preserving 60 FPS battery life.
 - **Zero-Jank Compositor Scrolling**: Mouse wheel and touch events use `{ passive: true }` listeners for zero scroll-blocking lag.
 - **Automatic Background Sleep**: Drops render loop CPU/GPU consumption to **0%** when the device screen is locked or the tab is hidden.
@@ -128,34 +128,70 @@ Whether you're craving classic rock legends, viral Bollywood melodies, explosive
 
 ---
 
-## 💖 Support & Sponsor
+## 🏗 Architecture & System Design
 
-If you enjoy **Nothing to Listen to** and want to support ongoing server-free development, new features, and daily music sync pipelines, consider becoming a sponsor!
+```mermaid
+flowchart TD
+    subgraph UI ["User Interface Layer"]
+        A[React 19 + Tailwind CSS] --> B[Zustand Store]
+        B --> C[3D Canvas Viewport]
+        B --> D[Music Player & Mini CD]
+        B --> E[Jam Session Modal]
+        B --> F[Playlists & Search]
+    end
 
-<div align="center">
+    subgraph Graphics ["3D Graphics Engine"]
+        C --> G[Voroforce WebGL 2.0]
+        G --> H[Multi-Threaded Worker Simulation]
+        G --> I[OGL Shaders & Texture Atlas]
+        G --> J[Physics Convergence Idle Sleep]
+    end
 
-<!-- Official GitHub Sponsors Card Embed -->
-<iframe src="https://github.com/sponsors/kaushalboii/card" title="Sponsor kaushalboii" height="225" width="600" style="border: 0;"></iframe>
+    subgraph Audio ["Audio Streaming Engine"]
+        D --> K[Audio Stream Resolver]
+        K --> L[CacheStorage Local Cache]
+        K --> M[High-Fidelity Stream Endpoint]
+        D --> N[HTML5 Audio Element]
+        N --> O[W3C MediaSession API]
+    end
 
-<br/>
+    subgraph RealTime ["Real-Time Jam Sync"]
+        E --> P[JamSession Service]
+        P --> Q[WebSocket Relay Server]
+        Q --> R[Peer Listeners 4+ Users]
+        P --> S[Phase-Lock Microsecond Sync]
+    end
+```
 
-<!-- Interactive Visual Sponsor Card -->
-<table align="center">
-  <tr>
-    <td align="center" style="padding: 24px; border: 1px solid #30363d; border-radius: 12px; background: #0d1117;">
-      <a href="https://github.com/sponsors/kaushalboii" target="_blank">
-        <img src="https://github.com/kaushalboii.png" width="96" height="96" style="border-radius: 50%; box-shadow: 0 4px 14px rgba(0,0,0,0.4);" alt="kaushalboii" />
-        <br />
-        <br />
-        <img src="https://img.shields.io/badge/Sponsor_%E2%9D%A4_kaushalboii-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white" height="38" alt="Sponsor kaushalboii" />
-      </a>
-      <p style="margin-top: 12px; color: #8b949e; font-size: 14px;"><strong>Support Nothing to Listen to & open-source music innovation</strong></p>
-      <p style="color: #8b949e; font-size: 13px; max-width: 500px;">Your sponsorship powers ad-free streaming, low-data mobile optimizations, real-time shared Jam audio sync, custom playlists, and automated daily music release pipelines.</p>
-    </td>
-  </tr>
-</table>
+---
 
-</div>
+## 📂 Project Structure
+
+```
+Nothing-to-listen-to/
+├── app/
+│   ├── cmps/                 # React UI Components
+│   │   ├── common/           # Shared components (music-player, modal, settings)
+│   │   ├── layout/           # Navbar, footer, interactive vinyl CD
+│   │   ├── ui/               # Radix UI primitives & buttons
+│   │   └── views/            # Modals (jam, playlists, search, favorites, about)
+│   ├── services/             # Background services
+│   │   ├── audio-cache.ts    # CacheStorage offline audio caching
+│   │   └── jam-session.ts    # Multi-user WebSocket sync & DJ control
+│   ├── store/                # Zustand global state slices
+│   ├── utils/                # Audio, telemetry, and animation utilities
+│   ├── vf/                   # Voroforce WebGL bindings & presets
+│   └── main.tsx              # Application entry point
+├── voroforce/                # 3D Voronoi WebGL2 physics & rendering engine
+│   ├── controls/             # Camera, pointer, and wheel event handlers
+│   ├── display/              # OGL renderer, shaders, and scene graph
+│   └── simulation/           # Web Worker physics forces & lattice
+├── scripts/
+│   └── sync-music.py         # Daily music crawler & texture atlas generator
+├── public/                   # Static assets, sitemaps, and icons
+├── .github/workflows/        # Automated CI/CD & daily music sync crons
+└── package.json              # Dependencies and scripts
+```
 
 ---
 
@@ -187,6 +223,9 @@ npm test
 
 # Run TypeScript checks
 npx tsc --noEmit
+
+# Run Biome linter
+npm run lint
 ```
 
 ### Production Build
@@ -214,20 +253,35 @@ npm run sync:music
    - Resolves verified official video IDs, downloads 600x600 high-resolution artwork, and rebuilds the WebGL compressed texture atlas.
    - Automatically commits changes and deploys live to **GitHub Pages**.
 2. **Push CI/CD Deployment (`.github/workflows/deploy.yml`)**:
-   - Runs on every push to `main`, validating all tests and deploying production builds with zero downtime.
+   - Runs on every push to `main`, validating all 81 tests and deploying production builds with zero downtime.
 
 ---
 
-## 🏗 Architecture & Tech Stack
+## 💖 Support & Sponsor
 
-- **Frontend Core**: React 19, TypeScript 5.8, Vite 7
-- **Styling & UI**: Tailwind CSS, Radix UI primitives, Lucide Icons
-- **State Management**: Zustand with persistent local storage
-- **3D Graphics & Physics**: Voroforce WebGL2 engine, OGL, custom GLSL shaders, multi-threaded force simulation
-- **Audio Engine**: HTML5 Audio, W3C MediaSession API, Web Audio API melodic synthesizer and analyzer
-- **Real-time Networking**: High-speed WebSocket relay & WebRTC with microsecond audio phase-lock
-- **Testing**: Vitest, Playwright
-- **Deployment**: Automated GitHub Actions Pages CI/CD workflow (`.github/workflows/deploy.yml`)
+If you enjoy **Nothing to Listen to** and want to support ongoing server-free development, new features, and daily music sync pipelines, consider becoming a sponsor!
+
+<div align="center">
+
+<table align="center" style="border-collapse: collapse;">
+  <tr>
+    <td align="center" style="padding: 24px; border: 1px solid #30363d; border-radius: 12px; background: #0d1117;">
+      <a href="https://github.com/sponsors/kaushalboii" target="_blank">
+        <img src="https://github.com/kaushalboii.png" width="96" height="96" style="border-radius: 50%; box-shadow: 0 4px 14px rgba(0,0,0,0.4);" alt="kaushalboii" />
+        <br /><br />
+        <img src="https://img.shields.io/badge/Sponsor_%E2%9D%A4_kaushalboii-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white" height="38" alt="Sponsor kaushalboii" />
+      </a>
+      <p style="margin-top: 14px; color: #c9d1d9; font-size: 15px;"><strong>Support Nothing to Listen to & Open-Source Music Innovation</strong></p>
+      <p style="color: #8b949e; font-size: 13px; max-width: 520px; line-height: 1.5;">Your sponsorship helps fund serverless infrastructure, ad-free streaming, low-data mobile optimizations, real-time shared Jam audio sync, custom playlists, and automated daily music release pipelines.</p>
+    </td>
+  </tr>
+</table>
+
+<br/>
+
+[![Sponsor kaushalboii on GitHub](https://img.shields.io/badge/Sponsor_on_GitHub_Sponsors-%E2%9D%A4-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/kaushalboii)
+
+</div>
 
 ---
 
@@ -258,6 +312,6 @@ This project is open source and available under the terms of the [MIT License](L
 ### 📬 Contact & Feedback
 
 For questions, feedback, or suggestions:  
-📧 **Email**: [contact.nothingtolisten@gmail.com](mailto:contact.nothingtolisten@gmail.com) · 🐙 **GitHub**: [@kaushalboii](https://github.com/kaushalboii) · 💖 **Sponsor**: [github.com/sponsors/kaushalboii](https://github.com/sponsors/kaushalboii)
+📧 **Email**: [contact.nothingtolisten@gmail.com](mailto:contact.nothingtolisten@gmail.com) &nbsp;•&nbsp; 🐙 **GitHub**: [@kaushalboii](https://github.com/kaushalboii) &nbsp;•&nbsp; 💖 **Sponsor**: [github.com/sponsors/kaushalboii](https://github.com/sponsors/kaushalboii)
 
 </div>

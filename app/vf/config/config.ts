@@ -46,7 +46,7 @@ export default {
   },
   handleVisibilityChange: {
     enabled: true,
-    hiddenDelay: 5000,
+    hiddenDelay: 300,
   },
   lattice: baseLatticeConfig,
   modes: modeConfigs,

@@ -50,9 +50,9 @@ export class AutoTicker extends CustomEventTarget {
 
     requestAnimationFrame(this.tick)
 
-    // update metrics
+    // update metrics - clamp delta to prevent NaN physics explosions when waking from lock screen
     const currentTime = performance.now()
-    this.delta = currentTime - this.current
+    this.delta = Math.min(Math.max(currentTime - this.current, 0), 64)
 
     // Only execute if enough time has passed for our target FPS
     // if (elapsedSinceLastFrame >= this.frameInterval) {

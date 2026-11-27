@@ -51,6 +51,23 @@ export default class Renderer {
     if (backgroundColor) this.canvas.style.backgroundColor = backgroundColor
     if (clearColor) this.gl.clearColor(...clearColor)
 
+    this.canvas.addEventListener(
+      'webglcontextlost',
+      (e) => {
+        e.preventDefault()
+        this.contextLost = true
+      },
+      false,
+    )
+    this.canvas.addEventListener(
+      'webglcontextrestored',
+      () => {
+        this.contextLost = false
+        this.initScissor()
+      },
+      false,
+    )
+
     this.initScissor()
   }
 
@@ -94,6 +111,7 @@ export default class Renderer {
   }
 
   update() {
+    if (this.contextLost) return
     if (this.app.scene.instance.children.length === 0) return
     this.instance.render({
       scene: this.app.scene.instance,

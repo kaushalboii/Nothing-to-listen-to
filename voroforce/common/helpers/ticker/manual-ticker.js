@@ -25,6 +25,10 @@ export class ManualTicker extends CustomEventTarget {
     if (this.pauseStart) {
       this.totalPausedTime += performance.now() - this.pauseStart
     }
+    this.current = performance.now()
+    this.pauseStart = 0
+    this.nextRequests = 0
+    this.delta = 16
 
     requestAnimationFrame(this.tick)
   }
@@ -45,9 +49,9 @@ export class ManualTicker extends CustomEventTarget {
     this.fpsGraph?.end()
     this.fpsGraph?.begin()
 
-    // update metrics
+    // update metrics - clamp delta to prevent NaN physics explosions when waking from lock screen
     const currentTime = performance.now()
-    this.delta = currentTime - this.current
+    this.delta = Math.min(Math.max(currentTime - this.current, 0), 64)
     this.current = currentTime
     this.elapsed = this.current - this.lastFrameTime - this.totalPausedTime
 

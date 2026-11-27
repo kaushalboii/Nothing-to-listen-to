@@ -73,6 +73,7 @@ export default class Display {
   }
 
   update() {
+    if (this.renderer?.contextLost) return
     this.scene.update()
     this.renderer.update()
   }

@@ -192,6 +192,7 @@ export class Voroforce extends CustomEventTarget {
           this.visible = true
           clearTimeout(this.tickerFreezeTimeout)
           this.ticker.start()
+          this.dimensions?.handleResize?.()
           this.dispatchEvent(
             new VisibilityChangeEvent({
               visible: true,
@@ -209,7 +210,7 @@ export class Voroforce extends CustomEventTarget {
           this.tickerFreezeTimeout = setTimeout(() => {
             if (this.visible) return
             this.ticker.stop()
-          }, this.config.handleVisibilityChange.hiddenDelay ?? 1000)
+          }, this.config.handleVisibilityChange.hiddenDelay ?? 200)
         },
       )
     }
@@ -230,7 +231,7 @@ export class Voroforce extends CustomEventTarget {
           this.ticker.stop()
         }
       } else {
-        if (!this.ticker.running) {
+        if (!this.ticker.running && this.visible) {
           console.log('Resuming from sleep or throttling')
           this.ticker.start()
         }

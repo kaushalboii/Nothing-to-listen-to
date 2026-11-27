@@ -333,13 +333,26 @@ export const MusicPlayer = () => {
         navigator.mediaSession.metadata = new MediaMetadata({
           title: activeTrack.title,
           artist: activeTrack.artist,
-          album: activeTrack.albumTitle,
+          album: activeTrack.albumTitle || 'Nothing to Listen to',
           artwork: activeTrack.cover
-            ? [{ src: activeTrack.cover, sizes: '600x600', type: 'image/jpeg' }]
+            ? [
+                { src: activeTrack.cover, sizes: '96x96', type: 'image/jpeg' },
+                { src: activeTrack.cover, sizes: '128x128', type: 'image/jpeg' },
+                { src: activeTrack.cover, sizes: '192x192', type: 'image/jpeg' },
+                { src: activeTrack.cover, sizes: '256x256', type: 'image/jpeg' },
+                { src: activeTrack.cover, sizes: '384x384', type: 'image/jpeg' },
+                { src: activeTrack.cover, sizes: '512x512', type: 'image/jpeg' },
+              ]
             : undefined,
         })
-        navigator.mediaSession.setActionHandler('play', () => void audio.play())
-        navigator.mediaSession.setActionHandler('pause', () => audio.pause())
+        navigator.mediaSession.playbackState = 'playing'
+
+        navigator.mediaSession.setActionHandler('play', () => {
+          void audio.play()
+        })
+        navigator.mediaSession.setActionHandler('pause', () => {
+          audio.pause()
+        })
         navigator.mediaSession.setActionHandler(
           'previoustrack',
           playlist.length > 1 ? prevTrack : null,
@@ -348,9 +361,44 @@ export const MusicPlayer = () => {
           'nexttrack',
           playlist.length > 1 ? nextTrack : null,
         )
+        try {
+          navigator.mediaSession.setActionHandler('seekto', (details) => {
+            if (details.seekTime !== undefined && audioRef.current) {
+              audioRef.current.currentTime = details.seekTime
+              setCurrentTime(details.seekTime)
+            }
+          })
+        } catch (_) {}
       } catch (_) {}
     }
   }, [streamMode, audioUrl, activeTrack, playlist.length, nextTrack, prevTrack])
+
+  // Sync mobile lock-screen & system notification playbackState
+  useEffect(() => {
+    if (typeof navigator !== 'undefined' && 'mediaSession' in navigator) {
+      navigator.mediaSession.playbackState = isPlaying ? 'playing' : 'paused'
+    }
+  }, [isPlaying])
+
+  // Sync mobile lock-screen scrubber position
+  useEffect(() => {
+    if (
+      typeof navigator !== 'undefined' &&
+      'mediaSession' in navigator &&
+      'setPositionState' in navigator.mediaSession &&
+      duration > 0 &&
+      Number.isFinite(duration) &&
+      Number.isFinite(currentTime)
+    ) {
+      try {
+        navigator.mediaSession.setPositionState({
+          duration: Math.max(0, duration),
+          playbackRate: 1,
+          position: Math.min(Math.max(0, currentTime), duration),
+        })
+      } catch (_) {}
+    }
+  }, [currentTime, duration])
 
   // Dual-layer YouTube listener (active only when falling back to YouTube embed)
   useEffect(() => {

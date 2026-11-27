@@ -250,7 +250,7 @@ export class JamSessionService {
 
   public setAllowGuestControl(allow: boolean) {
     this.allowGuestControl = allow
-    if (this.role === 'host' && this.isConnected()) {
+    if (this.role === 'host' && this.socket) {
       this.send({
         type: 'PERMISSIONS',
         senderId: this.clientId,
@@ -622,6 +622,9 @@ export class JamSessionService {
         break
 
       case 'SYNC_TRACK':
+        if (this.role === 'host' && !this.allowGuestControl) {
+          break
+        }
         this.callbacks.onRemoteTrack?.(
           msg.track,
           msg.playlist,
@@ -637,14 +640,23 @@ export class JamSessionService {
         break
 
       case 'PLAY':
+        if (this.role === 'host' && !this.allowGuestControl) {
+          break
+        }
         this.callbacks.onRemotePlay?.(msg.currentTime, msg.sentAt)
         break
 
       case 'PAUSE':
+        if (this.role === 'host' && !this.allowGuestControl) {
+          break
+        }
         this.callbacks.onRemotePause?.(msg.currentTime)
         break
 
       case 'SEEK':
+        if (this.role === 'host' && !this.allowGuestControl) {
+          break
+        }
         this.callbacks.onRemoteSeek?.(msg.currentTime)
         break
 
@@ -824,7 +836,7 @@ export class JamSessionService {
 
         if (this.isConnected()) {
           const current = this.callbacks.getCurrentTrackState?.()
-          if (current) {
+          if (current && current.isPlaying) {
             this.broadcastHeartbeat(current.currentTime, current.isPlaying)
           }
         }

@@ -43,7 +43,9 @@ export const createJamSlice: StateCreator<
       const audioEl =
         typeof document !== 'undefined' ? document.querySelector('audio') : null
       const currentTime = audioEl ? audioEl.currentTime : 0
-      const isPlaying = audioEl ? !audioEl.paused : false
+      const isPlaying = Boolean(
+        state.isPlaying && (audioEl ? !audioEl.paused : true),
+      )
       return {
         track: state.activeTrack,
         playlist: state.playlist,

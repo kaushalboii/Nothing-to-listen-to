@@ -13,6 +13,16 @@ export interface ActiveTrack {
   query: string
 }
 
+function isGuestUnauthorized(): boolean {
+  if (jamService.isConnected()) {
+    const role = jamService.getRole()
+    if (role === 'guest' && !jamService.getAllowGuestControl()) {
+      return true
+    }
+  }
+  return false
+}
+
 function maybeBroadcastTrack(
   track: ActiveTrack,
   playlist?: ActiveTrack[],
@@ -66,6 +76,7 @@ export const createPlayerSlice: StateCreator<
   setIsPlaying: (isPlaying) => set({ isPlaying }),
   setIsDocked: (isDocked) => set({ isDocked }),
   playTrack: (track) => {
+    if (isGuestUnauthorized()) return
     maybeBroadcastTrack(track, [track], 0)
     set({
       activeTrack: track,
@@ -78,6 +89,7 @@ export const createPlayerSlice: StateCreator<
     })
   },
   playPlaylist: (tracks, startIndex = 0) => {
+    if (isGuestUnauthorized()) return
     if (!tracks || tracks.length === 0) return
     const validIndex = Math.max(0, Math.min(startIndex, tracks.length - 1))
     const currentTrack = tracks[validIndex]
@@ -93,6 +105,7 @@ export const createPlayerSlice: StateCreator<
     })
   },
   nextTrack: () => {
+    if (isGuestUnauthorized()) return
     const { playlist, playlistIndex } = get()
     if (!playlist || playlist.length <= 1) return
     const nextIdx = (playlistIndex + 1) % playlist.length
@@ -104,6 +117,7 @@ export const createPlayerSlice: StateCreator<
     })
   },
   prevTrack: () => {
+    if (isGuestUnauthorized()) return
     const { playlist, playlistIndex } = get()
     if (!playlist || playlist.length <= 1) return
     const prevIdx = (playlistIndex - 1 + playlist.length) % playlist.length

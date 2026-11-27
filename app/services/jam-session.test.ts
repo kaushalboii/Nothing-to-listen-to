@@ -158,4 +158,70 @@ describe('JamSessionService', () => {
 
     expect(service.getParticipantCount()).toBe(6)
   })
+
+  it('respects Collaborative DJ Mode permissions', () => {
+    const playFn = vi.fn()
+    const pauseFn = vi.fn()
+    service.setCallbacks({
+      onRemotePlay: playFn,
+      onRemotePause: pauseFn,
+    })
+
+    ;(service as any).role = 'host'
+    ;(service as any).roomCode = 'NTLT-TEST'
+    ;(service as any).activeGuests = new Map([['guest-1', Date.now()]])
+
+    // Case 1: DJ mode is OFF (default) -> Host ignores guest play/pause
+    expect(service.getAllowGuestControl()).toBe(false)
+    ;(service as any).handleIncomingMessage({
+      type: 'PLAY',
+      senderId: 'guest-1',
+      currentTime: 10,
+      sentAt: Date.now(),
+    })
+    expect(playFn).not.toHaveBeenCalled()
+
+    ;(service as any).handleIncomingMessage({
+      type: 'PAUSE',
+      senderId: 'guest-1',
+      currentTime: 10,
+      sentAt: Date.now(),
+    })
+    expect(pauseFn).not.toHaveBeenCalled()
+
+    // Case 2: Host enables DJ mode -> Host processes guest play/pause
+    service.setAllowGuestControl(true)
+    expect(service.getAllowGuestControl()).toBe(true)
+
+    ;(service as any).handleIncomingMessage({
+      type: 'PLAY',
+      senderId: 'guest-1',
+      currentTime: 15,
+      sentAt: Date.now(),
+    })
+    expect(playFn).toHaveBeenCalledWith(15, expect.any(Number))
+
+    ;(service as any).handleIncomingMessage({
+      type: 'PAUSE',
+      senderId: 'guest-1',
+      currentTime: 20,
+      sentAt: Date.now(),
+    })
+    expect(pauseFn).toHaveBeenCalledWith(20)
+
+    // Case 3: Host disables DJ mode -> Host ignores guest commands again
+    service.setAllowGuestControl(false)
+    expect(service.getAllowGuestControl()).toBe(false)
+
+    playFn.mockClear()
+    pauseFn.mockClear()
+
+    ;(service as any).handleIncomingMessage({
+      type: 'PLAY',
+      senderId: 'guest-1',
+      currentTime: 25,
+      sentAt: Date.now(),
+    })
+    expect(playFn).not.toHaveBeenCalled()
+  })
 })

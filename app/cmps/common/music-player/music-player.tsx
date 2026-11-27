@@ -278,16 +278,6 @@ export const MusicPlayer = () => {
     }
   }, [])
 
-  // Broadcast host heartbeat every 2.5s while playing to keep listeners in sync
-  useEffect(() => {
-    if (!isJamConnected || jamRole !== 'host' || !isPlaying) return
-    const interval = setInterval(() => {
-      const time = audioRef.current?.currentTime ?? currentTime
-      jamService.broadcastHeartbeat(time, isPlaying)
-    }, 2500)
-    return () => clearInterval(interval)
-  }, [isJamConnected, jamRole, isPlaying, currentTime])
-
   // Resolve 100% ad-free direct audio stream with instant local CacheStorage playback
   useEffect(() => {
     if (!playerOpen || !activeTrack) {
@@ -593,17 +583,21 @@ export const MusicPlayer = () => {
     !isJamConnected || jamRole === 'host' || allowGuestControl
 
   const togglePlayPause = () => {
+    if (isJamConnected && !canControlJam) {
+      return
+    }
+
     if (streamMode === 'audio') {
       const audio = audioRef.current
       if (!audio) return
       if (audio.paused) {
         void audio.play()
-        if (isJamConnected && canControlJam) {
+        if (isJamConnected) {
           jamService.broadcastPlay(audio.currentTime)
         }
       } else {
         audio.pause()
-        if (isJamConnected && canControlJam) {
+        if (isJamConnected) {
           jamService.broadcastPause(audio.currentTime)
         }
       }
@@ -620,7 +614,7 @@ export const MusicPlayer = () => {
             '*',
           )
           setIsPlaying(nextPlaying)
-          if (isJamConnected && canControlJam) {
+          if (isJamConnected) {
             if (nextPlaying) {
               jamService.broadcastPlay(currentTime)
             } else {
@@ -649,6 +643,9 @@ export const MusicPlayer = () => {
           onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
           onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
           onEnded={() => {
+            if (isJamConnected && jamRole !== 'host' && !canControlJam) {
+              return
+            }
             if (playlist.length > 1) {
               nextTrack()
             } else {
@@ -762,9 +759,21 @@ export const MusicPlayer = () => {
                 <Button
                   size='icon'
                   variant='ghost'
-                  className='size-8 cursor-pointer rounded-full bg-primary text-primary-foreground hover:bg-primary/90'
+                  disabled={isJamConnected && !canControlJam}
+                  className={cn(
+                    'size-8 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-all',
+                    isJamConnected && !canControlJam
+                      ? 'opacity-40 cursor-not-allowed'
+                      : 'cursor-pointer',
+                  )}
                   onClick={togglePlayPause}
-                  title={isPlaying ? 'Pause' : 'Play'}
+                  title={
+                    isJamConnected && !canControlJam
+                      ? 'Host has playback control (DJ Mode off)'
+                      : isPlaying
+                        ? 'Pause'
+                        : 'Play'
+                  }
                 >
                   {isPlaying ? (
                     <Pause className='size-4' />
@@ -779,18 +788,44 @@ export const MusicPlayer = () => {
                   <Button
                     size='icon'
                     variant='ghost'
-                    className='size-7 cursor-pointer rounded-full hover:bg-primary/10'
-                    onClick={prevTrack}
-                    title='Previous Track'
+                    disabled={isJamConnected && !canControlJam}
+                    className={cn(
+                      'size-7 rounded-full hover:bg-primary/10 transition-all',
+                      isJamConnected && !canControlJam
+                        ? 'opacity-40 cursor-not-allowed'
+                        : 'cursor-pointer',
+                    )}
+                    onClick={() => {
+                      if (isJamConnected && !canControlJam) return
+                      prevTrack()
+                    }}
+                    title={
+                      isJamConnected && !canControlJam
+                        ? 'Host has playback control (DJ Mode off)'
+                        : 'Previous Track'
+                    }
                   >
                     <SkipBack className='size-3.5' />
                   </Button>
                   <Button
                     size='icon'
                     variant='ghost'
-                    className='size-7 cursor-pointer rounded-full hover:bg-primary/10'
-                    onClick={nextTrack}
-                    title='Next Track'
+                    disabled={isJamConnected && !canControlJam}
+                    className={cn(
+                      'size-7 rounded-full hover:bg-primary/10 transition-all',
+                      isJamConnected && !canControlJam
+                        ? 'opacity-40 cursor-not-allowed'
+                        : 'cursor-pointer',
+                    )}
+                    onClick={() => {
+                      if (isJamConnected && !canControlJam) return
+                      nextTrack()
+                    }}
+                    title={
+                      isJamConnected && !canControlJam
+                        ? 'Host has playback control (DJ Mode off)'
+                        : 'Next Track'
+                    }
                   >
                     <SkipForward className='size-3.5' />
                   </Button>
@@ -861,8 +896,10 @@ export const MusicPlayer = () => {
                 type='range'
                 min={0}
                 max={duration || 100}
+                disabled={isJamConnected && !canControlJam}
                 value={Math.min(currentTime, duration || 100)}
                 onChange={(e) => {
+                  if (isJamConnected && !canControlJam) return
                   const nextTime = Number(e.target.value)
                   setCurrentTime(nextTime)
                   if (audioRef.current) {
@@ -873,7 +910,12 @@ export const MusicPlayer = () => {
                   }
                 }}
                 aria-label='Seek audio position'
-                className='h-1.5 flex-1 cursor-pointer appearance-none rounded-full bg-muted accent-primary'
+                className={cn(
+                  'h-1.5 flex-1 appearance-none rounded-full bg-muted accent-primary transition-opacity',
+                  isJamConnected && !canControlJam
+                    ? 'opacity-40 cursor-not-allowed'
+                    : 'cursor-pointer',
+                )}
               />
               <span className='w-9 text-right font-medium text-[11px] text-muted-foreground tabular-nums'>
                 {formatTime(duration)}

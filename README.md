@@ -19,6 +19,15 @@
 
 [**🚀 Explore Live Universe**](https://kaushalboii.github.io/Nothing-to-listen-to/) &nbsp;•&nbsp; [**👥 Start a Jam Session**](https://kaushalboii.github.io/Nothing-to-listen-to/) &nbsp;•&nbsp; [**💖 Sponsor on GitHub**](https://github.com/sponsors/kaushalboii)
 
+<br/><br/>
+
+<!-- Real 3D Universe Showcase -->
+<a href="https://kaushalboii.github.io/Nothing-to-listen-to/">
+  <img src="docs/assets/universe-showcase.png" alt="Nothing to Listen to - 3D WebGL Musical Galaxy" width="100%" style="border-radius: 12px; border: 1px solid #30363d; box-shadow: 0 16px 40px rgba(0,0,0,0.6);" />
+</a>
+
+<p align="center"><em>Interactive, force-directed 3D Voronoi galaxy mapping 216 legendary vinyl albums across time, genres, and cultures.</em></p>
+
 </div>
 
 ---
@@ -58,6 +67,11 @@ Whether you're craving classic rock legends, viral Bollywood melodies, explosive
 ## ✨ Key Features
 
 ### 👥 Listen Together (Multi-User Group Jam Sessions)
+
+<div align="center">
+  <img src="docs/assets/jam-showcase.png" alt="Listen Together Jam Session Modal" width="85%" style="border-radius: 10px; border: 1px solid #30363d; margin: 12px 0;" />
+</div>
+
 - **Multi-User Rooms (4+ Listeners)**: Connect with friends across any device or network with private 6-character room codes or 1-tap invite links.
 - **Microsecond Precision Audio Phase-Lock**: Real-time WebSocket relay keeps everyone in exact synchrony with automatic network latency and drift compensation.
 - **Collaborative DJ Mode with Smart Lock**: Host can toggle Collaborative DJ Mode ON/OFF:
@@ -66,16 +80,27 @@ Whether you're craving classic rock legends, viral Bollywood melodies, explosive
 - **Floating Live Emoji Reactions**: Send animated floating reaction bubbles (❤️, 🔥, 🎵, ⚡, 💃, 🙌, ✨, 🎸) that burst across all connected screens with soundwave feedback.
 - **Auto-Reconnection Watchdog**: Silent heartbeat checks automatically restore dropped mobile connections in the background without user intervention.
 
+---
+
+### 💿 Interactive Navbar CD & 1-Tap Minimization
+
+<div align="center">
+  <img src="docs/assets/player-preview.png" alt="Interactive Vinyl CD and Music Player" width="60%" style="border-radius: 10px; border: 1px solid #30363d; margin: 12px 0;" />
+</div>
+
+- **Spinning Vinyl CD Widget**: Active tracks show as an animated grooved vinyl record with real-time album artwork and rhythmic glow rings.
+- **Scrolling Song Marquee**: Live ticker displays current title, artist, and playback status directly in the navigation bar.
+- **1-Tap Minimize & Expand**: Swipe down on mobile or click the chevron button to tuck the player into the navbar CD without pausing audio; tap the CD anytime to bring it right back.
+
+---
+
 ### 🎶 Custom Playlists (Max 3 with Unlimited Songs)
 - **Create up to 3 Custom Playlists**: Organize your favorite songs into curated collections with custom names.
 - **Unlimited Tracks per Playlist**: Add as many songs as you like with 1-tap from the player or galaxy view.
 - **1-Click Play All & Queue Jump**: Play through an entire playlist seamlessly with automatic queue advance, or tap any track to jump right into it.
 - **Full Playlist Management**: Rename, delete, and remove individual tracks anytime with persistent local storage.
 
-### 💿 Interactive Navbar CD & 1-Tap Minimization
-- **Spinning Vinyl CD Widget**: Active tracks show as an animated grooved vinyl record with real-time album artwork and rhythmic glow rings.
-- **Scrolling Song Marquee**: Live ticker displays current title, artist, and playback status directly in the navigation bar.
-- **1-Tap Minimize & Expand**: Swipe down on mobile or click the chevron button to tuck the player into the navbar CD without pausing audio; tap the CD anytime to bring it right back.
+---
 
 ### 📱 Mobile Ultra-Performance & Desktop-Mode Optimization
 - **Dual Mode Optimization (Normal & Desktop-Mode on Mobile)**:
@@ -86,10 +111,14 @@ Whether you're craving classic rock legends, viral Bollywood melodies, explosive
 - **Automatic Background Sleep**: Drops render loop CPU/GPU consumption to **0%** when the device screen is locked or the tab is hidden.
 - **Rock-Solid WebGL Context Recovery**: Guards against GPU context loss (`webglcontextlost`) so that the 3D galaxy seamlessly resumes upon unlocking your phone.
 
+---
+
 ### 🔒 Lock-Screen Background Playback & MediaSession API
 - **Continuous Lock-Screen Audio**: Music continues playing smoothly even when your phone screen is locked or the browser is minimized.
 - **Native OS Media Controls**: Displays track title, artist name, and high-resolution album artwork on your iOS / Android lock screen and notification bar.
 - **Hardware & Headphone Control**: Supports play, pause, previous track, next track, and scrubber seeking directly from headphone buttons and car Bluetooth dashboards.
+
+---
 
 ### ⚡ Lossless Low-Data Streaming & Smart Offline Caching
 - **100% Ad-Free Direct Streams**: Seamless high-fidelity direct audio streaming without pre-roll or mid-roll video ads.
@@ -97,7 +126,14 @@ Whether you're craving classic rock legends, viral Bollywood melodies, explosive
 - **Zero-Network Instant Replays**: Integrates the native `CacheStorage` API to cache listened songs locally for immediate 0ms offline replays without re-downloading.
 - **Intelligent Track Prefetching**: Automatically pre-fetches upcoming playlist tracks in the background for zero-buffering transitions.
 
+---
+
 ### 🌐 Global Multi-Lingual Catalog (216 Masterpieces)
+
+<details>
+<summary><b>Click to expand catalog highlights by language & region</b></summary>
+<br/>
+
 - **Tamil**: Anirudh Ravichander (*Leo*, *Jailer*, *Vikram*, *Master*), A. R. Rahman (*Ponniyin Selvan*, *Roja*, *Alaipayuthey*), Harris Jayaraj, Yuvan Shankar Raja, Ilaiyaraaja (*Thalapathi*, *Nayagan*), Santhosh Narayanan (*Kabali*).
 - **Hindi / Bollywood**: Arijit Singh (*Kesariya*, *Apna Bana Le*, *Tum Hi Ho*), A. R. Rahman (*Chaiyya Chaiyya*, *Kun Faya Kun*), Pritam, Vishal-Shekhar, Shankar-Ehsaan-Loy.
 - **Telugu / Tollywood**: *RRR* (*Naatu Naatu*), *Pushpa* (*Oo Antava*, *Srivalli*), *Ala Vaikunthapurramuloo* (*Butta Bomma*), *Devara* (*Fear Song*, *Chuttamalle*), *Guntur Kaaram*, *Hi Nanna*.
@@ -106,8 +142,14 @@ Whether you're craving classic rock legends, viral Bollywood melodies, explosive
 - **K-Pop & Asian Hits**: BTS (*Dynamite*, *Butter*), BLACKPINK (*DDU-DU DDU-DU*, *How You Like That*), NewJeans (*Super Shy*, *OMG*, *Ditto*), Stray Kids, Jung Kook, YOASOBI (*Idol*), LiSA (*Gurenge*).
 - **Spanish & Latin**: Luis Fonsi (*Despacito*), Bad Bunny (*Tití Me Preguntó*, *Dákiti*), Shakira (*Waka Waka*, *Hips Don't Lie*, *Bzrp 53*), Rosalía, J Balvin.
 
+</details>
+
+---
+
 ### 🎧 Universal Multi-Platform Links
 - Direct 1-click links for every song to stream on **Spotify**, **Apple Music**, **YouTube Music**, **JioSaavn**, **Amazon Music**, **Wynk Music**, **Gaana**, and **SoundCloud**.
+
+---
 
 ### 🔎 Instant Search & Dual Filter System
 - Press `Cmd + K`, `Ctrl + K`, or `/` anywhere to open the instant search modal.
@@ -168,6 +210,7 @@ Nothing-to-listen-to/
 │   ├── utils/                # Audio, telemetry, and animation utilities
 │   ├── vf/                   # Voroforce WebGL bindings & presets
 │   └── main.tsx              # Application entry point
+├── docs/assets/              # High-resolution screenshots & showcase previews
 ├── voroforce/                # 3D Voronoi WebGL2 physics & rendering engine
 │   ├── controls/             # Camera, pointer, and wheel event handlers
 │   ├── display/              # OGL renderer, shaders, and scene graph
@@ -234,12 +277,12 @@ npm run sync:music
 ## 🔄 Automated Daily Releases & Auto-Deployment Pipeline
 
 1. **Daily Auto-Sync Cron (`.github/workflows/update-music.yml`)**:
-   - Runs automatically every day at midnight UTC (`0 0 * * *`).
+   - Runs automatically 4 times every day (`0 0,6,12,18 * * *`).
    - Fetches live daily chart releases across **Apple Music** (Tamil, Hindi, Telugu, Punjabi, Malayalam), **Global/US**, **Japan**, **Latin America**, and **Saavn New Releases**.
    - Resolves verified official video IDs, downloads 600x600 high-resolution artwork, and rebuilds the WebGL compressed texture atlas.
-   - Automatically commits changes and deploys live to **GitHub Pages**.
+   - Automatically commits updates to `main` with verified author credentials to maintain daily GitHub contribution activity.
 2. **Push CI/CD Deployment (`.github/workflows/deploy.yml`)**:
-   - Runs on every push to `main`, validating all 81 tests and deploying production builds with zero downtime.
+   - Runs on every push to `main`, validating all 81 tests and deploying production builds to GitHub Pages with zero downtime.
 
 ---
 

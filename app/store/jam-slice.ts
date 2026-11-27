@@ -14,6 +14,7 @@ export interface JamSlice {
   jamError: string | null
   setJamError: (error: string | null) => void
   jamLatency: number | null
+  jamParticipantCount: number
   allowGuestControl: boolean
   setAllowGuestControl: (allow: boolean) => void
   remoteReaction: { emoji: string; id: number } | null
@@ -59,6 +60,7 @@ export const createJamSlice: StateCreator<
         jamRoomCode: status.roomCode,
         jamError: status.error,
         jamLatency: status.latency,
+        jamParticipantCount: status.participantCount,
       })
     },
     onPartnerConnected: () => {
@@ -155,6 +157,7 @@ export const createJamSlice: StateCreator<
     jamError: null,
     setJamError: (jamError) => set({ jamError }),
     jamLatency: null,
+    jamParticipantCount: 0,
     allowGuestControl: false,
     remoteReaction: null,
     setAllowGuestControl: (allowGuestControl) => {

@@ -107,6 +107,7 @@ const createMockState = (overrides: Partial<StoreState> = {}): StoreState => ({
   jamError: null,
   setJamError: () => {},
   jamLatency: null,
+  jamParticipantCount: 0,
   allowGuestControl: false,
   setAllowGuestControl: () => {},
   remoteReaction: null,

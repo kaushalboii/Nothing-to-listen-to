@@ -41,6 +41,7 @@ export const Navbar = () => {
     isJamConnecting,
     isJamReconnecting,
     jamRoomCode,
+    jamParticipantCount,
     hasFavorites,
     canChangeTheme,
   } = useShallowState((state) => ({
@@ -67,6 +68,7 @@ export const Navbar = () => {
     isJamConnecting: state.isJamConnecting,
     isJamReconnecting: state.isJamReconnecting,
     jamRoomCode: state.jamRoomCode,
+    jamParticipantCount: state.jamParticipantCount,
     hasFavorites:
       state.userConfig.favorites &&
       Object.keys(state.userConfig.favorites).length > 0,
@@ -210,7 +212,7 @@ export const Navbar = () => {
           }}
           title={
             isJamConnected
-              ? `In Jam Session (${jamRoomCode}) - 2/2 Synced`
+              ? `In Jam Session (${jamRoomCode}) - ${jamParticipantCount > 0 ? jamParticipantCount : 2} Synced`
               : isJamReconnecting
                 ? `Reconnecting to Jam Session (${jamRoomCode})...`
                 : 'Listen Together with a Friend (Jam)'

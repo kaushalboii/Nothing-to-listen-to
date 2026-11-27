@@ -88,4 +88,74 @@ describe('JamSessionService', () => {
     expect(service.getLatency()).toBeLessThanOrEqual(55)
     expect(service.getClockOffset()).toBeDefined()
   })
+
+  it('supports multi-user group sessions with 4+ listeners', () => {
+    // Host creates room
+    ;(service as any).role = 'host'
+    ;(service as any).roomCode = 'NTLT-TEST'
+    ;(service as any).activeGuests = new Map()
+
+    expect(service.getParticipantCount()).toBe(1)
+    expect(service.isConnected()).toBe(false)
+
+    // Guest 1 joins
+    ;(service as any).handleIncomingMessage({
+      type: 'HELLO',
+      senderId: 'guest-1',
+      role: 'guest',
+      sentAt: Date.now(),
+    })
+    expect(service.getParticipantCount()).toBe(2)
+    expect(service.isConnected()).toBe(true)
+
+    // Guest 2 joins
+    ;(service as any).handleIncomingMessage({
+      type: 'HELLO',
+      senderId: 'guest-2',
+      role: 'guest',
+      sentAt: Date.now(),
+    })
+    expect(service.getParticipantCount()).toBe(3)
+
+    // Guest 3 joins
+    ;(service as any).handleIncomingMessage({
+      type: 'HELLO',
+      senderId: 'guest-3',
+      role: 'guest',
+      sentAt: Date.now(),
+    })
+    expect(service.getParticipantCount()).toBe(4)
+
+    // Guest 4 joins (5 total listeners including host)
+    ;(service as any).handleIncomingMessage({
+      type: 'HELLO',
+      senderId: 'guest-4',
+      role: 'guest',
+      sentAt: Date.now(),
+    })
+    expect(service.getParticipantCount()).toBe(5)
+
+    // Guest 2 leaves
+    ;(service as any).handleIncomingMessage({
+      type: 'LEAVE',
+      senderId: 'guest-2',
+      sentAt: Date.now(),
+    })
+    expect(service.getParticipantCount()).toBe(4)
+  })
+
+  it('updates participant count on guest when receiving PARTICIPANTS message', () => {
+    ;(service as any).role = 'guest'
+    ;(service as any).roomCode = 'NTLT-TEST'
+    ;(service as any).partnerConnected = true
+
+    ;(service as any).handleIncomingMessage({
+      type: 'PARTICIPANTS',
+      senderId: 'host-1',
+      count: 6,
+      sentAt: Date.now(),
+    })
+
+    expect(service.getParticipantCount()).toBe(6)
+  })
 })

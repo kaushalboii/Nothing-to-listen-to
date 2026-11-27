@@ -20,6 +20,18 @@ export type JamMessage =
     currentTime?: number
     isPlaying?: boolean
     allowGuestControl?: boolean
+    participantCount?: number
+    sentAt: number
+  }
+  | {
+    type: 'PARTICIPANTS'
+    senderId: string
+    count: number
+    sentAt: number
+  }
+  | {
+    type: 'LEAVE'
+    senderId: string
     sentAt: number
   }
   | {
@@ -104,6 +116,7 @@ export interface JamCallbacks {
     roomCode: string | null
     error: string | null
     latency: number | null
+    participantCount: number
   }) => void
   onPartnerConnected?: () => void
   onPartnerDisconnected?: () => void
@@ -154,10 +167,10 @@ export class JamSessionService {
   private latency: number | null = null
   private clockOffset = 0
   private allowGuestControl = false
+  private participantCount = 0
 
-  // Host state tracking for 2-user lock
-  private activeGuestId: string | null = null
-  private lastGuestActivity = 0
+  // Multi-user guest tracking (mapping guestId -> lastSeen timestamp)
+  private activeGuests = new Map<string, number>()
 
   // Heartbeat & reconnect intervals
   private pingInterval: ReturnType<typeof setInterval> | null = null
@@ -206,7 +219,21 @@ export class JamSessionService {
   }
 
   public isConnected(): boolean {
+    if (this.role === 'host') {
+      return this.activeGuests.size > 0
+    }
     return this.partnerConnected
+  }
+
+  public getParticipantCount(): number {
+    if (!this.roomCode) return 0
+    if (this.role === 'host') {
+      return 1 + this.activeGuests.size
+    }
+    if (this.role === 'guest') {
+      return this.partnerConnected ? Math.max(2, this.participantCount) : 1
+    }
+    return 1
   }
 
   public getLatency(): number {
@@ -301,7 +328,7 @@ export class JamSessionService {
   }
 
   /**
-   * Host creates a room with strict 2-user lock.
+   * Host creates a room for group listening (multi-user).
    */
   public async createRoom(customCode?: string): Promise<string> {
     this.cleanupNetwork()
@@ -316,8 +343,8 @@ export class JamSessionService {
     this.isConnecting = false
     this.isReconnecting = false
     this.partnerConnected = false
-    this.activeGuestId = null
-    this.lastGuestActivity = 0
+    this.activeGuests.clear()
+    this.participantCount = 1
     this.emitStatus()
     this.saveSession()
 
@@ -480,52 +507,65 @@ export class JamSessionService {
     if ('senderId' in msg && msg.senderId === this.clientId) return
     this.lastPartnerMessageAt = Date.now()
 
-    // Host handling of guest handshake with 2-user private lock
+    // Host tracks guest activity whenever any message is received from a guest
+    if (this.role === 'host' && 'senderId' in msg && msg.senderId) {
+      this.activeGuests.set(msg.senderId, Date.now())
+    }
+
+    // Host handling of guest handshake
     if (this.role === 'host') {
       if (msg.type === 'HELLO') {
         const incomingGuestId = msg.senderId
-        const now = Date.now()
-        const guestTimedOut = now - this.lastGuestActivity > 10000
+        this.activeGuests.set(incomingGuestId, Date.now())
+        this.partnerConnected = true
+        this.isConnecting = false
+        this.isReconnecting = false
+        this.startPingLoop()
+        this.startHeartbeatLoop()
 
-        // Strict 2-user enforcement logic:
-        // Accept if: no active guest, OR same guest reconnecting, OR previous guest timed out
-        if (
-          !this.activeGuestId ||
-          this.activeGuestId === incomingGuestId ||
-          guestTimedOut
-        ) {
-          this.activeGuestId = incomingGuestId
-          this.lastGuestActivity = now
-          this.partnerConnected = true
-          this.isConnecting = false
-          this.isReconnecting = false
-          this.emitStatus()
-          this.startPingLoop()
-          this.startHeartbeatLoop()
+        const count = this.getParticipantCount()
+        this.emitStatus()
 
-          // Send state to partner
-          const current = this.callbacks.getCurrentTrackState?.()
-          this.send({
-            type: 'WELCOME',
-            senderId: this.clientId,
-            hostTrack: current?.track ?? null,
-            playlist: current?.playlist,
-            playlistIndex: current?.playlistIndex,
-            currentTime: current?.currentTime,
-            isPlaying: current?.isPlaying,
-            allowGuestControl: this.allowGuestControl,
-            sentAt: Date.now(),
-          })
-
-          this.callbacks.onPartnerConnected?.()
-          return
-        }
-        // Reject 3rd user
+        // Send state to newly joined guest
+        const current = this.callbacks.getCurrentTrackState?.()
         this.send({
-          type: 'REJECT',
-          reason: 'ROOM_FULL',
-          message:
-            'This room is full! Private listening sessions are strictly 2 users.',
+          type: 'WELCOME',
+          senderId: this.clientId,
+          hostTrack: current?.track ?? null,
+          playlist: current?.playlist,
+          playlistIndex: current?.playlistIndex,
+          currentTime: current?.currentTime,
+          isPlaying: current?.isPlaying,
+          allowGuestControl: this.allowGuestControl,
+          participantCount: count,
+          sentAt: Date.now(),
+        })
+
+        // Notify all participants in the room about updated count
+        this.send({
+          type: 'PARTICIPANTS',
+          senderId: this.clientId,
+          count,
+          sentAt: Date.now(),
+        })
+
+        this.callbacks.onPartnerConnected?.()
+        return
+      }
+
+      if (msg.type === 'LEAVE') {
+        const guestId = msg.senderId
+        this.activeGuests.delete(guestId)
+        if (this.activeGuests.size === 0) {
+          this.partnerConnected = false
+          this.callbacks.onPartnerDisconnected?.()
+        }
+        const count = this.getParticipantCount()
+        this.emitStatus()
+        this.send({
+          type: 'PARTICIPANTS',
+          senderId: this.clientId,
+          count,
           sentAt: Date.now(),
         })
         return
@@ -537,88 +577,9 @@ export class JamSessionService {
       this.partnerConnected = true
       this.isConnecting = false
       this.isReconnecting = false
-      this.emitStatus()
-      this.startPingLoop()
-
-      if (msg.allowGuestControl !== undefined) {
-        this.allowGuestControl = msg.allowGuestControl
-        this.callbacks.onPermissionsChange?.(msg.allowGuestControl)
+      if (msg.participantCount !== undefined) {
+        this.participantCount = msg.participantCount
       }
-
-      if (msg.hostTrack) {
-        this.callbacks.onRemoteTrack?.(
-          msg.hostTrack,
-          msg.playlist,
-          msg.playlistIndex,
-        )
-        if (msg.currentTime !== undefined) {
-          if (msg.isPlaying) {
-            this.callbacks.onRemotePlay?.(msg.currentTime, msg.sentAt)
-          } else {
-            this.callbacks.onRemotePause?.(msg.currentTime)
-          }
-        }
-      }
-      return
-    }
-
-    // Host handling of guest handshake with 2-user private lock
-    if (this.role === 'host') {
-      if (msg.type === 'HELLO') {
-        const incomingGuestId = msg.senderId
-        const now = Date.now()
-        const guestTimedOut = now - this.lastGuestActivity > 10000
-
-        // Strict 2-user enforcement logic:
-        // Accept if: no active guest, OR same guest reconnecting, OR previous guest timed out
-        if (
-          !this.activeGuestId ||
-          this.activeGuestId === incomingGuestId ||
-          guestTimedOut
-        ) {
-          this.activeGuestId = incomingGuestId
-          this.lastGuestActivity = now
-          this.partnerConnected = true
-          this.isConnecting = false
-          this.isReconnecting = false
-          this.emitStatus()
-          this.startPingLoop()
-          this.startHeartbeatLoop()
-
-          // Send state to partner
-          const current = this.callbacks.getCurrentTrackState?.()
-          this.send({
-            type: 'WELCOME',
-            senderId: this.clientId,
-            hostTrack: current?.track ?? null,
-            playlist: current?.playlist,
-            playlistIndex: current?.playlistIndex,
-            currentTime: current?.currentTime,
-            isPlaying: current?.isPlaying,
-            allowGuestControl: this.allowGuestControl,
-            sentAt: Date.now(),
-          })
-
-          this.callbacks.onPartnerConnected?.()
-          return
-        } else {
-          // Reject 3rd user
-          this.send({
-            type: 'REJECT',
-            reason: 'ROOM_FULL',
-            message: 'This room is full! Private listening sessions are strictly 2 users.',
-            sentAt: Date.now(),
-          })
-          return
-        }
-      }
-    }
-
-    // Guest handling of host Welcome
-    if (this.role === 'guest' && msg.type === 'WELCOME') {
-      this.partnerConnected = true
-      this.isConnecting = false
-      this.isReconnecting = false
       this.emitStatus()
       this.startPingLoop()
 
@@ -645,11 +606,18 @@ export class JamSessionService {
     }
 
     switch (msg.type) {
+      case 'PARTICIPANTS':
+        if (msg.count !== undefined) {
+          this.participantCount = msg.count
+          this.emitStatus()
+        }
+        break
+
       case 'REJECT':
       case 'ROOM_FULL':
         this.cleanup()
         this.emitStatus(
-          msg.message || 'Room is already full (maximum 2 listeners).',
+          msg.message || 'Unable to join Jam room.',
         )
         break
 
@@ -681,7 +649,6 @@ export class JamSessionService {
         break
 
       case 'HEARTBEAT':
-        this.lastGuestActivity = Date.now()
         this.send({
           type: 'HEARTBEAT_ACK',
           senderId: this.clientId,
@@ -695,16 +662,20 @@ export class JamSessionService {
         break
 
       case 'HEARTBEAT_ACK':
-        this.lastGuestActivity = Date.now()
+        if (this.role === 'host' && msg.senderId) {
+          this.activeGuests.set(msg.senderId, Date.now())
+        }
         break
 
       case 'PING':
-        this.send({
-          type: 'PONG',
-          senderId: this.clientId,
-          origSentAt: msg.sentAt,
-          recvAt: Date.now(),
-        })
+        if (this.role === 'host') {
+          this.send({
+            type: 'PONG',
+            senderId: this.clientId,
+            origSentAt: msg.sentAt,
+            recvAt: Date.now(),
+          })
+        }
         break
 
       case 'PONG': {
@@ -826,13 +797,39 @@ export class JamSessionService {
   private startHeartbeatLoop() {
     this.stopHeartbeatLoop()
     this.heartbeatInterval = setInterval(() => {
-      if (this.isConnected() && this.role === 'host') {
-        const current = this.callbacks.getCurrentTrackState?.()
-        if (current) {
-          this.broadcastHeartbeat(current.currentTime, current.isPlaying)
+      if (this.role === 'host') {
+        // Prune inactive guests who haven't pinged or heartbeat-acked in > 15s
+        const now = Date.now()
+        let countChanged = false
+        for (const [guestId, lastSeen] of this.activeGuests.entries()) {
+          if (now - lastSeen > 15000) {
+            this.activeGuests.delete(guestId)
+            countChanged = true
+          }
+        }
+        if (countChanged) {
+          if (this.activeGuests.size === 0) {
+            this.partnerConnected = false
+            this.callbacks.onPartnerDisconnected?.()
+          }
+          const count = this.getParticipantCount()
+          this.emitStatus()
+          this.send({
+            type: 'PARTICIPANTS',
+            senderId: this.clientId,
+            count,
+            sentAt: Date.now(),
+          })
+        }
+
+        if (this.isConnected()) {
+          const current = this.callbacks.getCurrentTrackState?.()
+          if (current) {
+            this.broadcastHeartbeat(current.currentTime, current.isPlaying)
+          }
         }
       }
-    }, 3000)
+    }, 2500)
   }
 
   private stopHeartbeatLoop() {
@@ -931,6 +928,7 @@ export class JamSessionService {
       roomCode: this.roomCode,
       error: errorOverride ?? null,
       latency: this.latency,
+      participantCount: this.getParticipantCount(),
     })
   }
 
@@ -952,6 +950,15 @@ export class JamSessionService {
 
   public cleanup() {
     this.userExplicitlyLeft = true
+    if (this.socket && this.roomCode && this.role === 'guest') {
+      try {
+        this.send({
+          type: 'LEAVE',
+          senderId: this.clientId,
+          sentAt: Date.now(),
+        })
+      } catch (_) { }
+    }
     this.cleanupNetwork()
     this.partnerConnected = false
     this.role = null
@@ -960,7 +967,8 @@ export class JamSessionService {
     this.isReconnecting = false
     this.latency = null
     this.clockOffset = 0
-    this.activeGuestId = null
+    this.participantCount = 0
+    this.activeGuests.clear()
     this.reconnectAttempts = 0
     this.saveSession()
     this.emitStatus()

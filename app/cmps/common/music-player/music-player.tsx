@@ -52,6 +52,7 @@ export const MusicPlayer = () => {
     jamRole,
     allowGuestControl,
     jamLatency,
+    jamParticipantCount,
     toggleJamModalOpen,
     remoteReaction,
     clearRemoteReaction,
@@ -73,6 +74,7 @@ export const MusicPlayer = () => {
     jamRole: state.jamRole,
     allowGuestControl: state.allowGuestControl,
     jamLatency: state.jamLatency,
+    jamParticipantCount: state.jamParticipantCount,
     toggleJamModalOpen: state.toggleJamModalOpen,
     remoteReaction: state.remoteReaction,
     clearRemoteReaction: state.clearRemoteReaction,
@@ -699,7 +701,7 @@ export const MusicPlayer = () => {
               className='-top-10 pointer-events-none absolute right-6 z-50 flex animate-bounce items-center gap-1.5 rounded-full border border-amber-500/40 bg-background/95 px-3 py-1 shadow-xl backdrop-blur-md'
             >
               <span className='text-lg leading-none'>{remoteReaction.emoji}</span>
-              <span className='font-bold text-[10px] text-amber-500'>Partner</span>
+              <span className='font-bold text-[10px] text-amber-500'>Vibe</span>
             </div>
           )}
 
@@ -761,11 +763,11 @@ export const MusicPlayer = () => {
                   type='button'
                   onClick={toggleJamModalOpen}
                   className='mr-1 flex cursor-pointer items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/15 px-2 py-0.5 font-bold text-[10px] text-emerald-500 transition-colors hover:bg-emerald-500/25'
-                  title={`In Jam Session (${jamRoomCode})${jamLatency ? ` • ${jamLatency}ms` : ''}`}
+                  title={`In Jam Session (${jamRoomCode}) • ${jamParticipantCount} connected${jamLatency ? ` • ${jamLatency}ms` : ''}`}
                 >
                   <Radio className='size-3 animate-pulse text-emerald-400' />
                   <span className='hidden sm:inline'>Synced</span>
-                  <span>2/2</span>
+                  <span>{jamParticipantCount > 0 ? `${jamParticipantCount}` : '2+'}</span>
                 </button>
               )}
 

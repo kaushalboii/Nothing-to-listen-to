@@ -6,13 +6,13 @@ import {
   Headphones,
   Link,
   Loader2,
-  Lock,
   LogOut,
   Radio,
   RefreshCw,
   Share2,
   Sparkles,
   Volume2,
+  Users,
   X,
   Zap,
 } from 'lucide-react'
@@ -37,6 +37,7 @@ export const JamModal = () => {
     jamRole,
     jamError,
     jamLatency,
+    jamParticipantCount,
     allowGuestControl,
     setAllowGuestControl,
     createJamRoom,
@@ -55,6 +56,7 @@ export const JamModal = () => {
     jamRole: state.jamRole,
     jamError: state.jamError,
     jamLatency: state.jamLatency,
+    jamParticipantCount: state.jamParticipantCount,
     allowGuestControl: state.allowGuestControl,
     setAllowGuestControl: state.setAllowGuestControl,
     createJamRoom: state.createJamRoom,
@@ -194,12 +196,12 @@ export const JamModal = () => {
               </h2>
               {isJamConnected && (
                 <span className='inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/15 px-2 py-0.5 font-bold text-[10px] text-emerald-400'>
-                  <Lock className='size-2.5' /> 2/2 Locked
+                  <Users className='size-2.5' /> {jamParticipantCount > 1 ? `${jamParticipantCount} Connected` : 'Group Jam'}
                 </span>
               )}
             </div>
             <p className='text-muted-foreground text-xs'>
-              Private real-time audio sync for 2 listeners across the internet
+              Real-time audio sync for friends & groups across the internet
             </p>
           </div>
         </div>
@@ -237,14 +239,14 @@ export const JamModal = () => {
                     <>
                       <Loader2 className='size-3.5 animate-spin text-amber-500' />
                       <span className='font-bold text-amber-400 text-xs'>
-                        Reconnecting to Partner...
+                        Reconnecting to Session...
                       </span>
                     </>
                   ) : (
                     <>
                       <span className='size-2 animate-ping rounded-full bg-emerald-500' />
                       <span className='font-bold text-emerald-400 text-xs'>
-                        Connected with Partner
+                        Connected ({jamParticipantCount > 0 ? jamParticipantCount : 2} Listeners in Sync)
                       </span>
                     </>
                   )}
@@ -302,7 +304,7 @@ export const JamModal = () => {
             {/* Quick Vibes / Reactions Bar */}
             <div className='flex flex-col gap-1.5'>
               <span className='font-semibold text-[11px] text-muted-foreground'>
-                Send Live Vibe to Partner:
+                Send Live Vibe to Everyone:
               </span>
               <div className='flex items-center justify-between gap-1'>
                 {VIBE_EMOJIS.map((emoji) => (
@@ -327,7 +329,7 @@ export const JamModal = () => {
                     Collaborative DJ Mode
                   </span>
                   <span className='text-[11px] text-muted-foreground'>
-                    Allow partner to change songs and seek
+                    Allow listeners to change songs and seek
                   </span>
                 </div>
                 <Switch
@@ -407,10 +409,10 @@ export const JamModal = () => {
                       </div>
                       <div className='flex items-center gap-1.5 text-muted-foreground text-xs'>
                         <Loader2 className='size-3.5 animate-spin text-amber-500' />
-                        <span>Waiting for partner to join (1/2)...</span>
+                        <span>Waiting for listeners to join...</span>
                       </div>
                       <span className='text-[10px] text-muted-foreground/75'>
-                        Keep this tab open while your friend connects.
+                        Share this code with friends — 4, 8, or more can all listen together!
                       </span>
                     </div>
 
@@ -443,10 +445,9 @@ export const JamModal = () => {
                     </div>
 
                     <div className='flex items-center justify-center gap-1.5 px-2 text-center text-[11px] text-muted-foreground'>
-                      <Lock className='size-3 shrink-0 text-emerald-500' />
+                      <Users className='size-3 shrink-0 text-emerald-500' />
                       <span>
-                        Strictly 2 users max. The room locks as soon as your
-                        friend joins.
+                        Multi-user group listening unlocked! Share with 4 or more friends.
                       </span>
                     </div>
 

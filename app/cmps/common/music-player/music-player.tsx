@@ -13,13 +13,15 @@ import {
   Volume2,
   X,
   Youtube,
+  Zap,
 } from 'lucide-react'
 import config from '../../../config'
+import { audioCache } from '../../../services/audio-cache'
 import { jamService } from '../../../services/jam-session'
 import { useShallowState } from '../../../store'
 import { cn } from '../../../utils/tw'
 import { Button } from '../../ui/button'
-import { resolveAdFreeAudioStream } from './audio-stream'
+import { preloadNextTrackAudio, resolveAdFreeAudioStream } from './audio-stream'
 
 const FALLBACK_VIDEO_ID = 'ZdMZ40GSVmc' // Anirudh - Badass (Leo)
 
@@ -44,6 +46,7 @@ export const MusicPlayer = () => {
     nextTrack,
     prevTrack,
     isJamConnected,
+    isJamReconnecting,
     jamRoomCode,
     jamRole,
     allowGuestControl,
@@ -62,6 +65,8 @@ export const MusicPlayer = () => {
     nextTrack: state.nextTrack,
     prevTrack: state.prevTrack,
     isJamConnected: state.isJamConnected,
+    isJamConnecting: state.isJamConnecting,
+    isJamReconnecting: state.isJamReconnecting,
     jamRoomCode: state.jamRoomCode,
     jamRole: state.jamRole,
     allowGuestControl: state.allowGuestControl,
@@ -81,9 +86,23 @@ export const MusicPlayer = () => {
 
   const [streamMode, setStreamMode] = useState<StreamMode>('resolving')
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
+  const [isOfflineCached, setIsOfflineCached] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
+
+  // Manage Blob URL memory cleanup
+  const prevBlobUrlRef = useRef<string | null>(null)
+  useEffect(() => {
+    if (prevBlobUrlRef.current && prevBlobUrlRef.current !== audioUrl) {
+      audioCache.revokeBlobUrl(prevBlobUrlRef.current)
+    }
+    if (audioUrl?.startsWith('blob:')) {
+      prevBlobUrlRef.current = audioUrl
+    } else {
+      prevBlobUrlRef.current = null
+    }
+  }, [audioUrl])
 
   // Listen Together (Jam) remote playback synchronization
   useEffect(() => {
@@ -195,11 +214,12 @@ export const MusicPlayer = () => {
     return () => clearInterval(interval)
   }, [isJamConnected, jamRole, isPlaying, currentTime])
 
-  // Resolve 100% ad-free direct audio stream first; fall back silently to YouTube only if unavailable
+  // Resolve 100% ad-free direct audio stream with instant local CacheStorage playback
   useEffect(() => {
     if (!playerOpen || !activeTrack) {
       setStreamMode('resolving')
       setAudioUrl(null)
+      setIsOfflineCached(false)
       setIsPlaying(false)
       setCurrentTime(0)
       setDuration(0)
@@ -215,16 +235,32 @@ export const MusicPlayer = () => {
     const controller = new AbortController()
     setStreamMode('resolving')
     setAudioUrl(null)
+    setIsOfflineCached(false)
     setIsPlaying(false)
     setCurrentTime(0)
     setDuration(0)
 
     void resolveAdFreeAudioStream(activeTrack, controller.signal).then(
-      (resolvedUrl) => {
+      async (resolvedUrl) => {
         if (controller.signal.aborted) return
         if (resolvedUrl) {
-          setAudioUrl(resolvedUrl)
-          setStreamMode('audio')
+          // Check if already in device cache for 0ms offline playback
+          const cachedBlob = await audioCache.getCachedAudioBlobUrl(resolvedUrl)
+          if (controller.signal.aborted) return
+
+          if (cachedBlob) {
+            setAudioUrl(cachedBlob)
+            setIsOfflineCached(true)
+            setStreamMode('audio')
+          } else {
+            setAudioUrl(resolvedUrl)
+            setIsOfflineCached(false)
+            setStreamMode('audio')
+            // Cache on device asynchronously for future zero-network replays
+            void audioCache.cacheAudio(resolvedUrl, activeTrack.title).then((saved) => {
+              if (saved) setIsOfflineCached(true)
+            })
+          }
         } else {
           setStreamMode('youtube')
         }
@@ -242,6 +278,24 @@ export const MusicPlayer = () => {
     activeTrack?.audioUrl,
     playlistIndex,
   ])
+
+  // Smart background prefetching for the next track in playlist (after 4s of playback)
+  const hasPrefetchedNextRef = useRef(false)
+  useEffect(() => {
+    hasPrefetchedNextRef.current = false
+  }, [playlistIndex, activeTrack?.title])
+
+  useEffect(() => {
+    if (!isPlaying || currentTime < 4 || hasPrefetchedNextRef.current) return
+    if (playlist && playlist.length > 1) {
+      const nextIdx = (playlistIndex + 1) % playlist.length
+      const nextItem = playlist[nextIdx]
+      if (nextItem) {
+        hasPrefetchedNextRef.current = true
+        void preloadNextTrackAudio(nextItem)
+      }
+    }
+  }, [currentTime, isPlaying, playlist, playlistIndex])
 
   // Start native audio playback & register mobile lock-screen Media Session controls
   useEffect(() => {
@@ -503,6 +557,15 @@ export const MusicPlayer = () => {
                   {playlistIndex + 1}/{playlist.length}
                 </span>
               )}
+              {isOfflineCached && (
+                <span
+                  className='shrink-0 inline-flex items-center gap-0.5 text-[9px] font-bold text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.2 rounded-full'
+                  title='Lossless & Offline Cached (Zero Network Usage)'
+                >
+                  <Zap className='size-2.5 text-emerald-400' />
+                  <span>Cached</span>
+                </span>
+              )}
             </div>
             <p className='truncate text-xs font-semibold text-primary'>
               {activeTrack.artist}
@@ -522,6 +585,18 @@ export const MusicPlayer = () => {
               <Radio className='size-3 animate-pulse text-emerald-400' />
               <span className='hidden sm:inline'>Synced</span>
               <span>2/2</span>
+            </button>
+          )}
+
+          {isJamReconnecting && (
+            <button
+              type='button'
+              onClick={toggleJamModalOpen}
+              className='flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-500 text-[10px] font-bold transition-colors cursor-pointer mr-1 animate-pulse'
+              title='Reconnecting to partner...'
+            >
+              <Loader2 className='size-3 animate-spin text-amber-400' />
+              <span className='hidden sm:inline'>Reconnecting</span>
             </button>
           )}
 

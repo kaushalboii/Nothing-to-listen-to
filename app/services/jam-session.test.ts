@@ -1,7 +1,13 @@
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { JamSessionService } from './jam-session'
 
 describe('JamSessionService', () => {
+  let service: JamSessionService
+
+  beforeEach(() => {
+    service = new JamSessionService()
+  })
+
   it('generates a valid 4-character room code prefixed with NTLT-', () => {
     const code = JamSessionService.generateRoomCode()
     expect(code).toMatch(/^NTLT-[A-Z0-9]{4}$/)
@@ -28,5 +34,35 @@ describe('JamSessionService', () => {
       'NTLT-7A9B',
     )
     expect(JamSessionService.cleanRoomCode('7#a$9@b')).toBe('NTLT-7A9B')
+  })
+
+  it('handles status change callbacks correctly', () => {
+    const statusFn = vi.fn()
+    service.setCallbacks({ onStatusChange: statusFn })
+
+    service.emitStatus('Custom Error')
+    expect(statusFn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        isConnected: false,
+        error: 'Custom Error',
+      }),
+    )
+  })
+
+  it('cleans up and resets all session state upon cleanup()', () => {
+    const statusFn = vi.fn()
+    service.setCallbacks({ onStatusChange: statusFn })
+
+    service.cleanup()
+    expect(service.isConnected()).toBe(false)
+    expect(service.getRole()).toBeNull()
+    expect(service.getRoomCode()).toBeNull()
+    expect(statusFn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        isConnected: false,
+        role: null,
+        roomCode: null,
+      }),
+    )
   })
 })

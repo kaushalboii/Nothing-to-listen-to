@@ -94,6 +94,7 @@ const createMockState = (overrides: Partial<StoreState> = {}): StoreState => ({
   toggleJamModalOpen: () => {},
   isJamConnected: false,
   isJamConnecting: false,
+  isJamReconnecting: false,
   jamRoomCode: null,
   jamRole: null,
   jamError: null,

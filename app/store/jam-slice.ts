@@ -8,6 +8,7 @@ export interface JamSlice {
   toggleJamModalOpen: () => void
   isJamConnected: boolean
   isJamConnecting: boolean
+  isJamReconnecting: boolean
   jamRoomCode: string | null
   jamRole: JamRole | null
   jamError: string | null
@@ -35,10 +36,24 @@ export const createJamSlice: StateCreator<
 > = (set, get) => {
   // Initialize callbacks from jamService
   jamService.setCallbacks({
+    getCurrentTrackState: () => {
+      const state = get()
+      const audioEl = typeof document !== 'undefined' ? document.querySelector('audio') : null
+      const currentTime = audioEl ? audioEl.currentTime : 0
+      const isPlaying = audioEl ? !audioEl.paused : false
+      return {
+        track: state.activeTrack,
+        playlist: state.playlist,
+        playlistIndex: state.playlistIndex,
+        currentTime,
+        isPlaying,
+      }
+    },
     onStatusChange: (status) => {
       set({
         isJamConnected: status.isConnected,
         isJamConnecting: status.isConnecting,
+        isJamReconnecting: status.isReconnecting,
         jamRole: status.role,
         jamRoomCode: status.roomCode,
         jamError: status.error,
@@ -49,7 +64,7 @@ export const createJamSlice: StateCreator<
       const state = get()
       // If host has an active track when partner joins, broadcast it immediately so both are in sync
       if (state.jamRole === 'host' && state.activeTrack) {
-        const audioEl = document.querySelector('audio')
+        const audioEl = typeof document !== 'undefined' ? document.querySelector('audio') : null
         const currentTime = audioEl ? audioEl.currentTime : 0
         const isPlaying = audioEl ? !audioEl.paused : false
         jamService.broadcastTrack(
@@ -78,32 +93,40 @@ export const createJamSlice: StateCreator<
       }
     },
     onRemotePlay: (currentTime, sentAt) => {
-      window.dispatchEvent(
-        new CustomEvent('jam:play', {
-          detail: { currentTime, sentAt },
-        }),
-      )
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(
+          new CustomEvent('jam:play', {
+            detail: { currentTime, sentAt },
+          }),
+        )
+      }
     },
     onRemotePause: (currentTime) => {
-      window.dispatchEvent(
-        new CustomEvent('jam:pause', {
-          detail: { currentTime },
-        }),
-      )
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(
+          new CustomEvent('jam:pause', {
+            detail: { currentTime },
+          }),
+        )
+      }
     },
     onRemoteSeek: (currentTime) => {
-      window.dispatchEvent(
-        new CustomEvent('jam:seek', {
-          detail: { currentTime },
-        }),
-      )
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(
+          new CustomEvent('jam:seek', {
+            detail: { currentTime },
+          }),
+        )
+      }
     },
     onRemoteHeartbeat: (currentTime, isPlaying, sentAt) => {
-      window.dispatchEvent(
-        new CustomEvent('jam:heartbeat', {
-          detail: { currentTime, isPlaying, sentAt },
-        }),
-      )
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(
+          new CustomEvent('jam:heartbeat', {
+            detail: { currentTime, isPlaying, sentAt },
+          }),
+        )
+      }
     },
     onRemoteReaction: (emoji) => {
       reactionCounter++
@@ -122,6 +145,7 @@ export const createJamSlice: StateCreator<
     toggleJamModalOpen: () => set({ jamModalOpen: !get().jamModalOpen }),
     isJamConnected: false,
     isJamConnecting: false,
+    isJamReconnecting: false,
     jamRoomCode: null,
     jamRole: null,
     jamError: null,
@@ -171,6 +195,7 @@ export const createJamSlice: StateCreator<
       set({
         isJamConnected: false,
         isJamConnecting: false,
+        isJamReconnecting: false,
         jamRoomCode: null,
         jamRole: null,
         jamError: null,

@@ -21,6 +21,7 @@ export const Navbar = () => {
     toggleJamModalOpen,
     isJamConnected,
     isJamConnecting,
+    isJamReconnecting,
     jamRoomCode,
     hasFavorites,
     canChangeTheme,
@@ -37,6 +38,7 @@ export const Navbar = () => {
     toggleJamModalOpen: state.toggleJamModalOpen,
     isJamConnected: state.isJamConnected,
     isJamConnecting: state.isJamConnecting,
+    isJamReconnecting: state.isJamReconnecting,
     jamRoomCode: state.jamRoomCode,
     hasFavorites:
       state.userConfig.favorites &&
@@ -80,12 +82,14 @@ export const Navbar = () => {
         title={
           isJamConnected
             ? `In Jam Session (${jamRoomCode}) - 2/2 Synced`
-            : 'Listen Together with a Friend (Jam)'
+            : isJamReconnecting
+              ? `Reconnecting to Jam Session (${jamRoomCode})...`
+              : 'Listen Together with a Friend (Jam)'
         }
         className={cn(buttonClassnames, 'relative', {
           'border border-emerald-500 bg-emerald-500/20 text-emerald-400': isJamConnected,
           'border border-amber-500/70 bg-amber-500/10 text-amber-500':
-            isJamConnecting && !isJamConnected,
+            (isJamConnecting || isJamReconnecting) && !isJamConnected,
           'border border-foreground': jamModalOpen && !isJamConnected,
         })}
       >
@@ -96,7 +100,7 @@ export const Navbar = () => {
             <span className='relative inline-flex size-2 rounded-full bg-emerald-500' />
           </span>
         )}
-        {isJamConnecting && !isJamConnected && (
+        {(isJamConnecting || isJamReconnecting) && !isJamConnected && (
           <span className='absolute -top-0.5 -right-0.5 flex size-2'>
             <span className='relative inline-flex size-2 rounded-full bg-amber-500 animate-pulse' />
           </span>

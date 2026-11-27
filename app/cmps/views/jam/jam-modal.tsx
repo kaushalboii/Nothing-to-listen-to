@@ -18,7 +18,7 @@ import {
 } from 'lucide-react'
 import type React from 'react'
 import { useEffect, useState } from 'react'
-import { JamSessionService } from '../../../services/jam-session'
+import { JamSessionService, jamService } from '../../../services/jam-session'
 import { cn } from '../../../utils/tw'
 import { Button } from '../../ui/button'
 import { Input } from '../../ui/input'
@@ -32,6 +32,7 @@ export const JamModal = () => {
     setJamModalOpen,
     isJamConnected,
     isJamConnecting,
+    isJamReconnecting,
     jamRoomCode,
     jamRole,
     jamError,
@@ -49,6 +50,7 @@ export const JamModal = () => {
     setJamModalOpen: state.setJamModalOpen,
     isJamConnected: state.isJamConnected,
     isJamConnecting: state.isJamConnecting,
+    isJamReconnecting: state.isJamReconnecting,
     jamRoomCode: state.jamRoomCode,
     jamRole: state.jamRole,
     jamError: state.jamError,
@@ -67,6 +69,14 @@ export const JamModal = () => {
   const [inputCode, setInputCode] = useState('')
   const [copiedLink, setCopiedLink] = useState(false)
   const [copiedCode, setCopiedCode] = useState(false)
+
+  // Session restoration on initial app mount (runs once)
+  useEffect(() => {
+    const restored = jamService.tryRestoreSession()
+    if (restored) {
+      setJamModalOpen(true)
+    }
+  }, [setJamModalOpen])
 
   // URL Hash / Search param auto-detection (e.g. #jam=NTLT-8K92 or ?jam=NTLT-8K92)
   useEffect(() => {
@@ -209,21 +219,43 @@ export const JamModal = () => {
           </div>
         )}
 
-        {/* CASE 1: Connected State (Active Session) */}
-        {isJamConnected ? (
+        {/* CASE 1: Connected State (Active Session) or Reconnecting */}
+        {isJamConnected || (jamRoomCode && isJamReconnecting) ? (
           <div className='flex flex-col gap-4'>
             {/* Connection Banner */}
-            <div className='flex flex-col gap-2 rounded-xl border border-emerald-500/25 bg-emerald-500/10 p-3.5'>
+            <div
+              className={cn(
+                'flex flex-col gap-2 rounded-xl border p-3.5',
+                isJamReconnecting
+                  ? 'border-amber-500/25 bg-amber-500/10'
+                  : 'border-emerald-500/25 bg-emerald-500/10',
+              )}
+            >
               <div className='flex items-center justify-between'>
                 <div className='flex items-center gap-2'>
-                  <span className='size-2 animate-ping rounded-full bg-emerald-500' />
-                  <span className='font-bold text-emerald-400 text-xs'>
-                    Connected with Partner
-                  </span>
+                  {isJamReconnecting ? (
+                    <>
+                      <Loader2 className='size-3.5 animate-spin text-amber-500' />
+                      <span className='font-bold text-amber-400 text-xs'>
+                        Reconnecting to Partner...
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className='size-2 animate-ping rounded-full bg-emerald-500' />
+                      <span className='font-bold text-emerald-400 text-xs'>
+                        Connected with Partner
+                      </span>
+                    </>
+                  )}
                 </div>
                 <div className='flex items-center gap-1.5 font-medium text-[11px] text-muted-foreground tabular-nums'>
                   <Zap className='size-3 text-amber-500' />
-                  {jamLatency ? `${jamLatency}ms latency` : 'Direct P2P'}
+                  {isJamReconnecting
+                    ? 'Auto-recovering...'
+                    : jamLatency
+                      ? `${jamLatency}ms latency`
+                      : 'Direct Relay'}
                 </div>
               </div>
 

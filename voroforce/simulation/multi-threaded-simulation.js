@@ -60,8 +60,8 @@ export default class MultiThreadedSimulation extends BaseSimulation {
   }
 
   update() {
-    // this.updatingWorkersCount = this.workers.length
-    this.updatingWorkersCount += this.workers.length // TODO
+    if (this.updatingWorkersCount > 0) return
+    this.updatingWorkersCount = this.workers.length
     for (let i = 0; i < this.workers.length; i++) {
       this.workers[i].postMessage({ type: 'update' })
     }

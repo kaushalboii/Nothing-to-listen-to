@@ -1,7 +1,5 @@
 import {
-  ArrowDownToLine,
   ChevronDown,
-  ChevronUp,
   Disc3,
   ExternalLink,
   Loader2,
@@ -40,9 +38,7 @@ export const MusicPlayer = () => {
     activeTrack,
     playerOpen,
     isMinimized,
-    isDocked,
     setIsMinimized,
-    setIsDocked,
     setStoreIsPlaying,
     stopTrack,
     playlist,
@@ -62,9 +58,7 @@ export const MusicPlayer = () => {
     activeTrack: state.activeTrack,
     playerOpen: state.playerOpen,
     isMinimized: state.isMinimized,
-    isDocked: state.isDocked,
     setIsMinimized: state.setIsMinimized,
-    setIsDocked: state.setIsDocked,
     setStoreIsPlaying: state.setIsPlaying,
     stopTrack: state.stopTrack,
     playlist: state.playlist,
@@ -616,150 +610,6 @@ export const MusicPlayer = () => {
             setStreamMode('youtube')
           }}
         />
-      )}
-
-      {/* Floating Mini Player Capsule (shown when minimized and not docked) */}
-      {isMinimized && !isDocked && (
-        <div
-          className={cn(
-            'pointer-events-auto fixed z-60 transition-all duration-300 ease-out',
-            // Mobile: sits at bottom-16, safe above the bottom navbar!
-            // Desktop: sits at bottom-6 right-8 w-96!
-            'right-3 bottom-16 left-3 rounded-2xl border border-amber-500/40 bg-background/95 p-2 shadow-2xl backdrop-blur-xl ring-1 ring-amber-500/20 sm:right-4 sm:bottom-18 sm:left-auto sm:w-88 md:right-8 md:bottom-6 md:w-96',
-          )}
-        >
-          {/* Partner Floating Reaction Notification */}
-          {remoteReaction && (
-            <div
-              key={remoteReaction.id}
-              className='-top-8 pointer-events-none absolute right-4 z-50 flex animate-bounce items-center gap-1.5 rounded-full border border-amber-500/40 bg-background/95 px-2.5 py-0.5 shadow-xl backdrop-blur-md'
-            >
-              <span className='text-sm leading-none'>{remoteReaction.emoji}</span>
-              <span className='font-bold text-[9px] text-amber-500'>Partner</span>
-            </div>
-          )}
-
-          <div className='flex items-center justify-between gap-2.5'>
-            {/* Tappable album & title to expand */}
-            <button
-              type='button'
-              onClick={() => setIsMinimized(false)}
-              className='group flex min-w-0 flex-1 items-center gap-2.5 cursor-pointer text-left outline-none'
-              title='Click to expand full player'
-            >
-              <div className='relative flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-neutral-700 bg-neutral-900 text-amber-500 shadow-md'>
-                {activeTrack.cover ? (
-                  <img
-                    src={activeTrack.cover}
-                    alt={activeTrack.title}
-                    className={cn(
-                      'size-full rounded-full object-cover',
-                      isPlaying && 'animate-[spin_4s_linear_infinite]',
-                    )}
-                  />
-                ) : (
-                  <Disc3
-                    className={cn(
-                      'size-5 text-amber-500',
-                      isPlaying && 'animate-[spin_4s_linear_infinite]',
-                    )}
-                  />
-                )}
-                <div className='absolute size-1.5 rounded-full border border-amber-500/60 bg-neutral-950' />
-              </div>
-
-              <div className='flex min-w-0 flex-1 flex-col overflow-hidden'>
-                <div className='relative w-full overflow-hidden whitespace-nowrap mask-fade-edges'>
-                  <div
-                    className={cn(
-                      'flex w-max gap-6 will-change-transform',
-                      isPlaying
-                        ? 'animate-[marquee_12s_linear_infinite]'
-                        : '[animation-play-state:paused]',
-                    )}
-                  >
-                    <span className='font-bold text-xs text-foreground group-hover:text-amber-400 transition-colors'>
-                      {activeTrack.title} • {activeTrack.artist}
-                    </span>
-                    <span
-                      className='font-bold text-xs text-foreground group-hover:text-amber-400 transition-colors'
-                      aria-hidden='true'
-                    >
-                      {activeTrack.title} • {activeTrack.artist}
-                    </span>
-                  </div>
-                </div>
-                <div className='flex items-center gap-1.5 text-[10px] text-muted-foreground'>
-                  {isOfflineCached && (
-                    <span className='inline-flex items-center gap-0.5 text-emerald-400 font-semibold'>
-                      <Zap className='size-2.5' /> Cached
-                    </span>
-                  )}
-                  <span>Tap to expand</span>
-                </div>
-              </div>
-            </button>
-
-            {/* Floating Controls */}
-            <div className='flex shrink-0 items-center gap-1'>
-              <Button
-                size='icon'
-                variant='ghost'
-                className='size-8 cursor-pointer rounded-full bg-primary text-primary-foreground hover:bg-primary/90'
-                onClick={togglePlayPause}
-                title={isPlaying ? 'Pause' : 'Play'}
-              >
-                {isPlaying ? (
-                  <Pause className='size-3.5' />
-                ) : (
-                  <Play className='ml-0.5 size-3.5' />
-                )}
-              </Button>
-
-              {playlist && playlist.length > 1 && (
-                <Button
-                  size='icon'
-                  variant='ghost'
-                  className='size-7 cursor-pointer rounded-full hover:bg-primary/10'
-                  onClick={nextTrack}
-                  title='Next Track'
-                >
-                  <SkipForward className='size-3.5' />
-                </Button>
-              )}
-
-              <Button
-                size='icon'
-                variant='ghost'
-                className='size-7 cursor-pointer rounded-full hover:bg-primary/10'
-                onClick={() => setIsMinimized(false)}
-                title='Expand Player'
-              >
-                <ChevronUp className='size-4' />
-              </Button>
-
-              <Button
-                size='icon'
-                variant='ghost'
-                className='size-7 cursor-pointer rounded-full hover:bg-primary/10 text-muted-foreground'
-                onClick={() => setIsDocked(true)}
-                title='Dock into bottom CD'
-              >
-                <ArrowDownToLine className='size-3.5' />
-              </Button>
-
-              <Button
-                size='icon'
-                variant='ghost'
-                className='size-7 cursor-pointer rounded-full hover:bg-destructive/10 hover:text-destructive'
-                onClick={stopTrack}
-                title='Stop Playback'
-              >
-                <X className='size-4' />
-              </Button>
-            </div>
-          </div>
-        </div>
       )}
 
       {/* Full Expanded Player Modal (shown when not minimized) */}

@@ -21,10 +21,8 @@ export const Navbar = () => {
     isPlaying,
     playerOpen,
     isMinimized,
-    isDocked,
     setPlayerOpen,
     setIsMinimized,
-    setIsDocked,
     settingsOpen,
     toggleSettingsOpen,
     aboutOpen,
@@ -46,10 +44,8 @@ export const Navbar = () => {
     isPlaying: state.isPlaying,
     playerOpen: state.playerOpen,
     isMinimized: state.isMinimized,
-    isDocked: state.isDocked,
     setPlayerOpen: state.setPlayerOpen,
     setIsMinimized: state.setIsMinimized,
-    setIsDocked: state.setIsDocked,
     settingsOpen: state.settingsOpen,
     toggleSettingsOpen: state.toggleSettingsOpen,
     aboutOpen: state.aboutOpen,
@@ -77,19 +73,9 @@ export const Navbar = () => {
     if (!playerOpen) {
       setPlayerOpen(true)
       setIsMinimized(false)
-      setIsDocked(false)
       return
     }
-    if (!isMinimized) {
-      setIsMinimized(true)
-      return
-    }
-    if (isDocked) {
-      setIsDocked(false)
-      setIsMinimized(false)
-    } else {
-      setIsMinimized(false)
-    }
+    setIsMinimized(!isMinimized)
   }
 
   const buttonClassnames =

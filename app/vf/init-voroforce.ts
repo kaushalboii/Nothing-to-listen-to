@@ -1,10 +1,11 @@
 import voroforce from '√/index'
 
 import { store } from '../store'
-import { CELL_LIMIT, DEVICE_CLASS, VOROFORCE_PRESET } from './consts'
+import { CELL_LIMIT, VOROFORCE_PRESET } from './consts'
 import { initVoroforceIntegrations } from './integrations'
 import type { VoroforceInstance } from './types'
 import { getVoroforceConfig, getVoroforceConfigUniforms } from './utils'
+import { isMobileDevice } from './utils/device-class'
 
 export const initVoroforce = ({
   // biome-ignore lint/style/noNonNullAssertion: exists
@@ -17,32 +18,16 @@ export const initVoroforce = ({
   const state = store.getState()
   if (state.voroforce) return // already initialized
 
+  const isMobile = isMobileDevice()
+
   if (!force && !state.preset) {
-    const isMobile =
-      state.ua?.getDevice()?.is('mobile') ||
-      state.deviceClass === DEVICE_CLASS.mobile ||
-      (typeof window !== 'undefined' &&
-        ('ontouchstart' in window ||
-          (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0) ||
-          window.innerWidth < 768))
-    if (isMobile) {
-      state.setPreset(VOROFORCE_PRESET.mobile)
-      state.setCellLimit(CELL_LIMIT.xs)
-    } else {
-      return
-    }
-  } else if (!force && state.cellLimit && state.cellLimit > CELL_LIMIT.xs) {
-    const isMobile =
-      state.ua?.getDevice()?.is('mobile') ||
-      state.deviceClass === DEVICE_CLASS.mobile ||
-      (typeof window !== 'undefined' &&
-        ('ontouchstart' in window ||
-          (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0) ||
-          window.innerWidth < 768))
-    if (isMobile) {
-      state.setPreset(VOROFORCE_PRESET.mobile)
-      state.setCellLimit(CELL_LIMIT.xs)
-    }
+    state.setPreset(
+      isMobile ? VOROFORCE_PRESET.mobile : VOROFORCE_PRESET.minimal,
+    )
+    state.setCellLimit(CELL_LIMIT.xs)
+  } else if (!force && isMobile && state.cellLimit && state.cellLimit > CELL_LIMIT.xs) {
+    state.setPreset(VOROFORCE_PRESET.mobile)
+    state.setCellLimit(CELL_LIMIT.xs)
   }
 
   const config = getVoroforceConfig(store.getState())

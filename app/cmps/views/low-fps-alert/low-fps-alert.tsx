@@ -7,6 +7,7 @@ import { orientation, up } from '../../../utils/mq'
 import { cn } from '../../../utils/tw'
 import { CELL_LIMIT, VOROFORCE_PRESET } from '../../../vf'
 import { DEVICE_CLASS, VOROFORCE_MODE } from '../../../vf/consts'
+import { isMobileDevice } from '../../../vf/utils/device-class'
 import { CoreSettingsWidget } from '../../common/core-settings/core-settings-widget'
 import { Modal } from '../../common/modal'
 import { Button } from '../../ui/button'
@@ -61,10 +62,9 @@ export const LowFpsAlert = () => {
   const open = useCallback(() => {
     if (!ticker) return
     const isMobile =
+      isMobileDevice() ||
       deviceClass === DEVICE_CLASS.mobile ||
-      preset === VOROFORCE_PRESET.mobile ||
-      (typeof window !== 'undefined' &&
-        ('ontouchstart' in window || window.innerWidth < 768))
+      preset === VOROFORCE_PRESET.mobile
     if (isMobile) return // Never freeze or interrupt mobile users with low fps alerts
 
     if (cooldown) {

@@ -7,11 +7,11 @@ import type { StoreState } from '../../store'
 import {
   CELL_LIMIT,
   DEFAULT_VOROFORCE_PRESET,
-  DEVICE_CLASS,
   type VOROFORCE_MODE,
   VOROFORCE_PRESET,
 } from '../consts'
 import type { VoroforceCell, VoroforceInstance } from '../types'
+import { isMobileDevice } from './device-class'
 import type { Film } from './films'
 import type { ConfigUniform } from './uniforms'
 
@@ -69,13 +69,7 @@ export const getVoroforceConfig = (state: StoreState) => {
   const cellsOverrideParam = urlParams.get('cells')
   const customLinkBase64Param = urlParams.get('customLinkBase64')
 
-  const isMobile =
-    state.ua.getDevice().is('mobile') ||
-    state.deviceClass === DEVICE_CLASS.mobile ||
-    (typeof window !== 'undefined' &&
-      ('ontouchstart' in window ||
-        (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0) ||
-        window.innerWidth < 768))
+  const isMobile = isMobileDevice()
 
   let preset = initialPreset
   if (presetOverrideParam && VOROFORCE_PRESET[presetOverrideParam]) {
@@ -84,6 +78,11 @@ export const getVoroforceConfig = (state: StoreState) => {
 
   if (!preset) {
     preset = isMobile ? VOROFORCE_PRESET.mobile : DEFAULT_VOROFORCE_PRESET
+  }
+
+  // Mobile hardware (including when in "Desktop site" mode) must always use mobile preset
+  if (isMobile && preset === VOROFORCE_PRESET.minimal) {
+    preset = VOROFORCE_PRESET.mobile
   }
 
   let config = mergeConfigs(
@@ -112,9 +111,10 @@ export const getVoroforceConfig = (state: StoreState) => {
       : Math.min(requestedCells, CELL_LIMIT.xs)
     if (config.multiThreading) {
       config.multiThreading.enabled = false
+      config.multiThreading.renderInParallel = false
     }
-    config.fpsCap = config.fpsCap ?? 60
-    config.idleFpsCap = config.idleFpsCap ?? 30
+    config.fpsCap = 60
+    config.idleFpsCap = 30
     config.adaptiveFPS = true
     config.display = config.display || {}
     config.display.renderer = config.display.renderer || {}
@@ -124,6 +124,14 @@ export const getVoroforceConfig = (state: StoreState) => {
       1.0,
     )
     config.display.renderer.powerPreference = 'low-power'
+  } else {
+    config.display = config.display || {}
+    config.display.renderer = config.display.renderer || {}
+    config.display.renderer.pixelRatio = Math.min(
+      typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1,
+      1.5,
+    )
+    config.adaptiveFPS = true
   }
 
   if ('devTools' in userConfig) {

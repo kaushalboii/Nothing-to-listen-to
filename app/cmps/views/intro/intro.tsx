@@ -2,7 +2,7 @@ import { useEffect, useReducer, useState } from 'react'
 import { store, useShallowState } from '../../../store'
 import { isDefined } from '../../../utils/misc'
 import { cn } from '../../../utils/tw'
-import { VOROFORCE_MODE } from '../../../vf'
+import { VOROFORCE_MODE, initVoroforce } from '../../../vf'
 import {
   CELL_LIMIT,
   DEVICE_CLASS,
@@ -13,16 +13,11 @@ import {
   handleModeChange,
   revealVoroforceContainer,
 } from '../../../vf/integrations/mode'
+import { isMobileDevice } from '../../../vf/utils/device-class'
 import { CoreSettingsWidget } from '../../common/core-settings/core-settings-widget'
 import { DeviceClassWidget } from '../../common/device-class/device-class-widget'
 import { FadeTransition } from '../../common/fade-transition'
 import { Button } from '../../ui/button'
-
-const isMobileDevice =
-  typeof window !== 'undefined' &&
-  ('ontouchstart' in window ||
-    (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0) ||
-    window.innerWidth < 768)
 
 export const Intro = () => {
   const { preset, hasDeviceClass } = useShallowState((state) => ({
@@ -34,34 +29,39 @@ export const Intro = () => {
 
   useEffect(() => {
     const state = store.getState()
+    const isMobile = isMobileDevice()
+
     if (!isDefined(state.deviceClass)) {
       state.setDeviceClass(
-        isMobileDevice ? DEVICE_CLASS.mobile : DEVICE_CLASS.mid,
+        isMobile ? DEVICE_CLASS.mobile : DEVICE_CLASS.mid,
       )
     }
     if (!state.preset || state.preset === VOROFORCE_PRESET.minimal) {
       state.setPreset(
-        isMobileDevice ? VOROFORCE_PRESET.mobile : VOROFORCE_PRESET.minimal,
+        isMobile ? VOROFORCE_PRESET.mobile : VOROFORCE_PRESET.minimal,
       )
     }
     if (
       !state.cellLimit ||
       state.cellLimit === CELL_LIMIT.min ||
-      (isMobileDevice && state.cellLimit > CELL_LIMIT.xs)
+      (isMobile && state.cellLimit > CELL_LIMIT.xs)
     ) {
-      state.setCellLimit(isMobileDevice ? CELL_LIMIT.xs : CELL_LIMIT.sm)
+      state.setCellLimit(isMobile ? CELL_LIMIT.xs : CELL_LIMIT.sm)
     }
 
     // Auto-advance within 500ms so visitors never experience a stalled black screen
     const timer = setTimeout(
       () => {
         revealVoroforceContainer()
+        if (!store.getState().voroforce) {
+          initVoroforce({ force: true })
+        }
         if (!store.getState().playedIntro) {
           store.getState().setPlayedIntro(true)
           handleModeChange(VOROFORCE_MODE.preview)
         }
       },
-      isMobileDevice ? 300 : 500,
+      isMobile ? 300 : 500,
     )
 
     return () => clearTimeout(timer)
@@ -216,14 +216,14 @@ function useIntroVisible() {
         }
         forceUpdate()
       },
-      isMobileDevice ? 250 : 500,
+      isMobileDevice() ? 250 : 500,
     )
     return () => clearTimeout(safetyTimer)
   }, [])
 
   if (OBSCURE_VISUAL_DEFECTS) {
     useEffect(() => {
-      const initialDelay = isMobileDevice
+      const initialDelay = isMobileDevice()
         ? Math.min(revealScreenDelay, 150)
         : Math.min(revealScreenDelay, 300)
       const timeoutId = setTimeout(() => {
@@ -239,7 +239,7 @@ function useIntroVisible() {
 
       const onResize = () => {
         const currentWidth = window.innerWidth
-        if (isMobileDevice || Math.abs(currentWidth - lastWidth) < 50) {
+        if (isMobileDevice() || Math.abs(currentWidth - lastWidth) < 50) {
           lastWidth = currentWidth
           return
         }

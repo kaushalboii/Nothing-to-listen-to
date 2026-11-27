@@ -1,5 +1,5 @@
-import { type ReactNode, useState } from 'react'
 import { Smartphone } from 'lucide-react'
+import { type ReactNode, useState } from 'react'
 
 import { THEME } from '../../../consts'
 import { useMediaQuery } from '../../../hooks/use-media-query'
@@ -120,7 +120,7 @@ export function CoreSettingsWidget({
             </div>
             <div className='flex flex-col'>
               <span className='font-semibold text-zinc-100'>Mobile Galaxy</span>
-              <span className='text-zinc-400 text-xxs'>
+              <span className='text-xxs text-zinc-400'>
                 3D Spherical Galaxy (5,000 albums)
               </span>
             </div>
@@ -164,7 +164,9 @@ export function CoreSettingsWidget({
             setIsSubmitted(true)
             const newPreset = isMobile
               ? VOROFORCE_PRESET.mobile
-              : (isDefined(preset) ? preset : VOROFORCE_PRESET.minimal)
+              : isDefined(preset)
+                ? preset
+                : VOROFORCE_PRESET.minimal
             if (
               theme === THEME.light &&
               newPreset !== VOROFORCE_PRESET.minimal
@@ -175,15 +177,15 @@ export function CoreSettingsWidget({
             setStoreCellLimit(
               isMobile
                 ? CELL_LIMIT.xs
-                : (isDefined(cellLimit) ? cellLimit : CELL_LIMIT.sm),
+                : isDefined(cellLimit)
+                  ? cellLimit
+                  : CELL_LIMIT.sm,
             )
             setPlayedIntro(true)
             onSubmit?.()
           }}
           size='lg'
-          disabled={
-            !isMobile && (!isDefined(preset) || !isDefined(cellLimit))
-          }
+          disabled={!isMobile && (!isDefined(preset) || !isDefined(cellLimit))}
           {...submitProps}
           className={cn(
             'w-full cursor-pointer text-lg',

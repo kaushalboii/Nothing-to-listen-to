@@ -314,7 +314,8 @@ export default class BaseScene {
       return
     }
 
-    const compressedSupported = this.globalConfig.media.compressedFormatsSupported !== false
+    const compressedSupported =
+      this.globalConfig.media.compressedFormatsSupported !== false
 
     let primaryTexture = null
     this.compressedMediaGridTextures = this.getCompressedMediaVersions().map(
@@ -422,12 +423,16 @@ export default class BaseScene {
       uMediaV1Texture: {
         value: !compressedSupported
           ? (this.compressedMediaGridTextures[0] ?? fallbackTexture)
-          : (this.compressedMediaGridTextures[1] ?? this.compressedMediaGridTextures[0] ?? fallbackTexture),
+          : (this.compressedMediaGridTextures[1] ??
+            this.compressedMediaGridTextures[0] ??
+            fallbackTexture),
       },
       uMediaV2Texture: {
         value: !compressedSupported
           ? (this.compressedMediaGridTextures[0] ?? fallbackTexture)
-          : (this.compressedMediaGridTextures[2] ?? this.compressedMediaGridTextures[0] ?? fallbackTexture),
+          : (this.compressedMediaGridTextures[2] ??
+            this.compressedMediaGridTextures[0] ??
+            fallbackTexture),
       },
       uMediaV3Texture: {
         value: this.compressedMediaGridTextures[0] ?? fallbackTexture,
@@ -700,7 +705,9 @@ export default class BaseScene {
     )
     const py = Math.min(
       Math.max(
-        Math.floor(rt.height - position.y * (rt.height / this.dimensions.height)),
+        Math.floor(
+          rt.height - position.y * (rt.height / this.dimensions.height),
+        ),
         0,
       ),
       Math.max(rt.height - 1, 0),

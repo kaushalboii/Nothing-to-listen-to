@@ -38,16 +38,16 @@ export const FilmPoster = ({
     return (
       <div
         className={cn(
-          'aspect-square flex flex-col items-center justify-center rounded-lg bg-zinc-900 border border-zinc-700/50 shadow-inner relative overflow-hidden group select-none',
+          'group relative flex aspect-square select-none flex-col items-center justify-center overflow-hidden rounded-lg border border-zinc-700/50 bg-zinc-900 shadow-inner',
           className,
         )}
       >
-        <div className='absolute inset-2 rounded-full border border-zinc-700/40 pointer-events-none' />
-        <div className='absolute inset-6 rounded-full border border-zinc-800 pointer-events-none' />
-        <div className='w-12 h-12 rounded-full bg-gradient-to-tr from-amber-500 to-rose-500 flex items-center justify-center shadow-lg'>
-          <div className='w-3 h-3 rounded-full bg-zinc-950 border border-zinc-600' />
+        <div className='pointer-events-none absolute inset-2 rounded-full border border-zinc-700/40' />
+        <div className='pointer-events-none absolute inset-6 rounded-full border border-zinc-800' />
+        <div className='flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-tr from-amber-500 to-rose-500 shadow-lg'>
+          <div className='h-3 w-3 rounded-full border border-zinc-600 bg-zinc-950' />
         </div>
-        <span className='mt-2 px-2 text-[11px] font-medium text-zinc-400 text-center line-clamp-1 max-w-[85%]'>
+        <span className='mt-2 line-clamp-1 max-w-[85%] px-2 text-center font-medium text-[11px] text-zinc-400'>
           {film.title}
         </span>
       </div>
@@ -60,7 +60,7 @@ export const FilmPoster = ({
       crossOrigin='anonymous'
       alt={film.title}
       className={cn(
-        'aspect-square object-cover rounded-md shadow-md transition-opacity duration-300',
+        'aspect-square rounded-md object-cover shadow-md transition-opacity duration-300',
         className,
       )}
       onError={() => {

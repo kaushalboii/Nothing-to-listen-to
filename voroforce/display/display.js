@@ -45,7 +45,9 @@ export default class Display {
     if (!this.gl.getExtension('WEBGL_compressed_texture_s3tc')) {
       media.compressedFormatsSupported = false
       media.compressionFormat = 'jpg'
-      console.log('[Voroforce] S3TC not supported on this device/browser. Using JPEG media grid atlas.')
+      console.log(
+        '[Voroforce] S3TC not supported on this device/browser. Using JPEG media grid atlas.',
+      )
       return
     }
 

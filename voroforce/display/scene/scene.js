@@ -72,6 +72,9 @@ export default class Scene extends BaseScene {
     this.cellCoordsTexture.needsUpdate = true
     this.cellWeightsTexture.needsUpdate = true
     this.cellMediaVersionsTexture.needsUpdate = true
+    if (this.cellIdsTexture) {
+      this.cellIdsTexture.needsUpdate = true
+    }
   }
 
   afterUpdateCustom() {
@@ -104,6 +107,9 @@ export default class Scene extends BaseScene {
 
   refreshCustom() {
     this.cellNeighborsTexture.needsUpdate = true
+    if (this.cellIdsTexture) {
+      this.cellIdsTexture.needsUpdate = true
+    }
   }
 
   initMainCustomUniforms() {

@@ -57,7 +57,9 @@ export class Film {
     this.backdrop = String(data.backdrop_path ?? data.poster_path)
     this.tracks = Array.isArray(data.tracks) ? data.tracks : []
     this.spotifyId = data.spotify_id ? String(data.spotify_id) : undefined
-    this.appleMusicId = data.apple_music_id ? String(data.apple_music_id) : undefined
+    this.appleMusicId = data.apple_music_id
+      ? String(data.apple_music_id)
+      : undefined
     this.youtubeId = data.youtube_id ? String(data.youtube_id) : undefined
     this.audioUrl = data.audio_url ? String(data.audio_url) : undefined
     this.language = data.language ? String(data.language) : undefined
@@ -97,11 +99,22 @@ export const getCellFilm = async (
   if (!cell) return
   // In Nothing to Listen to, all 216 curated songs are stored in batch 0
   const subgrid = 0
-  const rawIndex =
-    cell.subgridIndex ??
-    (typeof cell.id === 'number' ? cell.id : cell.index) ??
-    0
-  const subgridIndex = Math.abs(rawIndex) % 216
+  // Primary lookup is cell.id because that is the exact ID sampled by main.frag in uCellIdMapTexture
+  const rawId =
+    (typeof cell.id === 'number' && !Number.isNaN(cell.id) && cell.id >= 0
+      ? cell.id
+      : undefined) ??
+    (typeof cell.subgridIndex === 'number' &&
+    !Number.isNaN(cell.subgridIndex) &&
+    cell.subgridIndex >= 0
+      ? cell.subgridIndex
+      : undefined) ??
+    (typeof cell.index === 'number' &&
+    !Number.isNaN(cell.index) &&
+    cell.index >= 0
+      ? cell.index
+      : 0)
+  const subgridIndex = Math.abs(rawId) % 216
 
   let filmBatch = filmBatches.get(subgrid)
   if (!filmBatch || filmBatch.length === 0) {

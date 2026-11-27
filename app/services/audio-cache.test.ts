@@ -21,11 +21,15 @@ describe('AudioCacheManager', () => {
   })
 
   it('handles getCachedAudioBlobUrl for non-cached url safely', async () => {
-    const blobUrl = await audioCache.getCachedAudioBlobUrl('https://example.com/audio.m4a')
+    const blobUrl = await audioCache.getCachedAudioBlobUrl(
+      'https://example.com/audio.m4a',
+    )
     expect(blobUrl).toBeNull()
   })
 
   it('handles revoking blob url without error', () => {
-    expect(() => audioCache.revokeBlobUrl('blob:http://localhost/test-uuid')).not.toThrow()
+    expect(() =>
+      audioCache.revokeBlobUrl('blob:http://localhost/test-uuid'),
+    ).not.toThrow()
   })
 })

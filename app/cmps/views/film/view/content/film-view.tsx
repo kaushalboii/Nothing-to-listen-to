@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
 import { Disc3, Music2, Play } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import config from '../../../../../config'
 import { useMediaQuery } from '../../../../../hooks/use-media-query'
 import { store } from '../../../../../store'
@@ -58,7 +58,9 @@ export const FilmView = ({
         onMouseLeave: () => setViewHovered(false),
       })}
     >
-      <div className={cn('landscape:h-full relative overflow-hidden', className)}>
+      <div
+        className={cn('relative overflow-hidden landscape:h-full', className)}
+      >
         {/* Ambient album backdrop glow */}
         <div
           className={cn(
@@ -73,7 +75,7 @@ export const FilmView = ({
           {!isIOS && (
             <img
               className={cn(
-                'h-full w-full object-cover object-center opacity-0 transition-opacity duration-700 filter blur-2xl scale-125 will-change-[opacity]',
+                'h-full w-full scale-125 object-cover object-center opacity-0 blur-2xl filter transition-opacity duration-700 will-change-[opacity]',
                 {
                   '!w-0 !h-0': backdropErrored,
                   '!opacity-25 dark:!opacity-20': !backdropHidden,
@@ -92,17 +94,17 @@ export const FilmView = ({
           )}
         </div>
 
-        <div className='relative z-1 flex h-full w-full flex-col p-4 md:p-6 lg:p-8 pb-16 md:pb-20 max-h-[85vh] overflow-y-auto'>
+        <div className='relative z-1 flex h-full max-h-[85vh] w-full flex-col overflow-y-auto p-4 pb-16 md:p-6 md:pb-20 lg:p-8'>
           {/* Main Album Header with Vinyl & Artwork */}
-          <div className='flex flex-col md:flex-row gap-6 items-start'>
+          <div className='flex flex-col items-start gap-6 md:flex-row'>
             {/* Album Sleeve & Vinyl Record Graphic */}
-            <div className='relative group/vinyl shrink-0 mx-auto md:mx-0'>
+            <div className='group/vinyl relative mx-auto shrink-0 md:mx-0'>
               {/* Spinning Vinyl Record (slides out) */}
               <div
                 className={cn(
-                  'absolute top-2 left-6 h-36 w-36 md:h-44 md:w-44 rounded-full bg-neutral-950 border-4 border-neutral-800 shadow-2xl flex items-center justify-center transition-all duration-700 ease-out z-0',
+                  'absolute top-2 left-6 z-0 flex h-36 w-36 items-center justify-center rounded-full border-4 border-neutral-800 bg-neutral-950 shadow-2xl transition-all duration-700 ease-out md:h-44 md:w-44',
                   {
-                    'translate-x-12 md:translate-x-18 rotate-180': isPlaying,
+                    'translate-x-12 rotate-180 md:translate-x-18': isPlaying,
                     'group-hover/vinyl:translate-x-8': !isPlaying,
                   },
                 )}
@@ -116,7 +118,7 @@ export const FilmView = ({
                 {/* Center Disc Label with Rotating Vinyl Icon */}
                 <div
                   className={cn(
-                    'h-12 w-12 md:h-14 md:w-14 rounded-full bg-primary/90 flex items-center justify-center text-primary-foreground shadow-inner',
+                    'flex h-12 w-12 items-center justify-center rounded-full bg-primary/90 text-primary-foreground shadow-inner md:h-14 md:w-14',
                     {
                       'animate-[spin_4s_linear_infinite]': isPlaying,
                     },
@@ -127,7 +129,7 @@ export const FilmView = ({
               </div>
 
               {/* Album Cover Sleeve */}
-              <div className='relative z-10 h-40 w-40 md:h-48 md:w-48 shadow-2xl rounded-lg overflow-hidden border border-border/50 bg-card'>
+              <div className='relative z-10 h-40 w-40 overflow-hidden rounded-lg border border-border/50 bg-card shadow-2xl md:h-48 md:w-48'>
                 <FilmPoster
                   film={film}
                   className='h-full w-full object-cover transition-transform duration-300 group-hover/vinyl:scale-105'
@@ -136,17 +138,17 @@ export const FilmView = ({
             </div>
 
             {/* Album Details */}
-            <div className='flex flex-col grow justify-between gap-3 w-full'>
+            <div className='flex w-full grow flex-col justify-between gap-3'>
               <div>
-                <p className='text-xs md:text-sm font-black text-primary tracking-widest uppercase mb-1 flex items-center gap-1.5'>
+                <p className='mb-1 flex items-center gap-1.5 font-black text-primary text-xs uppercase tracking-widest md:text-sm'>
                   <Music2 className='size-4' />
                   {film.artist}
                 </p>
                 <div className='flex items-start justify-between gap-4'>
-                  <h2 className='font-black text-2xl md:text-3xl lg:text-4xl leading-tight text-foreground'>
+                  <h2 className='font-black text-2xl text-foreground leading-tight md:text-3xl lg:text-4xl'>
                     {film.title}
                     {film.year && (
-                      <span className='font-normal text-muted-foreground text-xl md:text-2xl ml-2'>
+                      <span className='ml-2 font-normal text-muted-foreground text-xl md:text-2xl'>
                         ({film.year})
                       </span>
                     )}
@@ -155,18 +157,18 @@ export const FilmView = ({
                 </div>
 
                 {film.tagline && (
-                  <p className='text-sm md:text-base text-muted-foreground italic mt-2'>
+                  <p className='mt-2 text-muted-foreground text-sm italic md:text-base'>
                     "{film.tagline}"
                   </p>
                 )}
               </div>
 
               {/* Genre & Language Badges */}
-              <div className='flex flex-wrap gap-1.5 my-2'>
+              <div className='my-2 flex flex-wrap gap-1.5'>
                 {film.language && (
                   <Badge
                     variant='default'
-                    className='text-xs py-0.5 px-2.5 font-bold bg-primary text-primary-foreground'
+                    className='bg-primary px-2.5 py-0.5 font-bold text-primary-foreground text-xs'
                   >
                     {film.language}
                   </Badge>
@@ -175,7 +177,7 @@ export const FilmView = ({
                   <Badge
                     key={genre}
                     variant='secondary'
-                    className='text-xs py-0.5 px-2 font-medium'
+                    className='px-2 py-0.5 font-medium text-xs'
                   >
                     {genre}
                   </Badge>
@@ -183,7 +185,7 @@ export const FilmView = ({
               </div>
 
               {/* Audio & Streaming Controls */}
-              <div className='flex flex-wrap items-center gap-2.5 pt-2 border-t border-border/40'>
+              <div className='flex flex-wrap items-center gap-2.5 border-border/40 border-t pt-2'>
                 <Button
                   size='sm'
                   onClick={() => {
@@ -199,7 +201,7 @@ export const FilmView = ({
                       query: `${film.artist} ${firstTitle}`,
                     })
                   }}
-                  className='cursor-pointer gap-2 font-bold transition-all shadow-md bg-red-600 hover:bg-red-700 text-white'
+                  className='cursor-pointer gap-2 bg-red-600 font-bold text-white shadow-md transition-all hover:bg-red-700'
                 >
                   <Play className='size-4 fill-white' /> Play Song
                 </Button>
@@ -209,11 +211,11 @@ export const FilmView = ({
 
           {/* Album Overview & Story */}
           {film.overview && (
-            <div className='mt-6 pt-4 border-t border-border/40'>
-              <h4 className='text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2'>
+            <div className='mt-6 border-border/40 border-t pt-4'>
+              <h4 className='mb-2 font-bold text-muted-foreground text-xs uppercase tracking-wider'>
                 About this Record
               </h4>
-              <p className='text-sm md:text-base leading-relaxed text-foreground/90'>
+              <p className='text-foreground/90 text-sm leading-relaxed md:text-base'>
                 {film.overview}
               </p>
             </div>
@@ -221,20 +223,22 @@ export const FilmView = ({
 
           {/* Tracklist Accordion / Section */}
           {film.tracks && film.tracks.length > 0 && (
-            <div className='mt-6 pt-4 border-t border-border/40'>
-              <h4 className='text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center justify-between'>
+            <div className='mt-6 border-border/40 border-t pt-4'>
+              <h4 className='mb-3 flex items-center justify-between font-bold text-muted-foreground text-xs uppercase tracking-wider'>
                 <span>Tracklist</span>
                 <span className='font-normal text-muted-foreground/70'>
                   {film.tracks.length} tracks
                 </span>
               </h4>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-2 text-xs md:text-sm font-medium'>
+              <div className='grid grid-cols-1 gap-2 font-medium text-xs md:grid-cols-2 md:text-sm'>
                 {film.tracks.map((track) => {
-                  const trackQuery = encodeURIComponent(`${film.artist} ${track.title}`.trim())
+                  const trackQuery = encodeURIComponent(
+                    `${film.artist} ${track.title}`.trim(),
+                  )
                   return (
                     <div
                       key={track.number}
-                      className='group/track flex items-center justify-between p-2 rounded-lg hover:bg-muted/70 border border-transparent hover:border-border/60 transition-all cursor-pointer'
+                      className='group/track flex cursor-pointer items-center justify-between rounded-lg border border-transparent p-2 transition-all hover:border-border/60 hover:bg-muted/70'
                       onClick={() => {
                         store.getState().playTrack({
                           title: track.title,
@@ -247,24 +251,24 @@ export const FilmView = ({
                         })
                       }}
                     >
-                      <div className='flex items-center gap-2.5 truncate mr-2'>
-                        <span className='font-mono text-xs text-muted-foreground w-4 text-right group-hover/track:hidden'>
+                      <div className='mr-2 flex items-center gap-2.5 truncate'>
+                        <span className='w-4 text-right font-mono text-muted-foreground text-xs group-hover/track:hidden'>
                           {track.number}
                         </span>
-                        <Play className='size-3.5 text-primary shrink-0 hidden group-hover/track:inline-block fill-primary' />
-                        <span className='truncate text-foreground/90 font-medium group-hover/track:text-primary transition-colors'>
+                        <Play className='hidden size-3.5 shrink-0 fill-primary text-primary group-hover/track:inline-block' />
+                        <span className='truncate font-medium text-foreground/90 transition-colors group-hover/track:text-primary'>
                           {track.title}
                         </span>
                       </div>
 
-                      <div className='flex items-center gap-2 shrink-0'>
-                        <div className='opacity-0 group-hover/track:opacity-100 flex items-center gap-1.5 transition-opacity'>
+                      <div className='flex shrink-0 items-center gap-2'>
+                        <div className='flex items-center gap-1.5 opacity-0 transition-opacity group-hover/track:opacity-100'>
                           <a
                             href={`${config.spotifySearchUrl}${trackQuery}`}
                             target='_blank'
                             rel='noreferrer'
                             onClick={(e) => e.stopPropagation()}
-                            className='text-[0.65rem] px-1.5 py-0.5 rounded bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold'
+                            className='rounded bg-emerald-500/10 px-1.5 py-0.5 font-bold text-[0.65rem] text-emerald-600 hover:bg-emerald-500/20 dark:text-emerald-400'
                             title='Listen on Spotify'
                           >
                             SP
@@ -274,13 +278,13 @@ export const FilmView = ({
                             target='_blank'
                             rel='noreferrer'
                             onClick={(e) => e.stopPropagation()}
-                            className='text-[0.65rem] px-1.5 py-0.5 rounded bg-pink-500/10 hover:bg-pink-500/20 text-pink-600 dark:text-pink-400 font-bold'
+                            className='rounded bg-pink-500/10 px-1.5 py-0.5 font-bold text-[0.65rem] text-pink-600 hover:bg-pink-500/20 dark:text-pink-400'
                             title='Listen on Apple Music'
                           >
                             AM
                           </a>
                         </div>
-                        <span className='font-mono text-xs text-muted-foreground'>
+                        <span className='font-mono text-muted-foreground text-xs'>
                           {track.duration}
                         </span>
                       </div>

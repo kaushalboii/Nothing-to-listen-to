@@ -144,7 +144,7 @@ export class JamSessionService {
   private socket: IttySocketInstance | null = null
   private role: JamRole | null = null
   private roomCode: string | null = null
-  private clientId: string = ''
+  private clientId = ''
   private callbacks: JamCallbacks = {}
 
   private isConnecting = false
@@ -267,7 +267,8 @@ export class JamSessionService {
   }
 
   public tryRestoreSession(): boolean {
-    if (this.roomCode || this.partnerConnected || this.isConnecting) return false
+    if (this.roomCode || this.partnerConnected || this.isConnecting)
+      return false
     if (typeof sessionStorage === 'undefined') return false
     try {
       const raw = sessionStorage.getItem(SESSION_STORAGE_KEY)
@@ -508,16 +509,16 @@ export class JamSessionService {
 
           this.callbacks.onPartnerConnected?.()
           return
-        } else {
-          // Reject 3rd user
-          this.send({
-            type: 'REJECT',
-            reason: 'ROOM_FULL',
-            message: 'This room is full! Private listening sessions are strictly 2 users.',
-            sentAt: Date.now(),
-          })
-          return
         }
+        // Reject 3rd user
+        this.send({
+          type: 'REJECT',
+          reason: 'ROOM_FULL',
+          message:
+            'This room is full! Private listening sessions are strictly 2 users.',
+          sentAt: Date.now(),
+        })
+        return
       }
     }
 
@@ -781,7 +782,7 @@ export class JamSessionService {
     this.partnerConnected = false
     this.emitStatus()
 
-    const delay = Math.min(1000 * Math.pow(1.5, this.reconnectAttempts), 5000)
+    const delay = Math.min(1000 * 1.5 ** this.reconnectAttempts, 5000)
     this.reconnectAttempts++
 
     this.reconnectTimer = setTimeout(() => {

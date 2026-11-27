@@ -1,4 +1,3 @@
-import { useEffect, useMemo, useState } from 'react'
 import {
   Calendar,
   Globe2,
@@ -9,11 +8,12 @@ import {
   Sparkles,
   X,
 } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
 import { store, useShallowState } from '../../../store'
 import { cn } from '../../../utils/tw'
-import { Film, handleModeChange, VOROFORCE_MODE } from '../../../vf'
-import { AlbumCover } from '../film/shared/film-poster'
+import { Film, VOROFORCE_MODE, handleModeChange } from '../../../vf'
 import { Button } from '../../ui/button'
+import { AlbumCover } from '../film/shared/film-poster'
 
 const LANGUAGE_FILTERS = [
   'All',
@@ -71,15 +71,19 @@ export const MusicSearchModal = () => {
       setLocalRecords(batch)
     } else {
       const rawBase = import.meta.env.BASE_URL || '/'
-      const normalizedBase = rawBase.endsWith('/') ? rawBase.slice(0, -1) : rawBase
-      fetch(`${normalizedBase}/json/0.json?v=${Date.now().toString(36)}`, { cache: 'no-cache' })
+      const normalizedBase = rawBase.endsWith('/')
+        ? rawBase.slice(0, -1)
+        : rawBase
+      fetch(`${normalizedBase}/json/0.json?v=${Date.now().toString(36)}`, {
+        cache: 'no-cache',
+      })
         .then((res) => res.json())
         .then((data) => {
           if (Array.isArray(data)) {
             setLocalRecords(data)
           }
         })
-        .catch(() => { })
+        .catch(() => {})
     }
   }, [filmBatches])
 
@@ -89,7 +93,10 @@ export const MusicSearchModal = () => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault()
         setSearchOpen(!searchOpen)
-      } else if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) {
+      } else if (
+        e.key === '/' &&
+        !['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)
+      ) {
         e.preventDefault()
         setSearchOpen(true)
       } else if (e.key === 'Escape' && searchOpen) {
@@ -110,7 +117,10 @@ export const MusicSearchModal = () => {
       if (selectedLang !== 'All') {
         const lang = String(rec.language || '').toLowerCase()
         const genres = String(rec.genres || '').toLowerCase()
-        if (lang !== selectedLang.toLowerCase() && !genres.includes(selectedLang.toLowerCase())) {
+        if (
+          lang !== selectedLang.toLowerCase() &&
+          !genres.includes(selectedLang.toLowerCase())
+        ) {
           return false
         }
       }
@@ -118,11 +128,19 @@ export const MusicSearchModal = () => {
       // Era filter
       if (selectedEra !== 'All Eras') {
         const year = Number(rec.release_year || 0)
-        if ((selectedEra === '2024-2026' || selectedEra === '2024-2025') && year < 2024) return false
-        if (selectedEra === '2020s' && (year < 2020 || year > 2023)) return false
-        if (selectedEra === '2010s' && (year < 2010 || year > 2019)) return false
-        if (selectedEra === '2000s' && (year < 2000 || year > 2009)) return false
-        if (selectedEra === '1990s' && (year < 1990 || year > 1999)) return false
+        if (
+          (selectedEra === '2024-2026' || selectedEra === '2024-2025') &&
+          year < 2024
+        )
+          return false
+        if (selectedEra === '2020s' && (year < 2020 || year > 2023))
+          return false
+        if (selectedEra === '2010s' && (year < 2010 || year > 2019))
+          return false
+        if (selectedEra === '2000s' && (year < 2000 || year > 2009))
+          return false
+        if (selectedEra === '1990s' && (year < 1990 || year > 1999))
+          return false
         if (selectedEra === 'Classics' && year >= 1990) return false
       }
 
@@ -136,7 +154,9 @@ export const MusicSearchModal = () => {
       const tagline = String(rec.tagline || '').toLowerCase()
       const overview = String(rec.overview || '').toLowerCase()
       const tracks = Array.isArray(rec.tracks)
-        ? rec.tracks.map((t: any) => String(t.title || '').toLowerCase()).join(' ')
+        ? rec.tracks
+            .map((t: any) => String(t.title || '').toLowerCase())
+            .join(' ')
         : ''
 
       // Full search corpus for comprehensive discovery
@@ -226,16 +246,16 @@ export const MusicSearchModal = () => {
 
   return (
     <div
-      className='fixed inset-0 z-90 flex items-start justify-center p-4 pt-12 md:pt-20 bg-black/80 backdrop-blur-md animate-in fade-in duration-200'
+      className='fade-in fixed inset-0 z-90 flex animate-in items-start justify-center bg-black/80 p-4 pt-12 backdrop-blur-md duration-200 md:pt-20'
       onClick={() => setSearchOpen(false)}
     >
       <div
-        className='relative w-full max-w-2xl overflow-hidden rounded-2xl border border-border bg-background shadow-2xl animate-in zoom-in-95 duration-200 flex flex-col max-h-[85vh]'
+        className='zoom-in-95 relative flex max-h-[85vh] w-full max-w-2xl animate-in flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-2xl duration-200'
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Input Bar */}
-        <div className='relative flex items-center border-b border-border/60 px-4 py-3.5'>
-          <Search className='size-5 text-muted-foreground shrink-0 mr-3' />
+        <div className='relative flex items-center border-border/60 border-b px-4 py-3.5'>
+          <Search className='mr-3 size-5 shrink-0 text-muted-foreground' />
           <input
             type='text'
             value={query}
@@ -246,25 +266,24 @@ export const MusicSearchModal = () => {
               }
             }}
             placeholder='Search 216+ songs, artists, languages, eras, or genres...'
-            autoFocus
-            className='w-full bg-transparent text-base md:text-lg font-medium text-foreground placeholder:text-muted-foreground outline-none'
+            className='w-full bg-transparent font-medium text-base text-foreground outline-none placeholder:text-muted-foreground md:text-lg'
           />
           {query && (
             <button
               onClick={() => setQuery('')}
-              className='p-1 rounded-full text-muted-foreground hover:text-foreground transition-colors mr-2 cursor-pointer'
+              className='mr-2 cursor-pointer rounded-full p-1 text-muted-foreground transition-colors hover:text-foreground'
             >
               <X className='size-4' />
             </button>
           )}
-          <kbd className='hidden sm:inline-flex items-center gap-0.5 rounded border border-border bg-muted px-2 py-0.5 text-[10px] font-mono text-muted-foreground'>
+          <kbd className='hidden items-center gap-0.5 rounded border border-border bg-muted px-2 py-0.5 font-mono text-[10px] text-muted-foreground sm:inline-flex'>
             ESC
           </kbd>
         </div>
 
         {/* Language Filter Bar */}
-        <div className='flex items-center gap-1.5 px-4 py-2 border-b border-border/40 overflow-x-auto scrollbar-none bg-muted/20'>
-          <div className='flex items-center gap-1 text-[0.7rem] font-bold text-muted-foreground uppercase tracking-wider mr-1 shrink-0'>
+        <div className='scrollbar-none flex items-center gap-1.5 overflow-x-auto border-border/40 border-b bg-muted/20 px-4 py-2'>
+          <div className='mr-1 flex shrink-0 items-center gap-1 font-bold text-[0.7rem] text-muted-foreground uppercase tracking-wider'>
             <Globe2 className='size-3.5 text-primary' />
             Lang:
           </div>
@@ -273,7 +292,7 @@ export const MusicSearchModal = () => {
               key={lang}
               onClick={() => setSelectedLang(lang)}
               className={cn(
-                'px-2.5 py-0.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer',
+                'cursor-pointer whitespace-nowrap rounded-full px-2.5 py-0.5 font-semibold text-xs transition-all',
                 selectedLang === lang
                   ? 'bg-primary text-primary-foreground shadow-sm'
                   : 'bg-muted/70 text-muted-foreground hover:bg-muted hover:text-foreground',
@@ -285,8 +304,8 @@ export const MusicSearchModal = () => {
         </div>
 
         {/* Era / Decade Filter Bar */}
-        <div className='flex items-center gap-1.5 px-4 py-2 border-b border-border/40 overflow-x-auto scrollbar-none bg-muted/10'>
-          <div className='flex items-center gap-1 text-[0.7rem] font-bold text-muted-foreground uppercase tracking-wider mr-1 shrink-0'>
+        <div className='scrollbar-none flex items-center gap-1.5 overflow-x-auto border-border/40 border-b bg-muted/10 px-4 py-2'>
+          <div className='mr-1 flex shrink-0 items-center gap-1 font-bold text-[0.7rem] text-muted-foreground uppercase tracking-wider'>
             <Calendar className='size-3.5 text-amber-500' />
             Era:
           </div>
@@ -295,9 +314,9 @@ export const MusicSearchModal = () => {
               key={era}
               onClick={() => setSelectedEra(era)}
               className={cn(
-                'px-2.5 py-0.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer',
+                'cursor-pointer whitespace-nowrap rounded-full px-2.5 py-0.5 font-semibold text-xs transition-all',
                 selectedEra === era
-                  ? 'bg-amber-500 text-black font-bold shadow-sm'
+                  ? 'bg-amber-500 font-bold text-black shadow-sm'
                   : 'bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground',
               )}
             >
@@ -307,13 +326,16 @@ export const MusicSearchModal = () => {
         </div>
 
         {/* Search Results List */}
-        <div className='overflow-y-auto p-2 divide-y divide-border/20 flex-1'>
+        <div className='flex-1 divide-y divide-border/20 overflow-y-auto p-2'>
           {filtered.length === 0 ? (
-            <div className='flex flex-col items-center justify-center py-10 px-4 text-center'>
-              <Music2 className='size-10 text-muted-foreground/50 mb-3' />
-              <p className='font-bold text-foreground text-sm'>No songs found</p>
-              <p className='text-xs text-muted-foreground mt-1 max-w-xs'>
-                Try adjusting your search query, or requesting this track to be automatically fetched and added.
+            <div className='flex flex-col items-center justify-center px-4 py-10 text-center'>
+              <Music2 className='mb-3 size-10 text-muted-foreground/50' />
+              <p className='font-bold text-foreground text-sm'>
+                No songs found
+              </p>
+              <p className='mt-1 max-w-xs text-muted-foreground text-xs'>
+                Try adjusting your search query, or requesting this track to be
+                automatically fetched and added.
               </p>
               <Button
                 variant='outline'
@@ -323,10 +345,12 @@ export const MusicSearchModal = () => {
                   setReportInitialQuery(query)
                   setReportOpen(true)
                 }}
-                className='mt-4 flex items-center gap-1.5 rounded-full border-primary/50 text-primary hover:bg-primary/10 cursor-pointer shadow-sm'
+                className='mt-4 flex cursor-pointer items-center gap-1.5 rounded-full border-primary/50 text-primary shadow-sm hover:bg-primary/10'
               >
                 <PlusCircle className='size-3.5' />
-                <span>Request &quot;{query || 'Missing Song'}&quot; to be auto-added</span>
+                <span>
+                  Request &quot;{query || 'Missing Song'}&quot; to be auto-added
+                </span>
               </Button>
             </div>
           ) : (
@@ -341,44 +365,44 @@ export const MusicSearchModal = () => {
                 <div
                   key={record.id}
                   onClick={() => handleSelectRecord(record)}
-                  className='group flex items-center justify-between p-2.5 rounded-xl hover:bg-muted/70 transition-all cursor-pointer gap-3'
+                  className='group flex cursor-pointer items-center justify-between gap-3 rounded-xl p-2.5 transition-all hover:bg-muted/70'
                 >
-                  <div className='flex items-center gap-3 min-w-0'>
+                  <div className='flex min-w-0 items-center gap-3'>
                     {/* Real Album Artwork Thumbnail */}
-                    <div className='relative size-12 shrink-0 rounded-lg overflow-hidden shadow-sm bg-neutral-900 border border-border/50'>
+                    <div className='relative size-12 shrink-0 overflow-hidden rounded-lg border border-border/50 bg-neutral-900 shadow-sm'>
                       <AlbumCover film={filmMock} />
                     </div>
 
-                    <div className='min-w-0 flex flex-col'>
+                    <div className='flex min-w-0 flex-col'>
                       <div className='flex items-center gap-2'>
-                        <p className='truncate font-bold text-sm text-foreground group-hover:text-primary transition-colors'>
+                        <p className='truncate font-bold text-foreground text-sm transition-colors group-hover:text-primary'>
                           {record.title}
                         </p>
-                        <span className='shrink-0 px-1.5 py-0.2 rounded text-[10px] font-bold bg-primary/10 text-primary'>
+                        <span className='shrink-0 rounded bg-primary/10 px-1.5 py-0.2 font-bold text-[10px] text-primary'>
                           {record.release_year}
                         </span>
                         {record.language && (
-                          <span className='hidden sm:inline-block shrink-0 px-1.5 py-0.2 rounded text-[10px] font-semibold bg-muted text-muted-foreground'>
+                          <span className='hidden shrink-0 rounded bg-muted px-1.5 py-0.2 font-semibold text-[10px] text-muted-foreground sm:inline-block'>
                             {record.language}
                           </span>
                         )}
                       </div>
-                      <p className='truncate text-xs font-medium text-muted-foreground'>
+                      <p className='truncate font-medium text-muted-foreground text-xs'>
                         {record.artist}
                       </p>
-                      <p className='truncate text-[11px] text-muted-foreground/70 hidden sm:block'>
+                      <p className='hidden truncate text-[11px] text-muted-foreground/70 sm:block'>
                         {record.genres}
                       </p>
                     </div>
                   </div>
 
                   {/* Actions: Stream or View */}
-                  <div className='flex items-center gap-1.5 shrink-0'>
+                  <div className='flex shrink-0 items-center gap-1.5'>
                     <Button
                       size='sm'
                       variant='ghost'
                       onClick={(e) => handlePlayDirect(e, record)}
-                      className='size-8 rounded-full p-0 bg-red-600/10 hover:bg-red-600 hover:text-white text-red-600 transition-colors cursor-pointer'
+                      className='size-8 cursor-pointer rounded-full bg-red-600/10 p-0 text-red-600 transition-colors hover:bg-red-600 hover:text-white'
                       title='Stream on YouTube'
                     >
                       <Play className='size-3.5 fill-current' />
@@ -388,7 +412,7 @@ export const MusicSearchModal = () => {
                       size='sm'
                       variant='outline'
                       onClick={() => handleSelectRecord(record)}
-                      className='hidden sm:inline-flex text-xs h-8 px-2.5 rounded-lg cursor-pointer'
+                      className='hidden h-8 cursor-pointer rounded-lg px-2.5 text-xs sm:inline-flex'
                     >
                       3D Focus
                     </Button>
@@ -400,10 +424,12 @@ export const MusicSearchModal = () => {
         </div>
 
         {/* Modal Footer */}
-        <div className='flex items-center justify-between px-4 py-2.5 border-t border-border/40 text-[11px] text-muted-foreground bg-muted/30'>
+        <div className='flex items-center justify-between border-border/40 border-t bg-muted/30 px-4 py-2.5 text-[11px] text-muted-foreground'>
           <div className='flex items-center gap-1.5'>
             <Sparkles className='size-3.5 text-primary' />
-            <span>Showing {filtered.length} of {localRecords.length} songs</span>
+            <span>
+              Showing {filtered.length} of {localRecords.length} songs
+            </span>
           </div>
           <div className='flex items-center gap-2'>
             <span>Click any song to focus 3D Voronoi sphere</span>

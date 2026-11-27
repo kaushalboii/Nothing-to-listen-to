@@ -35,9 +35,12 @@ export class Loader extends CustomEventTarget {
   }
 
   preloadFirstMediaLayerAllGridVersions(onLoad) {
-    const count = this.config.compressedFormatsSupported === false
-      ? 1 // on mobile, version 0 has the full JPEG atlas
-      : this.config.versions.filter(({ type }) => !type || type === 'compressed-grid').length
+    const count =
+      this.config.compressedFormatsSupported === false
+        ? 1 // on mobile, version 0 has the full JPEG atlas
+        : this.config.versions.filter(
+            ({ type }) => !type || type === 'compressed-grid',
+          ).length
     let loaded = 0
     const onLoadLayer = () => {
       loaded++
@@ -46,7 +49,10 @@ export class Loader extends CustomEventTarget {
         onLoad?.()
       }
     }
-    const maxVersions = this.config.compressedFormatsSupported === false ? 1 : this.config.versions.length
+    const maxVersions =
+      this.config.compressedFormatsSupported === false
+        ? 1
+        : this.config.versions.length
     for (let i = 0; i < maxVersions; i++) {
       const type = this.config.versions[i].type
       if (type && type !== 'compressed-grid') continue
@@ -150,7 +156,8 @@ export class Loader extends CustomEventTarget {
         const arrayBuffer = await response.arrayBuffer()
 
         const idCheck = [
-          0xab, 0x4b, 0x54, 0x58, 0x20, 0x31, 0x31, 0xbb, 0x0d, 0x0a, 0x1a, 0x0a,
+          0xab, 0x4b, 0x54, 0x58, 0x20, 0x31, 0x31, 0xbb, 0x0d, 0x0a, 0x1a,
+          0x0a,
         ]
         const id = new Uint8Array(arrayBuffer, 0, 12)
         for (let i = 0; i < id.length; i++)
@@ -207,11 +214,14 @@ export class Loader extends CustomEventTarget {
             img.crossOrigin = 'anonymous'
             img.onload = async () => {
               if ('decode' in img) {
-                try { await img.decode() } catch (e) {}
+                try {
+                  await img.decode()
+                } catch (e) {}
               }
               resolve(img)
             }
-            img.onerror = () => reject(new Error(`Failed to load image: ${url}`))
+            img.onerror = () =>
+              reject(new Error(`Failed to load image: ${url}`))
             img.src = url
           })
         }
@@ -231,7 +241,10 @@ export class Loader extends CustomEventTarget {
 
       this.sharedLoadedMediaVersionLayersData[versionIndex].data[layerIndex] = 2
     } catch (err) {
-      console.warn(`[Voroforce] Failed to load media layer ${versionIndex}:${layerIndex}:`, err)
+      console.warn(
+        `[Voroforce] Failed to load media layer ${versionIndex}:${layerIndex}:`,
+        err,
+      )
       this.sharedLoadedMediaVersionLayersData[versionIndex].data[layerIndex] = 3
     } finally {
       onLoad?.()

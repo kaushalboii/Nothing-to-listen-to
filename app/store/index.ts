@@ -8,7 +8,11 @@ import { type PlayerSlice, createPlayerSlice } from './player-slice'
 import { type UiSlice, createUiSlice } from './ui-slice'
 import { type VoroforceSlice, createEngineSlice } from './voroforce-slice'
 
-export type StoreState = UiSlice & VoroforceSlice & FilmDataSlice & PlayerSlice & JamSlice
+export type StoreState = UiSlice &
+  VoroforceSlice &
+  FilmDataSlice &
+  PlayerSlice &
+  JamSlice
 
 export const store = create(
   subscribeWithSelector<StoreState>((...a) => ({

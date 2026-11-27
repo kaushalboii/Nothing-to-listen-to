@@ -38,7 +38,8 @@ export const createJamSlice: StateCreator<
   jamService.setCallbacks({
     getCurrentTrackState: () => {
       const state = get()
-      const audioEl = typeof document !== 'undefined' ? document.querySelector('audio') : null
+      const audioEl =
+        typeof document !== 'undefined' ? document.querySelector('audio') : null
       const currentTime = audioEl ? audioEl.currentTime : 0
       const isPlaying = audioEl ? !audioEl.paused : false
       return {
@@ -64,7 +65,10 @@ export const createJamSlice: StateCreator<
       const state = get()
       // If host has an active track when partner joins, broadcast it immediately so both are in sync
       if (state.jamRole === 'host' && state.activeTrack) {
-        const audioEl = typeof document !== 'undefined' ? document.querySelector('audio') : null
+        const audioEl =
+          typeof document !== 'undefined'
+            ? document.querySelector('audio')
+            : null
         const currentTime = audioEl ? audioEl.currentTime : 0
         const isPlaying = audioEl ? !audioEl.paused : false
         jamService.broadcastTrack(

@@ -31,11 +31,7 @@ export const initVoroforce = ({
     } else {
       return
     }
-  } else if (
-    !force &&
-    state.cellLimit &&
-    state.cellLimit > CELL_LIMIT.xs
-  ) {
+  } else if (!force && state.cellLimit && state.cellLimit > CELL_LIMIT.xs) {
     const isMobile =
       state.ua?.getDevice()?.is('mobile') ||
       state.deviceClass === DEVICE_CLASS.mobile ||

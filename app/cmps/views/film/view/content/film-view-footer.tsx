@@ -38,11 +38,11 @@ export const FilmViewFooter = ({
   return (
     <div
       className={cn(
-        'relative flex w-full flex-wrap items-center justify-between gap-3 px-4 py-3 md:px-6 md:py-3.5 bg-background/95 backdrop-blur-2xl border-t border-border/60 shadow-2xl rounded-b-2xl',
+        'relative flex w-full flex-wrap items-center justify-between gap-3 rounded-b-2xl border-border/60 border-t bg-background/95 px-4 py-3 shadow-2xl backdrop-blur-2xl md:px-6 md:py-3.5',
         className,
       )}
     >
-      <div className='pointer-events-auto flex flex-1 flex-wrap items-center gap-2 min-w-0'>
+      <div className='pointer-events-auto flex min-w-0 flex-1 flex-wrap items-center gap-2'>
         <StdLinks film={film} />
         <CustomLinks film={film} />
         <TooltipProvider delayDuration={0}>
@@ -50,7 +50,7 @@ export const FilmViewFooter = ({
             <TooltipTrigger asChild>
               <Button
                 size='icon'
-                className='hidden cursor-pointer rounded-lg border-foreground/40 hover:border-foreground md:inline-flex md:backdrop-blur-lg size-7'
+                className='hidden size-7 cursor-pointer rounded-lg border-foreground/40 hover:border-foreground md:inline-flex md:backdrop-blur-lg'
                 variant='outline'
                 onClick={() => setAddCustomLinkTypeOpen(direction)}
               >
@@ -63,7 +63,7 @@ export const FilmViewFooter = ({
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className='pointer-events-auto flex items-center gap-2 shrink-0'>
+      <div className='pointer-events-auto flex shrink-0 items-center gap-2'>
         <TooltipProvider delayDuration={0}>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -95,9 +95,13 @@ export const FilmViewFooter = ({
                         : undefined,
                   })
                 }}
-                className='pointer-events-auto hidden rounded-lg border-foreground/40 hover:border-foreground backdrop-blur-lg md:inline-flex size-7'
+                className='pointer-events-auto hidden size-7 rounded-lg border-foreground/40 backdrop-blur-lg hover:border-foreground md:inline-flex'
               >
-                {isFavorite ? <HeartOff className='size-3.5' /> : <HeartPlus className='size-3.5' />}
+                {isFavorite ? (
+                  <HeartOff className='size-3.5' />
+                ) : (
+                  <HeartPlus className='size-3.5' />
+                )}
               </Button>
             </TooltipTrigger>
             <TooltipContent>
@@ -121,7 +125,7 @@ export const FilmViewFooter = ({
               query: `${film.artist} ${firstTitle}`,
             })
           }}
-          className='pointer-events-auto rounded-lg bg-red-600 hover:bg-red-700 text-white px-3.5 h-8 text-xs font-bold flex items-center gap-1.5 shadow-md cursor-pointer'
+          className='pointer-events-auto flex h-8 cursor-pointer items-center gap-1.5 rounded-lg bg-red-600 px-3.5 font-bold text-white text-xs shadow-md hover:bg-red-700'
         >
           <Play className='size-3.5 fill-white' /> Play
         </Button>
@@ -130,7 +134,7 @@ export const FilmViewFooter = ({
           variant='outline'
           size='sm'
           onClick={handleClose}
-          className='pointer-events-auto rounded-lg border-foreground/40 hover:border-foreground backdrop-blur-lg px-4 h-8 text-xs font-semibold'
+          className='pointer-events-auto h-8 rounded-lg border-foreground/40 px-4 font-semibold text-xs backdrop-blur-lg hover:border-foreground'
         >
           Close
         </Button>

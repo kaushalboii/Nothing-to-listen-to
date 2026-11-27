@@ -56,7 +56,10 @@ export class CompressedMediaGridArrayTexture extends Texture {
         )
         allocated = true
       } catch (e) {
-        console.warn('[CompressedMediaGridArrayTexture] texStorage3D failed, trying texImage3D:', e)
+        console.warn(
+          '[CompressedMediaGridArrayTexture] texStorage3D failed, trying texImage3D:',
+          e,
+        )
       }
       if (!allocated) {
         try {
@@ -73,7 +76,10 @@ export class CompressedMediaGridArrayTexture extends Texture {
             null,
           )
         } catch (e) {
-          console.error('[CompressedMediaGridArrayTexture] Texture allocation failed:', e)
+          console.error(
+            '[CompressedMediaGridArrayTexture] Texture allocation failed:',
+            e,
+          )
         }
       }
       return
@@ -232,7 +238,10 @@ export class CompressedMediaGridArrayTexture extends Texture {
 
         let success = false
         try {
-          if (typeof ImageBitmap !== 'undefined' && bytes instanceof ImageBitmap) {
+          if (
+            typeof ImageBitmap !== 'undefined' &&
+            bytes instanceof ImageBitmap
+          ) {
             gl.texSubImage3D(
               gl.TEXTURE_2D_ARRAY,
               0,
@@ -251,7 +260,10 @@ export class CompressedMediaGridArrayTexture extends Texture {
             }
           }
         } catch (err) {
-          console.warn('[CompressedMediaGridArrayTexture] Direct ImageBitmap upload failed:', err)
+          console.warn(
+            '[CompressedMediaGridArrayTexture] Direct ImageBitmap upload failed:',
+            err,
+          )
         }
 
         if (!success) {
@@ -275,9 +287,14 @@ export class CompressedMediaGridArrayTexture extends Texture {
               gl.UNSIGNED_BYTE,
               new Uint8Array(imgData.data.buffer),
             )
-            console.log('[CompressedMediaGridArrayTexture] Uploaded via canvas pixel buffer')
+            console.log(
+              '[CompressedMediaGridArrayTexture] Uploaded via canvas pixel buffer',
+            )
           } catch (e2) {
-            console.error('[CompressedMediaGridArrayTexture] All upload methods failed:', e2)
+            console.error(
+              '[CompressedMediaGridArrayTexture] All upload methods failed:',
+              e2,
+            )
           }
         }
       }

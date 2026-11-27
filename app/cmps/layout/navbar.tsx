@@ -1,4 +1,12 @@
-import { Disc3, GithubIcon, Heart, Info, Radio, Search, Settings } from 'lucide-react'
+import {
+  Disc3,
+  GithubIcon,
+  Heart,
+  Info,
+  Radio,
+  Search,
+  Settings,
+} from 'lucide-react'
 
 import { useShallowState } from '@/store'
 import config from '../../config'
@@ -53,140 +61,143 @@ export const Navbar = () => {
 
   return (
     <div className='pointer-events-none fixed inset-x-0 bottom-0 z-10 flex w-full flex-row items-center justify-between gap-1 p-3 md:top-0 md:bottom-auto md:z-60 md:px-9 md:py-9'>
-      <div className='pointer-events-auto flex items-center gap-2.5 select-none'>
-        <div className='flex size-7 lg:size-8 items-center justify-center rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-500 shadow-sm'>
+      <div className='pointer-events-auto flex select-none items-center gap-2.5'>
+        <div className='flex size-7 items-center justify-center rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-500 shadow-sm lg:size-8'>
           <Disc3 className='size-4 animate-[spin_8s_linear_infinite]' />
         </div>
-        <span className='font-black text-xs md:text-sm tracking-tight text-foreground/90 hidden sm:inline-block'>
+        <span className='hidden font-black text-foreground/90 text-xs tracking-tight sm:inline-block md:text-sm'>
           Nothing to listen to
         </span>
       </div>
       <div className='flex flex-row items-center gap-1.5'>
-      <Button
-        variant='ghost'
-        size='icon'
-        onClick={toggleSearchOpen}
-        title='Search songs (Cmd+K)'
-        className={cn(buttonClassnames, {
-          'border border-foreground bg-primary/20': searchOpen,
-        })}
-      >
-        <Search />
-      </Button>
-
-      {/* Listen Together (Jam) Button */}
-      <Button
-        variant='ghost'
-        size='icon'
-        onClick={toggleJamModalOpen}
-        title={
-          isJamConnected
-            ? `In Jam Session (${jamRoomCode}) - 2/2 Synced`
-            : isJamReconnecting
-              ? `Reconnecting to Jam Session (${jamRoomCode})...`
-              : 'Listen Together with a Friend (Jam)'
-        }
-        className={cn(buttonClassnames, 'relative', {
-          'border border-emerald-500 bg-emerald-500/20 text-emerald-400': isJamConnected,
-          'border border-amber-500/70 bg-amber-500/10 text-amber-500':
-            (isJamConnecting || isJamReconnecting) && !isJamConnected,
-          'border border-foreground': jamModalOpen && !isJamConnected,
-        })}
-      >
-        <Radio className={cn(isJamConnected && 'animate-pulse text-emerald-400')} />
-        {isJamConnected && (
-          <span className='absolute -top-0.5 -right-0.5 flex size-2'>
-            <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75' />
-            <span className='relative inline-flex size-2 rounded-full bg-emerald-500' />
-          </span>
-        )}
-        {(isJamConnecting || isJamReconnecting) && !isJamConnected && (
-          <span className='absolute -top-0.5 -right-0.5 flex size-2'>
-            <span className='relative inline-flex size-2 rounded-full bg-amber-500 animate-pulse' />
-          </span>
-        )}
-      </Button>
-
-      <Button
-        variant='ghost'
-        size='icon'
-        onClick={toggleAboutOpen}
-        onPointerDown={(event) => {
-          if (aboutOpen) {
-            event.preventDefault()
-            event.stopPropagation()
-          }
-        }}
-        className={cn(buttonClassnames, {
-          'border border-foreground': aboutOpen,
-        })}
-      >
-        <Info />
-      </Button>
-      <div className='flex flex-row gap-1'>
         <Button
           variant='ghost'
           size='icon'
-          onClick={toggleSettingsOpen}
+          onClick={toggleSearchOpen}
+          title='Search songs (Cmd+K)'
+          className={cn(buttonClassnames, {
+            'border border-foreground bg-primary/20': searchOpen,
+          })}
+        >
+          <Search />
+        </Button>
+
+        {/* Listen Together (Jam) Button */}
+        <Button
+          variant='ghost'
+          size='icon'
+          onClick={toggleJamModalOpen}
+          title={
+            isJamConnected
+              ? `In Jam Session (${jamRoomCode}) - 2/2 Synced`
+              : isJamReconnecting
+                ? `Reconnecting to Jam Session (${jamRoomCode})...`
+                : 'Listen Together with a Friend (Jam)'
+          }
+          className={cn(buttonClassnames, 'relative', {
+            'border border-emerald-500 bg-emerald-500/20 text-emerald-400':
+              isJamConnected,
+            'border border-amber-500/70 bg-amber-500/10 text-amber-500':
+              (isJamConnecting || isJamReconnecting) && !isJamConnected,
+            'border border-foreground': jamModalOpen && !isJamConnected,
+          })}
+        >
+          <Radio
+            className={cn(isJamConnected && 'animate-pulse text-emerald-400')}
+          />
+          {isJamConnected && (
+            <span className='-top-0.5 -right-0.5 absolute flex size-2'>
+              <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75' />
+              <span className='relative inline-flex size-2 rounded-full bg-emerald-500' />
+            </span>
+          )}
+          {(isJamConnecting || isJamReconnecting) && !isJamConnected && (
+            <span className='-top-0.5 -right-0.5 absolute flex size-2'>
+              <span className='relative inline-flex size-2 animate-pulse rounded-full bg-amber-500' />
+            </span>
+          )}
+        </Button>
+
+        <Button
+          variant='ghost'
+          size='icon'
+          onClick={toggleAboutOpen}
           onPointerDown={(event) => {
-            if (settingsOpen) {
+            if (aboutOpen) {
               event.preventDefault()
               event.stopPropagation()
             }
           }}
           className={cn(buttonClassnames, {
-            'border border-foreground': settingsOpen,
+            'border border-foreground': aboutOpen,
           })}
         >
-          <Settings />
+          <Info />
         </Button>
-        {hasFavorites && (
+        <div className='flex flex-row gap-1'>
           <Button
             variant='ghost'
             size='icon'
-            onClick={toggleFavoritesOpen}
+            onClick={toggleSettingsOpen}
             onPointerDown={(event) => {
-              if (favoritesOpen) {
+              if (settingsOpen) {
                 event.preventDefault()
                 event.stopPropagation()
               }
             }}
             className={cn(buttonClassnames, {
-              'border border-foreground': favoritesOpen,
+              'border border-foreground': settingsOpen,
             })}
           >
-            <Heart />
+            <Settings />
           </Button>
-        )}
-      </div>
+          {hasFavorites && (
+            <Button
+              variant='ghost'
+              size='icon'
+              onClick={toggleFavoritesOpen}
+              onPointerDown={(event) => {
+                if (favoritesOpen) {
+                  event.preventDefault()
+                  event.stopPropagation()
+                }
+              }}
+              className={cn(buttonClassnames, {
+                'border border-foreground': favoritesOpen,
+              })}
+            >
+              <Heart />
+            </Button>
+          )}
+        </div>
 
-      <ThemeToggle
-        className={cn(buttonClassnames, 'hidden md:inline-flex', {
-          'md:hidden': !canChangeTheme,
-        })}
-        onPointerDown={(event) => {
-          event.preventDefault()
-          event.stopPropagation()
-        }}
-      />
-      <Button
-        variant='ghost'
-        size='icon'
-        onClick={toggleSettingsOpen}
-        onPointerDown={(event) => {
-          event.preventDefault()
-          event.stopPropagation()
-        }}
-        className={cn(buttonClassnames, 'hidden md:inline-flex')}
-      >
-        <a
-          href={config.sourceCodeUrl}
-          target='_blank'
-          rel='noreferrer noopener noreferer'
+        <ThemeToggle
+          className={cn(buttonClassnames, 'hidden md:inline-flex', {
+            'md:hidden': !canChangeTheme,
+          })}
+          onPointerDown={(event) => {
+            event.preventDefault()
+            event.stopPropagation()
+          }}
+        />
+        <Button
+          variant='ghost'
+          size='icon'
+          onClick={toggleSettingsOpen}
+          onPointerDown={(event) => {
+            event.preventDefault()
+            event.stopPropagation()
+          }}
+          className={cn(buttonClassnames, 'hidden md:inline-flex')}
         >
-          <GithubIcon />
-        </a>
-      </Button>
+          <a
+            href={config.sourceCodeUrl}
+            target='_blank'
+            rel='noreferrer noopener noreferer'
+          >
+            <GithubIcon />
+          </a>
+        </Button>
       </div>
     </div>
   )

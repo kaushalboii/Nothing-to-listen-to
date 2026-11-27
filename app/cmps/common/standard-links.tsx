@@ -20,7 +20,8 @@ export const StdLinks = ({
     {
       name: 'Spotify',
       url: `${config.spotifySearchUrl}${query}`,
-      color: 'hover:border-emerald-500 hover:text-emerald-500 text-emerald-500/90',
+      color:
+        'hover:border-emerald-500 hover:text-emerald-500 text-emerald-500/90',
     },
     {
       name: 'Apple Music',
@@ -68,7 +69,7 @@ export const StdLinks = ({
           variant='outline'
           size='sm'
           className={cn(
-            'rounded-full h-6 px-2.5 text-[11px] border-border/80 font-semibold transition-colors backdrop-blur-md',
+            'h-6 rounded-full border-border/80 px-2.5 font-semibold text-[11px] backdrop-blur-md transition-colors',
             p.color,
             buttonClassName,
           )}

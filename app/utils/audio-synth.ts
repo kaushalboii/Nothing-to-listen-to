@@ -21,9 +21,27 @@ function getAudioContext(): AudioContext {
 
 // Frequencies for musical notes (C3 to B5)
 const NOTE_FREQS: Record<string, number> = {
-  C3: 130.81, D3: 146.83, E3: 164.81, F3: 174.61, G3: 196.0, A3: 220.0, B3: 246.94,
-  C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.0, A4: 440.0, B4: 493.88,
-  C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99, A5: 880.0, B5: 987.77,
+  C3: 130.81,
+  D3: 146.83,
+  E3: 164.81,
+  F3: 174.61,
+  G3: 196.0,
+  A3: 220.0,
+  B3: 246.94,
+  C4: 261.63,
+  D4: 293.66,
+  E4: 329.63,
+  F4: 349.23,
+  G4: 392.0,
+  A4: 440.0,
+  B4: 493.88,
+  C5: 523.25,
+  D5: 587.33,
+  E5: 659.25,
+  F5: 698.46,
+  G5: 783.99,
+  A5: 880.0,
+  B5: 987.77,
 }
 
 // Musical chord progressions for different genre vibes
@@ -57,7 +75,11 @@ export const playAlbumPreview = (
     masterGain.connect(ctx.destination)
 
     // Play a recurring arpeggio sequence
-    const playNote = (freq: number, duration: number, type: OscillatorType = 'sine') => {
+    const playNote = (
+      freq: number,
+      duration: number,
+      type: OscillatorType = 'sine',
+    ) => {
       if (!isPlaying) return
       const osc = ctx.createOscillator()
       const gain = ctx.createGain()
@@ -88,7 +110,7 @@ export const playAlbumPreview = (
     const intervalTime = 260
     playbackInterval = setInterval(() => {
       if (!isPlaying) return
-      const noteIdx = (step % scale.length)
+      const noteIdx = step % scale.length
       const noteName = scale[noteIdx]
       const freq = NOTE_FREQS[noteName] ?? 440
 
@@ -99,7 +121,7 @@ export const playAlbumPreview = (
       }
 
       // Arpeggio melody note
-      playNote(freq, 0.45, (albumId % 2 === 0 ? 'sine' : 'triangle'))
+      playNote(freq, 0.45, albumId % 2 === 0 ? 'sine' : 'triangle')
       onTick?.(step)
       step++
     }, intervalTime)
@@ -126,4 +148,3 @@ export const stopAlbumPreview = () => {
 }
 
 export const isAlbumPreviewPlaying = () => isPlaying
-

@@ -103,6 +103,7 @@ export function generateCenterOutwardSubgridsAndAssignCellIds(
   // Track visited subgrid positions to create spiral pattern
   const visited = new Set()
   visited.add('0,0') // Mark center as visited
+  const assignedCells = new Set()
 
   let currentCellId = 0
   let currentSubgrid = 0
@@ -124,16 +125,15 @@ export function generateCenterOutwardSubgridsAndAssignCellIds(
         if (row >= 0 && row < totalRows && col >= 0 && col < totalCols) {
           const cellIndex = row * totalCols + col
           const cell = cells[cellIndex]
-          if (cell) {
+          if (cell && !assignedCells.has(cellIndex)) {
+            assignedCells.add(cellIndex)
             result.push([row, col])
 
             currentSubgrid = Math.floor(currentCellId / SUBGRID_SIZE)
             currentSubgridIndex = Math.floor(currentCellId % SUBGRID_SIZE)
-            if (!cell.id) {
-              cell.id = currentCellId
-              cell.subgrid = currentSubgrid // for json and media v2 layers
-              cell.subgridIndex = currentSubgridIndex
-            }
+            cell.id = currentCellId
+            cell.subgrid = currentSubgrid // for json and media v2 layers
+            cell.subgridIndex = currentSubgridIndex
 
             if (cell.subgrid < autoTargetMediaVersion2SubgridCount) {
               cell.targetMediaVersion = 2
@@ -150,8 +150,6 @@ export function generateCenterOutwardSubgridsAndAssignCellIds(
         }
       }
     }
-
-    // currentBatch++
   }
 
   // Add center subgrid first
@@ -170,8 +168,19 @@ export function generateCenterOutwardSubgridsAndAssignCellIds(
   let stepsTaken = 0
   let directionChanges = 0
 
-  // Continue until we've used all elements
+  const maxSpiralGridRow = Math.ceil(totalRows / SUBGRID_ROWS) + 3
+  const maxSpiralGridCol = Math.ceil(totalCols / SUBGRID_COLS) + 3
+
+  // Continue until we've used all elements or exceeded grid bounds
   while (remainingElements > 0 && result.length < elementCount) {
+    // If the spiral has completely expanded past the grid boundary, break out safely
+    if (
+      Math.abs(currentGridRow) > maxSpiralGridRow &&
+      Math.abs(currentGridCol) > maxSpiralGridCol
+    ) {
+      break
+    }
+
     // Move in current direction
     const [rowDelta, colDelta] = dirMovements[direction]
     currentGridRow += rowDelta
@@ -194,6 +203,32 @@ export function generateCenterOutwardSubgridsAndAssignCellIds(
       // Every two direction changes, increase the steps
       if (directionChanges % 2 === 0) {
         stepsInCurrentDirection++
+      }
+    }
+  }
+
+  // Ensure 100% of cells have a valid, synchronized cell.id and subgridIndex
+  for (let i = 0; i < cells.length; i++) {
+    if (!assignedCells.has(i)) {
+      assignedCells.add(i)
+      const cell = cells[i]
+      if (cell) {
+        currentSubgrid = Math.floor(currentCellId / SUBGRID_SIZE)
+        currentSubgridIndex = Math.floor(currentCellId % SUBGRID_SIZE)
+        cell.id = currentCellId
+        cell.subgrid = currentSubgrid
+        cell.subgridIndex = currentSubgridIndex
+
+        if (cell.subgrid < autoTargetMediaVersion2SubgridCount) {
+          cell.targetMediaVersion = 2
+        } else if (cell.subgrid < autoTargetMediaVersion1SubgridCount) {
+          cell.targetMediaVersion = 1
+        }
+
+        currentCellId++
+        if (currentCellId > SUBGRID_MAX_SUPPORTED_CAPACITY - 1) {
+          currentCellId = 0
+        }
       }
     }
   }

@@ -354,6 +354,67 @@ def fetch_apple_feed(feed_url, default_lang="English"):
             continue
     return songs
 
+def fetch_saavn_new_releases():
+    songs = []
+    # 1. New Trending Albums across Indian languages
+    url = "https://www.jiosaavn.com/api.php?__call=content.getAlbums&_format=json&_marker=0&api_version=4&ctx=web6dot0&n=50&p=1"
+    data = fetch_json(url)
+    if data and isinstance(data, dict):
+        albums = data.get("data", [])
+        for alb in albums:
+            try:
+                title = html.unescape(alb.get("title", "")).strip()
+                artist = html.unescape(alb.get("music", "") or alb.get("artist", "") or alb.get("more_info", {}).get("music", "")).strip()
+                img = alb.get("image", "")
+                if img:
+                    img = img.replace("150x150", "500x500").replace("50x50", "500x500")
+                lang = alb.get("language", "Tamil").capitalize()
+                year = int(alb.get("year", datetime.now().year))
+                if title and artist:
+                    songs.append({
+                        "title": title,
+                        "artist": artist,
+                        "category": f"{lang} Music",
+                        "year": year,
+                        "lang": lang,
+                        "artwork": img,
+                        "movie_hint": title,
+                    })
+            except Exception:
+                continue
+
+    # 2. Charts (Top Songs from JioSaavn)
+    chart_url = "https://www.jiosaavn.com/api.php?__call=webapi.get&type=charts&_format=json&api_version=4&ctx=web6dot0"
+    charts_data = fetch_json(chart_url)
+    if charts_data and isinstance(charts_data, list):
+        for ch in charts_data[:5]:
+            ch_id = ch.get("listid") or ch.get("id")
+            if ch_id:
+                list_url = f"https://www.jiosaavn.com/api.php?__call=playlist.getDetails&listid={ch_id}&_format=json&api_version=4&ctx=web6dot0"
+                pl_data = fetch_json(list_url)
+                if pl_data and "list" in pl_data:
+                    for s in pl_data.get("list", [])[:15]:
+                        try:
+                            stitle = html.unescape(s.get("title", "")).strip()
+                            sartist = html.unescape(s.get("more_info", {}).get("artistMap", {}).get("primary_artists", [{}])[0].get("name", "") or s.get("music", "")).strip()
+                            simg = s.get("image", "").replace("150x150", "500x500")
+                            slang = s.get("language", "Tamil").capitalize()
+                            syear = int(s.get("year", datetime.now().year))
+                            if stitle and sartist:
+                                songs.append({
+                                    "title": stitle,
+                                    "artist": sartist,
+                                    "category": f"{slang} Music",
+                                    "year": syear,
+                                    "lang": slang,
+                                    "artwork": simg,
+                                    "movie_hint": s.get("more_info", {}).get("album", ""),
+                                })
+                        except Exception:
+                            continue
+    log(f"Fetched {len(songs)} newly published songs and albums from JioSaavn direct feeds.")
+    return songs
+
 def search_youtube_exact(song_title, artist, movie_hint=""):
     clean_title = re.sub(r"[\(\[\{][^\)\]\}]*[\)\]\}]", "", song_title).strip()
     clean_title = re.sub(r"\b(from|official|video|audio|lyric|lyrical|song)\b.*$", "", clean_title, flags=re.IGNORECASE).strip(" -–—:|")
@@ -653,12 +714,16 @@ def main():
 
     log(f"Discovered & Verified {len(verified_yt_songs)} songs as legitimate releases listed on official streaming platforms!")
 
-    # 4. Official Apple Music / iTunes Charts Ingestion
+    # 4. Official Streaming Platform & iTunes Charts Ingestion
     chart_endpoints = [
-        ("India (Tamil, Telugu, Hindi, Punjabi, Malayalam)", "https://itunes.apple.com/in/rss/topsongs/limit=75/json", "All-India"),
-        ("Global & US (Pop, Rap, Rock)", "https://itunes.apple.com/us/rss/topsongs/limit=50/json", "English"),
-        ("Latin America (Reggaeton, Latin Pop)", "https://itunes.apple.com/mx/rss/topsongs/limit=25/json", "Latin"),
-        ("Japan (J-Pop, Anime)", "https://itunes.apple.com/jp/rss/topsongs/limit=25/json", "Japanese"),
+        ("India Top Songs (Tamil, Telugu, Hindi, Punjabi, Malayalam)", "https://itunes.apple.com/in/rss/topsongs/limit=100/json", "All-India"),
+        ("India Top Albums & Soundtracks", "https://itunes.apple.com/in/rss/topalbums/limit=100/json", "All-India"),
+        ("Global & US Top Songs (Pop, Rap, Rock)", "https://itunes.apple.com/us/rss/topsongs/limit=100/json", "English"),
+        ("Global & US Top Albums", "https://itunes.apple.com/us/rss/topalbums/limit=50/json", "English"),
+        ("Latin America Top Songs (Reggaeton, Latin Pop)", "https://itunes.apple.com/mx/rss/topsongs/limit=50/json", "Latin"),
+        ("Japan (J-Pop, Anime)", "https://itunes.apple.com/jp/rss/topsongs/limit=50/json", "Japanese"),
+        ("Korea (K-Pop)", "https://itunes.apple.com/kr/rss/topsongs/limit=50/json", "K-Pop"),
+        ("UK Top Songs", "https://itunes.apple.com/gb/rss/topsongs/limit=50/json", "English"),
     ]
 
     live_chart_songs = []
@@ -668,10 +733,15 @@ def main():
         log(f" -> Ingested {len(fetched)} songs from {name}")
         live_chart_songs.extend(fetched)
 
-    # 5. Merge candidates: Priority hits + Verified YouTube discoveries + Official chart releases
-    all_incoming = priority_verified_songs + verified_yt_songs + live_chart_songs
+    # 4b. JioSaavn Daily Direct Releases & Trending Ingestion
+    saavn_songs = fetch_saavn_new_releases()
+
+    # 5. Merge candidates: Priority hits + Verified YouTube discoveries + JioSaavn new releases + Official chart releases
+    all_incoming = priority_verified_songs + verified_yt_songs + saavn_songs + live_chart_songs
     candidate_songs = []
     seen_candidates = set()
+
+    max_daily_candidates = max(216 - len(requested_records), 200)
 
     for s in all_incoming:
         title = s["title"].strip()
@@ -682,7 +752,7 @@ def main():
         seen_candidates.add(k)
         seen_candidates.add(title.lower())
         candidate_songs.append(s)
-        if len(candidate_songs) >= 95:  # Top 95 freshest daily releases
+        if len(candidate_songs) >= max_daily_candidates:
             break
 
     log(f"Selected {len(candidate_songs)} top verified multi-platform tracks.")

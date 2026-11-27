@@ -11,7 +11,10 @@ const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000 // 7 days
 
 const memoryStreamCache = new Map<string, string | null>()
 
-function getPersistentCache(): Record<string, { url: string; timestamp: number }> {
+function getPersistentCache(): Record<
+  string,
+  { url: string; timestamp: number }
+> {
   if (typeof localStorage === 'undefined') return {}
   try {
     const raw = localStorage.getItem(PERSISTENT_STREAM_CACHE_KEY)
@@ -51,7 +54,10 @@ function cleanText(value: string): string {
     .replace(/&amp;/g, '&')
     .replace(/\s*\([^)]*\)/g, ' ')
     .replace(/\s*\[[^\]]*\]/g, ' ')
-    .replace(/\s*[-–|]\s*(telugu|tamil|hindi|malayalam|kannada|punjabi|official).*$/i, '')
+    .replace(
+      /\s*[-–|]\s*(telugu|tamil|hindi|malayalam|kannada|punjabi|official).*$/i,
+      '',
+    )
     .replace(/\s+/g, ' ')
     .trim()
 }
@@ -117,7 +123,11 @@ function pickBestAudioUrl(
     }
 
     // Generic single-word track titles like "Intro" require artist confirmation
-    if (titleTokens.length === 1 && artistTokens.length > 0 && artistOverlap === 0) {
+    if (
+      titleTokens.length === 1 &&
+      artistTokens.length > 0 &&
+      artistOverlap === 0
+    ) {
       continue
     }
 
@@ -142,13 +152,16 @@ function pickBestAudioUrl(
     }
 
     // Require strong match if short track or missing artist
-    const minRequiredScore = artistTokens.length > 0 && artistOverlap === 0 ? 4 : 2
+    const minRequiredScore =
+      artistTokens.length > 0 && artistOverlap === 0 ? 4 : 2
     if (score < minRequiredScore) continue
 
     // Quality selection:
     // If preferLowData: prefer 160kbps for 50% data savings on 2G/3G/spotty networks.
     // Otherwise: prefer 320kbps for pristine lossless fidelity.
-    let bestDownload: { quality?: string; url?: string; link?: string } | undefined
+    let bestDownload:
+      | { quality?: string; url?: string; link?: string }
+      | undefined
     if (preferLowData) {
       bestDownload =
         downloads.find((d) => d.quality === '160kbps') ??
@@ -228,9 +241,7 @@ export async function resolveAdFreeAudioStream(
 
   const preferLowData = audioCache.isDataSaverActive()
   const cleanedTitle = cleanText(track.title)
-  const primaryArtist = cleanText(
-    (track.artist || '').split(/[,&]/)[0] || '',
-  )
+  const primaryArtist = cleanText((track.artist || '').split(/[,&]/)[0] || '')
   const searchQueries = [
     `${cleanedTitle} ${primaryArtist}`.trim(),
     cleanedTitle,
@@ -242,7 +253,12 @@ export async function resolveAdFreeAudioStream(
       if (signal?.aborted) return null
       const results = await querySaavnEndpoint(endpoint, query, signal)
       if (results.length > 0) {
-        const audioUrl = pickBestAudioUrl(results, track.title, track.artist, preferLowData)
+        const audioUrl = pickBestAudioUrl(
+          results,
+          track.title,
+          track.artist,
+          preferLowData,
+        )
         if (audioUrl) {
           memoryStreamCache.set(cacheKey, audioUrl)
           setPersistentCache(cacheKey, audioUrl)

@@ -316,7 +316,7 @@ export const FilmPreview = ({ poster = true }: { poster?: boolean }) => {
                 <p className='line-clamp-2 hidden font-medium text-base text-foreground/90 leading-none md:inline-block lg:line-clamp-1 lg:h-[1.25rem] lg:text-xl lg:leading-none landscape:h-[1rem] lg:landscape:h-[1.25rem]'>
                   {film.tagline}
                 </p>
-                <p className='text-xs md:text-sm font-bold text-primary tracking-wider uppercase'>
+                <p className='font-bold text-primary text-xs uppercase tracking-wider md:text-sm'>
                   {film.artist}
                 </p>
                 <h3 className='line-clamp-2.2 font-black text-2xl leading-none lg:line-clamp-1.1 lg:text-5xl landscape:line-clamp-1.1'>

@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from 'react'
 import {
   ChevronDown,
   ChevronUp,
@@ -15,6 +14,7 @@ import {
   Youtube,
   Zap,
 } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import config from '../../../config'
 import { audioCache } from '../../../services/audio-cache'
 import { jamService } from '../../../services/jam-session'
@@ -119,7 +119,11 @@ export const MusicPlayer = () => {
       } else if (iframeRef.current?.contentWindow) {
         try {
           iframeRef.current.contentWindow.postMessage(
-            JSON.stringify({ event: 'command', func: 'seekTo', args: [targetTime, true] }),
+            JSON.stringify({
+              event: 'command',
+              func: 'seekTo',
+              args: [targetTime, true],
+            }),
             '*',
           )
           iframeRef.current.contentWindow.postMessage(
@@ -156,7 +160,11 @@ export const MusicPlayer = () => {
       if (iframeRef.current?.contentWindow) {
         try {
           iframeRef.current.contentWindow.postMessage(
-            JSON.stringify({ event: 'command', func: 'seekTo', args: [remoteTime, true] }),
+            JSON.stringify({
+              event: 'command',
+              func: 'seekTo',
+              args: [remoteTime, true],
+            }),
             '*',
           )
         } catch (_) {}
@@ -164,7 +172,11 @@ export const MusicPlayer = () => {
     }
 
     const handleRemoteHeartbeat = (e: Event) => {
-      const { currentTime: remoteTime, isPlaying: remoteIsPlaying, sentAt } = (e as CustomEvent).detail
+      const {
+        currentTime: remoteTime,
+        isPlaying: remoteIsPlaying,
+        sentAt,
+      } = (e as CustomEvent).detail
       const latencySec = sentAt ? Math.max(0, (Date.now() - sentAt) / 1000) : 0
       const expectedTime = remoteTime + (remoteIsPlaying ? latencySec : 0)
 
@@ -257,9 +269,11 @@ export const MusicPlayer = () => {
             setIsOfflineCached(false)
             setStreamMode('audio')
             // Cache on device asynchronously for future zero-network replays
-            void audioCache.cacheAudio(resolvedUrl, activeTrack.title).then((saved) => {
-              if (saved) setIsOfflineCached(true)
-            })
+            void audioCache
+              .cacheAudio(resolvedUrl, activeTrack.title)
+              .then((saved) => {
+                if (saved) setIsOfflineCached(true)
+              })
           }
         } else {
           setStreamMode('youtube')
@@ -310,7 +324,11 @@ export const MusicPlayer = () => {
         .catch(() => setIsPlaying(false))
     }
 
-    if (typeof navigator !== 'undefined' && 'mediaSession' in navigator && activeTrack) {
+    if (
+      typeof navigator !== 'undefined' &&
+      'mediaSession' in navigator &&
+      activeTrack
+    ) {
       try {
         navigator.mediaSession.metadata = new MediaMetadata({
           title: activeTrack.title,
@@ -379,7 +397,7 @@ export const MusicPlayer = () => {
     let player: any = null
 
     const initPlayer = () => {
-      if ((window as any).YT && (window as any).YT.Player && iframeRef.current) {
+      if ((window as any).YT?.Player && iframeRef.current) {
         try {
           player = new (window as any).YT.Player(iframeRef.current, {
             events: {
@@ -397,7 +415,7 @@ export const MusicPlayer = () => {
       }
     }
 
-    if ((window as any).YT && (window as any).YT.Player) {
+    if ((window as any).YT?.Player) {
       initPlayer()
     } else {
       if (!document.getElementById('yt-iframe-api')) {
@@ -447,7 +465,9 @@ export const MusicPlayer = () => {
 
   if (!playerOpen || !activeTrack) return null
 
-  const query = encodeURIComponent(`${activeTrack.artist} ${activeTrack.title}`.trim())
+  const query = encodeURIComponent(
+    `${activeTrack.artist} ${activeTrack.title}`.trim(),
+  )
 
   const directYtWatchUrl =
     activeTrack.videoId && activeTrack.videoId.length === 11
@@ -459,7 +479,8 @@ export const MusicPlayer = () => {
   const ytMusicUrl = `${config.youtubeMusicSearchUrl}${query}`
   const jiosaavnUrl = `${config.jiosaavnSearchUrl}${query}`
 
-  const canControlJam = !isJamConnected || jamRole === 'host' || allowGuestControl
+  const canControlJam =
+    !isJamConnected || jamRole === 'host' || allowGuestControl
 
   const togglePlayPause = () => {
     const audio = audioRef.current
@@ -480,20 +501,20 @@ export const MusicPlayer = () => {
   return (
     <div
       className={cn(
-        'pointer-events-auto fixed z-70 transition-all duration-300 ease-out shadow-2xl overflow-hidden',
+        'pointer-events-auto fixed z-70 overflow-hidden shadow-2xl transition-all duration-300 ease-out',
         isMinimized
-          ? 'bottom-2 sm:bottom-4 left-2 right-2 sm:left-4 sm:right-4 md:left-auto md:right-8 md:w-[480px] rounded-2xl bg-background/95 border border-border backdrop-blur-xl p-3'
-          : 'bottom-2 sm:bottom-4 left-2 right-2 sm:left-4 sm:right-4 md:left-auto md:right-8 md:w-[480px] rounded-2xl bg-background/95 border border-border backdrop-blur-xl p-3 sm:p-4',
+          ? 'right-2 bottom-2 left-2 rounded-2xl border border-border bg-background/95 p-3 backdrop-blur-xl sm:right-4 sm:bottom-4 sm:left-4 md:right-8 md:left-auto md:w-[480px]'
+          : 'right-2 bottom-2 left-2 rounded-2xl border border-border bg-background/95 p-3 backdrop-blur-xl sm:right-4 sm:bottom-4 sm:left-4 sm:p-4 md:right-8 md:left-auto md:w-[480px]',
       )}
     >
       {/* Partner Floating Reaction Notification */}
       {remoteReaction && (
         <div
           key={remoteReaction.id}
-          className='pointer-events-none absolute -top-10 right-6 z-50 flex items-center gap-1.5 rounded-full border border-amber-500/40 bg-background/95 px-3 py-1 shadow-xl backdrop-blur-md animate-bounce'
+          className='-top-10 pointer-events-none absolute right-6 z-50 flex animate-bounce items-center gap-1.5 rounded-full border border-amber-500/40 bg-background/95 px-3 py-1 shadow-xl backdrop-blur-md'
         >
           <span className='text-lg leading-none'>{remoteReaction.emoji}</span>
-          <span className='text-[10px] font-bold text-amber-500'>Partner</span>
+          <span className='font-bold text-[10px] text-amber-500'>Partner</span>
         </div>
       )}
 
@@ -524,8 +545,8 @@ export const MusicPlayer = () => {
 
       {/* Player Header / Controls Bar */}
       <div className='flex items-center justify-between gap-3'>
-        <div className='flex items-center gap-3 min-w-0'>
-          <div className='relative flex size-10 shrink-0 items-center justify-center rounded-full bg-neutral-900 border border-neutral-700 text-amber-500 shadow-md overflow-hidden'>
+        <div className='flex min-w-0 items-center gap-3'>
+          <div className='relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-neutral-700 bg-neutral-900 text-amber-500 shadow-md'>
             {activeTrack.cover ? (
               <img
                 src={activeTrack.cover}
@@ -547,19 +568,19 @@ export const MusicPlayer = () => {
             )}
           </div>
 
-          <div className='min-w-0 flex flex-col'>
-            <div className='flex items-center gap-1.5 min-w-0'>
-              <p className='truncate font-black text-sm text-foreground leading-tight'>
+          <div className='flex min-w-0 flex-col'>
+            <div className='flex min-w-0 items-center gap-1.5'>
+              <p className='truncate font-black text-foreground text-sm leading-tight'>
                 {activeTrack.title}
               </p>
               {playlist && playlist.length > 1 && (
-                <span className='shrink-0 text-[10px] font-bold text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded-full'>
+                <span className='shrink-0 rounded-full bg-amber-500/10 px-1.5 py-0.5 font-bold text-[10px] text-amber-500'>
                   {playlistIndex + 1}/{playlist.length}
                 </span>
               )}
               {isOfflineCached && (
                 <span
-                  className='shrink-0 inline-flex items-center gap-0.5 text-[9px] font-bold text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.2 rounded-full'
+                  className='inline-flex shrink-0 items-center gap-0.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-1.5 py-0.2 font-bold text-[9px] text-emerald-500'
                   title='Lossless & Offline Cached (Zero Network Usage)'
                 >
                   <Zap className='size-2.5 text-emerald-400' />
@@ -567,19 +588,19 @@ export const MusicPlayer = () => {
                 </span>
               )}
             </div>
-            <p className='truncate text-xs font-semibold text-primary'>
+            <p className='truncate font-semibold text-primary text-xs'>
               {activeTrack.artist}
             </p>
           </div>
         </div>
 
         {/* Action Controls */}
-        <div className='flex items-center gap-1 shrink-0'>
+        <div className='flex shrink-0 items-center gap-1'>
           {isJamConnected && (
             <button
               type='button'
               onClick={toggleJamModalOpen}
-              className='flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-500 text-[10px] font-bold transition-colors cursor-pointer mr-1'
+              className='mr-1 flex cursor-pointer items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/15 px-2 py-0.5 font-bold text-[10px] text-emerald-500 transition-colors hover:bg-emerald-500/25'
               title={`In Jam Session (${jamRoomCode})${jamLatency ? ` • ${jamLatency}ms` : ''}`}
             >
               <Radio className='size-3 animate-pulse text-emerald-400' />
@@ -592,7 +613,7 @@ export const MusicPlayer = () => {
             <button
               type='button'
               onClick={toggleJamModalOpen}
-              className='flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-500 text-[10px] font-bold transition-colors cursor-pointer mr-1 animate-pulse'
+              className='mr-1 flex animate-pulse cursor-pointer items-center gap-1 rounded-full border border-amber-500/30 bg-amber-500/15 px-2 py-0.5 font-bold text-[10px] text-amber-500 transition-colors hover:bg-amber-500/25'
               title='Reconnecting to partner...'
             >
               <Loader2 className='size-3 animate-spin text-amber-400' />
@@ -604,14 +625,14 @@ export const MusicPlayer = () => {
             <Button
               size='icon'
               variant='ghost'
-              className='size-8 rounded-full cursor-pointer bg-primary text-primary-foreground hover:bg-primary/90'
+              className='size-8 cursor-pointer rounded-full bg-primary text-primary-foreground hover:bg-primary/90'
               onClick={togglePlayPause}
               title={isPlaying ? 'Pause' : 'Play'}
             >
               {isPlaying ? (
                 <Pause className='size-4' />
               ) : (
-                <Play className='size-4 ml-0.5' />
+                <Play className='ml-0.5 size-4' />
               )}
             </Button>
           )}
@@ -621,7 +642,7 @@ export const MusicPlayer = () => {
               <Button
                 size='icon'
                 variant='ghost'
-                className='size-7 rounded-full cursor-pointer hover:bg-primary/10'
+                className='size-7 cursor-pointer rounded-full hover:bg-primary/10'
                 onClick={prevTrack}
                 title='Previous Track'
               >
@@ -630,7 +651,7 @@ export const MusicPlayer = () => {
               <Button
                 size='icon'
                 variant='ghost'
-                className='size-7 rounded-full cursor-pointer hover:bg-primary/10'
+                className='size-7 cursor-pointer rounded-full hover:bg-primary/10'
                 onClick={nextTrack}
                 title='Next Track'
               >
@@ -643,7 +664,7 @@ export const MusicPlayer = () => {
             href={directYtWatchUrl}
             target='_blank'
             rel='noreferrer'
-            className='inline-flex items-center justify-center size-7 rounded-full bg-red-600/10 hover:bg-red-600/20 text-red-600 transition-colors cursor-pointer'
+            className='inline-flex size-7 cursor-pointer items-center justify-center rounded-full bg-red-600/10 text-red-600 transition-colors hover:bg-red-600/20'
             title='Watch on YouTube'
           >
             <Youtube className='size-4' />
@@ -653,7 +674,7 @@ export const MusicPlayer = () => {
             <Button
               size='icon'
               variant='ghost'
-              className='size-7 rounded-full cursor-pointer'
+              className='size-7 cursor-pointer rounded-full'
               onClick={() => setIsMinimized(!isMinimized)}
               title={isMinimized ? 'Expand Video' : 'Minimize Player'}
             >
@@ -668,7 +689,7 @@ export const MusicPlayer = () => {
           <Button
             size='icon'
             variant='ghost'
-            className='size-7 rounded-full hover:bg-destructive/10 hover:text-destructive cursor-pointer'
+            className='size-7 cursor-pointer rounded-full hover:bg-destructive/10 hover:text-destructive'
             onClick={stopTrack}
             title='Stop Playback'
           >
@@ -679,7 +700,7 @@ export const MusicPlayer = () => {
 
       {/* Loading Indicator while resolving direct stream */}
       {streamMode === 'resolving' && (
-        <div className='mt-3 flex items-center justify-center gap-2 rounded-xl bg-muted/40 py-3 text-xs text-muted-foreground'>
+        <div className='mt-3 flex items-center justify-center gap-2 rounded-xl bg-muted/40 py-3 text-muted-foreground text-xs'>
           <Loader2 className='size-4 animate-spin text-primary' />
           <span>Starting audio stream...</span>
         </div>
@@ -688,7 +709,7 @@ export const MusicPlayer = () => {
       {/* Scrubbable Audio Seek Bar (100% Ad-Free Direct Audio) */}
       {streamMode === 'audio' && (
         <div className='mt-3 flex items-center gap-2.5'>
-          <span className='w-9 text-[11px] font-medium tabular-nums text-muted-foreground'>
+          <span className='w-9 font-medium text-[11px] text-muted-foreground tabular-nums'>
             {formatTime(currentTime)}
           </span>
           <input
@@ -709,7 +730,7 @@ export const MusicPlayer = () => {
             aria-label='Seek audio position'
             className='h-1.5 flex-1 cursor-pointer appearance-none rounded-full bg-muted accent-primary'
           />
-          <span className='w-9 text-right text-[11px] font-medium tabular-nums text-muted-foreground'>
+          <span className='w-9 text-right font-medium text-[11px] text-muted-foreground tabular-nums'>
             {formatTime(duration)}
           </span>
         </div>
@@ -721,8 +742,8 @@ export const MusicPlayer = () => {
           className={cn(
             'relative mt-3 overflow-hidden rounded-xl bg-black transition-all duration-300',
             {
-              'h-48 sm:h-56 md:h-64 opacity-100': !isMinimized,
-              'h-0 opacity-0 pointer-events-none mt-0': isMinimized,
+              'h-48 opacity-100 sm:h-56 md:h-64': !isMinimized,
+              'pointer-events-none mt-0 h-0 opacity-0': isMinimized,
             },
           )}
         >
@@ -741,17 +762,17 @@ export const MusicPlayer = () => {
       )}
 
       {/* Cross-platform Listen Links */}
-      <div className='mt-2.5 pt-2 border-t border-border/40 flex flex-wrap items-center justify-between gap-1.5 text-xs'>
-        <span className='text-[0.7rem] font-semibold text-muted-foreground flex items-center gap-1 shrink-0'>
-          <Volume2 className='size-3 text-emerald-500 animate-pulse' />
+      <div className='mt-2.5 flex flex-wrap items-center justify-between gap-1.5 border-border/40 border-t pt-2 text-xs'>
+        <span className='flex shrink-0 items-center gap-1 font-semibold text-[0.7rem] text-muted-foreground'>
+          <Volume2 className='size-3 animate-pulse text-emerald-500' />
           Listen:
         </span>
-        <div className='flex flex-wrap items-center gap-1.5 justify-end'>
+        <div className='flex flex-wrap items-center justify-end gap-1.5'>
           <a
             href={spotifyUrl}
             target='_blank'
             rel='noreferrer'
-            className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-semibold text-[11px] transition-colors shrink-0'
+            className='inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 font-semibold text-[11px] text-emerald-600 transition-colors hover:bg-emerald-500/20 dark:text-emerald-400'
           >
             Spotify
             <ExternalLink className='size-2.5' />
@@ -760,7 +781,7 @@ export const MusicPlayer = () => {
             href={appleMusicUrl}
             target='_blank'
             rel='noreferrer'
-            className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-pink-500/10 hover:bg-pink-500/20 text-pink-600 dark:text-pink-400 font-semibold text-[11px] transition-colors shrink-0'
+            className='inline-flex shrink-0 items-center gap-1 rounded-full bg-pink-500/10 px-2 py-0.5 font-semibold text-[11px] text-pink-600 transition-colors hover:bg-pink-500/20 dark:text-pink-400'
           >
             Apple Music
             <ExternalLink className='size-2.5' />
@@ -769,7 +790,7 @@ export const MusicPlayer = () => {
             href={ytMusicUrl}
             target='_blank'
             rel='noreferrer'
-            className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 font-semibold text-[11px] transition-colors shrink-0'
+            className='inline-flex shrink-0 items-center gap-1 rounded-full bg-red-500/10 px-2 py-0.5 font-semibold text-[11px] text-red-600 transition-colors hover:bg-red-500/20 dark:text-red-400'
           >
             YouTube
             <ExternalLink className='size-2.5' />
@@ -778,7 +799,7 @@ export const MusicPlayer = () => {
             href={jiosaavnUrl}
             target='_blank'
             rel='noreferrer'
-            className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-teal-500/10 hover:bg-teal-500/20 text-teal-600 dark:text-teal-400 font-semibold text-[11px] transition-colors shrink-0'
+            className='inline-flex shrink-0 items-center gap-1 rounded-full bg-teal-500/10 px-2 py-0.5 font-semibold text-[11px] text-teal-600 transition-colors hover:bg-teal-500/20 dark:text-teal-400'
           >
             JioSaavn
             <ExternalLink className='size-2.5' />

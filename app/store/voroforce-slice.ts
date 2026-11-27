@@ -120,8 +120,12 @@ export const createEngineSlice: StateCreator<
     setUserConfig: (userConfig: UserConfig) => {
       const nextConfig: UserConfig = {
         ...userConfig,
-        favorites: userConfig.favorites ? { ...userConfig.favorites } : undefined,
-        customLinks: userConfig.customLinks ? [...userConfig.customLinks] : undefined,
+        favorites: userConfig.favorites
+          ? { ...userConfig.favorites }
+          : undefined,
+        customLinks: userConfig.customLinks
+          ? [...userConfig.customLinks]
+          : undefined,
       }
       updatePersistentSetting('userConfig', nextConfig)
       set({ userConfig: nextConfig })

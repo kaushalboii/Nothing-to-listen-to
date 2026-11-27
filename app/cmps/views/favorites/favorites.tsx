@@ -42,8 +42,12 @@ export const Favorites = () => {
   // Load raw records to resolve video IDs for favorites
   useEffect(() => {
     const rawBase = import.meta.env.BASE_URL || '/'
-    const normalizedBase = rawBase.endsWith('/') ? rawBase.slice(0, -1) : rawBase
-    fetch(`${normalizedBase}/json/0.json?v=${Date.now().toString(36)}`, { cache: 'no-cache' })
+    const normalizedBase = rawBase.endsWith('/')
+      ? rawBase.slice(0, -1)
+      : rawBase
+    fetch(`${normalizedBase}/json/0.json?v=${Date.now().toString(36)}`, {
+      cache: 'no-cache',
+    })
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) setLocalRecords(data)
@@ -80,7 +84,11 @@ export const Favorites = () => {
         )
         if (idMatch) {
           const matchTitle = (idMatch.title || '').toLowerCase()
-          if (!filmTitle || matchTitle.includes(filmTitle) || filmTitle.includes(matchTitle)) {
+          if (
+            !filmTitle ||
+            matchTitle.includes(filmTitle) ||
+            filmTitle.includes(matchTitle)
+          ) {
             record = idMatch
           }
         }
@@ -114,30 +122,34 @@ export const Favorites = () => {
 
   const handlePlayAll = () => {
     if (favoriteEntries.length === 0) return
-    const tracks: ActiveTrack[] = favoriteEntries.map(({ film, videoId, audioUrl }) => ({
-      id: film.tmdbId,
-      title: film.title,
-      artist: (film as any).artist ?? 'Various Artists',
-      albumTitle: film.title,
-      cover: film.poster,
-      videoId,
-      audioUrl,
-      query: `${(film as any).artist ?? ''} ${film.title}`.trim(),
-    }))
+    const tracks: ActiveTrack[] = favoriteEntries.map(
+      ({ film, videoId, audioUrl }) => ({
+        id: film.tmdbId,
+        title: film.title,
+        artist: (film as any).artist ?? 'Various Artists',
+        albumTitle: film.title,
+        cover: film.poster,
+        videoId,
+        audioUrl,
+        query: `${(film as any).artist ?? ''} ${film.title}`.trim(),
+      }),
+    )
     playPlaylist(tracks, 0)
   }
 
   const handlePlayOne = (index: number) => {
-    const tracks: ActiveTrack[] = favoriteEntries.map(({ film, videoId, audioUrl }) => ({
-      id: film.tmdbId,
-      title: film.title,
-      artist: (film as any).artist ?? 'Various Artists',
-      albumTitle: film.title,
-      cover: film.poster,
-      videoId,
-      audioUrl,
-      query: `${(film as any).artist ?? ''} ${film.title}`.trim(),
-    }))
+    const tracks: ActiveTrack[] = favoriteEntries.map(
+      ({ film, videoId, audioUrl }) => ({
+        id: film.tmdbId,
+        title: film.title,
+        artist: (film as any).artist ?? 'Various Artists',
+        albumTitle: film.title,
+        cover: film.poster,
+        videoId,
+        audioUrl,
+        query: `${(film as any).artist ?? ''} ${film.title}`.trim(),
+      }),
+    )
     playPlaylist(tracks, index)
   }
 
@@ -156,10 +168,11 @@ export const Favorites = () => {
             </Button>
             {hasFavorites && (
               <Button
-                className='cursor-pointer gap-2 font-bold bg-red-600 hover:bg-red-700 text-white shadow-md'
+                className='cursor-pointer gap-2 bg-red-600 font-bold text-white shadow-md hover:bg-red-700'
                 onClick={handlePlayAll}
               >
-                <Play className='size-4 fill-white' /> Play All ({favoriteEntries.length})
+                <Play className='size-4 fill-white' /> Play All (
+                {favoriteEntries.length})
               </Button>
             )}
           </div>
@@ -188,27 +201,30 @@ export const Favorites = () => {
             <>
               {favoriteEntries.map(({ key, film }, index) => (
                 <div
-                  className='relative flex min-h-[7.5rem] w-full cursor-auto flex-row items-stretch overflow-hidden rounded-xl border border-border/60 bg-card/85 backdrop-blur-md shadow-sm transition-all hover:border-border'
+                  className='relative flex min-h-[7.5rem] w-full cursor-auto flex-row items-stretch overflow-hidden rounded-xl border border-border/60 bg-card/85 shadow-sm backdrop-blur-md transition-all hover:border-border'
                   key={key}
                 >
                   <div
-                    className='relative group/poster cursor-pointer shrink-0 w-28 h-28 sm:w-32 sm:h-32 m-2 sm:m-2.5 rounded-lg overflow-hidden bg-zinc-900 shadow-md'
+                    className='group/poster relative m-2 h-28 w-28 shrink-0 cursor-pointer overflow-hidden rounded-lg bg-zinc-900 shadow-md sm:m-2.5 sm:h-32 sm:w-32'
                     onClick={() => handlePlayOne(index)}
                     title={`Play ${film.title}`}
                   >
-                    <FilmPoster film={film} className='h-full w-full object-cover' />
-                    <div className='absolute inset-0 bg-black/40 opacity-0 group-hover/poster:opacity-100 transition-opacity flex items-center justify-center'>
-                      <Play className='size-8 text-white fill-white drop-shadow-md' />
+                    <FilmPoster
+                      film={film}
+                      className='h-full w-full object-cover'
+                    />
+                    <div className='absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover/poster:opacity-100'>
+                      <Play className='size-8 fill-white text-white drop-shadow-md' />
                     </div>
                   </div>
-                  <div className='flex flex-1 flex-col justify-between p-2.5 sm:p-3 sm:pl-0 min-w-0 pr-18 sm:pr-24'>
+                  <div className='flex min-w-0 flex-1 flex-col justify-between p-2.5 pr-18 sm:p-3 sm:pr-24 sm:pl-0'>
                     <div className='min-w-0'>
                       {(film as any).artist && (
-                        <p className='text-xs font-bold text-amber-500 uppercase tracking-wider mb-0.5 truncate'>
+                        <p className='mb-0.5 truncate font-bold text-amber-500 text-xs uppercase tracking-wider'>
                           {(film as any).artist}
                         </p>
                       )}
-                      <h6 className='font-black text-base sm:text-lg leading-tight truncate text-foreground'>
+                      <h6 className='truncate font-black text-base text-foreground leading-tight sm:text-lg'>
                         {film.title}
                         {film.year && (
                           <span className='font-normal text-muted-foreground text-sm'>
@@ -217,14 +233,14 @@ export const Favorites = () => {
                         )}
                       </h6>
                       {film.tagline && (
-                        <p className='line-clamp-1 mt-1 text-xs text-muted-foreground italic'>
+                        <p className='mt-1 line-clamp-1 text-muted-foreground text-xs italic'>
                           {film.tagline}
                         </p>
                       )}
                     </div>
                     <div
                       className={cn(
-                        'pointer-events-auto flex flex-row flex-wrap items-center gap-1.5 mt-2',
+                        'pointer-events-auto mt-2 flex flex-row flex-wrap items-center gap-1.5',
                       )}
                     >
                       <StdLinks
@@ -240,10 +256,10 @@ export const Favorites = () => {
                       )}
                     </div>
                   </div>
-                  <div className='absolute top-2.5 right-2.5 sm:top-3 sm:right-3 flex flex-row items-center gap-1.5'>
+                  <div className='absolute top-2.5 right-2.5 flex flex-row items-center gap-1.5 sm:top-3 sm:right-3'>
                     <Button
                       size='icon'
-                      className='!size-7 [&_svg]:!size-3.5 cursor-pointer rounded-full bg-red-600 hover:bg-red-700 text-white shadow-sm'
+                      className='!size-7 [&_svg]:!size-3.5 cursor-pointer rounded-full bg-red-600 text-white shadow-sm hover:bg-red-700'
                       onClick={() => handlePlayOne(index)}
                       title={`Play ${film.title}`}
                     >

@@ -9,7 +9,9 @@ import glsl from 'vite-plugin-glsl'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
   return {
-    base: process.env.BASE_PATH || (mode === 'production' ? '/Nothing-to-listen-to/' : '/'),
+    base:
+      process.env.BASE_PATH ||
+      (mode === 'production' ? '/Nothing-to-listen-to/' : '/'),
     plugins: [
       react({}),
       tailwindcss(),
@@ -28,9 +30,11 @@ export default defineConfig(({ mode }) => {
           manualChunks(id) {
             if (id.includes('node_modules')) {
               if (id.includes('ogl')) return 'vendor-ogl'
-              if (id.includes('@radix-ui') || id.includes('@floating-ui')) return 'vendor-radix'
+              if (id.includes('@radix-ui') || id.includes('@floating-ui'))
+                return 'vendor-radix'
               if (id.includes('lucide-react')) return 'vendor-icons'
-              if (id.includes('detect-gpu') || id.includes('ua-parser-js')) return 'vendor-device'
+              if (id.includes('detect-gpu') || id.includes('ua-parser-js'))
+                return 'vendor-device'
             }
           },
         },

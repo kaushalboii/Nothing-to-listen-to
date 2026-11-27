@@ -48,9 +48,9 @@ const items = [
         <p>
           <b>This is a non-commercial project</b>. The content is intended
           solely for educational, cultural, and music discovery purposes. All
-          rights to artist artwork, album names, and intellectual property remain
-          with their respective creators and record labels. If you have concerns,
-          feedback, or requests, please contact us at{' '}
+          rights to artist artwork, album names, and intellectual property
+          remain with their respective creators and record labels. If you have
+          concerns, feedback, or requests, please contact us at{' '}
           <Link href={`mailto:${config.contactEmail}`}>
             {config.contactEmail}
           </Link>
@@ -64,15 +64,17 @@ const items = [
     content: (
       <>
         <p>
-          The golden age of vinyl and album-oriented listening is arguably behind
-          us. Luckily, we have decades of legendary records to fall back on.
+          The golden age of vinyl and album-oriented listening is arguably
+          behind us. Luckily, we have decades of legendary records to fall back
+          on.
         </p>
         <br />
         <p>
           This interactive gallery visualizes the most iconic albums in music
-          history in a 1:1 square Voronoi force simulation. Explore timeless records
-          across Classic Rock, Pop, Hip-Hop, Electronic, Jazz, Soul, Alternative,
-          and Metal, hear synthesised previews, and dive into tracklists.
+          history in a 1:1 square Voronoi force simulation. Explore timeless
+          records across Classic Rock, Pop, Hip-Hop, Electronic, Jazz, Soul,
+          Alternative, and Metal, hear synthesised previews, and dive into
+          tracklists.
         </p>
       </>
     ),
@@ -195,8 +197,8 @@ const items = [
       <>
         <p>
           The square album artwork covers are packed into image montages, also
-          known as texture atlases. These montages are served on demand as compressed
-          textures in 1:1 aspect ratio.
+          known as texture atlases. These montages are served on demand as
+          compressed textures in 1:1 aspect ratio.
         </p>
         <br />
         <p className='pb-6'>

@@ -5,94 +5,94 @@ export type JamRole = 'host' | 'guest'
 
 export type JamMessage =
   | {
-      type: 'HELLO'
-      senderId: string
-      role: JamRole
-      resume?: boolean
-      sentAt: number
-    }
+    type: 'HELLO'
+    senderId: string
+    role: JamRole
+    resume?: boolean
+    sentAt: number
+  }
   | {
-      type: 'WELCOME'
-      senderId: string
-      hostTrack?: ActiveTrack | null
-      playlist?: ActiveTrack[]
-      playlistIndex?: number
-      currentTime?: number
-      isPlaying?: boolean
-      allowGuestControl?: boolean
-      sentAt: number
-    }
+    type: 'WELCOME'
+    senderId: string
+    hostTrack?: ActiveTrack | null
+    playlist?: ActiveTrack[]
+    playlistIndex?: number
+    currentTime?: number
+    isPlaying?: boolean
+    allowGuestControl?: boolean
+    sentAt: number
+  }
   | {
-      type: 'REJECT'
-      reason: 'ROOM_FULL'
-      message: string
-      sentAt: number
-    }
+    type: 'REJECT'
+    reason: 'ROOM_FULL'
+    message: string
+    sentAt: number
+  }
   | {
-      type: 'SYNC_TRACK'
-      senderId: string
-      track: ActiveTrack
-      playlist?: ActiveTrack[]
-      playlistIndex?: number
-      currentTime?: number
-      isPlaying?: boolean
-      sentAt: number
-    }
+    type: 'SYNC_TRACK'
+    senderId: string
+    track: ActiveTrack
+    playlist?: ActiveTrack[]
+    playlistIndex?: number
+    currentTime?: number
+    isPlaying?: boolean
+    sentAt: number
+  }
   | {
-      type: 'PLAY'
-      senderId: string
-      currentTime: number
-      sentAt: number
-    }
+    type: 'PLAY'
+    senderId: string
+    currentTime: number
+    sentAt: number
+  }
   | {
-      type: 'PAUSE'
-      senderId: string
-      currentTime: number
-      sentAt: number
-    }
+    type: 'PAUSE'
+    senderId: string
+    currentTime: number
+    sentAt: number
+  }
   | {
-      type: 'SEEK'
-      senderId: string
-      currentTime: number
-      sentAt: number
-    }
+    type: 'SEEK'
+    senderId: string
+    currentTime: number
+    sentAt: number
+  }
   | {
-      type: 'HEARTBEAT'
-      senderId: string
-      currentTime: number
-      isPlaying: boolean
-      sentAt: number
-    }
+    type: 'HEARTBEAT'
+    senderId: string
+    currentTime: number
+    isPlaying: boolean
+    sentAt: number
+  }
   | {
-      type: 'HEARTBEAT_ACK'
-      senderId: string
-      sentAt: number
-    }
+    type: 'HEARTBEAT_ACK'
+    senderId: string
+    sentAt: number
+  }
   | {
-      type: 'PING'
-      senderId: string
-      sentAt: number
-    }
+    type: 'PING'
+    senderId: string
+    sentAt: number
+  }
   | {
-      type: 'PONG'
-      senderId: string
-      origSentAt: number
-    }
+    type: 'PONG'
+    senderId: string
+    origSentAt: number
+  }
   | {
-      type: 'REACTION'
-      senderId: string
-      emoji: string
-      sentAt: number
-    }
+    type: 'REACTION'
+    senderId: string
+    emoji: string
+    sentAt: number
+  }
   | {
-      type: 'PERMISSIONS'
-      senderId: string
-      allowGuestControl: boolean
-    }
+    type: 'PERMISSIONS'
+    senderId: string
+    allowGuestControl: boolean
+  }
   | {
-      type: 'ROOM_FULL'
-      message: string
-    }
+    type: 'ROOM_FULL'
+    message: string
+  }
 
 export interface JamCallbacks {
   onStatusChange?: (status: {
@@ -263,7 +263,7 @@ export class JamSessionService {
       } else {
         sessionStorage.removeItem(SESSION_STORAGE_KEY)
       }
-    } catch {}
+    } catch { }
   }
 
   public tryRestoreSession(): boolean {
@@ -286,7 +286,7 @@ export class JamSessionService {
         }
         return true
       }
-    } catch {}
+    } catch { }
     return false
   }
 
@@ -718,7 +718,7 @@ export class JamSessionService {
     if (this.socket) {
       try {
         this.socket.send(msg)
-      } catch (_) {}
+      } catch (_) { }
     }
   }
 
@@ -876,7 +876,7 @@ export class JamSessionService {
           this.socket.close()
           this.socket = null
         }
-      } catch (_) {}
+      } catch (_) { }
 
       const channel = this.getChannelFromCode(this.roomCode)
       const socket = connect(channel, {
@@ -929,7 +929,7 @@ export class JamSessionService {
     if (this.socket) {
       try {
         this.socket.close()
-      } catch (_) {}
+      } catch (_) { }
       this.socket = null
     }
   }

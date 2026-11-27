@@ -1,5 +1,5 @@
 import { useShallowState } from '@/store'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { THEME } from '../../../consts'
 import { reload } from '../../../utils/misc'
 import { VOROFORCE_PRESET } from '../../../vf'
@@ -40,6 +40,17 @@ export const Settings = () => {
   const { theme, setTheme } = useTheme()
 
   const [fullscreen, setFullscreen] = useState(false)
+
+  // Sync with native fullscreen changes (e.g. Esc key or browser UI)
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setFullscreen(Boolean(document.fullscreenElement))
+    }
+    document.addEventListener('fullscreenchange', handleFullscreenChange)
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange)
+    }
+  }, [])
 
   return (
     <Modal
@@ -117,37 +128,11 @@ export const Settings = () => {
                 checked={fullscreen}
                 onCheckedChange={(checked) => {
                   if (checked) {
-                    const el = document.documentElement
-                    const onFullscreenChange = () => {
-                      if (!document.fullscreenElement) {
-                        setFullscreen(false)
-                      }
-                      el.removeEventListener(
-                        'fullscreenchange',
-                        onFullscreenChange,
-                      )
-                    }
-                    el.requestFullscreen({ navigationUI: 'show' })
-                      .then(() => {
-                        setFullscreen(true)
-                        el.addEventListener(
-                          'fullscreenchange',
-                          onFullscreenChange,
-                        )
-                      })
-                      .catch((err) => {
-                        alert(
-                          `An error occurred while trying to switch into fullscreen mode: ${err.message} (${err.name})`,
-                        )
-                      })
-                  } else {
-                    if (document.fullscreenElement) {
-                      document.exitFullscreen().then(() => {
-                        setFullscreen(false)
-                      })
-                    } else {
-                      setFullscreen(false)
-                    }
+                    document.documentElement
+                      .requestFullscreen({ navigationUI: 'show' })
+                      .catch(() => {})
+                  } else if (document.fullscreenElement) {
+                    document.exitFullscreen().catch(() => {})
                   }
                 }}
               />

@@ -109,7 +109,7 @@ export const MusicSearchModal = () => {
 
   // Filter records in real-time across query, language, and era
   const filtered = useMemo(() => {
-    if (!localRecords || localRecords.length === 0) return []
+    if (!searchOpen || !localRecords || localRecords.length === 0) return []
     const q = query.trim().toLowerCase()
 
     return localRecords.filter((rec) => {
@@ -166,7 +166,7 @@ export const MusicSearchModal = () => {
       const tokens = q.split(/\s+/).filter(Boolean)
       return tokens.every((token) => combined.includes(token))
     })
-  }, [localRecords, query, selectedLang, selectedEra])
+  }, [searchOpen, localRecords, query, selectedLang, selectedEra])
 
   if (!searchOpen) return null
 

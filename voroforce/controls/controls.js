@@ -667,7 +667,7 @@ export default class Controls extends BaseControls {
   initWheelEventListeners() {
     if (this.boundOnWheel) return
     this.boundOnWheel = this.onWheel.bind(this)
-    window.addEventListener('wheel', this.boundOnWheel)
+    window.addEventListener('wheel', this.boundOnWheel, { passive: true })
   }
 
   removeWheelEventListeners() {

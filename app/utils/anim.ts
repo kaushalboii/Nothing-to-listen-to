@@ -5,6 +5,7 @@ export const animateDocTitleSuffix = (suffix = '...', delay = 300) => {
   const originalTitle = document.title
   let counter = 0
   return setInterval(() => {
+    if (typeof document !== 'undefined' && document.hidden) return
     if (counter > suffix.length) counter = 0
     document.title = originalTitle + suffix.substring(0, counter)
     counter++

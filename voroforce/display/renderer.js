@@ -113,10 +113,16 @@ export default class Renderer {
   update() {
     if (this.contextLost) return
     if (this.app.scene.instance.children.length === 0) return
-    this.instance.render({
-      scene: this.app.scene.instance,
-      camera: this.app.controls?.camera,
-    })
+    try {
+      this.instance.render({
+        scene: this.app.scene.instance,
+        camera: this.app.controls?.camera,
+      })
+    } catch {
+      if (this.gl?.isContextLost?.()) {
+        this.contextLost = true
+      }
+    }
   }
 
   dispose() {}

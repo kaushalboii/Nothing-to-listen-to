@@ -1,36 +1,63 @@
-# Nothing to Listen to 🎵
-
-> An immersive, ad-free WebGL 3D musical universe. Discover, stream, and sync 216+ iconic, multi-lingual songs across Tamil, Hindi, Telugu, English, Punjabi, Malayalam, K-Pop, Latin, and Japanese with lossless low-data streaming, lock-screen background playback, real-time shared Jam sessions, and verified multi-platform links.
-
-[![Live Site](https://img.shields.io/badge/Live_Site-GitHub_Pages-brightgreen.svg)](https://kaushalboii.github.io/Nothing-to-listen-to/)
-[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/kaushalboii)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue.svg)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-19.1-blue.svg)](https://react.dev/)
-[![WebGL 2.0](https://img.shields.io/badge/WebGL-2.0_Enabled-green.svg)](https://www.khronos.org/webgl/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
 <div align="center">
 
+# 🎵 Nothing to Listen to
+
+**An immersive, ad-free WebGL 3D musical universe with real-time shared Jam sessions, lossless low-data streaming, and mobile lock-screen background playback.**
+
+[![Live Site](https://img.shields.io/badge/Live_Site-GitHub_Pages-2ea44f?style=for-the-badge&logo=githubpages&logoColor=white)](https://kaushalboii.github.io/Nothing-to-listen-to/)
+[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4_kaushalboii-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/kaushalboii)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178c6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19.1-61dafb?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![WebGL 2.0](https://img.shields.io/badge/WebGL-2.0_Enabled-00599c?style=for-the-badge&logo=webgl&logoColor=white)](https://www.khronos.org/webgl/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-f1e05a?style=for-the-badge)](LICENSE)
+
+<br/>
+
 <iframe src="https://github.com/sponsors/kaushalboii/button" title="Sponsor kaushalboii" height="32" width="114" style="border: 0; border-radius: 6px;"></iframe>
+
+<br/>
+
+[**Explore Live Universe »**](https://kaushalboii.github.io/Nothing-to-listen-to/) · [**Start a Jam Session**](https://kaushalboii.github.io/Nothing-to-listen-to/) · [**Sponsor Developer**](https://github.com/sponsors/kaushalboii)
 
 </div>
 
 ---
 
+## 📑 Table of Contents
+
+- [🌟 Overview](#-overview)
+- [✨ Key Features](#-key-features)
+  - [👥 Listen Together (Private Jam Session)](#-listen-together-private-jam-session)
+  - [📱 Mobile Ultra-Performance & Zero Heating](#-mobile-ultra-performance--zero-heating)
+  - [🔒 Lock-Screen Background Playback & MediaSession](#-lock-screen-background-playback--mediasession-api)
+  - [⚡ Lossless Low-Data Streaming & Offline Caching](#-lossless-low-data-streaming--smart-offline-caching)
+  - [🌐 Global Multi-Lingual Catalog (216 Masterpieces)](#-global-multi-lingual-catalog-216-masterpieces)
+  - [🎧 Universal Multi-Platform Links](#-universal-multi-platform-links)
+  - [🔎 Instant Search & Filter System](#-instant-search--dual-filter-system)
+- [⌨️ Keyboard Shortcuts](#️-keyboard-shortcuts)
+- [💖 Support & Sponsor](#-support--sponsor)
+- [🚀 Quick Start](#-quick-start)
+- [🔄 Automated Daily Releases Pipeline](#-automated-daily-releases--auto-deployment-pipeline)
+- [🏗 Architecture & Tech Stack](#-architecture--tech-stack)
+- [🤝 Attribution & Credits](#-attribution--open-source-credits)
+- [⚖️ License & Legal Disclaimer](#-license--legal-disclaimer)
+
+---
+
 ## 🌟 Overview
 
-**Nothing to Listen to** reimagines music discovery as an interactive 3D force-directed Voronoi visual sphere. Instead of endless text lists, explore hundreds of songs mapped across time and genre as tactile interactive cells that pulsate, expand, and play directly in your browser without intrusive ads.
+**Nothing to Listen to** reimagines musical discovery as a tactile, force-directed 3D Voronoi visual sphere. Instead of scrolling through flat, algorithmic lists, songs are mapped across time and genre as interactive cells that pulsate, expand, and play directly in your browser without intrusive ads.
 
-Whether you are looking for classic rock legends, viral Bollywood melodies, explosive Kollywood mass anthems, high-energy Telugu blockbusters, soulful Malayalam indie gems, electrifying K-Pop choreography, or rhythmic Latin chart-toppers—**Nothing to Listen to** brings them all together into one seamless, ad-free experience.
+Whether you're craving classic rock legends, viral Bollywood melodies, explosive Kollywood mass anthems, high-energy Telugu blockbusters, soulful Malayalam indie gems, electrifying K-Pop choreography, or rhythmic Latin chart-toppers—**Nothing to Listen to** unites them into one fluid, ad-free canvas.
 
 ---
 
 ## ✨ Key Features
 
 ### 👥 Listen Together (Private Jam Session)
-- **Private 2-User Room Lock**: Create a room with a 6-character room code or 1-tap invite link. Locks automatically to strictly 2 users so unauthorized listeners cannot join.
+- **Private 2-User Room Lock**: Create a room with a 6-character room code or 1-tap invite link. The room locks automatically to strictly 2 listeners, keeping your session private.
 - **Cross-Internet Real-Time Sync**: High-speed zero-NAT WebSocket signaling relays playback actions instantly across different devices, Wi-Fi networks, and mobile data worldwide.
-- **Microsecond Precision Audio Sync**: Synchronizes play, pause, seeking, and track changes with automatic latency compensation.
+- **Microsecond Precision Audio Sync**: Synchronizes play, pause, seeking, and track changes with automatic network latency compensation.
 - **Collaborative DJ & Live Reactions**: Host can grant guest playback control and exchange floating real-time emoji reactions (❤️, 🔥, 🎵, ⚡).
 - **Auto-Reconnection Watchdog**: Silent heartbeat checks automatically restore dropped mobile connections in the background without user intervention.
 
@@ -70,17 +97,44 @@ Whether you are looking for classic rock legends, viral Bollywood melodies, expl
 
 ---
 
+## ⌨️ Keyboard Shortcuts
+
+| Shortcut | Action |
+| :--- | :--- |
+| `Cmd + K` / `Ctrl + K` or `/` | Open Instant Search & Filters modal |
+| `Space` | Toggle Play / Pause |
+| `Right Arrow` (`→`) | Skip to Next Song in Playlist |
+| `Left Arrow` (`←`) | Return to Previous Song |
+| `Esc` | Close search modal / player view |
+
+---
+
 ## 💖 Support & Sponsor
 
 If you enjoy **Nothing to Listen to** and want to support ongoing server-free development, new features, and daily music sync pipelines, consider becoming a sponsor!
 
 <div align="center">
 
+<!-- Official GitHub Sponsors Card Embed -->
 <iframe src="https://github.com/sponsors/kaushalboii/card" title="Sponsor kaushalboii" height="225" width="600" style="border: 0;"></iframe>
 
 <br/>
 
-[![Sponsor kaushalboii](https://img.shields.io/badge/Sponsor_%E2%9D%A4_kaushalboii-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/kaushalboii)
+<!-- Interactive Visual Sponsor Card -->
+<table align="center">
+  <tr>
+    <td align="center" style="padding: 24px; border: 1px solid #30363d; border-radius: 12px; background: #0d1117;">
+      <a href="https://github.com/sponsors/kaushalboii" target="_blank">
+        <img src="https://github.com/kaushalboii.png" width="96" height="96" style="border-radius: 50%; box-shadow: 0 4px 14px rgba(0,0,0,0.4);" alt="kaushalboii" />
+        <br />
+        <br />
+        <img src="https://img.shields.io/badge/Sponsor_%E2%9D%A4_kaushalboii-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white" height="38" alt="Sponsor kaushalboii" />
+      </a>
+      <p style="margin-top: 12px; color: #8b949e; font-size: 14px;"><strong>Support Nothing to Listen to & open-source music innovation</strong></p>
+      <p style="color: #8b949e; font-size: 13px; max-width: 500px;">Your sponsorship powers ad-free streaming, low-data mobile optimizations, real-time shared Jam audio sync, and automated daily music release pipelines.</p>
+    </td>
+  </tr>
+</table>
 
 </div>
 
@@ -170,9 +224,11 @@ This project is open source and available under the terms of the [MIT License](L
 
 ---
 
-## 📬 Contact & Feedback
+<div align="center">
+
+### 📬 Contact & Feedback
 
 For questions, feedback, or suggestions:  
-📧 **Email**: [contact.nothingtolisten@gmail.com](mailto:contact.nothingtolisten@gmail.com)  
-🐙 **GitHub**: [@kaushalboii](https://github.com/kaushalboii)  
-💖 **Sponsor**: [github.com/sponsors/kaushalboii](https://github.com/sponsors/kaushalboii)
+📧 **Email**: [contact.nothingtolisten@gmail.com](mailto:contact.nothingtolisten@gmail.com) · 🐙 **GitHub**: [@kaushalboii](https://github.com/kaushalboii) · 💖 **Sponsor**: [github.com/sponsors/kaushalboii](https://github.com/sponsors/kaushalboii)
+
+</div>

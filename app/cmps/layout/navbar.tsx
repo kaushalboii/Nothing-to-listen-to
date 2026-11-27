@@ -17,6 +17,14 @@ import { ThemeToggle } from './theme'
 
 export const Navbar = () => {
   const {
+    activeTrack,
+    isPlaying,
+    playerOpen,
+    isMinimized,
+    isDocked,
+    setPlayerOpen,
+    setIsMinimized,
+    setIsDocked,
     settingsOpen,
     toggleSettingsOpen,
     aboutOpen,
@@ -34,6 +42,14 @@ export const Navbar = () => {
     hasFavorites,
     canChangeTheme,
   } = useShallowState((state) => ({
+    activeTrack: state.activeTrack,
+    isPlaying: state.isPlaying,
+    playerOpen: state.playerOpen,
+    isMinimized: state.isMinimized,
+    isDocked: state.isDocked,
+    setPlayerOpen: state.setPlayerOpen,
+    setIsMinimized: state.setIsMinimized,
+    setIsDocked: state.setIsDocked,
     settingsOpen: state.settingsOpen,
     toggleSettingsOpen: state.toggleSettingsOpen,
     aboutOpen: state.aboutOpen,
@@ -56,18 +72,121 @@ export const Navbar = () => {
       state.preset === VOROFORCE_PRESET.mobile,
   }))
 
+  const handleDiscClick = () => {
+    if (!activeTrack) return
+    if (!playerOpen) {
+      setPlayerOpen(true)
+      setIsMinimized(false)
+      setIsDocked(false)
+      return
+    }
+    if (!isMinimized) {
+      setIsMinimized(true)
+      return
+    }
+    if (isDocked) {
+      setIsDocked(false)
+      setIsMinimized(false)
+    } else {
+      setIsMinimized(false)
+    }
+  }
+
   const buttonClassnames =
     '!size-6 [&_svg]:!size-4 lg:!size-8 lg:[&_svg]:!size-5 pointer-events-auto rounded-full cursor-pointer'
 
   return (
-    <div className='pointer-events-none fixed inset-x-0 bottom-0 z-10 flex w-full flex-row items-center justify-between gap-1 p-3 md:top-0 md:bottom-auto md:z-60 md:px-9 md:py-9'>
-      <div className='pointer-events-auto flex select-none items-center gap-2.5'>
-        <div className='flex size-7 items-center justify-center rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-500 shadow-sm lg:size-8'>
-          <Disc3 className='size-4 animate-[spin_8s_linear_infinite]' />
-        </div>
-        <span className='hidden font-black text-foreground/90 text-xs tracking-tight sm:inline-block md:text-sm'>
-          Nothing to listen to
-        </span>
+    <div className='pointer-events-none fixed inset-x-0 bottom-0 z-50 flex w-full flex-row items-center justify-between gap-1 p-3 md:top-0 md:bottom-auto md:z-60 md:px-9 md:py-9'>
+      <div className='pointer-events-auto flex select-none items-center gap-2'>
+        <button
+          type='button'
+          onClick={handleDiscClick}
+          title={
+            activeTrack
+              ? `${activeTrack.title} - ${activeTrack.artist} (${!playerOpen || isMinimized ? 'Click to expand player' : 'Click to minimize'})`
+              : 'Nothing to listen to'
+          }
+          className={cn(
+            'group flex select-none items-center gap-2 rounded-full p-1 transition-all duration-200 outline-none -m-1 text-left',
+            activeTrack
+              ? 'cursor-pointer hover:bg-amber-500/10 active:scale-95'
+              : 'cursor-default',
+          )}
+        >
+          {/* Animated Amber / Yellow CD Icon with Cover & Grooves */}
+          <div
+            className={cn(
+              'relative flex size-7 shrink-0 items-center justify-center rounded-full border transition-all duration-300 lg:size-8 overflow-hidden shadow-sm',
+              activeTrack
+                ? 'border-amber-500/70 bg-neutral-900 shadow-[0_0_12px_rgba(245,158,11,0.4)]'
+                : 'border-amber-500/30 bg-amber-500/10 text-amber-500',
+            )}
+          >
+            {activeTrack?.cover ? (
+              <>
+                <img
+                  src={activeTrack.cover}
+                  alt={activeTrack.title}
+                  className={cn(
+                    'size-full rounded-full object-cover',
+                    isPlaying ? 'animate-[spin_4s_linear_infinite]' : 'opacity-90',
+                  )}
+                />
+                <div className='absolute size-2 rounded-full border border-amber-500/70 bg-neutral-950/90' />
+                <div className='absolute size-1 rounded-full bg-amber-500' />
+              </>
+            ) : (
+              <Disc3
+                className={cn(
+                  'size-4 text-amber-500',
+                  isPlaying
+                    ? 'animate-[spin_4s_linear_infinite]'
+                    : activeTrack
+                      ? ''
+                      : 'animate-[spin_8s_linear_infinite]',
+                )}
+              />
+            )}
+
+            {/* Glowing pulse ring when playing */}
+            {isPlaying && (
+              <span className='pointer-events-none absolute -inset-0.5 animate-ping rounded-full border border-amber-500/40 opacity-40' />
+            )}
+          </div>
+
+          {/* Scrolling Song Title Ticker when activeTrack exists */}
+          {activeTrack ? (
+            <div className='flex flex-col min-w-0 max-w-[125px] xs:max-w-[165px] sm:max-w-[210px] md:max-w-[260px] overflow-hidden'>
+              <div className='relative w-full overflow-hidden whitespace-nowrap mask-fade-edges'>
+                <div
+                  className={cn(
+                    'flex w-max gap-6 will-change-transform',
+                    isPlaying
+                      ? 'animate-[marquee_12s_linear_infinite]'
+                      : '[animation-play-state:paused]',
+                  )}
+                >
+                  <span className='font-bold text-xs text-amber-400 group-hover:text-amber-300'>
+                    {activeTrack.title} • {activeTrack.artist}
+                  </span>
+                  <span
+                    className='font-bold text-xs text-amber-400 group-hover:text-amber-300'
+                    aria-hidden='true'
+                  >
+                    {activeTrack.title} • {activeTrack.artist}
+                  </span>
+                </div>
+              </div>
+              <span className='truncate font-medium text-[10px] text-muted-foreground leading-tight'>
+                {isPlaying ? 'Playing' : 'Paused'} • {!playerOpen || isMinimized ? 'Tap to expand' : 'Tap to minimize'}
+              </span>
+            </div>
+          ) : (
+            <span className='hidden font-black text-foreground/90 text-xs tracking-tight sm:inline-block md:text-sm'>
+              Nothing to listen to
+            </span>
+          )}
+        </button>
       </div>
       <div className='flex flex-row items-center gap-1.5'>
         <Button

@@ -1,4 +1,5 @@
 import {
+  ArrowDownToLine,
   ChevronDown,
   ChevronUp,
   Disc3,
@@ -39,7 +40,10 @@ export const MusicPlayer = () => {
     activeTrack,
     playerOpen,
     isMinimized,
+    isDocked,
     setIsMinimized,
+    setIsDocked,
+    setStoreIsPlaying,
     stopTrack,
     playlist,
     playlistIndex,
@@ -58,7 +62,10 @@ export const MusicPlayer = () => {
     activeTrack: state.activeTrack,
     playerOpen: state.playerOpen,
     isMinimized: state.isMinimized,
+    isDocked: state.isDocked,
     setIsMinimized: state.setIsMinimized,
+    setIsDocked: state.setIsDocked,
+    setStoreIsPlaying: state.setIsPlaying,
     stopTrack: state.stopTrack,
     playlist: state.playlist,
     playlistIndex: state.playlistIndex,
@@ -90,6 +97,26 @@ export const MusicPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
+
+  // Sync playback status with global store so navbar CD can reflect it
+  useEffect(() => {
+    setStoreIsPlaying(isPlaying)
+  }, [isPlaying, setStoreIsPlaying])
+
+  // Mobile swipe down to minimize gesture handler
+  const touchStartY = useRef<number | null>(null)
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartY.current = e.touches[0].clientY
+  }
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartY.current !== null) {
+      const deltaY = e.changedTouches[0].clientY - touchStartY.current
+      if (deltaY > 50) {
+        setIsMinimized(true)
+      }
+      touchStartY.current = null
+    }
+  }
 
   // Manage Blob URL memory cleanup
   const prevBlobUrlRef = useRef<string | null>(null)
@@ -531,41 +558,41 @@ export const MusicPlayer = () => {
     !isJamConnected || jamRole === 'host' || allowGuestControl
 
   const togglePlayPause = () => {
-    const audio = audioRef.current
-    if (!audio) return
-    if (audio.paused) {
-      void audio.play()
-      if (isJamConnected && canControlJam) {
-        jamService.broadcastPlay(audio.currentTime)
+    if (streamMode === 'audio') {
+      const audio = audioRef.current
+      if (!audio) return
+      if (audio.paused) {
+        void audio.play()
+        if (isJamConnected && canControlJam) {
+          jamService.broadcastPlay(audio.currentTime)
+        }
+      } else {
+        audio.pause()
+        if (isJamConnected && canControlJam) {
+          jamService.broadcastPause(audio.currentTime)
+        }
       }
-    } else {
-      audio.pause()
-      if (isJamConnected && canControlJam) {
-        jamService.broadcastPause(audio.currentTime)
+    } else if (streamMode === 'youtube') {
+      if (iframeRef.current?.contentWindow) {
+        try {
+          iframeRef.current.contentWindow.postMessage(
+            JSON.stringify({
+              event: 'command',
+              func: isPlaying ? 'pauseVideo' : 'playVideo',
+              args: [],
+            }),
+            '*',
+          )
+          setIsPlaying(!isPlaying)
+        } catch (_) {}
       }
     }
   }
 
-  return (
-    <div
-      className={cn(
-        'pointer-events-auto fixed z-70 overflow-hidden shadow-2xl transition-all duration-300 ease-out',
-        isMinimized
-          ? 'right-2 bottom-2 left-2 rounded-2xl border border-border bg-background/95 p-3 backdrop-blur-xl sm:right-4 sm:bottom-4 sm:left-4 md:right-8 md:left-auto md:w-[480px]'
-          : 'right-2 bottom-2 left-2 rounded-2xl border border-border bg-background/95 p-3 backdrop-blur-xl sm:right-4 sm:bottom-4 sm:left-4 sm:p-4 md:right-8 md:left-auto md:w-[480px]',
-      )}
-    >
-      {/* Partner Floating Reaction Notification */}
-      {remoteReaction && (
-        <div
-          key={remoteReaction.id}
-          className='-top-10 pointer-events-none absolute right-6 z-50 flex animate-bounce items-center gap-1.5 rounded-full border border-amber-500/40 bg-background/95 px-3 py-1 shadow-xl backdrop-blur-md'
-        >
-          <span className='text-lg leading-none'>{remoteReaction.emoji}</span>
-          <span className='font-bold text-[10px] text-amber-500'>Partner</span>
-        </div>
-      )}
+  if (!playerOpen || !activeTrack) return null
 
+  return (
+    <>
       {/* Hidden native HTML5 audio element for seamless background & lockscreen playback */}
       {streamMode === 'audio' && audioUrl && (
         <audio
@@ -591,208 +618,424 @@ export const MusicPlayer = () => {
         />
       )}
 
-      {/* Player Header / Controls Bar */}
-      <div className='flex items-center justify-between gap-3'>
-        <div className='flex min-w-0 items-center gap-3'>
-          <div className='relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-neutral-700 bg-neutral-900 text-amber-500 shadow-md'>
-            {activeTrack.cover ? (
-              <img
-                src={activeTrack.cover}
-                alt={activeTrack.title}
-                className={cn(
-                  'size-full object-cover',
-                  (streamMode === 'youtube' || isPlaying) &&
-                    'animate-[spin_8s_linear_infinite]',
-                )}
-              />
-            ) : (
-              <Disc3
-                className={cn(
-                  'size-6',
-                  (streamMode === 'youtube' || isPlaying) &&
-                    'animate-[spin_4s_linear_infinite]',
-                )}
-              />
-            )}
-          </div>
-
-          <div className='flex min-w-0 flex-col'>
-            <div className='flex min-w-0 items-center gap-1.5'>
-              <p className='truncate font-black text-foreground text-sm leading-tight'>
-                {activeTrack.title}
-              </p>
-              {playlist && playlist.length > 1 && (
-                <span className='shrink-0 rounded-full bg-amber-500/10 px-1.5 py-0.5 font-bold text-[10px] text-amber-500'>
-                  {playlistIndex + 1}/{playlist.length}
-                </span>
-              )}
-              {isOfflineCached && (
-                <span
-                  className='inline-flex shrink-0 items-center gap-0.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-1.5 py-0.2 font-bold text-[9px] text-emerald-500'
-                  title='Lossless & Offline Cached (Zero Network Usage)'
-                >
-                  <Zap className='size-2.5 text-emerald-400' />
-                  <span>Cached</span>
-                </span>
-              )}
+      {/* Floating Mini Player Capsule (shown when minimized and not docked) */}
+      {isMinimized && !isDocked && (
+        <div
+          className={cn(
+            'pointer-events-auto fixed z-60 transition-all duration-300 ease-out',
+            // Mobile: sits at bottom-16, safe above the bottom navbar!
+            // Desktop: sits at bottom-6 right-8 w-96!
+            'right-3 bottom-16 left-3 rounded-2xl border border-amber-500/40 bg-background/95 p-2 shadow-2xl backdrop-blur-xl ring-1 ring-amber-500/20 sm:right-4 sm:bottom-18 sm:left-auto sm:w-88 md:right-8 md:bottom-6 md:w-96',
+          )}
+        >
+          {/* Partner Floating Reaction Notification */}
+          {remoteReaction && (
+            <div
+              key={remoteReaction.id}
+              className='-top-8 pointer-events-none absolute right-4 z-50 flex animate-bounce items-center gap-1.5 rounded-full border border-amber-500/40 bg-background/95 px-2.5 py-0.5 shadow-xl backdrop-blur-md'
+            >
+              <span className='text-sm leading-none'>{remoteReaction.emoji}</span>
+              <span className='font-bold text-[9px] text-amber-500'>Partner</span>
             </div>
-            <p className='truncate font-semibold text-primary text-xs'>
-              {activeTrack.artist}
-            </p>
+          )}
+
+          <div className='flex items-center justify-between gap-2.5'>
+            {/* Tappable album & title to expand */}
+            <button
+              type='button'
+              onClick={() => setIsMinimized(false)}
+              className='group flex min-w-0 flex-1 items-center gap-2.5 cursor-pointer text-left outline-none'
+              title='Click to expand full player'
+            >
+              <div className='relative flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-neutral-700 bg-neutral-900 text-amber-500 shadow-md'>
+                {activeTrack.cover ? (
+                  <img
+                    src={activeTrack.cover}
+                    alt={activeTrack.title}
+                    className={cn(
+                      'size-full rounded-full object-cover',
+                      isPlaying && 'animate-[spin_4s_linear_infinite]',
+                    )}
+                  />
+                ) : (
+                  <Disc3
+                    className={cn(
+                      'size-5 text-amber-500',
+                      isPlaying && 'animate-[spin_4s_linear_infinite]',
+                    )}
+                  />
+                )}
+                <div className='absolute size-1.5 rounded-full border border-amber-500/60 bg-neutral-950' />
+              </div>
+
+              <div className='flex min-w-0 flex-1 flex-col overflow-hidden'>
+                <div className='relative w-full overflow-hidden whitespace-nowrap mask-fade-edges'>
+                  <div
+                    className={cn(
+                      'flex w-max gap-6 will-change-transform',
+                      isPlaying
+                        ? 'animate-[marquee_12s_linear_infinite]'
+                        : '[animation-play-state:paused]',
+                    )}
+                  >
+                    <span className='font-bold text-xs text-foreground group-hover:text-amber-400 transition-colors'>
+                      {activeTrack.title} • {activeTrack.artist}
+                    </span>
+                    <span
+                      className='font-bold text-xs text-foreground group-hover:text-amber-400 transition-colors'
+                      aria-hidden='true'
+                    >
+                      {activeTrack.title} • {activeTrack.artist}
+                    </span>
+                  </div>
+                </div>
+                <div className='flex items-center gap-1.5 text-[10px] text-muted-foreground'>
+                  {isOfflineCached && (
+                    <span className='inline-flex items-center gap-0.5 text-emerald-400 font-semibold'>
+                      <Zap className='size-2.5' /> Cached
+                    </span>
+                  )}
+                  <span>Tap to expand</span>
+                </div>
+              </div>
+            </button>
+
+            {/* Floating Controls */}
+            <div className='flex shrink-0 items-center gap-1'>
+              <Button
+                size='icon'
+                variant='ghost'
+                className='size-8 cursor-pointer rounded-full bg-primary text-primary-foreground hover:bg-primary/90'
+                onClick={togglePlayPause}
+                title={isPlaying ? 'Pause' : 'Play'}
+              >
+                {isPlaying ? (
+                  <Pause className='size-3.5' />
+                ) : (
+                  <Play className='ml-0.5 size-3.5' />
+                )}
+              </Button>
+
+              {playlist && playlist.length > 1 && (
+                <Button
+                  size='icon'
+                  variant='ghost'
+                  className='size-7 cursor-pointer rounded-full hover:bg-primary/10'
+                  onClick={nextTrack}
+                  title='Next Track'
+                >
+                  <SkipForward className='size-3.5' />
+                </Button>
+              )}
+
+              <Button
+                size='icon'
+                variant='ghost'
+                className='size-7 cursor-pointer rounded-full hover:bg-primary/10'
+                onClick={() => setIsMinimized(false)}
+                title='Expand Player'
+              >
+                <ChevronUp className='size-4' />
+              </Button>
+
+              <Button
+                size='icon'
+                variant='ghost'
+                className='size-7 cursor-pointer rounded-full hover:bg-primary/10 text-muted-foreground'
+                onClick={() => setIsDocked(true)}
+                title='Dock into bottom CD'
+              >
+                <ArrowDownToLine className='size-3.5' />
+              </Button>
+
+              <Button
+                size='icon'
+                variant='ghost'
+                className='size-7 cursor-pointer rounded-full hover:bg-destructive/10 hover:text-destructive'
+                onClick={stopTrack}
+                title='Stop Playback'
+              >
+                <X className='size-4' />
+              </Button>
+            </div>
           </div>
         </div>
+      )}
 
-        {/* Action Controls */}
-        <div className='flex shrink-0 items-center gap-1'>
-          {isJamConnected && (
-            <button
-              type='button'
-              onClick={toggleJamModalOpen}
-              className='mr-1 flex cursor-pointer items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/15 px-2 py-0.5 font-bold text-[10px] text-emerald-500 transition-colors hover:bg-emerald-500/25'
-              title={`In Jam Session (${jamRoomCode})${jamLatency ? ` • ${jamLatency}ms` : ''}`}
-            >
-              <Radio className='size-3 animate-pulse text-emerald-400' />
-              <span className='hidden sm:inline'>Synced</span>
-              <span>2/2</span>
-            </button>
+      {/* Full Expanded Player Modal (shown when not minimized) */}
+      {!isMinimized && (
+        <div
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          className={cn(
+            'pointer-events-auto fixed z-70 overflow-hidden shadow-2xl transition-all duration-300 ease-out',
+            'right-2 bottom-2 left-2 rounded-2xl border border-border bg-background/95 p-3 backdrop-blur-xl sm:right-4 sm:bottom-4 sm:left-4 sm:p-4 md:right-8 md:left-auto md:w-[480px]',
           )}
-
-          {isJamReconnecting && (
-            <button
-              type='button'
-              onClick={toggleJamModalOpen}
-              className='mr-1 flex animate-pulse cursor-pointer items-center gap-1 rounded-full border border-amber-500/30 bg-amber-500/15 px-2 py-0.5 font-bold text-[10px] text-amber-500 transition-colors hover:bg-amber-500/25'
-              title='Reconnecting to partner...'
-            >
-              <Loader2 className='size-3 animate-spin text-amber-400' />
-              <span className='hidden sm:inline'>Reconnecting</span>
-            </button>
-          )}
-
-          {streamMode === 'audio' && (
-            <Button
-              size='icon'
-              variant='ghost'
-              className='size-8 cursor-pointer rounded-full bg-primary text-primary-foreground hover:bg-primary/90'
-              onClick={togglePlayPause}
-              title={isPlaying ? 'Pause' : 'Play'}
-            >
-              {isPlaying ? (
-                <Pause className='size-4' />
-              ) : (
-                <Play className='ml-0.5 size-4' />
-              )}
-            </Button>
-          )}
-
-          {playlist && playlist.length > 1 && (
-            <>
-              <Button
-                size='icon'
-                variant='ghost'
-                className='size-7 cursor-pointer rounded-full hover:bg-primary/10'
-                onClick={prevTrack}
-                title='Previous Track'
-              >
-                <SkipBack className='size-3.5' />
-              </Button>
-              <Button
-                size='icon'
-                variant='ghost'
-                className='size-7 cursor-pointer rounded-full hover:bg-primary/10'
-                onClick={nextTrack}
-                title='Next Track'
-              >
-                <SkipForward className='size-3.5' />
-              </Button>
-            </>
-          )}
-
-          <a
-            href={directYtWatchUrl}
-            target='_blank'
-            rel='noreferrer'
-            className='inline-flex size-7 cursor-pointer items-center justify-center rounded-full bg-red-600/10 text-red-600 transition-colors hover:bg-red-600/20'
-            title='Watch on YouTube'
+        >
+          {/* Mobile swipe-down pull handle */}
+          <div
+            className='-mt-1 mb-2 flex w-full cursor-pointer justify-center py-1 sm:hidden'
+            onClick={() => setIsMinimized(true)}
+            title='Swipe down or tap to minimize'
           >
-            <Youtube className='size-4' />
-          </a>
+            <div className='h-1 w-10 rounded-full bg-muted-foreground/30 hover:bg-muted-foreground/50 transition-colors' />
+          </div>
 
-          {streamMode === 'youtube' && (
-            <Button
-              size='icon'
-              variant='ghost'
-              className='size-7 cursor-pointer rounded-full'
-              onClick={() => setIsMinimized(!isMinimized)}
-              title={isMinimized ? 'Expand Video' : 'Minimize Player'}
+          {/* Partner Floating Reaction Notification */}
+          {remoteReaction && (
+            <div
+              key={remoteReaction.id}
+              className='-top-10 pointer-events-none absolute right-6 z-50 flex animate-bounce items-center gap-1.5 rounded-full border border-amber-500/40 bg-background/95 px-3 py-1 shadow-xl backdrop-blur-md'
             >
-              {isMinimized ? (
-                <ChevronUp className='size-4' />
-              ) : (
+              <span className='text-lg leading-none'>{remoteReaction.emoji}</span>
+              <span className='font-bold text-[10px] text-amber-500'>Partner</span>
+            </div>
+          )}
+
+          {/* Player Header / Controls Bar */}
+          <div className='flex items-center justify-between gap-3'>
+            <div className='flex min-w-0 items-center gap-3'>
+              <div className='relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-neutral-700 bg-neutral-900 text-amber-500 shadow-md'>
+                {activeTrack.cover ? (
+                  <img
+                    src={activeTrack.cover}
+                    alt={activeTrack.title}
+                    className={cn(
+                      'size-full object-cover',
+                      (streamMode === 'youtube' || isPlaying) &&
+                        'animate-[spin_8s_linear_infinite]',
+                    )}
+                  />
+                ) : (
+                  <Disc3
+                    className={cn(
+                      'size-6',
+                      (streamMode === 'youtube' || isPlaying) &&
+                        'animate-[spin_4s_linear_infinite]',
+                    )}
+                  />
+                )}
+              </div>
+
+              <div className='flex min-w-0 flex-col'>
+                <div className='flex min-w-0 items-center gap-1.5'>
+                  <p className='truncate font-black text-foreground text-sm leading-tight'>
+                    {activeTrack.title}
+                  </p>
+                  {playlist && playlist.length > 1 && (
+                    <span className='shrink-0 rounded-full bg-amber-500/10 px-1.5 py-0.5 font-bold text-[10px] text-amber-500'>
+                      {playlistIndex + 1}/{playlist.length}
+                    </span>
+                  )}
+                  {isOfflineCached && (
+                    <span
+                      className='inline-flex shrink-0 items-center gap-0.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-1.5 py-0.2 font-bold text-[9px] text-emerald-500'
+                      title='Lossless & Offline Cached (Zero Network Usage)'
+                    >
+                      <Zap className='size-2.5 text-emerald-400' />
+                      <span>Cached</span>
+                    </span>
+                  )}
+                </div>
+                <p className='truncate font-semibold text-primary text-xs'>
+                  {activeTrack.artist}
+                </p>
+              </div>
+            </div>
+
+            {/* Action Controls */}
+            <div className='flex shrink-0 items-center gap-1'>
+              {isJamConnected && (
+                <button
+                  type='button'
+                  onClick={toggleJamModalOpen}
+                  className='mr-1 flex cursor-pointer items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/15 px-2 py-0.5 font-bold text-[10px] text-emerald-500 transition-colors hover:bg-emerald-500/25'
+                  title={`In Jam Session (${jamRoomCode})${jamLatency ? ` • ${jamLatency}ms` : ''}`}
+                >
+                  <Radio className='size-3 animate-pulse text-emerald-400' />
+                  <span className='hidden sm:inline'>Synced</span>
+                  <span>2/2</span>
+                </button>
+              )}
+
+              {isJamReconnecting && (
+                <button
+                  type='button'
+                  onClick={toggleJamModalOpen}
+                  className='mr-1 flex animate-pulse cursor-pointer items-center gap-1 rounded-full border border-amber-500/30 bg-amber-500/15 px-2 py-0.5 font-bold text-[10px] text-amber-500 transition-colors hover:bg-amber-500/25'
+                  title='Reconnecting to partner...'
+                >
+                  <Loader2 className='size-3 animate-spin text-amber-400' />
+                  <span className='hidden sm:inline'>Reconnecting</span>
+                </button>
+              )}
+
+              {streamMode === 'audio' && (
+                <Button
+                  size='icon'
+                  variant='ghost'
+                  className='size-8 cursor-pointer rounded-full bg-primary text-primary-foreground hover:bg-primary/90'
+                  onClick={togglePlayPause}
+                  title={isPlaying ? 'Pause' : 'Play'}
+                >
+                  {isPlaying ? (
+                    <Pause className='size-4' />
+                  ) : (
+                    <Play className='ml-0.5 size-4' />
+                  )}
+                </Button>
+              )}
+
+              {playlist && playlist.length > 1 && (
+                <>
+                  <Button
+                    size='icon'
+                    variant='ghost'
+                    className='size-7 cursor-pointer rounded-full hover:bg-primary/10'
+                    onClick={prevTrack}
+                    title='Previous Track'
+                  >
+                    <SkipBack className='size-3.5' />
+                  </Button>
+                  <Button
+                    size='icon'
+                    variant='ghost'
+                    className='size-7 cursor-pointer rounded-full hover:bg-primary/10'
+                    onClick={nextTrack}
+                    title='Next Track'
+                  >
+                    <SkipForward className='size-3.5' />
+                  </Button>
+                </>
+              )}
+
+              <a
+                href={directYtWatchUrl}
+                target='_blank'
+                rel='noreferrer'
+                className='inline-flex size-7 cursor-pointer items-center justify-center rounded-full bg-red-600/10 text-red-600 transition-colors hover:bg-red-600/20'
+                title='Watch on YouTube'
+              >
+                <Youtube className='size-4' />
+              </a>
+
+              {/* Dedicated Minimize Button (always available for 1-tap minimize on mobile & desktop) */}
+              <Button
+                size='icon'
+                variant='ghost'
+                className='size-7 cursor-pointer rounded-full hover:bg-primary/10'
+                onClick={() => setIsMinimized(true)}
+                title='Minimize Player'
+              >
                 <ChevronDown className='size-4' />
-              )}
-            </Button>
+              </Button>
+
+              <Button
+                size='icon'
+                variant='ghost'
+                className='size-7 cursor-pointer rounded-full hover:bg-destructive/10 hover:text-destructive'
+                onClick={stopTrack}
+                title='Stop Playback'
+              >
+                <X className='size-4' />
+              </Button>
+            </div>
+          </div>
+
+          {/* Loading Indicator while resolving direct stream */}
+          {streamMode === 'resolving' && (
+            <div className='mt-3 flex items-center justify-center gap-2 rounded-xl bg-muted/40 py-3 text-muted-foreground text-xs'>
+              <Loader2 className='size-4 animate-spin text-primary' />
+              <span>Starting audio stream...</span>
+            </div>
           )}
 
-          <Button
-            size='icon'
-            variant='ghost'
-            className='size-7 cursor-pointer rounded-full hover:bg-destructive/10 hover:text-destructive'
-            onClick={stopTrack}
-            title='Stop Playback'
-          >
-            <X className='size-4' />
-          </Button>
-        </div>
-      </div>
+          {/* Scrubbable Audio Seek Bar (100% Ad-Free Direct Audio) */}
+          {streamMode === 'audio' && (
+            <div className='mt-3 flex items-center gap-2.5'>
+              <span className='w-9 font-medium text-[11px] text-muted-foreground tabular-nums'>
+                {formatTime(currentTime)}
+              </span>
+              <input
+                type='range'
+                min={0}
+                max={duration || 100}
+                value={Math.min(currentTime, duration || 100)}
+                onChange={(e) => {
+                  const nextTime = Number(e.target.value)
+                  setCurrentTime(nextTime)
+                  if (audioRef.current) {
+                    audioRef.current.currentTime = nextTime
+                  }
+                  if (isJamConnected && canControlJam) {
+                    jamService.broadcastSeek(nextTime)
+                  }
+                }}
+                aria-label='Seek audio position'
+                className='h-1.5 flex-1 cursor-pointer appearance-none rounded-full bg-muted accent-primary'
+              />
+              <span className='w-9 text-right font-medium text-[11px] text-muted-foreground tabular-nums'>
+                {formatTime(duration)}
+              </span>
+            </div>
+          )}
 
-      {/* Loading Indicator while resolving direct stream */}
-      {streamMode === 'resolving' && (
-        <div className='mt-3 flex items-center justify-center gap-2 rounded-xl bg-muted/40 py-3 text-muted-foreground text-xs'>
-          <Loader2 className='size-4 animate-spin text-primary' />
-          <span>Starting audio stream...</span>
+          {/* Cross-platform Listen Links */}
+          <div className='mt-2.5 flex flex-wrap items-center justify-between gap-1.5 border-border/40 border-t pt-2 text-xs'>
+            <span className='flex shrink-0 items-center gap-1 font-semibold text-[0.7rem] text-muted-foreground'>
+              <Volume2 className='size-3 animate-pulse text-emerald-500' />
+              Listen:
+            </span>
+            <div className='flex flex-wrap items-center justify-end gap-1.5'>
+              <a
+                href={spotifyUrl}
+                target='_blank'
+                rel='noreferrer'
+                className='inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 font-semibold text-[11px] text-emerald-600 transition-colors hover:bg-emerald-500/20 dark:text-emerald-400'
+              >
+                Spotify
+                <ExternalLink className='size-2.5' />
+              </a>
+              <a
+                href={appleMusicUrl}
+                target='_blank'
+                rel='noreferrer'
+                className='inline-flex shrink-0 items-center gap-1 rounded-full bg-pink-500/10 px-2 py-0.5 font-semibold text-[11px] text-pink-600 transition-colors hover:bg-pink-500/20 dark:text-pink-400'
+              >
+                Apple Music
+                <ExternalLink className='size-2.5' />
+              </a>
+              <a
+                href={ytMusicUrl}
+                target='_blank'
+                rel='noreferrer'
+                className='inline-flex shrink-0 items-center gap-1 rounded-full bg-red-500/10 px-2 py-0.5 font-semibold text-[11px] text-red-600 transition-colors hover:bg-red-500/20 dark:text-red-400'
+              >
+                YouTube
+                <ExternalLink className='size-2.5' />
+              </a>
+              <a
+                href={jiosaavnUrl}
+                target='_blank'
+                rel='noreferrer'
+                className='inline-flex shrink-0 items-center gap-1 rounded-full bg-teal-500/10 px-2 py-0.5 font-semibold text-[11px] text-teal-600 transition-colors hover:bg-teal-500/20 dark:text-teal-400'
+              >
+                JioSaavn
+                <ExternalLink className='size-2.5' />
+              </a>
+            </div>
+          </div>
         </div>
       )}
 
-      {/* Scrubbable Audio Seek Bar (100% Ad-Free Direct Audio) */}
-      {streamMode === 'audio' && (
-        <div className='mt-3 flex items-center gap-2.5'>
-          <span className='w-9 font-medium text-[11px] text-muted-foreground tabular-nums'>
-            {formatTime(currentTime)}
-          </span>
-          <input
-            type='range'
-            min={0}
-            max={duration || 100}
-            value={Math.min(currentTime, duration || 100)}
-            onChange={(e) => {
-              const nextTime = Number(e.target.value)
-              setCurrentTime(nextTime)
-              if (audioRef.current) {
-                audioRef.current.currentTime = nextTime
-              }
-              if (isJamConnected && canControlJam) {
-                jamService.broadcastSeek(nextTime)
-              }
-            }}
-            aria-label='Seek audio position'
-            className='h-1.5 flex-1 cursor-pointer appearance-none rounded-full bg-muted accent-primary'
-          />
-          <span className='w-9 text-right font-medium text-[11px] text-muted-foreground tabular-nums'>
-            {formatTime(duration)}
-          </span>
-        </div>
-      )}
-
-      {/* YouTube Fallback Embed (only used automatically if track isn't in audio catalog) */}
+      {/* Persistent YouTube Fallback Embed (mounted off-screen when minimized so music doesn't stop) */}
       {streamMode === 'youtube' && (
         <div
           className={cn(
-            'relative mt-3 overflow-hidden rounded-xl bg-black transition-all duration-300',
-            {
-              'h-48 opacity-100 sm:h-56 md:h-64': !isMinimized,
-              'pointer-events-none mt-0 h-0 opacity-0': isMinimized,
-            },
+            'overflow-hidden rounded-xl bg-black transition-all duration-300',
+            !isMinimized
+              ? 'fixed z-71 right-4 bottom-20 left-4 sm:right-6 sm:bottom-24 sm:left-auto sm:w-[448px] md:right-10 md:bottom-24 md:w-[448px] h-48 sm:h-56'
+              : 'pointer-events-none fixed -left-[9999px] h-1 w-1 opacity-0',
           )}
         >
           <iframe
@@ -808,52 +1051,6 @@ export const MusicPlayer = () => {
           />
         </div>
       )}
-
-      {/* Cross-platform Listen Links */}
-      <div className='mt-2.5 flex flex-wrap items-center justify-between gap-1.5 border-border/40 border-t pt-2 text-xs'>
-        <span className='flex shrink-0 items-center gap-1 font-semibold text-[0.7rem] text-muted-foreground'>
-          <Volume2 className='size-3 animate-pulse text-emerald-500' />
-          Listen:
-        </span>
-        <div className='flex flex-wrap items-center justify-end gap-1.5'>
-          <a
-            href={spotifyUrl}
-            target='_blank'
-            rel='noreferrer'
-            className='inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 font-semibold text-[11px] text-emerald-600 transition-colors hover:bg-emerald-500/20 dark:text-emerald-400'
-          >
-            Spotify
-            <ExternalLink className='size-2.5' />
-          </a>
-          <a
-            href={appleMusicUrl}
-            target='_blank'
-            rel='noreferrer'
-            className='inline-flex shrink-0 items-center gap-1 rounded-full bg-pink-500/10 px-2 py-0.5 font-semibold text-[11px] text-pink-600 transition-colors hover:bg-pink-500/20 dark:text-pink-400'
-          >
-            Apple Music
-            <ExternalLink className='size-2.5' />
-          </a>
-          <a
-            href={ytMusicUrl}
-            target='_blank'
-            rel='noreferrer'
-            className='inline-flex shrink-0 items-center gap-1 rounded-full bg-red-500/10 px-2 py-0.5 font-semibold text-[11px] text-red-600 transition-colors hover:bg-red-500/20 dark:text-red-400'
-          >
-            YouTube
-            <ExternalLink className='size-2.5' />
-          </a>
-          <a
-            href={jiosaavnUrl}
-            target='_blank'
-            rel='noreferrer'
-            className='inline-flex shrink-0 items-center gap-1 rounded-full bg-teal-500/10 px-2 py-0.5 font-semibold text-[11px] text-teal-600 transition-colors hover:bg-teal-500/20 dark:text-teal-400'
-          >
-            JioSaavn
-            <ExternalLink className='size-2.5' />
-          </a>
-        </div>
-      </div>
-    </div>
+    </>
   )
 }

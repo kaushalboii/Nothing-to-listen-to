@@ -30,11 +30,15 @@ export interface PlayerSlice {
   activeTrack: ActiveTrack | null
   playerOpen: boolean
   isMinimized: boolean
+  isPlaying: boolean
+  isDocked: boolean
   playlist: ActiveTrack[]
   playlistIndex: number
   setActiveTrack: (track: ActiveTrack | null) => void
   setPlayerOpen: (open: boolean) => void
   setIsMinimized: (minimized: boolean) => void
+  setIsPlaying: (isPlaying: boolean) => void
+  setIsDocked: (docked: boolean) => void
   playTrack: (track: ActiveTrack) => void
   playPlaylist: (tracks: ActiveTrack[], startIndex?: number) => void
   nextTrack: () => void
@@ -51,17 +55,24 @@ export const createPlayerSlice: StateCreator<
   activeTrack: null,
   playerOpen: false,
   isMinimized: false,
+  isPlaying: false,
+  isDocked: false,
   playlist: [],
   playlistIndex: 0,
   setActiveTrack: (activeTrack) => set({ activeTrack }),
   setPlayerOpen: (playerOpen) => set({ playerOpen }),
-  setIsMinimized: (isMinimized) => set({ isMinimized }),
+  setIsMinimized: (isMinimized) =>
+    set({ isMinimized, ...(isMinimized ? {} : { isDocked: false }) }),
+  setIsPlaying: (isPlaying) => set({ isPlaying }),
+  setIsDocked: (isDocked) => set({ isDocked }),
   playTrack: (track) => {
     maybeBroadcastTrack(track, [track], 0)
     set({
       activeTrack: track,
       playerOpen: true,
       isMinimized: false,
+      isDocked: false,
+      isPlaying: true,
       playlist: [track],
       playlistIndex: 0,
     })
@@ -77,6 +88,8 @@ export const createPlayerSlice: StateCreator<
       activeTrack: currentTrack,
       playerOpen: true,
       isMinimized: false,
+      isDocked: false,
+      isPlaying: true,
     })
   },
   nextTrack: () => {
@@ -111,6 +124,9 @@ export const createPlayerSlice: StateCreator<
     set({
       activeTrack: null,
       playerOpen: false,
+      isMinimized: false,
+      isDocked: false,
+      isPlaying: false,
       playlist: [],
       playlistIndex: 0,
     })

@@ -374,6 +374,7 @@ We express our gratitude to the original creators for open-sourcing their force-
 This project is open source and available under the terms of the [MIT License](LICENSE.md).
 
 For detailed technical design, feature guides, or contribution instructions, see:
+- [Privacy Policy](PRIVACY.md)
 - [Architecture Guide](docs/ARCHITECTURE.md)
 - [Feature Breakdown](docs/FEATURES.md)
 - [Contributing Guidelines](CONTRIBUTING.md)

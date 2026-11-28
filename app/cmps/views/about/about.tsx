@@ -42,6 +42,30 @@ const ToggleVoroforceDevMode = () => {
 
 const items = [
   {
+    title: 'Privacy & Data Policy',
+    content: (
+      <>
+        <p>
+          <b>Zero Tracking &amp; Privacy-First</b>: We do not collect, harvest,
+          track, or sell any personally identifiable information. There are no
+          user accounts, no third-party tracking pixels, and no analytics
+          cookies.
+        </p>
+        <br />
+        <p>
+          All your settings, custom playlists, and favorite records are stored
+          100% locally in your browser's local device storage and never leave
+          your computer or phone. For full legal and technical disclosures, read
+          our complete{' '}
+          <Link href='https://github.com/kaushalboii/Nothing-to-listen-to/blob/main/PRIVACY.md'>
+            Privacy Policy
+          </Link>
+          .
+        </p>
+      </>
+    ),
+  },
+  {
     title: 'Copyright Disclaimer',
     content: (
       <>
@@ -228,7 +252,15 @@ export const About = () => {
         <div className='flex h-18 w-full bg-gradient-to-t from-0% from-transparent via-60% via-background to-100% to-background max-md:hidden' />
       }
       footer={
-        <div className='flex w-full flex-row justify-between gap-3 bg-gradient-to-b from-0% from-transparent via-60% via-background to-100% to-background p-6 pt-24 md:gap-6'>
+        <div className='flex w-full flex-row items-center justify-between gap-3 bg-gradient-to-b from-0% from-transparent via-60% via-background to-100% to-background p-6 pt-24 md:gap-6'>
+          <a
+            href='https://github.com/kaushalboii/Nothing-to-listen-to/blob/main/PRIVACY.md'
+            target='_blank'
+            rel='noreferrer noopener'
+            className='font-medium text-muted-foreground text-xs transition-colors hover:text-foreground underline underline-offset-2'
+          >
+            Privacy Policy
+          </a>
           <Button variant='outline' onClick={() => setOpen(false)}>
             Close
           </Button>

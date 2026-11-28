@@ -55,9 +55,10 @@ function cleanText(value: string): string {
     .replace(/\s*\([^)]*\)/g, ' ')
     .replace(/\s*\[[^\]]*\]/g, ' ')
     .replace(
-      /\s*[-–|]\s*(telugu|tamil|hindi|malayalam|kannada|punjabi|official).*$/i,
+      /\s*[-–|]\s*(original motion picture soundtrack|soundtrack|telugu|tamil|hindi|malayalam|kannada|punjabi|official|ep|single|album|the 2nd album|part\.\d+).*$/i,
       '',
     )
+    .replace(/\s*[-–|]\s*.*$/, '')
     .replace(/\s+/g, ' ')
     .trim()
 }

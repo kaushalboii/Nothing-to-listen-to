@@ -58,14 +58,21 @@ export function CoreSettingsWidget({
     setPlayedIntro: state.setPlayedIntro,
   }))
 
-  const deviceClass = isDefined(storeDeviceClass)
-    ? storeDeviceClass
-    : estimatedDeviceClass
-
   const isSmallScreen = useMediaQuery(down('md'))
   const isMobile =
     isSmallScreen ||
     (typeof window !== 'undefined' && window.innerWidth < 768)
+
+  const rawDeviceClass = isDefined(storeDeviceClass)
+    ? storeDeviceClass
+    : estimatedDeviceClass
+
+  // Self-heal stale mobile class on desktop screens
+  const deviceClass =
+    !isMobile &&
+    (rawDeviceClass === DEVICE_CLASS.mobile || !isDefined(rawDeviceClass))
+      ? DEVICE_CLASS.high
+      : rawDeviceClass
 
   const [preset, setPreset] = useState<VOROFORCE_PRESET | undefined>(
     storePreset && (!isMobile ? storePreset !== VOROFORCE_PRESET.mobile : true)

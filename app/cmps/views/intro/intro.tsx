@@ -26,10 +26,10 @@ export const Intro = () => {
   }))
 
   const [initialPreset] = useState(preset)
+  const isMobile = isMobileDevice()
 
   useEffect(() => {
     const state = store.getState()
-    const isMobile = isMobileDevice()
 
     if (
       !isDefined(state.deviceClass) ||
@@ -134,7 +134,7 @@ export const Intro = () => {
           <div
             className={cn(
               'fade-in mx-auto flex w-full max-w-xs animate-in flex-col items-center gap-2.5 pb-6 duration-500',
-              !isMobileDevice && 'md:hidden',
+              !isMobile && 'md:hidden',
             )}
           >
             <Button
@@ -158,7 +158,7 @@ export const Intro = () => {
           </div>
 
           <FadeTransition
-            visible={!isMobileDevice && !hasDeviceClass}
+            visible={!isMobile && !hasDeviceClass}
             className='absolute inset-x-0 bottom-12 w-full duration-1000 max-md:hidden max-lg:landscape:bottom-6'
             transitionOptions={{
               timeout: 500,
@@ -168,7 +168,7 @@ export const Intro = () => {
             <MoviesDatasetLicenseInfo />
           </FadeTransition>
           <FadeTransition
-            visible={!isMobileDevice && hasDeviceClass && !preset}
+            visible={!isMobile && hasDeviceClass && !preset}
             className='absolute inset-x-0 bottom-12 w-full duration-1000 max-md:hidden max-lg:landscape:bottom-6'
             transitionOptions={{
               timeout: 500,

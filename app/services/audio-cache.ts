@@ -113,14 +113,13 @@ class AudioCacheManager {
 
       const response = await fetch(url, {
         signal: controller.signal,
-        headers: { Range: 'bytes=0-' },
       }).finally(() => clearTimeout(timeout))
 
-      if (!response.ok && response.status !== 206) {
+      if (!response.ok) {
         return false
       }
 
-      // Clone response for caching
+      // Clone response for caching (CacheStorage requires standard HTTP 200)
       await cache.put(url, response.clone())
 
       // Update manifest and enforce LRU storage limit

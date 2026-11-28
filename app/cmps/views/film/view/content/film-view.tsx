@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import config from '../../../../../config'
 import { useMediaQuery } from '../../../../../hooks/use-media-query'
 import { store } from '../../../../../store'
+import type { ActiveTrack } from '../../../../../store/player-slice'
 import { down, orientation } from '../../../../../utils/mq'
 import { cn } from '../../../../../utils/tw'
 import type { Film } from '../../../../../vf'
@@ -43,6 +44,33 @@ export const FilmView = ({
   }, [film])
 
   const isIOS = useMemo(() => ua.getOS()?.name === 'iOS', [ua])
+
+  const albumTracks: ActiveTrack[] = useMemo(() => {
+    if (!film) return []
+    if (film.tracks && film.tracks.length > 0) {
+      return film.tracks.map((t) => ({
+        title: t.title,
+        artist: film.artist,
+        albumTitle: film.title,
+        cover: film.poster,
+        videoId: t.videoId || film.youtubeId,
+        audioUrl: t.audioUrl || film.audioUrl,
+        query: `${film.artist} ${t.title}`,
+      }))
+    }
+    const firstTitle = film.title
+    return [
+      {
+        title: firstTitle,
+        artist: film.artist,
+        albumTitle: film.title,
+        cover: film.poster,
+        videoId: film.youtubeId,
+        audioUrl: film.audioUrl,
+        query: `${film.artist} ${firstTitle}`,
+      },
+    ]
+  }, [film])
 
   if (!film) return null
 
@@ -189,17 +217,7 @@ export const FilmView = ({
                 <Button
                   size='sm'
                   onClick={() => {
-                    const firstTrack = film.tracks?.[0]
-                    const firstTitle = firstTrack?.title ?? film.title
-                    store.getState().playTrack({
-                      title: firstTitle,
-                      artist: film.artist,
-                      albumTitle: film.title,
-                      cover: film.poster,
-                      videoId: firstTrack?.videoId || film.youtubeId,
-                      audioUrl: firstTrack?.audioUrl || film.audioUrl,
-                      query: `${film.artist} ${firstTitle}`,
-                    })
+                    store.getState().playPlaylist(albumTracks, 0)
                   }}
                   className='cursor-pointer gap-2 bg-red-600 font-bold text-white shadow-md transition-all hover:bg-red-700'
                 >
@@ -240,15 +258,19 @@ export const FilmView = ({
                       key={track.number}
                       className='group/track flex cursor-pointer items-center justify-between rounded-lg border border-transparent p-2 transition-all hover:border-border/60 hover:bg-muted/70'
                       onClick={() => {
-                        store.getState().playTrack({
-                          title: track.title,
-                          artist: film.artist,
-                          albumTitle: film.title,
-                          cover: film.poster,
-                          videoId: track.videoId || film.youtubeId,
-                          audioUrl: track.audioUrl || film.audioUrl,
-                          query: `${film.artist} ${track.title}`,
-                        })
+                        const trackIdx = film.tracks
+                          ? film.tracks.findIndex(
+                              (t) =>
+                                t.number === track.number ||
+                                t.title === track.title,
+                            )
+                          : 0
+                        store
+                          .getState()
+                          .playPlaylist(
+                            albumTracks,
+                            trackIdx >= 0 ? trackIdx : 0,
+                          )
                       }}
                     >
                       <div className='mr-2 flex items-center gap-2.5 truncate'>

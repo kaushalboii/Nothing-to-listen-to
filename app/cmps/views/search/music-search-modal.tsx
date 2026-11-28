@@ -45,6 +45,7 @@ export const MusicSearchModal = () => {
     filmBatches,
     setFilm,
     playTrack,
+    playPlaylist,
     setReportOpen,
     setReportInitialQuery,
     voroforce,
@@ -54,6 +55,7 @@ export const MusicSearchModal = () => {
     filmBatches: state.filmBatches,
     setFilm: state.setFilm,
     playTrack: state.playTrack,
+    playPlaylist: state.playPlaylist,
     setReportOpen: state.setReportOpen,
     setReportInitialQuery: state.setReportInitialQuery,
     voroforce: state.voroforce,
@@ -230,17 +232,30 @@ export const MusicSearchModal = () => {
 
   const handlePlayDirect = (e: React.MouseEvent, record: any) => {
     e.stopPropagation()
-    const firstTrack = record.tracks?.[0]
-    const firstTitle = firstTrack?.title ?? record.title
-    playTrack({
-      title: firstTitle,
-      artist: record.artist,
-      albumTitle: record.title,
-      cover: record.artwork || record.poster_path,
-      videoId: firstTrack?.videoId || record.youtube_id,
-      audioUrl: firstTrack?.audioUrl || record.audio_url,
-      query: `${record.artist} ${firstTitle}`,
-    })
+    if (Array.isArray(record.tracks) && record.tracks.length > 0) {
+      const tracks = record.tracks.map((t: any) => ({
+        title: t.title,
+        artist: record.artist,
+        albumTitle: record.title,
+        cover: record.artwork || record.poster_path,
+        videoId: t.videoId || record.youtube_id,
+        audioUrl: t.audioUrl || record.audio_url,
+        query: `${record.artist} ${t.title}`,
+      }))
+      playPlaylist(tracks, 0)
+    } else {
+      const firstTrack = record.tracks?.[0]
+      const firstTitle = firstTrack?.title ?? record.title
+      playTrack({
+        title: firstTitle,
+        artist: record.artist,
+        albumTitle: record.title,
+        cover: record.artwork || record.poster_path,
+        videoId: firstTrack?.videoId || record.youtube_id,
+        audioUrl: firstTrack?.audioUrl || record.audio_url,
+        query: `${record.artist} ${firstTitle}`,
+      })
+    }
     handleSelectRecord(record)
   }
 

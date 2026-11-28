@@ -1,6 +1,7 @@
 import { HeartOff, HeartPlus, ListPlus, Play, Plus } from 'lucide-react'
 import type { DialogProps } from 'vaul'
 import { store, useShallowState } from '../../../../../store'
+import type { ActiveTrack } from '../../../../../store/player-slice'
 import { cn } from '../../../../../utils/tw'
 import type { Film, VoroforceCell } from '../../../../../vf'
 import { CustomLinks } from '../../../../common/custom-links'
@@ -168,17 +169,30 @@ export const FilmViewFooter = ({
         <Button
           size='sm'
           onClick={() => {
-            const firstTrack = film.tracks?.[0]
-            const firstTitle = firstTrack?.title ?? film.title
-            store.getState().playTrack({
-              title: firstTitle,
-              artist: film.artist,
-              albumTitle: film.title,
-              cover: film.poster,
-              videoId: firstTrack?.videoId || film.youtubeId,
-              audioUrl: firstTrack?.audioUrl || film.audioUrl,
-              query: `${film.artist} ${firstTitle}`,
-            })
+            if (!film) return
+            const albumTracks: ActiveTrack[] =
+              film.tracks && film.tracks.length > 0
+                ? film.tracks.map((t) => ({
+                    title: t.title,
+                    artist: film.artist,
+                    albumTitle: film.title,
+                    cover: film.poster,
+                    videoId: t.videoId || film.youtubeId,
+                    audioUrl: t.audioUrl || film.audioUrl,
+                    query: `${film.artist} ${t.title}`,
+                  }))
+                : [
+                    {
+                      title: film.title,
+                      artist: film.artist,
+                      albumTitle: film.title,
+                      cover: film.poster,
+                      videoId: film.youtubeId,
+                      audioUrl: film.audioUrl,
+                      query: `${film.artist} ${film.title}`,
+                    },
+                  ]
+            store.getState().playPlaylist(albumTracks, 0)
           }}
           className='pointer-events-auto flex h-8 cursor-pointer items-center gap-1.5 rounded-lg bg-red-600 px-3.5 font-bold text-white text-xs shadow-md hover:bg-red-700'
         >

@@ -15,7 +15,7 @@ export enum VOROFORCE_PRESET {
 }
 
 export const DEFAULT_VOROFORCE_PRESET: VOROFORCE_PRESET =
-  VOROFORCE_PRESET.minimal
+  VOROFORCE_PRESET.depth
 
 export enum DEVICE_CLASS {
   mobile = 0,
@@ -42,16 +42,14 @@ export const PRESET_ITEMS: PresetItems = [
     name: 'Mobile',
   },
   {
-    id: VOROFORCE_PRESET.minimal,
-    name: 'Minimal',
-    // videoSrc: '/tmp.webm',
-    recommendedDeviceClass: DEVICE_CLASS.low,
-  },
-  {
     id: VOROFORCE_PRESET.depth,
     name: 'Depth',
-    // videoSrc: '/tmp.webm',
     recommendedDeviceClass: DEVICE_CLASS.high,
+  },
+  {
+    id: VOROFORCE_PRESET.minimal,
+    name: 'Minimal',
+    recommendedDeviceClass: DEVICE_CLASS.low,
   },
   [
     {

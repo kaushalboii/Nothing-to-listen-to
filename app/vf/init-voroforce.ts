@@ -31,12 +31,16 @@ export const initVoroforce = ({
       state.setDeviceClass(DEVICE_CLASS.mobile)
     }
   } else {
-    // Desktop: auto-recover if state was previously stuck on mobile
-    if (state.preset === VOROFORCE_PRESET.mobile || !state.preset) {
-      state.setPreset(VOROFORCE_PRESET.minimal)
+    // Desktop: auto-recover if state was previously stuck on mobile or minimal
+    if (
+      state.preset === VOROFORCE_PRESET.mobile ||
+      state.preset === VOROFORCE_PRESET.minimal ||
+      !state.preset
+    ) {
+      state.setPreset(VOROFORCE_PRESET.depth)
     }
-    if (!state.cellLimit) {
-      state.setCellLimit(CELL_LIMIT.xs)
+    if (!state.cellLimit || state.cellLimit > CELL_LIMIT.min) {
+      state.setCellLimit(CELL_LIMIT.min)
     }
     if (state.deviceClass === DEVICE_CLASS.mobile || !state.deviceClass) {
       state.setDeviceClass(DEVICE_CLASS.high)

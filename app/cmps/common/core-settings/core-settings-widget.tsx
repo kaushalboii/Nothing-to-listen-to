@@ -10,7 +10,6 @@ import { cn } from '../../../utils/tw'
 import { VOROFORCE_PRESET } from '../../../vf'
 import {
   CELL_LIMIT,
-  CELL_LIMIT_ITEMS,
   DEVICE_CLASS,
   PRESET_ITEMS,
   type PresetItem,
@@ -88,24 +87,14 @@ export function CoreSettingsWidget({
               isDefined(p.recommendedDeviceClass)
                 ? p.recommendedDeviceClass <= deviceClass
                 : true,
-            )?.id ?? VOROFORCE_PRESET.minimal
-          : VOROFORCE_PRESET.minimal),
+            )?.id ?? VOROFORCE_PRESET.depth
+          : VOROFORCE_PRESET.depth),
   )
 
   const [cellLimit, setCellLimit] = useState<CELL_LIMIT | undefined>(
     storeCellLimit && (!isMobile ? true : storeCellLimit <= CELL_LIMIT.xs)
       ? storeCellLimit
-      : (isMobile
-        ? CELL_LIMIT.xs
-        : isDefined(deviceClass) && deviceClass !== DEVICE_CLASS.mobile
-          ? CELL_LIMIT_ITEMS.findLast(
-              (p) =>
-                !p.doNotRecommend &&
-                (isDefined(p.recommendedDeviceClass)
-                  ? p.recommendedDeviceClass <= deviceClass
-                  : true),
-            )?.value ?? CELL_LIMIT.xs
-          : CELL_LIMIT.xs),
+      : CELL_LIMIT.min,
   )
 
   const [isDirty, setIsDirty] = useState(false)

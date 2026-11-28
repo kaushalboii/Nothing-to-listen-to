@@ -65,17 +65,14 @@ export function CoreSettingsWidget({
   const isSmallScreen = useMediaQuery(down('md'))
   const isMobile =
     isSmallScreen ||
-    deviceClass === DEVICE_CLASS.mobile ||
-    (typeof window !== 'undefined' &&
-      ('ontouchstart' in window ||
-        (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0) ||
-        window.innerWidth < 768))
+    (typeof window !== 'undefined' && window.innerWidth < 768)
 
   const [preset, setPreset] = useState<VOROFORCE_PRESET | undefined>(
-    storePreset ??
-      (isMobile
+    storePreset && (!isMobile ? storePreset !== VOROFORCE_PRESET.mobile : true)
+      ? storePreset
+      : (isMobile
         ? VOROFORCE_PRESET.mobile
-        : isDefined(deviceClass)
+        : isDefined(deviceClass) && deviceClass !== DEVICE_CLASS.mobile
           ? (
               PRESET_ITEMS.filter(
                 (p) => !Array.isArray(p) && p.id !== VOROFORCE_PRESET.mobile,
@@ -84,23 +81,24 @@ export function CoreSettingsWidget({
               isDefined(p.recommendedDeviceClass)
                 ? p.recommendedDeviceClass <= deviceClass
                 : true,
-            )?.id
-          : undefined),
+            )?.id ?? VOROFORCE_PRESET.minimal
+          : VOROFORCE_PRESET.minimal),
   )
 
   const [cellLimit, setCellLimit] = useState<CELL_LIMIT | undefined>(
-    storeCellLimit ??
-      (isMobile
+    storeCellLimit && (!isMobile ? true : storeCellLimit <= CELL_LIMIT.xs)
+      ? storeCellLimit
+      : (isMobile
         ? CELL_LIMIT.xs
-        : isDefined(deviceClass)
+        : isDefined(deviceClass) && deviceClass !== DEVICE_CLASS.mobile
           ? CELL_LIMIT_ITEMS.findLast(
               (p) =>
                 !p.doNotRecommend &&
                 (isDefined(p.recommendedDeviceClass)
                   ? p.recommendedDeviceClass <= deviceClass
                   : true),
-            )?.value
-          : undefined),
+            )?.value ?? CELL_LIMIT.xs
+          : CELL_LIMIT.xs),
   )
 
   const [isDirty, setIsDirty] = useState(false)

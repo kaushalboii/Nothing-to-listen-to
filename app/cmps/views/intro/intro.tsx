@@ -33,15 +33,17 @@ export const Intro = () => {
 
     if (
       !isDefined(state.deviceClass) ||
-      (isMobile && state.deviceClass !== DEVICE_CLASS.mobile)
+      (isMobile && state.deviceClass !== DEVICE_CLASS.mobile) ||
+      (!isMobile && state.deviceClass === DEVICE_CLASS.mobile)
     ) {
       state.setDeviceClass(
-        isMobile ? DEVICE_CLASS.mobile : DEVICE_CLASS.mid,
+        isMobile ? DEVICE_CLASS.mobile : DEVICE_CLASS.high,
       )
     }
     if (
       !state.preset ||
-      (isMobile && state.preset !== VOROFORCE_PRESET.mobile)
+      (isMobile && state.preset !== VOROFORCE_PRESET.mobile) ||
+      (!isMobile && state.preset === VOROFORCE_PRESET.mobile)
     ) {
       state.setPreset(
         isMobile ? VOROFORCE_PRESET.mobile : VOROFORCE_PRESET.minimal,

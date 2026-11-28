@@ -31,11 +31,15 @@ export const initVoroforce = ({
       state.setDeviceClass(DEVICE_CLASS.mobile)
     }
   } else {
-    if (!state.preset) {
+    // Desktop: auto-recover if state was previously stuck on mobile
+    if (state.preset === VOROFORCE_PRESET.mobile || !state.preset) {
       state.setPreset(VOROFORCE_PRESET.minimal)
     }
     if (!state.cellLimit) {
       state.setCellLimit(CELL_LIMIT.xs)
+    }
+    if (state.deviceClass === DEVICE_CLASS.mobile || !state.deviceClass) {
+      state.setDeviceClass(DEVICE_CLASS.high)
     }
   }
 

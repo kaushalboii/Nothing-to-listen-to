@@ -82,31 +82,30 @@ export enum CELL_LIMIT {
 export const CELL_LIMIT_ITEMS = [
   {
     value: CELL_LIMIT.min,
-    label: '216 (All Unique • No Repeats)',
-    recommendedDeviceClass: DEVICE_CLASS.mobile,
+    label: '216',
   },
   {
     value: CELL_LIMIT.xxs,
-    label: '1,000 (Tiled)',
+    label: '1,000',
   },
   {
     value: CELL_LIMIT.xs,
-    label: '5,000 (Tiled)',
-    recommendedDeviceClass: DEVICE_CLASS.low,
+    label: '5,000',
+    recommendedDeviceClass: DEVICE_CLASS.mobile,
   },
   {
     value: CELL_LIMIT.sm,
-    label: '25,000 (Tiled)',
-    recommendedDeviceClass: DEVICE_CLASS.mid,
+    label: '25,000',
+    recommendedDeviceClass: DEVICE_CLASS.low,
   },
   {
     value: CELL_LIMIT.md,
-    label: '50,000 (Tiled)',
-    recommendedDeviceClass: DEVICE_CLASS.high,
+    label: '50,000',
+    recommendedDeviceClass: DEVICE_CLASS.mid,
   },
   {
     value: CELL_LIMIT.lg,
-    label: '100,000 (Tiled)',
+    label: '100,000',
     recommendedDeviceClass: DEVICE_CLASS.high,
     doNotRecommend: true,
   },

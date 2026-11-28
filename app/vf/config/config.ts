@@ -1,4 +1,4 @@
-import { CELL_LIMIT, VOROFORCE_MODE } from '../consts'
+import { VOROFORCE_MODE } from '../consts'
 import type { VoroforceInstance } from '../types'
 import controls, { controlModeConfigs } from './controls'
 import display from './display'
@@ -31,7 +31,7 @@ export default {
   controls,
   display,
   simulation,
-  cells: CELL_LIMIT.min,
+  cells: 10000,
   multiThreading: {
     enabled: true,
     renderInParallel: true,

@@ -117,14 +117,15 @@ export const getVoroforceConfig = (state: StoreState) => {
 
   config.cells = cellsOverrideParam
     ? Number.parseInt(cellsOverrideParam)
-    : (cellLimit ?? CELL_LIMIT.min)
+    : (cellLimit ?? config.cells)
 
   if (isMobile) {
     const isDesktopModeOnMobile =
       typeof window !== 'undefined' && window.innerWidth >= 768
 
-    // In mobile mode, display all 216 unique albums with 0 repeats
-    const maxCells = isDesktopModeOnMobile ? 2500 : CELL_LIMIT.min
+    // In mobile desktop mode (virtual 980px-1024px viewport), clamp to 2,500 cells and 1.0 DPR
+    // so the mobile GPU doesn't have to shade millions of extra fragments in an emulated desktop viewport
+    const maxCells = isDesktopModeOnMobile ? 2500 : CELL_LIMIT.xs
     const requestedCells = cellsOverrideParam
       ? Number.parseInt(cellsOverrideParam)
       : (cellLimit ?? config.cells)

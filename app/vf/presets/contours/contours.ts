@@ -1,9 +1,5 @@
 import { mediaConfigWithUncompressedSingleVersion } from '../../config/media'
-import {
-  CELL_LIMIT,
-  DEFAULT_VOROFORCE_MODE,
-  VOROFORCE_MODE,
-} from '../../consts'
+import { DEFAULT_VOROFORCE_MODE, VOROFORCE_MODE } from '../../consts'
 import postFrag from './post-contours.frag'
 
 const forceSimulationStepConfigs = {
@@ -60,7 +56,7 @@ const forceSimulationStepConfigs = {
 }
 
 export default {
-  cells: CELL_LIMIT.min,
+  cells: 50000,
   media: mediaConfigWithUncompressedSingleVersion,
   display: {
     scene: {

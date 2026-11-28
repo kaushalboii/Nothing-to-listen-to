@@ -10,6 +10,7 @@ import { cn } from '../../../utils/tw'
 import { VOROFORCE_PRESET } from '../../../vf'
 import {
   CELL_LIMIT,
+  CELL_LIMIT_ITEMS,
   DEVICE_CLASS,
   PRESET_ITEMS,
   type PresetItem,
@@ -92,9 +93,19 @@ export function CoreSettingsWidget({
   )
 
   const [cellLimit, setCellLimit] = useState<CELL_LIMIT | undefined>(
-    storeCellLimit && storeCellLimit === CELL_LIMIT.min
+    storeCellLimit && (!isMobile ? true : storeCellLimit <= CELL_LIMIT.xs)
       ? storeCellLimit
-      : CELL_LIMIT.min,
+      : (isMobile
+        ? CELL_LIMIT.xs
+        : isDefined(deviceClass) && deviceClass !== DEVICE_CLASS.mobile
+          ? CELL_LIMIT_ITEMS.findLast(
+              (p) =>
+                !p.doNotRecommend &&
+                (isDefined(p.recommendedDeviceClass)
+                  ? p.recommendedDeviceClass <= deviceClass
+                  : true),
+            )?.value ?? CELL_LIMIT.xs
+          : CELL_LIMIT.xs),
   )
 
   const [isDirty, setIsDirty] = useState(false)
@@ -115,12 +126,12 @@ export function CoreSettingsWidget({
             <div className='flex flex-col'>
               <span className='font-semibold text-zinc-100'>Mobile Galaxy</span>
               <span className='text-xxs text-zinc-400'>
-                3D Spherical Galaxy (216 unique albums • Zero repeats)
+                3D Spherical Galaxy (5,000 albums)
               </span>
             </div>
           </div>
           <span className='rounded-full bg-amber-500/20 px-2.5 py-1 font-bold text-amber-400 text-xxs'>
-            216 Unique
+            5,000
           </span>
         </div>
       ) : (
@@ -170,10 +181,10 @@ export function CoreSettingsWidget({
             setStorePreset(newPreset)
             setStoreCellLimit(
               isMobile
-                ? CELL_LIMIT.min
+                ? CELL_LIMIT.xs
                 : isDefined(cellLimit)
                   ? cellLimit
-                  : CELL_LIMIT.min,
+                  : CELL_LIMIT.sm,
             )
             setPlayedIntro(true)
             onSubmit?.()

@@ -15,7 +15,7 @@ export enum VOROFORCE_PRESET {
 }
 
 export const DEFAULT_VOROFORCE_PRESET: VOROFORCE_PRESET =
-  VOROFORCE_PRESET.depth
+  VOROFORCE_PRESET.minimal
 
 export enum DEVICE_CLASS {
   mobile = 0,

@@ -31,11 +31,15 @@ export const initVoroforce = ({
       state.setDeviceClass(DEVICE_CLASS.mobile)
     }
   } else {
-    // Desktop: auto-recover if state was previously stuck on mobile
-    if (state.preset === VOROFORCE_PRESET.mobile || !state.preset) {
-      state.setPreset(VOROFORCE_PRESET.depth)
+    // Desktop: auto-recover if state was previously stuck on mobile or depth with distorted balloon cells
+    if (
+      state.preset === VOROFORCE_PRESET.mobile ||
+      !state.preset ||
+      state.preset === VOROFORCE_PRESET.depth
+    ) {
+      state.setPreset(VOROFORCE_PRESET.minimal)
     }
-    if (!state.cellLimit) {
+    if (!state.cellLimit || state.cellLimit === CELL_LIMIT.min) {
       state.setCellLimit(CELL_LIMIT.xs)
     }
     if (state.deviceClass === DEVICE_CLASS.mobile || !state.deviceClass) {

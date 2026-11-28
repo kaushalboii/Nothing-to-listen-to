@@ -43,13 +43,15 @@ export const Intro = () => {
     if (
       !state.preset ||
       (isMobile && state.preset !== VOROFORCE_PRESET.mobile) ||
-      (!isMobile && state.preset === VOROFORCE_PRESET.mobile)
+      (!isMobile &&
+        (state.preset === VOROFORCE_PRESET.mobile ||
+          state.preset === VOROFORCE_PRESET.depth))
     ) {
       state.setPreset(
-        isMobile ? VOROFORCE_PRESET.mobile : VOROFORCE_PRESET.depth,
+        isMobile ? VOROFORCE_PRESET.mobile : VOROFORCE_PRESET.minimal,
       )
     }
-    if (!state.cellLimit) {
+    if (!state.cellLimit || state.cellLimit === CELL_LIMIT.min) {
       state.setCellLimit(CELL_LIMIT.xs)
     }
 

@@ -7,12 +7,10 @@ import { useShallowState } from '../../../store'
 import { isDefined } from '../../../utils/misc'
 import { down } from '../../../utils/mq'
 import { cn } from '../../../utils/tw'
-import { VOROFORCE_PRESET } from '../../../vf'
 import {
   CELL_LIMIT,
   DEVICE_CLASS,
-  PRESET_ITEMS,
-  type PresetItem,
+  VOROFORCE_PRESET,
 } from '../../../vf/consts'
 import { Button, type ButtonProps } from '../../ui/button'
 import { AnimateDimensionsChange } from '../animate-dimensions-change'
@@ -78,23 +76,13 @@ export function CoreSettingsWidget({
       ? storePreset
       : (isMobile
         ? VOROFORCE_PRESET.mobile
-        : isDefined(deviceClass) && deviceClass !== DEVICE_CLASS.mobile
-          ? (
-              PRESET_ITEMS.filter(
-                (p) => !Array.isArray(p) && p.id !== VOROFORCE_PRESET.mobile,
-              ) as PresetItem[]
-            ).find((p) =>
-              isDefined(p.recommendedDeviceClass)
-                ? p.recommendedDeviceClass <= deviceClass
-                : true,
-            )?.id ?? VOROFORCE_PRESET.depth
-          : VOROFORCE_PRESET.depth),
+        : VOROFORCE_PRESET.minimal),
   )
 
   const [cellLimit, setCellLimit] = useState<CELL_LIMIT | undefined>(
     storeCellLimit && (!isMobile ? true : storeCellLimit <= CELL_LIMIT.xs)
       ? storeCellLimit
-      : (isMobile ? CELL_LIMIT.xs : CELL_LIMIT.xs),
+      : CELL_LIMIT.xs,
   )
 
   const [isDirty, setIsDirty] = useState(false)
@@ -130,7 +118,8 @@ export function CoreSettingsWidget({
             value={preset}
             onValueChange={(value: VOROFORCE_PRESET) => {
               setPreset(value)
-              setIsDirty(value !== storePreset || cellLimit !== storeCellLimit)
+              setStorePreset(value)
+              setIsDirty(true)
             }}
             deviceClass={deviceClass}
           />
@@ -139,7 +128,8 @@ export function CoreSettingsWidget({
             value={cellLimit}
             onValueChange={(value: CELL_LIMIT) => {
               setCellLimit(value)
-              setIsDirty(preset !== storePreset || value !== storeCellLimit)
+              setStoreCellLimit(value)
+              setIsDirty(true)
             }}
             deviceClass={deviceClass}
           />
@@ -173,7 +163,7 @@ export function CoreSettingsWidget({
                 ? CELL_LIMIT.xs
                 : isDefined(cellLimit)
                   ? cellLimit
-                  : CELL_LIMIT.sm,
+                  : CELL_LIMIT.xs,
             )
             setPlayedIntro(true)
             onSubmit?.()
@@ -182,11 +172,11 @@ export function CoreSettingsWidget({
           disabled={!isMobile && (!isDefined(preset) || !isDefined(cellLimit))}
           {...submitProps}
           className={cn(
-            'w-full cursor-pointer text-lg',
+            'w-full cursor-pointer text-base font-semibold',
             submitProps?.className,
           )}
         >
-          {submitLabel}
+          {submitLabel || 'Apply & Reload Galaxy'}
         </Button>
       </FadeTransition>
     </AnimateDimensionsChange>

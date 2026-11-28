@@ -60,18 +60,26 @@ export const Settings = () => {
       }}
       overlay
       footer={
-        <div className='flex w-full flex-row justify-between gap-3 p-4 md:gap-6 md:p-6'>
-          <Button variant='outline' onClick={() => setOpen(false)}>
-            Close
-          </Button>
+        <div className='flex w-full flex-row items-center justify-between gap-3 p-4 md:gap-6 md:p-6'>
+          <div className='flex items-center gap-2'>
+            <Button variant='outline' onClick={() => setOpen(false)}>
+              Close
+            </Button>
+            <Button
+              variant='outline'
+              onClick={() => {
+                setPlayedIntro(false)
+                reload()
+              }}
+            >
+              Replay Intro
+            </Button>
+          </div>
           <Button
-            variant='outline'
-            onClick={() => {
-              setPlayedIntro(false)
-              reload()
-            }}
+            className='bg-primary font-semibold text-primary-foreground hover:bg-primary/90'
+            onClick={() => window.location.reload()}
           >
-            Replay Intro
+            Apply &amp; Reload Galaxy
           </Button>
         </div>
       }

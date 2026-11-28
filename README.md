@@ -13,7 +13,7 @@
 [![WebGL 2.0](https://img.shields.io/badge/WebGL-2.0_Enabled-00599c?style=for-the-badge&logo=webgl&logoColor=white)](https://www.khronos.org/webgl/)
 [![Tests Passing](https://img.shields.io/badge/Tests-81%2F81_Passing-success?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
 [![Daily Sync](https://img.shields.io/badge/Daily_Sync-Automated_Cron-blueviolet?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/kaushalboii/Nothing-to-listen-to/actions)
-[![License: MIT](https://img.shields.io/badge/License-MIT-f1e05a?style=for-the-badge)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-f1e05a?style=for-the-badge)](LICENSE.md)
 
 <br/>
 
@@ -93,17 +93,21 @@ Whether you're craving classic rock legends, viral Bollywood melodies, explosive
 <div align="center">
   <table align="center" style="border: none; border-collapse: collapse; width: 100%;">
     <tr>
-      <td align="center" width="33%" style="border: none; padding: 6px;">
+      <td align="center" width="25%" style="border: none; padding: 4px;">
         <img src="docs/assets/mobile-player.jpg" alt="Mobile 3D Galaxy & Floating Player" style="border-radius: 10px; border: 1px solid #30363d;" width="100%" />
-        <br/><sub><b>Galaxy & Floating Player</b></sub>
+        <br/><sub><b>Galaxy & Player</b></sub>
       </td>
-      <td align="center" width="33%" style="border: none; padding: 6px;">
+      <td align="center" width="25%" style="border: none; padding: 4px;">
+        <img src="docs/assets/mobile-cell-select.jpg" alt="Tactile Vinyl Cell Selection" style="border-radius: 10px; border: 1px solid #30363d;" width="100%" />
+        <br/><sub><b>Tactile Cell Bulge</b></sub>
+      </td>
+      <td align="center" width="25%" style="border: none; padding: 4px;">
         <img src="docs/assets/mobile-song-modal.jpg" alt="Mobile Song Detail & Streaming Links" style="border-radius: 10px; border: 1px solid #30363d;" width="100%" />
-        <br/><sub><b>Song Detail & Stream Links</b></sub>
+        <br/><sub><b>Song Detail & Links</b></sub>
       </td>
-      <td align="center" width="33%" style="border: none; padding: 6px;">
+      <td align="center" width="25%" style="border: none; padding: 4px;">
         <img src="docs/assets/mobile-navbar-cd.jpg" alt="Minimized Interactive Navbar CD" style="border-radius: 10px; border: 1px solid #30363d;" width="100%" />
-        <br/><sub><b>Minimized Navbar Vinyl CD</b></sub>
+        <br/><sub><b>Minimized Navbar CD</b></sub>
       </td>
     </tr>
   </table>
@@ -367,7 +371,13 @@ We express our gratitude to the original creators for open-sourcing their force-
 ## ⚖️ License & Legal Disclaimer
 
 ### License
-This project is open source and available under the terms of the [MIT License](LICENSE).
+This project is open source and available under the terms of the [MIT License](LICENSE.md).
+
+For detailed technical design, feature guides, or contribution instructions, see:
+- [Architecture Guide](docs/ARCHITECTURE.md)
+- [Feature Breakdown](docs/FEATURES.md)
+- [Contributing Guidelines](CONTRIBUTING.md)
+- [Sponsorship Program](SPONSORS.md)
 
 ### Content & Streaming Disclaimer
 - **Nothing to Listen to** is a non-commercial, educational, and personal open-source project designed for musical discovery.

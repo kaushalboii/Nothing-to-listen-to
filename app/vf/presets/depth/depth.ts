@@ -1,5 +1,9 @@
 import { mediaConfigWithUncompressedSingleVersion } from '../../config/media'
-import { DEFAULT_VOROFORCE_MODE, VOROFORCE_MODE } from '../../consts'
+import {
+  CELL_LIMIT,
+  DEFAULT_VOROFORCE_MODE,
+  VOROFORCE_MODE,
+} from '../../consts'
 import postFrag from './post-depth.frag'
 
 const forceSimulationStepConfigs = {
@@ -57,7 +61,7 @@ const forceSimulationStepConfigs = {
 }
 
 export default {
-  cells: 20000,
+  cells: CELL_LIMIT.min,
   media: mediaConfigWithUncompressedSingleVersion,
   display: {
     scene: {

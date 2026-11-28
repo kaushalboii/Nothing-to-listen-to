@@ -1,6 +1,7 @@
 import { mediaConfigWithUncompressedSingleVersion } from '../../config/media'
+import { CELL_LIMIT } from '../../consts'
 
 export default {
-  cells: 10000,
+  cells: CELL_LIMIT.min,
   media: mediaConfigWithUncompressedSingleVersion,
 }

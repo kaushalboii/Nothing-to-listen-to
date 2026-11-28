@@ -1,5 +1,9 @@
 import { mediaConfigWithUncompressedSingleVersion } from '../../config/media'
-import { DEFAULT_VOROFORCE_MODE, VOROFORCE_MODE } from '../../consts'
+import {
+  CELL_LIMIT,
+  DEFAULT_VOROFORCE_MODE,
+  VOROFORCE_MODE,
+} from '../../consts'
 import postFrag from './post-chaos.frag'
 
 const forceSimulationStepConfigs = {
@@ -85,7 +89,7 @@ const controlsConfig = {
 }
 
 export default {
-  cells: 50000,
+  cells: CELL_LIMIT.min,
   media: mediaConfigWithUncompressedSingleVersion,
   filmPreview: {
     neighborOriginMod: 0.4,

@@ -22,12 +22,14 @@ export function CellLimitSelector({
   deviceClass?: DEVICE_CLASS
 }) {
   const cellLimitItems: SelectorItems = useMemo(() => {
-    return CELL_LIMIT_ITEMS.filter(
-      (cellLimit) =>
-        cellLimit.value !== CELL_LIMIT.min &&
-        (cellLimit.value !== CELL_LIMIT.xxs ||
-          deviceClass === DEVICE_CLASS.mobile),
-    ).map((cellLimit) => {
+    return CELL_LIMIT_ITEMS.filter((cellLimit) => {
+      // 216 Unique (No Repeats) is always available
+      if (cellLimit.value === CELL_LIMIT.min) return true
+      if (deviceClass === DEVICE_CLASS.mobile) {
+        return cellLimit.value <= CELL_LIMIT.xxs
+      }
+      return true
+    }).map((cellLimit) => {
       const hasWarning =
         isDefined(cellLimit.recommendedDeviceClass) &&
         isDefined(deviceClass) &&

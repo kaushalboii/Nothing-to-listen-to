@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      :root {
+        --background: #09090b;
+        --foreground: #fafafa;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #09090b;
+        color: #fafafa;
+        font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        overflow: hidden;
+        overscroll-behavior: none;
+        -webkit-overflow-scrolling: touch;
+      }
+      @keyframes spin-slow {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      @keyframes pulse-subtle {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.6; }
+      }
+      .pre-loader-pulse {
+        animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+      .pre-loader-spin {
+        animation: spin-slow 4s linear infinite;
+      }
+    </style>
+    
+    <!-- SEO Meta Tags -->
+    <title>Nothing to Listen To — Interactive 3D Music Galaxy &amp; Album Discovery</title>
+    <meta name="description" content="Have nothing to listen to? Explore 200+ curated legendary albums, trending hits, and iconic soundtracks in an interactive 3D cosmic vinyl galaxy. Stream ad-free music across Pop, Rock, Tamil, Hindi, and more on Nothing to Listen To." />
+    <meta name="keywords" content="nothing to listen to, nothing to listen to music, theres nothing to listen to, what to listen to, interactive music discovery, 3d music player, voronoi music galaxy, ad free music player, trending albums, vinyl records visualizer, kaushalboii" />
+    <meta name="author" content="kaushalboii" />
+    <link rel="canonical" href="https://kaushalboii.github.io/Nothing-to-listen-to/" />
+    <meta name="google-site-verification" content="DTRY8LJwl4xUQGTpNiozn9aWvCVX-rLGSadQlk8a4YI" />
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Nothing to Listen To — Interactive 3D Music Galaxy" />
+    <meta property="og:description" content="Have nothing to listen to? Explore 200+ legendary records and stream ad-free music across an interactive 3D WebGL cosmic vinyl sphere." />
+    <meta property="og:url" content="https://kaushalboii.github.io/Nothing-to-listen-to/" />
+    <meta property="og:site_name" content="There's nothing to listen to" />
+    <meta property="og:image" content="https://kaushalboii.github.io/Nothing-to-listen-to/og.jpg" />
+    <meta property="og:image:width" content="800" />
+    <meta property="og:image:height" content="800" />
+    <meta property="og:image:alt" content="Interactive music discovery visualization interface" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Nothing to Listen To — Interactive 3D Music Galaxy" />
+    <meta name="twitter:description" content="Have nothing to listen to? Explore 200+ legendary records and stream ad-free music across an interactive 3D WebGL cosmic vinyl sphere." />
+    <meta name="twitter:image" content="https://kaushalboii.github.io/Nothing-to-listen-to/og.jpg" />
+    <meta name="twitter:image:alt" content="Interactive music discovery visualization interface" />
+    
+    <!-- Additional Meta -->
+    <meta name="theme-color" content="#000000" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Nothing to Listen to" />
+    
+    <!-- Robots -->
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
+    <!-- Structured Data (JSON-LD) for Google Rich Results -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://kaushalboii.github.io/Nothing-to-listen-to/#website",
+      "url": "https://kaushalboii.github.io/Nothing-to-listen-to/",
+      "name": "There's Nothing to Listen To",
+      "alternateName": [
+        "Nothing to Listen To",
+        "Nothing to listen to",
+        "Theres Nothing to Listen To",
+        "Nothing-to-listen-to"
+      ],
+      "description": "Interactive 3D WebGL music discovery experience. Explore hundreds of curated albums, trending songs, and iconic soundtracks mapped across a cosmic Voronoi sphere.",
+      "inLanguage": "en-US",
+      "publisher": {
+        "@type": "Person",
+        "name": "kaushalboii",
+        "url": "https://github.com/kaushalboii"
+      }
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://kaushalboii.github.io/Nothing-to-listen-to/#app",
+      "name": "There's Nothing to Listen To",
+      "url": "https://kaushalboii.github.io/Nothing-to-listen-to/",
+      "applicationCategory": "MultimediaApplication",
+      "genre": "Music",
+      "operatingSystem": "All modern browsers (Desktop and Mobile)",
+      "browserRequirements": "Requires WebGL2 capable browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Interactive 3D Voronoi Cosmic Vinyl Sphere",
+        "Ad-Free Direct HD Audio Playback",
+        "Curated Global & Indian Music Albums",
+        "Integrated Links to Spotify, Apple Music, YouTube, and JioSaavn"
+      ]
+    },
+    {
+      "@type": "MusicPlaylist",
+      "@id": "https://kaushalboii.github.io/Nothing-to-listen-to/#playlist",
+      "name": "There's Nothing to Listen To - Curated 3D Vinyl Galaxy",
+      "numTracks": 216,
+      "track": [
+        {
+          "@type": "MusicRecording",
+          "position": 1,
+          "name": "Diviki Diviki (From \"January 12 Vidudala\")",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "G.V. Prakash Kumar, Madhupriya, Haripriya & Anantha Sriram"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 2,
+          "name": "Shape of You",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Ed Sheeran"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 3,
+          "name": "Return Of The Dragon Machi",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Hiphop Tamizha & Fejo"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 4,
+          "name": "Pablo Sandhanam (Background Score)",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Anirudh Ravichander"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 5,
+          "name": "FA FA FA (From \"O.M: Operation Mole\")",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Sai Abhyankkar & Thamizh Aadhavan"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 6,
+          "name": "Fire Song (From \"Kanguva\")",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Anurag Kulkarni, Deepthi Suresh, Devi Sri Prasad & Shree Mani"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 7,
+          "name": "Veezha Veera (From \"OM Chapter 1: Udhiram  - The Blood Wood\") [Tamil]",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Sai Abhyankkar, Tippu & Arun Srinivasan"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 8,
+          "name": "Radhimaa (feat. Sai Smriti) [From \"Think Indie\"]",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Sai Abhyankkar, Nargis Teji, Asma Teji & Vivek"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 9,
+          "name": "Kissik - TELUGU",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Sublahshini"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 10,
+          "name": "Fear Song (From \"Devara Part 1\") - TELUGU",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Anirudh Ravichander & Ramajogayya Sastry"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 11,
+          "name": "Dileep Theme (Instrumental)",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Anirudh Ravichander"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 12,
+          "name": "Ta Takkara (Complex Song)",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Sanjith Hegde, Dhee, Santhosh Narayanan & Ramajogayya Sastry"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 13,
+          "name": "Illuminati (From \"Aavesham\")",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Sushin Shyam, Dabzee & Vinayak Sasikumar"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 14,
+          "name": "Jaana Samjho Na",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Lijo George-Dj Chetas, Aditya Rikhari & Tulsi Kumar"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 15,
+          "name": "Pushpa Pushpa (From \"Pushpa 2 the Rule\") - TELUGU",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Nakash Aziz, Deepak Blue & Chandrabose"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 16,
+          "name": "Chuttamalle (From \"Devara Part 1\")",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Anirudh Ravichander, Shilpa Rao & Ramajogayya Sastry"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 17,
+          "name": "New",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Daya"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 18,
+          "name": "Aye Zindagi",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Shaan"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 19,
+          "name": "Mere Humsafar (Original Score) [Female Version]",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Yashal Shahid"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 20,
+          "name": "As It Was",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Harry Styles"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 21,
+          "name": "COMPLETE",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Austin Blanchfill"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 22,
+          "name": "Pattampoochi (From \"Vishwanath & Sons Tamil\")",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "G.V. Prakash Kumar, Sublahshini & Arunraja Kamaraj"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 23,
+          "name": "Rathinamo (Female Version)",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Saurav Srisan & Tanisha Gnanavel"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 24,
+          "name": "Ooroda Oththa Don",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Sai Abhyankkar, Vangal Pulla Vicky, Thamizh Aadhavan & KK Nagar Gana Jeeva"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 25,
+          "name": "Aeroplane",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Zach Bryan"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 26,
+          "name": "Naanga Naalu Peru",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Sai Abhyankkar, Silambarasan TR, Asal Kolaar & Arun Srinivasan"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 27,
+          "name": "Neelothi",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Sooraj Santhosh, Chinmayi Sripada, Justin Prabhakaran & Sarathi"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 28,
+          "name": "Magale",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Sai Abhyankkar, Harini & Karthik Netha"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 29,
+          "name": "Ala Bolelo (From \"Jailer 2\")",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Anirudh Ravichander & Arunraja Kamaraj"
+          }
+        },
+        {
+          "@type": "MusicRecording",
+          "position": 30,
+          "name": "Hangova (From \"DC\")",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Anirudh Ravichander & Heisenberg"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://kaushalboii.github.io/Nothing-to-listen-to/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is 'There's Nothing to Listen To'?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "'There's Nothing to Listen To' is an interactive 3D WebGL music discovery web application where hundreds of iconic songs and albums are mapped across a dynamic force-directed Voronoi sphere."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is music playback ad-free on There's Nothing to Listen To?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, songs stream directly with high-definition audio with zero commercial ads on both mobile and desktop."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I explore albums in the 3D galaxy?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Move or drag across the cosmic vinyl sphere to browse records, or tap any album to expand its tracklist, view album art, and start listening immediately."
+          }
+        }
+      ]
+    }
+  ]
+}
+    </script>
+    <script type="module" crossorigin src="/Nothing-to-listen-to/assets/app-ymmCP_dA.js"></script>
+    <link rel="modulepreload" crossorigin href="/Nothing-to-listen-to/assets/vendor-icons-DBg1mQ0Z.js">
+    <link rel="modulepreload" crossorigin href="/Nothing-to-listen-to/assets/vendor-radix-BPYCPZbs.js">
+    <link rel="modulepreload" crossorigin href="/Nothing-to-listen-to/assets/vendor-device-2ieqKkRY.js">
+    <link rel="modulepreload" crossorigin href="/Nothing-to-listen-to/assets/vendor-ogl-B334HXXb.js">
+    <link rel="stylesheet" crossorigin href="/Nothing-to-listen-to/assets/app-BiCm6Cah.css">
+  </head>
+  <body class="bg-background">
+        <noscript>
+      <div style="background-color:#09090b;color:#fafafa;padding:2rem;max-width:900px;margin:0 auto;font-family:sans-serif;">
+        <h1>Nothing to Listen To — Interactive 3D Music Galaxy &amp; Album Discovery</h1>
+        <p><strong>Have nothing to listen to?</strong> When endless streaming lists feel repetitive and uninspired, <em>Nothing to Listen To</em> reimagines music discovery. Explore an interactive 3D WebGL universe of over 200 timeless records, trending albums, and legendary soundtracks across Pop, Rock, Tamil, Telugu, Hindi, Malayalam, and Alternative music. Stream songs 100% ad-free directly in your browser.</p>
+
+        <h2>What to Listen to When You Have Nothing to Listen To</h2>
+        <p>Spin through interactive vinyl records that defined generations. From iconic global anthems to trending regional hits, each album pulsates and expands on a tactile 3D Voronoi sphere.</p>
+        
+        <h2>Featured Artists</h2>
+        <p>A.R. Rahman, Anirudh Ravichander, Taylor Swift, Malcolm Todd, Olivia Rodrigo, The Police, Cigarettes After Sex, Sai Abhyankkar, Sushin Shyam, Ed Sheeran, Hiphop Tamizha, Harris Jayaraj, Yuvan Shankar Raja, Gracie Abrams, Billie Eilish, Kendrick Lamar, and many more.</p>
+
+        <h2>Popular Tracks to Discover</h2>
+        <ul>
+          <li><strong>Earrings</strong> — Malcolm Todd</li>
+          <li><strong>Every Breath You Take</strong> — The Police</li>
+          <li><strong>Blank Space</strong> — Taylor Swift</li>
+          <li><strong>Shape of You</strong> — Ed Sheeran</li>
+          <li><strong>Aeroplane (From Scene)</strong> — Sushin Shyam</li>
+          <li><strong>Dude Orchestral Suite</strong> — Sai Abhyankkar</li>
+          <li><strong>FA FA FA</strong> — Sai Abhyankkar &amp; Thamizh Aadhavan</li>
+          <li><strong>Krishnaya Vasudevaya</strong> — Siddharth Amit Bhavsar</li>
+          <li><strong>Pablo Sandhanam Score</strong> — Anirudh Ravichander</li>
+        </ul>
+
+        <h2>About Nothing to Listen To</h2>
+        <p>Created by M. Kaushal Maran (kaushalboii) as an open-source WebGL music visualization. Instead of boring text playlists, interact with a living galaxy of music with seamless multi-platform streaming across Spotify, Apple Music, YouTube, and JioSaavn.</p>
+      </div>
+    </noscript>
+    <div id="root">
+      <div style="position:fixed;inset:0;z-index:50;display:flex;height:100vh;height:100dvh;width:100%;justify-content:center;background-color:#09090b;padding:0 3rem;box-sizing:border-box;">
+        <div style="display:flex;height:100%;flex-direction:column;align-items:stretch;width:100%;max-width:1200px;">
+          <div style="height:33.333%;"></div>
+          <div style="display:flex;height:33.333%;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
+            <h1 style="font-size:2.25rem;line-height:1;font-weight:900;margin:0;color:#fafafa;letter-spacing:-0.025em;">
+              <span>"<i>There's nothing</i></span>
+              <span style="position:relative;display:inline-flex;margin-left:0.35rem;">
+                <i>to listen to</i>"
+              </span>
+            </h1>
+            <p style="margin-top:0.75rem;font-size:0.875rem;color:#a1a1aa;font-weight:500;">
+              Spin through the timeless albums that defined generations.
+            </p>
+          </div>
+          <div style="position:relative;display:flex;height:33.333%;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:3rem;gap:1rem;">
+            <div class="pre-loader-pulse" style="display:flex;align-items:center;gap:0.5rem;color:#71717a;font-size:0.75rem;line-height:1;">
+              <svg class="pre-loader-spin" style="width:18px;height:18px;color:#f59e0b;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 6a6 6 0 0 0 0 12"></path>
+                <circle cx="12" cy="12" r="2" fill="#f59e0b"></circle>
+              </svg>
+              <span>An interactive WebGL galaxy celebrating 60+ years of legendary vinyl &amp; recorded music.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      id="voroforce"
+      class="pointer-events-auto fixed inset-x-0 top-0 h-dvh w-screen"
+      style="position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;touch-action:none;overflow:hidden;"
+    >
+      <canvas class="h-full w-full pointer-events-none" style="width:100%;height:100%;display:block;touch-action:none;"></canvas>
+    </div>
+  </body>
+</html>

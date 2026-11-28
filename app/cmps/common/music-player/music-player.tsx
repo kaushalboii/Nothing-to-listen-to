@@ -9,6 +9,8 @@ import {
   Radio,
   SkipBack,
   SkipForward,
+  Video,
+  VideoOff,
   Volume2,
   X,
   Youtube,
@@ -90,6 +92,7 @@ export const MusicPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
+  const [showVideo, setShowVideo] = useState(false)
 
   // Sync playback status with global store so navbar CD can reflect it
   useEffect(() => {
@@ -287,12 +290,14 @@ export const MusicPlayer = () => {
       setIsPlaying(false)
       setCurrentTime(0)
       setDuration(0)
+      setShowVideo(false)
       return
     }
 
     if (activeTrack.audioUrl) {
       setAudioUrl(activeTrack.audioUrl)
       setStreamMode('audio')
+      setShowVideo(false)
       return
     }
 
@@ -303,6 +308,7 @@ export const MusicPlayer = () => {
     setIsPlaying(false)
     setCurrentTime(0)
     setDuration(0)
+    setShowVideo(false)
 
     void resolveAdFreeAudioStream(activeTrack, controller.signal).then(
       async (resolvedUrl) => {
@@ -467,6 +473,19 @@ export const MusicPlayer = () => {
       try {
         const data =
           typeof event.data === 'string' ? JSON.parse(event.data) : event.data
+
+        // Track playback position & duration from YouTube iframe postMessage
+        if (typeof data?.info?.currentTime === 'number') {
+          setCurrentTime(data.info.currentTime)
+        }
+        if (typeof data?.info?.duration === 'number' && data.info.duration > 0) {
+          setDuration(data.info.duration)
+        }
+        if (data?.info?.playerState === 1) {
+          setIsPlaying(true)
+        } else if (data?.info?.playerState === 2) {
+          setIsPlaying(false)
+        }
 
         const isEnded =
           (data?.event === 'infoDelivery' && data?.info?.playerState === 0) ||
@@ -721,6 +740,15 @@ export const MusicPlayer = () => {
                       <span>Cached</span>
                     </span>
                   )}
+                  {streamMode === 'youtube' && (
+                    <span
+                      className='inline-flex shrink-0 items-center gap-0.5 rounded-full border border-red-500/20 bg-red-500/10 px-1.5 py-0.2 font-bold text-[9px] text-red-500'
+                      title='Streaming via official YouTube music stream'
+                    >
+                      <Youtube className='size-2.5 text-red-500' />
+                      <span>{showVideo ? 'Video' : 'Audio Mode'}</span>
+                    </span>
+                  )}
                 </div>
                 <p className='truncate font-semibold text-primary text-xs'>
                   {activeTrack.artist}
@@ -755,7 +783,7 @@ export const MusicPlayer = () => {
                 </button>
               )}
 
-              {streamMode === 'audio' && (
+              {(streamMode === 'audio' || streamMode === 'youtube') && (
                 <Button
                   size='icon'
                   variant='ghost'
@@ -832,6 +860,31 @@ export const MusicPlayer = () => {
                 </>
               )}
 
+              {streamMode === 'youtube' && (
+                <Button
+                  size='icon'
+                  variant='ghost'
+                  className={cn(
+                    'size-7 cursor-pointer rounded-full transition-all',
+                    showVideo
+                      ? 'bg-red-600/15 text-red-600 hover:bg-red-600/25'
+                      : 'text-muted-foreground hover:bg-primary/10 hover:text-foreground',
+                  )}
+                  onClick={() => setShowVideo(!showVideo)}
+                  title={
+                    showVideo
+                      ? 'Hide Video (Switch to Pure Audio Mode)'
+                      : 'Watch Music Video'
+                  }
+                >
+                  {showVideo ? (
+                    <VideoOff className='size-3.5' />
+                  ) : (
+                    <Video className='size-3.5' />
+                  )}
+                </Button>
+              )}
+
               <a
                 href={directYtWatchUrl}
                 target='_blank'
@@ -886,8 +939,8 @@ export const MusicPlayer = () => {
             </div>
           )}
 
-          {/* Scrubbable Audio Seek Bar (100% Ad-Free Direct Audio) */}
-          {streamMode === 'audio' && (
+          {/* Scrubbable Audio Seek Bar (Direct Audio or YouTube Stream) */}
+          {(streamMode === 'audio' || (streamMode === 'youtube' && duration > 0)) && (
             <div className='mt-3 flex items-center gap-2.5'>
               <span className='w-9 font-medium text-[11px] text-muted-foreground tabular-nums'>
                 {formatTime(currentTime)}
@@ -902,8 +955,22 @@ export const MusicPlayer = () => {
                   if (isJamConnected && !canControlJam) return
                   const nextTime = Number(e.target.value)
                   setCurrentTime(nextTime)
-                  if (audioRef.current) {
+                  if (streamMode === 'audio' && audioRef.current) {
                     audioRef.current.currentTime = nextTime
+                  } else if (
+                    streamMode === 'youtube' &&
+                    iframeRef.current?.contentWindow
+                  ) {
+                    try {
+                      iframeRef.current.contentWindow.postMessage(
+                        JSON.stringify({
+                          event: 'command',
+                          func: 'seekTo',
+                          args: [nextTime, true],
+                        }),
+                        '*',
+                      )
+                    } catch (_) {}
                   }
                   if (isJamConnected && canControlJam) {
                     jamService.broadcastSeek(nextTime)
@@ -971,13 +1038,13 @@ export const MusicPlayer = () => {
         </div>
       )}
 
-      {/* Persistent YouTube Fallback Embed (mounted off-screen when minimized so music doesn't stop) */}
+      {/* Persistent YouTube Fallback Embed (mounted off-screen in audio mode so music plays without visual interruption) */}
       {streamMode === 'youtube' && (
         <div
           className={cn(
             'overflow-hidden rounded-xl bg-black transition-all duration-300',
-            !isMinimized
-              ? 'fixed z-71 right-4 bottom-20 left-4 sm:right-6 sm:bottom-24 sm:left-auto sm:w-[448px] md:right-10 md:bottom-24 md:w-[448px] h-48 sm:h-56'
+            !isMinimized && showVideo
+              ? 'fixed z-71 right-4 bottom-20 left-4 sm:right-6 sm:bottom-24 sm:left-auto sm:w-[448px] md:right-10 md:bottom-24 md:w-[448px] h-48 sm:h-56 shadow-2xl border border-border/60'
               : 'pointer-events-none fixed -left-[9999px] h-1 w-1 opacity-0',
           )}
         >

@@ -11,11 +11,7 @@ export default defineConfig(({ mode }) => {
   return {
     base:
       process.env.BASE_PATH ||
-      (process.env.CF_PAGES || process.env.CLOUDFLARE
-        ? '/'
-        : mode === 'production'
-          ? '/Nothing-to-listen-to/'
-          : '/'),
+      (mode === 'production' ? '/Nothing-to-listen-to/' : '/'),
     plugins: [
       react({}),
       tailwindcss(),

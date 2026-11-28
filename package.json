@@ -4,9 +4,6 @@
 	"private": true,
 	"version": "1.1.0",
 	"type": "module",
-	"engines": {
-		"node": ">=22.12.0"
-	},
 	"scripts": {
 		"dev": "vite --port 3000 --host 0.0.0.0",
 		"build": "tsc -b && vite build && cp dist/index.html dist/404.html && touch dist/.nojekyll",
@@ -83,8 +80,7 @@
 		"vite": "^7.0.6",
 		"vite-bundle-analyzer": "^1.1.0",
 		"vite-plugin-glsl": "^1.5.1",
-		"vitest": "^3.2.4",
-		"wrangler": "^4.26.0"
+		"vitest": "^3.2.4"
 	},
 	"trustedDependencies": [
 		"@biomejs/biome",

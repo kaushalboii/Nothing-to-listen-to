@@ -1,6 +1,41 @@
 [
   {
     "id": 0,
+    "title": "Cindrella Gana",
+    "artist": "Kelithee",
+    "vote_average": 9.9,
+    "vote_count": 35000,
+    "backdrop_path": "https://i.ytimg.com/vi/vduWYzluPbc/hqdefault.jpg",
+    "poster_path": "https://i.ytimg.com/vi/vduWYzluPbc/hqdefault.jpg",
+    "artwork": "https://i.ytimg.com/vi/vduWYzluPbc/hqdefault.jpg",
+    "tagline": "🔥 User Requested & Auto-Verified (2026)",
+    "overview": "User-requested official stream for 'Cindrella Gana' by Kelithee. Verified available on Spotify, Apple Music, and YouTube.",
+    "genres": "English, Trending, Music",
+    "language": "English",
+    "release_year": 2026,
+    "era": "New & Trending (2025-2026)",
+    "trending": true,
+    "youtube_id": "vduWYzluPbc",
+    "spotify_id": "sp_req_1795837582",
+    "apple_music_id": "am_req_1795837582",
+    "tracks": [
+      {
+        "number": 1,
+        "title": "Cindrella Gana",
+        "duration": "3:30",
+        "videoId": "vduWYzluPbc"
+      },
+      {
+        "number": 2,
+        "title": "Cindrella Gana (Official)",
+        "duration": "3:45",
+        "videoId": "vduWYzluPbc"
+      }
+    ],
+    "popularity": 99.8
+  },
+  {
+    "id": 0,
     "title": "Vaa Chellam",
     "artist": "Udit Narayan",
     "vote_average": 9.9,

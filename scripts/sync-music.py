@@ -273,23 +273,31 @@ def scrape_youtube_broad_music():
     candidates = []
     seen_vids = set()
 
-    for term, default_lang in get_broad_yt_search_terms():
+    def fetch_term(item):
+        term, default_lang = item
         url = "https://www.youtube.com/results?search_query=" + urllib.parse.quote(term)
+        term_candidates = []
         try:
             req = urllib.request.Request(url, headers=HEADERS)
-            with urllib.request.urlopen(req, timeout=6) as resp:
+            with urllib.request.urlopen(req, timeout=3) as resp:
                 html = resp.read().decode("utf-8", errors="ignore")
                 matches = re.finditer(r'\"videoId\":\"([a-zA-Z0-9_-]{11})\".*?\"title\":\{\"runs\":\[\{\"text\":\"([^\"]+)\"\}', html)
                 for m in matches:
                     vid, raw_title = m.group(1), m.group(2)
-                    if vid in seen_vids:
-                        continue
                     raw_lower = raw_title.lower()
                     if any(k in raw_lower for k in MUSIC_KEYWORDS) or len(raw_title) > 5:
-                        seen_vids.add(vid)
-                        candidates.append((vid, raw_title, default_lang))
+                        term_candidates.append((vid, raw_title, default_lang))
         except Exception:
-            continue
+            pass
+        return term_candidates
+
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        results = executor.map(fetch_term, get_broad_yt_search_terms())
+        for term_res in results:
+            for vid, raw_title, default_lang in term_res:
+                if vid not in seen_vids:
+                    seen_vids.add(vid)
+                    candidates.append((vid, raw_title, default_lang))
 
     log(f"Discovered {len(candidates)} raw YouTube music video candidates from broad queries.")
     return candidates
@@ -420,15 +428,13 @@ def search_youtube_exact(song_title, artist, movie_hint=""):
     clean_title = re.sub(r"\b(from|official|video|audio|lyric|lyrical|song)\b.*$", "", clean_title, flags=re.IGNORECASE).strip(" -–—:|")
     
     queries = [
-        f"{artist} {clean_title} official song",
-        f"{clean_title} {movie_hint} song" if movie_hint else f"{artist} {clean_title}",
-        f"{clean_title} official video song"
+        f"{artist} {clean_title} official song"
     ]
     for q in queries:
         url = "https://www.youtube.com/results?search_query=" + urllib.parse.quote(q)
         try:
             req = urllib.request.Request(url, headers=HEADERS)
-            with urllib.request.urlopen(req, timeout=6) as resp:
+            with urllib.request.urlopen(req, timeout=2) as resp:
                 html = resp.read().decode("utf-8", errors="ignore")
                 matches = list(re.finditer(r"\"videoRenderer\":\{\"videoId\":\"([a-zA-Z0-9_-]{11})\".*?\"title\":\{\"runs\":\[\{\"text\":\"([^\"]+)\"\}", html))
                 title_words = [w.lower() for w in re.findall(r"\w+", clean_title) if len(w) > 1]
@@ -741,7 +747,7 @@ def main():
     candidate_songs = []
     seen_candidates = set()
 
-    max_daily_candidates = max(216 - len(requested_records), 200)
+    max_daily_candidates = max(1000 - len(requested_records), 500)
 
     for s in all_incoming:
         title = s["title"].strip()
@@ -762,7 +768,13 @@ def main():
         title = song_item["title"].strip()
         artist = song_item["artist"].strip()
         movie_hint = song_item.get("movie_hint", "")
-        # Resolve dynamically with exact videoRenderer title matching
+        k = f"{artist} - {title}".lower()
+        if k in yt_cache and yt_cache[k]:
+            song_item["youtube_id"] = yt_cache[k]
+            return song_item
+        if song_item.get("vid"):
+            song_item["youtube_id"] = song_item["vid"]
+            return song_item
         vid = search_youtube_exact(title, artist, movie_hint)
         if not vid:
             vid = "AZ3U1PkKpYo"
@@ -781,7 +793,7 @@ def main():
     # Step 7a: Prioritize Persistent User-Requested Songs at Top
     log(f"Ingesting {len(requested_records)} persistent user-requested songs to top slots...")
     for req in requested_records:
-        if len(final_records) >= 216:
+        if len(final_records) >= 1000:
             break
         key = f"{req.get('artist', '')} - {req.get('title', '')}".lower()
         title_key = req.get("title", "").lower()
@@ -797,7 +809,7 @@ def main():
 
     # Step 7b: Add Daily Chart Releases
     for item in resolved_candidates:
-        if len(final_records) >= 216:
+        if len(final_records) >= 1000:
             break
         title = item["title"]
         artist = item["artist"]
@@ -846,10 +858,10 @@ def main():
             "popularity": max(82.0, 99.0 - (idx * 0.22))
         })
 
-    # Fill remaining slots up to 216 from curated existing catalog to preserve timeless master tracks
+    # Fill remaining slots up to 1000 from curated existing catalog to preserve timeless master tracks
     curr_year = datetime.now().year
     for r in existing_records:
-        if len(final_records) >= 216:
+        if len(final_records) >= 1000:
             break
         key = f"{r.get('artist', '')} - {r.get('title', '')}".lower()
         title_key = r.get("title", "").lower()

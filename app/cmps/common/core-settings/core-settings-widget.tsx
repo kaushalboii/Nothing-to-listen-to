@@ -94,7 +94,7 @@ export function CoreSettingsWidget({
   const [cellLimit, setCellLimit] = useState<CELL_LIMIT | undefined>(
     storeCellLimit && (!isMobile ? true : storeCellLimit <= CELL_LIMIT.xs)
       ? storeCellLimit
-      : CELL_LIMIT.min,
+      : (isMobile ? CELL_LIMIT.xs : CELL_LIMIT.xs),
   )
 
   const [isDirty, setIsDirty] = useState(false)

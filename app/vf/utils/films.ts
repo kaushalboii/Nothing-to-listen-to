@@ -114,8 +114,6 @@ export const getCellFilm = async (
     cell.index >= 0
       ? cell.index
       : 0)
-  const subgridIndex = Math.abs(rawId) % 216
-
   let filmBatch = filmBatches.get(subgrid)
   if (!filmBatch || filmBatch.length === 0) {
     filmBatch = await loadCellFilmBatch(subgrid)
@@ -123,6 +121,9 @@ export const getCellFilm = async (
       filmBatches.set(subgrid, filmBatch)
     }
   }
+
+  const batchLen = filmBatch && filmBatch.length > 0 ? filmBatch.length : 216
+  const subgridIndex = Math.abs(rawId) % batchLen
 
   const record = filmBatch?.[subgridIndex]
   return record ? new Film(record) : undefined

@@ -43,14 +43,14 @@ export const Intro = () => {
     if (
       !state.preset ||
       (isMobile && state.preset !== VOROFORCE_PRESET.mobile) ||
-      (!isMobile && (state.preset === VOROFORCE_PRESET.mobile || state.preset === VOROFORCE_PRESET.minimal))
+      (!isMobile && state.preset === VOROFORCE_PRESET.mobile)
     ) {
       state.setPreset(
         isMobile ? VOROFORCE_PRESET.mobile : VOROFORCE_PRESET.depth,
       )
     }
-    if (!state.cellLimit || state.cellLimit > CELL_LIMIT.min) {
-      state.setCellLimit(CELL_LIMIT.min)
+    if (!state.cellLimit) {
+      state.setCellLimit(CELL_LIMIT.xs)
     }
 
     // Auto-advance within 500ms so visitors never experience a stalled black screen
